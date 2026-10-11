@@ -1,0 +1,120 @@
+{
+ "track": "singal",
+ "file": "assets/audio/bgm/singal.wav",
+ "duration_s": 29.95,
+ "sha256": "37d238f1fe4c787b0727b922d49f4554f3a73da006f4b2000b528b11cce45b0c",
+ "loudness": {
+  "rms_dbfs": -15.7,
+  "peak_dbfs": -3.7
+ },
+ "bpm": 73.81,
+ "bpm_confidence": 1.4,
+ "bpm_reliable": false,
+ "energy_curve_s": [
+  0.072,
+  0.148,
+  0.145,
+  0.136,
+  0.146,
+  0.184,
+  0.188,
+  0.167,
+  0.182,
+  0.191,
+  0.173,
+  0.156,
+  0.148,
+  0.15,
+  0.156,
+  0.148,
+  0.133,
+  0.143,
+  0.163,
+  0.178,
+  0.163,
+  0.162,
+  0.18,
+  0.16,
+  0.148,
+  0.153,
+  0.152,
+  0.155,
+  0.155,
+  0.146
+ ],
+ "segments": [
+  {
+   "start": 0.12,
+   "end": 17.38,
+   "dur": 17.25,
+   "mean_energy": 0.156,
+   "level": 5,
+   "slope": 0.006,
+   "prelabel": "主题段",
+   "brightness": 877.0,
+   "theme_tags": [
+    "国风古典",
+    "史诗宏大"
+   ],
+   "func": "钩子"
+  },
+  {
+   "start": 17.38,
+   "end": 29.62,
+   "dur": 12.25,
+   "mean_energy": 0.158,
+   "level": 5,
+   "slope": -0.017,
+   "prelabel": "高能主段",
+   "brightness": 996.0,
+   "theme_tags": [
+    "国风古典",
+    "史诗宏大"
+   ],
+   "func": "hero"
+  }
+ ],
+ "in_candidates": [
+  {
+   "t": 0.0,
+   "kind": "start",
+   "level": 5,
+   "note": "从头进（现状默认，任何曲都有）"
+  },
+  {
+   "t": 17.38,
+   "kind": "hook",
+   "level": 5,
+   "note": "「高能主段」起点（全曲最猛段，hero 对位候选）"
+  }
+ ],
+ "out_candidates": [
+  {
+   "t": 29.95,
+   "kind": "natural_end",
+   "note": "无自然收尾（尾部能量未衰减，出点需淡出）"
+  },
+  {
+   "t": 29.62,
+   "kind": "clean_cut",
+   "note": "「高能主段」末干净切点（高能走完即收）"
+  }
+ ],
+ "human_reviewed": true,
+ "method_notes": [
+  "能量档位 level 1-5 = 本曲 P95 归一后的相对档，均匀曲自然少段；不跨曲可比",
+  "分段边界=能量档变化点而非乐理结构，与真实乐句可差数秒，以人工标注轮校准为准",
+  "BPM 沿用 beat_grid 自相关口径，置信度<3.0 不可靠",
+  "亮度=频谱质心近似，仅同曲内段落横向参考",
+  "入出点候选=能量稳态/跳变统计结果；human_reviewed=false 时只作参考、不得自动定切点"
+ ],
+ "themes_default": [
+  "国风古典",
+  "史诗宏大"
+ ],
+ "theme_annotations": {
+  "by": "user",
+  "date": "2026-10-11",
+  "basis": "用户选定题材"
+ }
+}

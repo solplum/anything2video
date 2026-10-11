@@ -2,7 +2,23 @@
 
 规矩：**下载音频素材时当场记录曲名/URL**，事后无法反查。
 
-目录结构：`bgm/` 5 首 BGM 备选；`sfx/<类别>/` 149 个音效分 16 类（transition impact riser camera ui text paper film light data scifi mech glass fluid crowd counter）。类别含义与找音路径见 `references/sound-design.md` 3.0。
+目录结构：`bgm/` 7 首曲库音频（6 首 Mixkit + 用户自加 singal）+ `bgm/profiles/` 逐曲分析档案；`sfx/<类别>/` 149 个音效分 16 类（transition impact riser camera ui text paper film light data scifi mech glass fluid crowd counter）。类别含义与找音路径见 `references/sound-design.md` 3.0。
+
+## BGM 曲库（2026-10-11 实体化入库）
+
+全部 Mixkit Free License（可商用、可分发、免署名）；下载日 2026-10-11，直链下载前逐条验证 HTTP 200。逐曲气质/用法/分析档案见 `reference/bgm-library.md` 与 `bgm/profiles/*.json`。
+
+| 文件 | 原名 | Mixkit ID | URL |
+|---|---|---|---|
+| `bgm/vertigo-597.mp3` | Vertigo | 597 | https://assets.mixkit.co/music/597/597.mp3 |
+| `bgm/tapis-615.mp3` | Tapis | 615 | https://assets.mixkit.co/music/615/615.mp3 |
+| `bgm/classical-vibes-2-684.mp3` | Classical Vibes 2 | 684 | https://assets.mixkit.co/music/684/684.mp3 |
+| `bgm/staring-at-the-night-sky-168.mp3` | Staring at the Night Sky | 168 | https://assets.mixkit.co/music/168/168.mp3 |
+| `bgm/echoes-188.mp3` | Echoes | 188 | https://assets.mixkit.co/music/188/188.mp3 |
+| `bgm/miss-you-592.mp3` | Miss You | 592 | https://assets.mixkit.co/music/592/592.mp3 |
+| `bgm/singal.wav` | singal（用户自加曲，源出自 huangchao bakeoff） | — | 本机自有，无外部 URL |
+
+参考轨 `OPUS品牌片-音频提取.mp3`（OPUS 品牌片原声，**仅本机参考、不随包分发**，发布版权需自行确权）留在 `科普视频/yunkai-promo/research/`，其分析档案 `bgm/profiles/OPUS品牌片-音频提取.json` 仅作提名气质锚，不入发布池。
 
 下表「路径」列为 `assets/audio/` 下的相对路径。
 
