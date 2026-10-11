@@ -143,7 +143,7 @@ class AudioPipelineTests(unittest.TestCase):
         async def fake_sentence(chunks, sep=''):
             positions = np.arange(SR) / SR
             samples = (0.3 * np.sin(2 * np.pi * 700 * positions)).astype(np.float32)
-            return samples, [0], 1.0
+            return samples, [0], [[0.0] * len(c) for c in chunks], 1.0
         module.synth_sentence = fake_sentence
         narration = self.root / 'script' / 'narration.txt'
         narration.write_text('This is a test.\n', encoding='utf-8')
@@ -166,6 +166,67 @@ class AudioPipelineTests(unittest.TestCase):
         self.assertEqual(mixed.returncode, 0, mixed.stderr)
         valid = self.run_script('probe_av_sync.mjs', '--no-narration')
         self.assertEqual(valid.returncode, 0, valid.stderr)
+
+    # ---- v4.2.0 音乐编排表（music_plan.json 多段接力）----
+
+    def write_plan(self, cues):
+        (self.assets / 'music_plan.json').write_text(
+            json.dumps({'schema_version': 1, 'cues': cues}, ensure_ascii=False), encoding='utf-8')
+
+    def test_music_plan_renders_multi_segment_with_crossfade(self):
+        self.tone('track-b.wav', onset=0, stop=3, frequency=100, gain=0.3)
+        # 段1：bgm.wav 0.5-1.5s（700Hz）落位 0-1.0s；段2：track-b.wav 1.0-2.5s（100Hz）落位 0.8-2.3s，重叠 0.2s crossfade
+        self.write_plan([
+            {'track': 'bgm.wav', 'track_in': 0.5, 'track_out': 1.5, 'timeline_start': 0.0,
+             'fade_in': 0.1, 'section': '垫底', 'rationale': '测试段一'},
+            {'track': 'track-b.wav', 'track_in': 1.0, 'track_out': 2.5, 'timeline_start': 0.8,
+             'crossfade_in': 0.2, 'fade_out': 0.1, 'section': 'hero', 'rationale': '测试段二'},
+        ])
+        mixed = self.run_script('mix_audio.py')
+        self.assertEqual(mixed.returncode, 0, mixed.stderr)
+        manifest = json.loads((self.assets / 'audio.mix.json').read_text(encoding='utf-8'))
+        self.assertEqual(manifest['music'], 'music_plan')
+        self.assertEqual(len(manifest['music_tracks']), 2)
+        self.assertIsNotNone(manifest['music_plan_sha256'])
+        _, samples = wavfile.read(self.assets / 'audio.wav')
+        self.assertEqual(samples.shape, (3 * SR, 2))
+        # crossfade 中点两段都贡献能量（重叠区非静音）
+        window = samples[int(0.88 * SR):int(0.92 * SR)].astype(np.float64) / 32767
+        self.assertGreater(float(np.sqrt((window ** 2).mean())), 0.01)
+
+    def test_music_plan_overrides_single_bgm(self):
+        self.write_plan([
+            {'track': 'bgm.wav', 'track_in': 0.0, 'track_out': 1.0, 'timeline_start': 0.5},
+        ])
+        mixed = self.run_script('mix_audio.py')
+        self.assertEqual(mixed.returncode, 0, mixed.stderr)
+        manifest = json.loads((self.assets / 'audio.mix.json').read_text(encoding='utf-8'))
+        self.assertEqual(manifest['music'], 'music_plan')
+        self.assertIsNone(manifest['music_sha256'])
+
+    def test_music_plan_rejects_bad_cues(self):
+        cases = [
+            ('重叠无 crossfade', [
+                {'track': 'bgm.wav', 'track_in': 0.0, 'track_out': 2.0, 'timeline_start': 0.0},
+                {'track': 'bgm.wav', 'track_in': 0.0, 'track_out': 2.0, 'timeline_start': 1.5},
+            ]),
+            ('曲内出点越轨长', [
+                {'track': 'bgm.wav', 'track_in': 0.0, 'track_out': 99.0, 'timeline_start': 0.0},
+            ]),
+            ('落位与曲内时长不一致', [
+                {'track': 'bgm.wav', 'track_in': 0.0, 'track_out': 2.0, 'timeline_start': 0.0, 'timeline_end': 1.0},
+            ]),
+            ('落位越片长', [
+                {'track': 'bgm.wav', 'track_in': 0.0, 'track_out': 2.0, 'timeline_start': 2.5},
+            ]),
+            ('缺必填字段', [{'track': 'bgm.wav', 'track_in': 0.0, 'timeline_start': 0.0}]),
+        ]
+        for name, cues in cases:
+            with self.subTest(case=name):
+                self.write_plan(cues)
+                result = self.run_script('mix_audio.py')
+                self.assertNotEqual(result.returncode, 0, f'{name} 应拒绝')
+                self.assertIn('music_plan', result.stderr, name)
 
 
 if __name__ == '__main__':

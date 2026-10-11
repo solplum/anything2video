@@ -4,7 +4,7 @@
 
 看过一条有材质、镜头推进和首尾呼应的 AI 视频后，很容易产生一个判断：只要换成同一个模型，再抄一条提示词，就能得到同等作品。实际动手往往得到另一种结果：标题很大，字幕很密，背景很炫，信息却没有被解释。anything2video 把调研、写稿、分镜、配音、代码镜头、渲染和审片串成工程，让制作经验沉淀在工程里，而不是寄托在一次临场回答上；你仍然需要能完成任务的模型，但不必把每个导演决定都绑在某个模型上。
 
-**当前 v4.1.0。下载一份通用 ZIP，解压后一条命令装进任意宿主；或克隆仓库直接安装。** 六端共用相同的配方、图元、模板和生产脚本。豆包工作导出完整包手工导入，WorkBuddy 安装到本机技能目录重启发现，接入边界与未知项见 [reference/desktop-hosts.md](reference/desktop-hosts.md)。导演方法、原生画幅、多点打样与证据门禁帮助稳定制作；Skill 不改变模型权重，不承诺全面等价于 Opus 或一次提示生成精品。代码承担精确信息，审核后的生成素材承担场景，逐件登记来源和披露。
+**当前 v4.2.0。下载一份通用 ZIP，解压后一条命令装进任意宿主；或克隆仓库直接安装。** 六端共用相同的配方、图元、模板和生产脚本。豆包工作导出完整包手工导入，WorkBuddy 安装到本机技能目录重启发现，接入边界与未知项见 [reference/desktop-hosts.md](reference/desktop-hosts.md)。导演方法、原生画幅、多点打样与证据门禁帮助稳定制作；Skill 不改变模型权重，不承诺全面等价于 Opus 或一次提示生成精品。代码承担精确信息，审核后的生成素材承担场景，逐件登记来源和披露。
 
 English: A portable agent skill for producing researched, original code-composited videos with narration, shot contracts, deterministic rendering and measured quality evidence. Model capabilities and application support still need real validation.
 

@@ -15,13 +15,15 @@
 
 **展示选项的同一轮就在浏览器打开试听 HTML**（与风格选卡「同轮开 samples/index.html」规范同构）。用户选 ④ 后走下方完整 bakeoff 流程；选 ①–③ 直接定曲登记。
 
+**用户曲库优先权重（2026-10-11 用户定）**：主题反查提名时，**用户自加曲有合格题材命中即必占首选**（判定依据=profile `theme_annotations.by=user`，现=singal，用户后续自加曲入库自动进池），其余提名位才给 skill 曲池曲/程序编曲；试听页按「用户曲库 → skill 曲池 → 程序编曲」分组展示、用户曲组置顶。用户曲库无该题材命中时按既有片型分工回退（快节奏宣传/科普→程序编曲优先，60s+ 史诗/叙事→曲库优先），**不硬凑**——题材不合的用户曲不因权重挤掉合题材的曲池曲。四选项里的①推荐与③用户曲库推荐按此权重执行：用户曲命中时①③同源，③消失即用户曲库无命中。
+
 ## 流程（阶段 2 内、混音前完成）
 
 1. **提名**：按片气质定 3 个方向 × 每向 2–3 首，外加对照组（现曲/本机存量）。**优先从 `bgm-library.md` 已验证曲池取**，不足再上新淘——Mixkit tag 页（`mixkit.co/free-stock-music/tag/{minimal,piano,documentary,ambient,tech}/`）的 JSON-LD 含 name/genre/duration 可脚本解析；新直链必须 `curl -sI` 验 HTTP 200 再下载。
 2. **生成试听页**：拷 `bgm-bakeoff-template.html` 到 `<项目根>/bgm_bakeoff/`，按卡片填曲（mp3 与 html 同目录、相对路径 src），文案按下方"卡片六件"写。
 3. **开页**：使用宿主文件预览或浏览器打开 `<项目根>/bgm_bakeoff/bakeoff.html`，用户圈 2–3 首（可多轮提名，每轮按用户反馈收窄气质描述）。已授权主控选曲时由主控试听并记录。
-4. **贴片终选**：圈中曲裁到片长（长曲挑段、短曲单遍）→ `mix_audio.py` 侧链混音出 `audio.wav` → **remux 换音轨**（分镜未按拍点卡片的片直接 `ffmpeg -c:v copy` 换 `audio.wav`，不重渲画面）→ 每候选出一版贴片 mp4 给用户最终拍板。
-5. **定稿落位**：胜者落 `public/assets/<slug>/bgm.wav` + MANIFEST 登记（曲名/作者/ID/URL/许可/sha256）+ 交付说明 BGM 节更新 + 按 `bgm-library.md` 入库纪律回填曲库表。
+4. **贴片终选**：圈中曲按主题反查命中段落裁切落位——多段/接力片出**音乐编排表** `public/assets/<slug>/music_plan.json`（schema/校验/纪律见 `music-plan.md`，单段单曲也可用编排表表达），随贴片候选给用户拍板 → `mix_audio.py` 自动优先消费编排表（逐段归一+等功率 crossfade+fail fast 校验）→ **remux 换音轨**（分镜未按拍点卡片的片直接 `ffmpeg -c:v copy` 换 `audio.wav`，不重渲画面）→ 每候选出一版贴片 mp4 给用户最终拍板。
+5. **定稿落位**：胜者落 `public/assets/<slug>/`（单曲 `bgm.wav` 或编排表 `music_plan.json` + 音轨）+ MANIFEST 登记（曲名/作者/ID/URL/许可/sha256）+ 交付说明 BGM 节更新 + 按 `bgm-library.md` 入库纪律回填曲库表。编排表改动改变成片与 mix.json，交付/QC 证据按统一合同重走最终门。
 
 换音轨也改变成片 SHA256。旧 delivery/QC 不能沿用；标准流程在正式源工程重新渲染并审查。纯 remux 比选稿只作为 draft；没有匹配当前媒体与源码的完整证据时不能过最终门禁。
 

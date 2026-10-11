@@ -42,3 +42,6 @@ tests/fullflow/
 
 # 外部曲（版权未核实的用户指定曲，仅本机不分发）
 assets/audio/bgm/*.wav
+
+# 宿主发行包（构建产物，build-editions.mjs 产、只本机/Release 分发）
+editions/

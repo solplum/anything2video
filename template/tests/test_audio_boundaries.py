@@ -48,7 +48,9 @@ class AudioBoundaryTests(unittest.TestCase):
         self.tts.LEAD = self.tts.TAIL = self.tts.GAP = 0
         positions = np.arange(2 * SR) / SR
         self.samples = (0.3 * np.sin(2 * np.pi * 700 * positions)).astype(np.float32)
-        self.synthesis = mock.AsyncMock(return_value=(self.samples, [0.0, 1.0], 2.0))
+        async def _synthesis(chunks, sep=''):
+            return self.samples, [0.0, 1.0], [[0.0] * len(c) for c in chunks], 2.0
+        self.synthesis = mock.AsyncMock(side_effect=_synthesis)
         self.tts.synth_sentence = self.synthesis
         self.outside = self.base / 'outside'
         self.outside.mkdir()
@@ -176,7 +178,9 @@ class AudioBoundaryTests(unittest.TestCase):
             mixed = self.run_mix()
             self.assertEqual(mixed.returncode, 0, mixed.stderr)
             self.assertEqual(self.digest(self.assets / 'audio_narration.wav'), before)
-        self.synthesis.return_value = (-self.samples, [0.0, 1.0], 2.0)
+        async def _alt(chunks, sep=''):
+            return -self.samples, [0.0, 1.0], [[0.0] * len(c) for c in chunks], 2.0
+        self.synthesis.side_effect = _alt
         self.run_tts(force=True)
         self.assertNotEqual(self.digest(self.assets / 'audio_narration.wav'), before)
         self.assertFalse((self.assets / 'audio.mix.json').exists())
@@ -261,7 +265,7 @@ class AudioBoundaryTests(unittest.TestCase):
     def test_recheck_rejects_link_created_during_synthesis_before_any_audio_write(self):
         async def raced_link(chunks, sep=''):
             self.link(self.root / 'src/common/subs.ts', self.sentinel)
-            return self.samples, [0.0, 1.0], 2.0
+            return self.samples, [0.0, 1.0], [[0.0] * len(c) for c in chunks], 2.0
         self.tts.synth_sentence = raced_link
         before = self.digest(self.sentinel)
         with self.assertRaises(ValueError):
@@ -316,7 +320,9 @@ class AudioBoundaryTests(unittest.TestCase):
                     target.unlink()
 
     def test_invalid_synthesis_duration_rejects_before_writing_audio(self):
-        self.synthesis.return_value = (self.samples, [0.0, 1.0], 1.0)
+        async def _bad_dur(chunks, sep=''):
+            return self.samples, [0.0, 1.0], [[0.0] * len(c) for c in chunks], 1.0
+        self.synthesis.side_effect = _bad_dur
         with self.assertRaisesRegex(ValueError, 'inconsistent'):
             self.run_tts()
         self.assertFalse((self.assets / 'audio.wav').exists())
