@@ -47,10 +47,15 @@ function splitFrontmatter(text) {
 }
 // Edition entrypoints compose the per-host frontmatter with the shared SKILL.md body:
 // host identity stays edition-specific while the entry guidance has one maintained source.
+// A host file may carry a `<!-- host-chapter -->` marker; everything after it is appended to
+// that host's edition only. Hosts without the marker compose byte-identically as before.
+const hostChapterMarker = '<!-- host-chapter -->';
 export function composeEntry(hostEntryText, coreSkillText) {
   const host = splitFrontmatter(hostEntryText);
   const core = splitFrontmatter(coreSkillText);
-  return `${host.frontmatter.trimEnd()}\n\n${core.body.replace(/^\r?\n+/, '')}`;
+  const markerAt = host.body.indexOf(hostChapterMarker);
+  const chapter = markerAt === -1 ? '' : `\n${host.body.slice(markerAt + hostChapterMarker.length).replace(/^\r?\n+/, '').replace(/\s+$/, '')}\n`;
+  return `${host.frontmatter.trimEnd()}\n\n${core.body.replace(/^\r?\n+/, '')}${chapter}`;
 }
 function declaredVersion(frontmatter) {
   // Support the maintained metadata block and legacy packages, never Markdown body text.
