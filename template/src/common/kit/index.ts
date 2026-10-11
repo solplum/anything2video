@@ -15,3 +15,5 @@ export * from './WordLitCaption';
 export * from './ChapterBadge';
 export * from './GoldenQuote';
 export * from './RecapFrame';
+// v4.3.0 可变字体轴动画（方法论吸收 mexicat/pdoom-video，MIT；用法与字体轴实测见文件头）
+export * from './VarText';

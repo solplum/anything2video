@@ -6,7 +6,7 @@ import {
   easeInOutCubic,
   layoutLine,
   slamScale, shakeAt, popScale, pulseScale, softDropY, crouchLift, slamFallY, landSquash,
-  breatheScale, glowAlpha,
+  breatheWght, glowAlpha,
   KtBg, KtWord, SlotBox, FlashRing, ImpactLines, StressMark, BaseRule, EmphUnderline, SoftGlow, StillFrame,
   type WordBox,
 } from './kit';
@@ -221,12 +221,12 @@ const Phase4: React.FC<{N: number}> = ({N}) => {
   const fg = ink(true);
   const zl = box(LINE1, '重量');
   const periodU = N - B.period;
-  const breath = breatheScale(N, B.still);
+  const breathW = breatheWght(N, B.still); // v4.3.0 真字轴（Noto Sans SC 可变字体 wght 810–900）
   return (
     <>
       <KtWord box={box(LINE1, '一句话')} color={fg} />
       <KtWord box={box(LINE1, '的')} color={fg} opacity={0.45} />
-      <KtWord box={zl} color={KT.vermilion} scale={breath} />
+      <KtWord box={zl} color={KT.vermilion} wght={breathW} />
       <EmphUnderline box={zl} y={L1_Y + 104} N={N} draw={B.emph2} color={KT.vermilion} />
       <KtWord box={box(LINE1, '，')} color={fg} opacity={0.85} />
       <KtWord box={box(LINE2, '藏在')} color={fg} opacity={0.45} />

@@ -14,6 +14,10 @@ import React from 'react';
 //     词从槽内下方升起，落定后槽框收回——「从槽里升起」是本卡签名，不是行内排版。
 //   - slam 砸入（scale slam+微震+冲击环）与 emphasis 脉冲：本卡原创参数，弹簧手感借鉴
 //     hanazi 弹字参数族（spring ζ=0.517/ω=22 族的半波简化重写）。
+//   - 字重呼吸·真字轴（breatheWght + KtWord wght 轴，v4.3.0）：方法论吸收 mexicat/pdoom-video
+//     （MIT，docs/TREATMENT.md "Animate width and weight for expression"）——font-variation-settings
+//     真字轴取代旧 scale 冒充（底层 Noto Sans SC 为可变字体，fonttools 实测 wght 100-900）；
+//     breatheScale 保留作非可变字体兜底。通用件在 template/src/common/kit/VarText.tsx。
 // 硬约束：严格四色 token（奶油白/纯黑/橙红/宝蓝）+ 连接词用 ink 的透明度档（不引入第五色相）；
 //   纯平（无渐变/无阴影/无 glow 滤镜——「句号微光」用径向衬底圆实现）；随机一律 ktHash
 //   种子杂凑（禁 Math.random/Date/网络）；全部运动 = 纯帧号 u 的解析函数，seek(t) 可复现。
@@ -162,9 +166,16 @@ export const ringAt = (u: number): {r: number; o: number} => {
   return {r: 0.45 + 0.7 * easeOutCubic(p), o: 0.8 * (1 - p)};
 };
 
-/** 字重呼吸（定帧微动效①）：scale 1+amp·sin(2π(N−from)/period)。 */
+/** 字重呼吸（定帧微动效①·旧机制）：scale 1+amp·sin(2π(N−from)/period)。
+ *  v4.3.0 起默认改走 breatheWght 真字轴（见下）；本函数保留作非可变字体兜底。 */
 export const breatheScale = (N: number, from: number, amp = 0.012, period = 90): number =>
   N < from ? 1 : 1 + amp * Math.sin(((N - from) * 2 * Math.PI) / period);
+
+/** 字重呼吸·真字轴（v4.3.0，方法论吸收 pdoom-video MIT）：wght 在 [base−amp, base] 正弦摆动
+ *  （向下载——900 是轴上限只能软化）。需可变字体（模板 Noto Sans SC 实测 wght 100-900）；
+ *  静态字体上轴值被浏览器忽略（呼吸消失，可见可查），此时回退 breatheScale。 */
+export const breatheWght = (N: number, from: number, base = 900, amp = 90, period = 90): number =>
+  N < from ? base : base + amp * 0.5 * Math.sin(((N - from) * 2 * Math.PI) / period) - amp * 0.5;
 
 /** 微光呼吸（定帧微动效②）：透明度 0..amp 慢正弦。 */
 export const glowAlpha = (N: number, from: number, amp = 0.06, period = 150): number =>
@@ -218,12 +229,13 @@ export const KtWord: React.FC<{
   riseU?: number; // 槽位升起帧差（缺省 = 已落定）
   riseDur?: number;
   scale?: number; // slam/脉冲/呼吸（乘 base 1）
+  wght?: number; // 可变字体字重轴（v4.3.0；未传=用 rankWeight 静态档。需可变字体，静态字体无效）
   sx?: number; // 水平压扁系数（1=无）
   sy?: number; // 垂直压扁系数（1=无）
   ty?: number; // 额外整体位移 px（travel/软落/砸落）
   trackingEm?: number;
   hidden?: boolean;
-}> = ({box, color, opacity = 1, riseU, riseDur = 13, scale = 1, sx = 1, sy = 1, ty = 0, trackingEm = 0, hidden}) => {
+}> = ({box, color, opacity = 1, riseU, riseDur = 13, scale = 1, wght, sx = 1, sy = 1, ty = 0, trackingEm = 0, hidden}) => {
   if (hidden) return null;
   const rise = riseU === undefined ? 0 : riseAt(riseU, riseDur);
   const pad = 12;
@@ -247,6 +259,9 @@ export const KtWord: React.FC<{
           width: box.w,
           fontFamily: KT_FONT,
           fontWeight: rankWeight(box.rank),
+          ...(wght !== undefined
+            ? {fontVariationSettings: `"wght" ${Math.round(wght * 100) / 100}`}
+            : {}),
           fontSize: box.size,
           lineHeight: `${box.h}px`,
           letterSpacing: `${(trackingEm * box.size).toFixed(2)}px`,

@@ -14,14 +14,14 @@
 - **纯平契约**：无渐变/无阴影/无 glow 滤镜；「句号微光」用径向衬底圆（radial-gradient 色块）实现，属衬底件非发光件。
 - **幕底节拍硬切**：换色发生在单帧内、零过渡；一幕一底色（本片：黑→宝蓝→橙红（幕内半段，砸落帧）→奶油白→黑）。
 - **词性四级**（`Rank`）：main（168-260px，vermilion，900）＞noun（92px，正文色 900）＞conn（38-54px，细体 500，45% 透明度）＞punct（54px，节拍件 85%）。
-- **运动原语**（全部纯帧号解析函数）：`slamScale`（5f easeOutQuart 2.2→0.97+3f 回弹）｜`shakeAt`（7f 指数衰减 ktHash 抖动）｜`riseAt`（槽升起 115%→0 easeOutCubic 13f，无回弹）｜`popScale`（标点 6f 过冲弹入）｜`pulseScale`（emphasis 10f 半波 1→1.14→1）｜`softDropY`（句号软落无回弹）｜`crouchLift`+`slamFallY`+`landSquash`（蓄力→重力加速砸落→压扁回弹）｜`breatheScale`+`glowAlpha`（定帧微动效）。
+- **运动原语**（全部纯帧号解析函数）：`slamScale`（5f easeOutQuart 2.2→0.97+3f 回弹）｜`shakeAt`（7f 指数衰减 ktHash 抖动）｜`riseAt`（槽升起 115%→0 easeOutCubic 13f，无回弹）｜`popScale`（标点 6f 过冲弹入）｜`pulseScale`（emphasis 10f 半波 1→1.14→1）｜`softDropY`（句号软落无回弹）｜`crouchLift`+`slamFallY`+`landSquash`（蓄力→重力加速砸落→压扁回弹）｜`breatheWght`（真字轴字重呼吸，v4.3.0 起取代 scale 冒充；`breatheScale` 保留非可变字体兜底）+`glowAlpha`（定帧微光）。
 - **排版**：`layoutLine` 确定性行排版（CJK 1em 测宽 `ktTextW`，不量 DOM）；`ktHash` 种子杂凑，禁 Math.random/Date/网络。
 - **钉帧纪律**：主词 slam/emphasis/升起全部钉 TTS 字级实测帧（tts_build timeline.json chars[]）；「说完不再动」段零 SFX 零宏观运动。
-- **三纪律**：钩子 0.5s 内主词砸入｜HERO（全句编排完成+主词 emphasis）落 60-75% 窗口｜结尾定帧 0.8-1.2s+ 带微动效（字重呼吸 ±1.2% 周期 90f + 末词微光，禁全静止也禁大动）。
+- **三纪律**：钩子 0.5s 内主词砸入｜HERO（全句编排完成+主词 emphasis）落 60-75% 窗口｜结尾定帧 0.8-1.2s+ 带微动效（字重呼吸 wght 810–900 周期 90f 真字轴 + 末词微光，禁全静止也禁大动）。
 
 ## 词汇清单
 
-`KtBg`（幕底纯色硬切）｜`SlotBox`（虚线槽位框：appear 淡入/land 收回）｜`KtWord`（词演员：槽容器 maskRise 升起 + scale/sx/sy/ty 上层合成）｜`FlashRing`｜`ImpactLines`｜`StressMark`（重音▼砸落）｜`BaseRule`（基线细线画出/淡出）｜`EmphUnderline`（强调下划线砸出常驻）｜`SoftGlow`（径向衬底微光）｜`StillFrame`（收束细框四边画出）。
+`KtBg`（幕底纯色硬切）｜`SlotBox`（虚线槽位框：appear 淡入/land 收回）｜`KtWord`（词演员：槽容器 maskRise 升起 + scale/sx/sy/ty 上层合成 + wght 可变字体字重轴 v4.3.0）｜`FlashRing`｜`ImpactLines`｜`StressMark`（重音▼砸落）｜`BaseRule`（基线细线画出/淡出）｜`EmphUnderline`（强调下划线砸出常驻）｜`SoftGlow`（径向衬底微光）｜`StillFrame`（收束细框四边画出）。
 
 ## 差异边界（vs hanazi-916，锁死声明）
 
@@ -29,14 +29,14 @@ hanazi-916=综艺**情绪花字**：五层描边（挤出/彩色外描/粗白描
 
 ## 复用适配点
 
-1. 拷 `kit.tsx + Scene.tsx` 即用（Fonts 走模板 common）；换文案只改 `LINE1/LINE2` 词组表（rank/size/gapAfter）与 `B` 钉帧表（按新片 tts_build timeline.json chars[] 重锚）。
+1. 拷 `kit.tsx + Scene.tsx` 即用（Fonts 走模板 common）；换文案只改 `LINE1/LINE2` 词组表（rank/size/gapAfter）与 `B` 钉帧表（按新片 tts_build timeline.json chars[] 重锚）。KtWord wght 轴需工程字体为可变（模板 Noto Sans SC fonttools 实测可变 wght 100-900；静态字体呼吸无效果，回退 `breatheScale`）。
 2. 多句片：每句一组 layoutLine + 幕底轮换（四色循环），句间硬切；单句语法（砸/升/标点）原样复用。
 3. BGM 配方 `18-hanazi`（variety bouncy）；SFX 词汇：重音砸入=`impact-deep-whoosh`/`bass-hit-short`，槽升起=`sweep-short`，标点=`switch-click-quick`/`ui-tone-quick`（静止段禁 SFX）。
 
 ## QC 豁免档
 
 - **大面积实底**：一屏一焦点排版下单字/单行占画面 2-8%，probe_blank「近乎全屏同色」（>92% 单桶）命中属风格本体（zheke 帧表同款构图）——逐帧看图定性留证，不作渲染缺陷修。
-- **定帧段 MAD 低于阈值**：呼吸 ±1.2% 的字重微动效 MAD≈0.2<0.5 采样阈值——双帧像素差实证（本片 f352 vs f372=4506px）非全静止即可豁免；提高幅度会稀释「不再动」语义。
+- **定帧段 MAD 低于阈值**：呼吸字重微动效（v4.3.0 真字轴 wght ±45@900）MAD 量级与原 scale 机制相当、低于 0.5 采样阈值——双帧像素差实证（f352 vs f372=4506px 为 scale 机制实测；真字轴改字重，量级相近，换机制后重渲按同口径复测）非全静止即可豁免；提高幅度会稀释「不再动」语义。
 - **大字脉冲的槽容器裁切**：pulseScale 1.14 时 168px 主词顶部可触 mask 容器边（pad 12px 内裁切 ~1-2px）——视觉上是「顶到槽边」的版式感，不修；若换更大脉冲幅度需同步加 pad。
 
 ## 样张

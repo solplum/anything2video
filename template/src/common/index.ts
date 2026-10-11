@@ -21,3 +21,5 @@ export {PerCharReveal} from './PerCharReveal';
 export {ParticleText} from './ParticleText';
 export {TreeGrow} from './TreeGrow';
 export {SealStamp} from './SealStamp';
+// v4.3.0 音乐反应层（数据来自 scripts/audio_features.py；纪律见 music-beat-sync §7）
+export * from './music';

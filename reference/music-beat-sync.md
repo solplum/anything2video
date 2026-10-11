@@ -142,6 +142,25 @@ analysis/
 `beat_data.json` 里的时刻永远是浮点秒、不预取整；下游只依赖
 `bpm / beats / hits / rms / sections` 这几个字段名。
 
+## 3.5 小节相位与 downbeat 证据（beat_grid v4.3.0，方法论吸收 pdoom-video，MIT）
+
+「切在正拍」的前提是 downbeat 本身对：选错半小节，所有"落正拍"设计系统性错位一拍。
+`beat_grid.py`（自研路线）v4.3.0 起把 downbeat 从"猜"升级为"证据裁决"，产物在
+`script/beat_grid.json` 新增三组字段：
+
+- **kick 攻击相位精修**（`kick_phase_refine`）：<120Hz 带内瞬态与拍点残差取中位数修正相位；
+  `n/median_ms/sd_ms` 记档——sd 是网格质量指标，sd 大说明此曲不适合常速网格。
+- **鼓件三分类**（`onsets` / `onsets_frame`）：kick(<120Hz) / snare(1.5–5k 攻击 + 40–120ms
+  噪声尾验证抗贝斯串音) / hat(>7k，减 kick·snare 邻近项)，各带强度 0.2–1.0。
+  命中表是候选池不是触发器（§2 铁律不变）。
+- **小节相位证据**（`bar_phase`）：snare 落 8 分位直方图（`snare_positions`，4/4 应聚在
+  2&6 位）；比例 ≥0.4 时以 snare 证据定 downbeat（`source='snare-2and4'`），并列双小节歧义
+  （off 0/2 同分——snare 布局对双小节镜像不敏感）按重拍 kick 强度均值裁决；比例不足回退
+  onset 能量法并记 `source='weak-snare-evidence' | 'no-snares'`——此时 downbeat 仅供参考，
+  强依赖正拍的编排要么换曲要么人工听认定小节头。
+
+与下方 librosa 路线（beat_data.json）并存、字段口径一致；同一工程两份不混用，二选一当真值。
+
 ## 4. 时间线用拍号写，不用帧号写
 
 Remotion 项目里把网格常量化，一切镜头边界/动效关键帧用 `beatF()` 表达：
@@ -259,3 +278,39 @@ export const beatT = (n: number) => SOURCE_BEAT0 + OUTPUT_AUDIO_OFFSET_SEC + n *
   回 §3 用瞬态覆盖率投票，不猜
 - 变速曲（DJ 转场、accelerando）：先用 librosa 局部 tempogram
   （约 5s 窗）确认变速点，再按能量段分段拟合，各段各自 t0/T
+- 连续反应层数据（包络/分类 onset 一次出齐）：`uv run python scripts/audio_features.py`（§7）；
+  `beat_grid.py` 只出拍点网格与鼓件证据
+
+## 7. 连续音乐反应层（v4.3.0，方法论吸收 pdoom-video engine/audio.ts，MIT）
+
+§4 解决"切点/冲击落在拍上"（离散事件）；本节解决"画面骑在音乐上"（连续反应）——
+相机的微漂、辉光的呼吸、密度的涨落随包络起伏，而不是每个都手工 key 正弦。
+
+数据与 API：
+
+```bash
+uv run python scripts/audio_features.py public/assets/<slug>/bgm.wav
+# → analysis/music_features.json：100fps 归一化包络（rms/low/mid/high/percussive）
+#   + 分类 onset（kick/snare/hat 含强度）+ 节拍网格（同 beat_grid 口径）
+```
+
+```ts
+import musicData from '../../analysis/music_features.json'; // 相对卡片文件到工程 analysis/
+const M = createMusic(musicData, FPS);                      // common/music.ts
+M.env('percussive', frame);      // 0..1 连续包络（打击成分，鼓点反应首选通道）
+M.envPeak('high', frame, 0.08);  // 峰值保持，比 env 更"挺"
+M.hit('kick', frame);            // 最近 kick 的半衰期衰减脉冲（候选池语义，见下）
+M.nearestDownbeatFrame(frame);   // 切点吸附正拍
+```
+
+三条纪律（硬约束）：
+
+1. **包络只驱动平滑连续运动**（相机微漂/辉光呼吸/密度/线条抖动的整体水位），不产生新的事件感；
+2. **冲击事件仍走 §2 候选池 + beat sheet 钉帧**：`hit()` 返回值只当脉冲幅度用，
+   全画面冲击继续受 aesthetic-rules R4 硬上限（全片 ≤3 处）；
+3. **数据文件不存在的工程不骑音乐**：不引入 music.ts、不手写正弦假装骑拍——要么跑分析脚本，
+   要么明写"按内容节奏排"（§0 口径）。
+
+边界（诚实口径）：v1 通道无 vocal/drums/bass/other stem 分离（Demucs 分离管线未落地）；
+percussive 由 HPSS 中值滤波近似打击成分。纯氛围曲（`reliable=false` 无清晰拍点）包络仍可用
+——能量起伏是客观的，只是拍点列不可用（§0 口径不变）。

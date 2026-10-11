@@ -73,6 +73,8 @@ TTS/mix 从 project.json 读取 slug/fps；config slug 不一致须迁移后重�
 
 音画 probe 用 raw 旁白检测首句，不把 BGM 开口当语音。首句 onset 检测只验证首句，不能证明整段字幕正确；还要抽查中段/末段并核对最终音轨起点与时长。
 
+强节奏片需要「画面骑音乐」的连续微动时（相机微漂/辉光呼吸/密度涨落），跑 `uv run python scripts/audio_features.py <bgm>` 产 `analysis/music_features.json`，卡片经 `common/music.ts` 的 createMusic 消费（env/envPeak/hit/beatAt，接口与纪律见 music-beat-sync §7）。三条硬约束：包络只驱动平滑连续运动；冲击事件仍走 hit 候选池并受 aesthetic-rules R4 全画面冲击硬上限；无数据文件的工程不骑音乐，禁止手写正弦假装骑拍。有包络数据的工程以 music_features.json 的 grid 字段为卡点真值（与 beat_grid.json 同源同口径，单一事实源二选一）。
+
 ## 三轮证据
 
 1. 工程轮：类型检查、全镜头覆盖、素材存在、音画、输出规格、解码错误。空组与空句不能假通过。运动连续性用 `scripts/probe_motion_quality.py` 采样成片（运动面积/静止帧对/孤立跳变/最长静止，附跳变证据拼图）——只看首尾差会漏卡顿（huashu 实测：一段 33% 变化但 14/48 帧对静止的镜头首尾检查全绿）；数字是线索，定性按 directing-playbook「运动量按配方语义读」执行，合法静止以分镜与 beat sheet 豁免登记为准。
