@@ -345,6 +345,8 @@ def main():
     ap.add_argument('--out-dir', default='assets/audio/bgm/profiles', help='profile 输出目录')
     ap.add_argument('--url', default=None, help='来源 URL（写入 profile）')
     ap.add_argument('--license', dest='license_', default=None, help='许可（写入 profile）')
+    ap.add_argument('--owner', choices=('user', 'skill'), default='skill',
+                    help='曲权属：user=用户自加曲（反查恒置顶）/ skill=skill 曲池（默认）')
     ap.add_argument('--selftest', action='store_true')
     a = ap.parse_args()
     if a.selftest:
@@ -355,6 +357,7 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     for p in map(Path, a.audio):
         prof = analyze_file(p, a.url, a.license_)
+        prof['owner'] = a.owner
         out = out_dir / f'{p.stem}.json'
         out.write_text(json.dumps(prof, ensure_ascii=False, indent=1), encoding='utf-8')
         segs_txt = ' / '.join(f"{s['prelabel']} {s['start']}-{s['end']}s(L{s['level']})" for s in prof['segments'])
