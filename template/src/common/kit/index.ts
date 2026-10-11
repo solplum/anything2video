@@ -17,3 +17,6 @@ export * from './GoldenQuote';
 export * from './RecapFrame';
 // v4.3.0 可变字体轴动画（方法论吸收 mexicat/pdoom-video，MIT；用法与字体轴实测见文件头）
 export * from './VarText';
+// v4.4.0 单笔画字体库+逐字写出（逐字移植 mexicat/pdoom-video stroke.ts，MIT；
+// 字体 Hershey 公有领域 + EMS OFL，已 vendor 到 public/fonts/stroke/；仅拉丁——中文走 draw-svg-trace）
+export * from './StrokeText';

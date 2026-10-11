@@ -4,10 +4,17 @@
 > 2026-10-06 全量移植（commit 快照见 `cards/ATTRIBUTION.md`）。许可证副本：
 > `LICENSE-THIRDPARTY/APACHE-2.0-video-shotcraft.txt`。卡内容逐字保留（含其内部判例引用），
 > 后续本 skill 自己的新卡直接追加，不改写原卡。
+>
+> **v4.4.0 增补（8 张，方法论吸收 mexicat/pdoom-video，MIT，
+> `LICENSE-THIRDPARTY/MIT-pdoom-video.txt`）**：`rhythm/` escalating-hook-slam、
+> world-roll-on-word、time-remap-stutter；`typography/` token-probability-bars、
+> pressure-condense-slab；`effects/` letterform-shockwave；`data/` in-world-counter-staged；
+> `transition/` fuse-burn-reveal。本批卡为 pdoom 场景语法的参数化重写（外部仓场景
+> 文件在卡尾「参考实现」标注），本仓无 demos-ref，按卡参数表实现。
 
 ## 这是什么
 
-157 张**镜头配方卡**：每张卡 = 一个经过实战返工打磨的动效镜头的完整知识——
+180 张**镜头配方卡**：每张卡 = 一个经过实战返工打磨的动效镜头的完整知识——
 意图、动效核心、**参数表（典型值 / 调节手感 / 带日期的判例）**、声音钉点、已知坑、
 参考实现源码指针。分镜时抽卡，实现时照卡的参数和判例做，不要从零猜动效。
 
@@ -15,14 +22,14 @@
 
 | 目录 | 数量 | 内容 | a2v 何时用 |
 |---|---|---|---|
-| `cards/typography/` | 26 | 文字揭示、逐字、计数、标题卡 | 讲解片字卡、要点、数字 |
-| `cards/data/` | 13 | 网格构建、数据流入、图表 | 事实、数量、对比 |
-| `cards/ui-entrance/` | 28 | 卡片墙、列表涌入、面板进场 | 内容量大/清单类镜头 |
-| `cards/transition/` | 19 | 镜间转场、擦除、变形 | 全类型通用 |
-| `cards/rhythm/` | 11 | 节拍卡点、闪切、踩点 | 配强节奏 BGM 时 |
-| `cards/opening/` `outro/` | 11+7 | 开场悬念、结尾定版 | 全类型通用 |
-| `cards/camera/` | 10 | 运镜、推拉、环绕 | 空间交代、材质特写 |
-| `cards/effects/` `interaction/` | 17+15 | 材质特效、交互隐喻 | 风格化叙事、custom 配方 |
+| `cards/typography/` | 30 | 文字揭示、逐字、计数、标题卡 | 讲解片字卡、要点、数字 |
+| `cards/data/` | 17 | 网格构建、数据流入、图表 | 事实、数量、对比 |
+| `cards/ui-entrance/` | 29 | 卡片墙、列表涌入、面板进场 | 内容量大/清单类镜头 |
+| `cards/transition/` | 22 | 镜间转场、擦除、变形 | 全类型通用 |
+| `cards/rhythm/` | 14 | 节拍卡点、闪切、踩点 | 配强节奏 BGM 时 |
+| `cards/opening/` `outro/` | 12+7 | 开场悬念、结尾定版 | 全类型通用 |
+| `cards/camera/` | 14 | 运镜、推拉、环绕 | 空间交代、材质特写 |
+| `cards/effects/` `interaction/` | 19+16 | 材质特效、交互隐喻 | 风格化叙事、custom 配方 |
 | `demos-ref/` | 248 文件 | 每张卡的参考实现源码（原仓 `demos/`） | 实现前读对应源码 |
 | `lib-ref/` | — | 原仓 `assets/lib/` 全量（含未编入 kit 的 three.js 组件） | 参考 |
 | `promo-energy-arc.md` | — | 宣传片能量曲线编排法 | promo/epic 配方分镜 |
