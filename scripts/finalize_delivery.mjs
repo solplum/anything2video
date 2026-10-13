@@ -117,6 +117,14 @@ async function main() {
       await die(root, tmp, `无法测量源响度（静音/无声轨都会走到这里）：${pass1.stderr.slice(-200)}`);
       return;
     }
+    // 线性可达性早失败（2026-10-11 黄巢片判例）：源响度低于目标 >4.5dB 时线性增益会把 TP 顶破，
+    // loudnorm 静默回退动态模式 → 欠冲 0.2-0.3 LU 被交付门拦。治法=源音频先预归一：
+    // volume=<缺口>dB + alimiter=limit=0.841 预归一到 I≈-16/TP≤-1.5，再重渲重跑本步。
+    const gap = target - Number(measured.input_i);
+    if (gap > 4.5) {
+      await die(root, tmp, `源响度 I=${measured.input_i} LUFS 距目标 ${target} 缺口 ${gap.toFixed(1)}dB（>4.5）——linear 模式将回退动态并欠冲。先做源预归一：ffmpeg -i audio.wav -af "volume=${gap.toFixed(1)}dB,alimiter=limit=0.841:level=false" 后重渲，再跑本步（判例见 lessons「loudnorm 预抬被重归一吃掉」）`);
+      return;
+    }
     // pass2：线性归一并出 master
     const ln = `loudnorm=I=${target}:TP=-1.5:LRA=9:linear=true:measured_I=${measured.input_i}:measured_TP=${measured.input_tp}:measured_LRA=${measured.input_lra}:measured_thresh=${measured.input_thresh}:offset=${measured.offset}`;
     const master = path.join(tmp, targets[0]);

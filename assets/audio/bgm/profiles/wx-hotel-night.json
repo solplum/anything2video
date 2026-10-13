@@ -1,0 +1,96 @@
+{
+ "track": "wx-hotel-night",
+ "file": "assets/audio/bgm/wx-hotel-night.wav",
+ "duration_s": 29.9,
+ "sha256": "6d57d7b12f2b7cd9835dc5bc1321463ba6f652f1fdcc5ad38ee67333e0bd0d11",
+ "loudness": {
+  "rms_dbfs": -19.3,
+  "peak_dbfs": -4.0
+ },
+ "bpm": 71.0,
+ "bpm_confidence": 1.38,
+ "bpm_reliable": false,
+ "energy_curve_s": [
+  0.025,
+  0.042,
+  0.053,
+  0.086,
+  0.106,
+  0.111,
+  0.114,
+  0.106,
+  0.102,
+  0.112,
+  0.099,
+  0.106,
+  0.13,
+  0.121,
+  0.1,
+  0.092,
+  0.093,
+  0.09,
+  0.1,
+  0.121,
+  0.107,
+  0.095,
+  0.084,
+  0.081,
+  0.107,
+  0.111,
+  0.132,
+  0.123,
+  0.103,
+  0.08
+ ],
+ "segments": [
+  {
+   "start": 0.12,
+   "end": 29.62,
+   "dur": 29.5,
+   "mean_energy": 0.098,
+   "level": 5,
+   "slope": 0.009,
+   "prelabel": "高能主段",
+   "brightness": 2318.0,
+   "theme_tags": [
+    "情感抒情"
+   ],
+   "func": "hero"
+  }
+ ],
+ "in_candidates": [
+  {
+   "t": 0.0,
+   "kind": "start",
+   "level": 5,
+   "note": "从头进（现状默认，任何曲都有）"
+  }
+ ],
+ "out_candidates": [
+  {
+   "t": 29.9,
+   "kind": "natural_end",
+   "note": "无自然收尾（尾部能量未衰减，出点需淡出）"
+  },
+  {
+   "t": 29.62,
+   "kind": "clean_cut",
+   "note": "「高能主段」末干净切点（高能走完即收）"
+  }
+ ],
+ "human_reviewed": true,
+ "method_notes": [
+  "能量档位 level 1-5 = 本曲 P95 归一后的相对档，均匀曲自然少段；不跨曲可比",
+  "分段边界=能量档变化点而非乐理结构，与真实乐句可差数秒，以人工标注轮校准为准",
+  "BPM 沿用 beat_grid 自相关口径，置信度<3.0 不可靠",
+  "亮度=频谱质心近似，仅同曲内段落横向参考",
+  "入出点候选=能量稳态/跳变统计结果；human_reviewed=false 时只作参考、不得自动定切点"
+ ],
+ "license": "版权未核实：提取自抖音视频背景音乐（经微信传输），仅本机使用不分发，商用/发布前必须确权",
+ "owner": "user",
+ "theme_annotations": {
+  "by": "user",
+  "date": "2026-10-12",
+  "note": "题材=用户对话内点选（含词表新扩：黑色生命力/都市高级感）；功能轴=程序预建议未逐条确认"
+ }
+}

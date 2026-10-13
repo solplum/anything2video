@@ -2,7 +2,7 @@
 
 规矩：**下载音频素材时当场记录曲名/URL**，事后无法反查。
 
-目录结构：`bgm/` 7 首曲库音频（6 首 Mixkit + 用户自加 singal）+ `bgm/profiles/` 逐曲分析档案；`sfx/<类别>/` 149 个音效分 16 类（transition impact riser camera ui text paper film light data scifi mech glass fluid crowd counter）。类别含义与找音路径见 `references/sound-design.md` 3.0。
+目录结构：`bgm/` 11 首曲库音频（6 首 Mixkit + 用户自加 singal + 4 首微信提取 wx-*）+ `bgm/profiles/` 逐曲分析档案；`sfx/<类别>/` 149 个音效分 16 类（transition impact riser camera ui text paper film light data scifi mech glass fluid crowd counter）。类别含义与找音路径见 `references/sound-design.md` 3.0。
 
 ## BGM 曲库（2026-10-11 实体化入库）
 
@@ -17,6 +17,10 @@
 | `bgm/echoes-188.mp3` | Echoes | 188 | https://assets.mixkit.co/music/188/188.mp3 |
 | `bgm/miss-you-592.mp3` | Miss You | 592 | https://assets.mixkit.co/music/592/592.mp3 |
 | `bgm/singal.wav` | singal（用户自加曲，源出自 huangchao bakeoff） | — | 本机自有，无外部 URL |
+| `bgm/wx-hotel-night.wav` | wx-hotel-night（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
+| `bgm/wx-night-drive.wav` | wx-night-drive（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
+| `bgm/wx-cos-walk.wav` | wx-cos-walk（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
+| `bgm/wx-meme-clip.wav` | wx-meme-clip（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
 
 参考轨 `OPUS品牌片-音频提取.mp3`（OPUS 品牌片原声，**仅本机参考、不随包分发**，发布版权需自行确权）留在 `科普视频/yunkai-promo/research/`，其分析档案 `bgm/profiles/OPUS品牌片-音频提取.json` 仅作提名气质锚，不入发布池。
 
@@ -208,8 +212,14 @@
 
 BPM 为 librosa 实测（beat grid 最小二乘拟合法，见 references/music-beat-sync.md）。
 
-## bgm/ 外部曲（用户指定·版权未核实·仅本机不分发，已 gitignore）
+## bgm/ 外部曲（用户指定·版权未核实·已标注）
+
+外部曲来源与许可逐条登记如下；其中 wx-* 四首经用户拍板随本仓库分发（`bgm/*.wav` 默认 gitignore，仅 `wx-*.wav` 放行例外）。这些是**外部音乐，版权归原作者所有**，本仓仅作个人曲库存档与试听圈选用途；曲目原名未识别，商用/发布/跨平台使用前必须先确权。
 
 | 文件名 | 来源 | 时长 | sha256（前16） | 许可状态 |
 |---|---|---|---|---|
 | `singal.wav` | **用户自加曲**（2026-10-09 用户命名「singal」）：提取自抖音 @MondayofAX 视频内背景音乐，曲目原名未识别 | 29.95s 循环净轨 | `37d238f1fe4c787b` | **未核实**——首用于《命》正片（2026-10-09 交付）；站内发布走抖音曲库识别，商用/跨平台前必须确权 |
+| `wx-hotel-night.wav` | **外部音乐·用户自加曲**（微信提取批 2026-10-12）：提取自抖音号 lllll_yyyyy_01 的视频（loft 酒店夜景，源 mp4 md5 前 8 位 `17023c83`）内背景音乐，曲目原名未识别；**已切末尾 click（29.9s 止，0.4s 淡出）** | 29.90s | `6d57d7b12f2b7cd9` | **未核实**——随仓库分发（已标注），商用/发布前必须确权 |
+| `wx-night-drive.wav` | **外部音乐·用户自加曲**（微信提取批 2026-10-12）：提取自抖音号 TM361356 的视频（蓝调时刻行车窗外城市，30s，源 mp4 md5 前 8 位 `57722c8e`）内背景音乐，曲目原名未识别 | 30.12s | `add09529be739ac3` | **未核实**——随仓库分发（已标注），商用/发布前必须确权 |
+| `wx-cos-walk.wav` | **外部音乐·用户自加曲**（微信提取批 2026-10-12）：提取自抖音号 74694223775 的视频（建筑前人物展示，30s，源 mp4 md5 前 8 位 `9ab9b228`）内背景音乐，曲目原名未识别 | 30.12s | `2ea5788656e3d96b` | **未核实**——随仓库分发（已标注），商用/发布前必须确权 |
+| `wx-meme-clip.wav` | **外部音乐·用户自加曲**（微信提取批 2026-10-12）：提取自抖音梗图文字视频（源 mp4 md5 前 8 位 `7beed389`）内背景音乐，曲目原名未识别；**已切 8.05–8.45s 抖音片尾音效（7.5s 止）** | 7.50s | `2316df80255de44a` | **未核实**——随仓库分发（已标注），商用/发布前必须确权 |

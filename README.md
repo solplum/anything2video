@@ -1,12 +1,12 @@
 # anything2video
 
-把主题、文章或产品做成原创视频的 Agent Skill。包含调研、稿件、配音、分镜、代码动画、渲染、审片与修复流程，适配 Claude Code、Codex、豆包工作、WorkBuddy、ZCode 和 MiniMax Code 等具备文件与命令执行能力的助手。
+把主题、文章或产品做成原创视频：调研 → 稿件 → 配音 → 分镜 → 代码动画 → 渲染 → 审片 → 交付。制作经验沉淀在工程与证据里，而不是寄托在一次临场回答上。
 
-看过一条有材质、镜头推进和首尾呼应的 AI 视频后，很容易产生一个判断：只要换成同一个模型，再抄一条提示词，就能得到同等作品。实际动手往往得到另一种结果：标题很大，字幕很密，背景很炫，信息却没有被解释。anything2video 把调研、写稿、分镜、配音、代码镜头、渲染和审片串成工程，让制作经验沉淀在工程里，而不是寄托在一次临场回答上；你仍然需要能完成任务的模型，但不必把每个导演决定都绑在某个模型上。
+看过一条有材质、镜头推进和首尾呼应的 AI 视频后，很容易产生一个判断：只要换成同一个模型，再抄一条提示词，就能得到同等作品。实际动手往往得到另一种结果：标题很大，字幕很密，背景很炫，信息却没有被解释。anything2video 把这些环节串成可复现的工程；你仍然需要能完成任务的模型，但不必把每个导演决定都绑在某个模型上。
 
-**当前 v4.4.0。下载一份通用 ZIP，解压后一条命令装进任意宿主；或克隆仓库直接安装。** 六端共用相同的配方、图元、模板和生产脚本。豆包工作导出完整包手工导入，WorkBuddy 安装到本机技能目录重启发现，接入边界与未知项见 [reference/desktop-hosts.md](reference/desktop-hosts.md)。导演方法、原生画幅、多点打样与证据门禁帮助稳定制作；Skill 不改变模型权重，不承诺全面等价于 Opus 或一次提示生成精品。代码承担精确信息，审核后的生成素材承担场景，逐件登记来源和披露。
+**当前 v4.5.0。** 下载一份通用 ZIP 解压即用，或克隆仓库直接安装。导演方法、原生画幅、多点打样与证据门禁帮助稳定制作；Skill 不改变模型权重，不承诺全面等价于 Opus 或一次提示生成精品。代码承担精确信息，审核后的生成素材承担场景，逐件登记来源和披露。
 
-English: A portable agent skill for producing researched, original code-composited videos with narration, shot contracts, deterministic rendering and measured quality evidence. Model capabilities and application support still need real validation.
+English: A portable skill for producing researched, original code-composited videos with narration, shot contracts, deterministic rendering and measured quality evidence. Model capabilities and application support still need real validation.
 
 ## 快速开始
 
@@ -23,35 +23,72 @@ uv sync
 npx remotion browser ensure
 ```
 
-初始化器只建模板工程，不产生完整片子；拒绝覆盖非空目录，不自动暂存/提交。工程必须在skill外。浏览器可用环境变量 `BROWSER_EXECUTABLE` 指向已安装版本。
+- 初始化器只建模板工程，不产生完整片子；拒绝覆盖非空目录，不自动暂存/提交；工程必须在 skill 外。
+- 也支持 `node scripts/init.mjs <slug>`：根目录优先 `A2V_DATA_ROOT`，再读 `~/.anything2video/workdir` 的绝对路径；未知时先询问，不默默落在当前目录。
+- 首次使用会同轮问一次**可选的生图 API key**（MiniMax 或任意 OpenAI 兼容接口）：只用于 AI 材质/世界底画面（主要 epic 配方），**对成片约 5%–10% 的效果影响，不填不影响渲染、配音、音乐与交付**；决定（provider 或 none）存 `~/.anything2video/image-channel`，密钥只走环境变量 `A2V_IMAGE_*`、不落盘。
+- 浏览器可用环境变量 `BROWSER_EXECUTABLE` 指向已安装版本；风格拿不准先看 [离线视觉样片](samples/index.html)。
 
-也支持 `node scripts/init.mjs <slug>`：根目录优先 A2V_DATA_ROOT，再读 ~/.anything2video/workdir 的绝对路径；未知时先询问，不默默落在当前目录。首次使用还会同轮问一次**可选的生图 API key**（MiniMax 或任意 OpenAI 兼容接口）：只用于 AI 材质/世界底画面（主要 epic 配方），**对成片约 5%–10% 的效果影响，不填不影响渲染、配音、音乐与交付**；决定（provider 或 none）存 `~/.anything2video/image-channel`，密钥只走环境变量 `A2V_IMAGE_*`、不落盘。音乐默认试听圈选，已指定无音乐或授权选曲则记录决定；风格拿不准先看 [离线视觉样片](samples/index.html)。
+## 安装
 
-## 装进你的助手
+[Releases](https://github.com/2021291696/anything2video/releases) 提供一份通用 ZIP（不含样片媒体），解压后在目录内运行；也可直接把它当克隆仓库使用：
 
 ```powershell
-node scripts/install.mjs claude-code
-node scripts/install.mjs zcode
-node scripts/install.mjs codex
-node scripts/install.mjs minimax-code
-node scripts/install.mjs workbuddy
-node scripts/install.mjs doubao-work --export-dir D:/a2v-desktop-packages
+node scripts/install.mjs claude-code    # zcode / codex / minimax-code / workbuddy 同理
+node scripts/install.mjs doubao-work --export-dir D:/a2v-desktop-packages   # 豆包工作只导出完整包，手工导入
 ```
 
-默认用户级安装，已有目录会被保护，更新先备份。前五种可追加项目根参数；MiniMax 可用 `--data-dir <真实DATA_DIR>`，不要传 skills 子目录。WorkBuddy 安装进 `~/.workbuddy/skills/`（本机实证的桌面技能目录），重启应用后核对发现。豆包工作没有已核实的自动发现目录，`--export-dir` 只导出完整包供手工导入，不写宿主配置。
+| 宿主 | 安装位置 | 入口 |
+|---|---|---|
+| Claude Code | `.claude/skills/anything2video-claude-code/` | 新会话 `/anything2video-claude-code` |
+| Codex | `.agents/skills/anything2video-codex/` | 新会话 `$anything2video-codex` |
+| ZCode | `.agents/skills/anything2video-zcode/` | `zcode skills list --json` 核对实际路径 |
+| MiniMax Code | `{{DATA_DIR}}/skills/anything2video-minimax-code/` | 下一会话原生加载后核对 Location |
+| WorkBuddy 桌面 | `~/.workbuddy/skills/anything2video-workbuddy/` | 安装后重启应用核对发现；CodeBuddy IDE/CLI 项目用 `.codebuddy/skills/anything2video/` |
+| 豆包工作 | 原生导入格式未核实，不猜路径 | 在可访问本地文件的工作任务中授权导出目录并显式读入口 |
 
-- Claude Code：`.claude/skills/anything2video-claude-code/`，新会话 `/anything2video-claude-code`。
-- Codex：`.agents/skills/anything2video-codex/`，新会话 `$anything2video-codex`。
-- ZCode：`.agents/skills/anything2video-zcode/`，用 `zcode skills list --json` 核对实际路径；普通 CLI 和可选 workflow 均可。
-- MiniMax Code：`{{DATA_DIR}}/skills/anything2video-minimax-code/`，下一会话原生 skill 加载核对 Location。
-- WorkBuddy桌面：`~/.workbuddy/skills/anything2video-workbuddy/` 安装后重启核对；CodeBuddy IDE/CLI项目用 `.codebuddy/skills/anything2video/`，入口依版本核对。
-- 豆包工作：在可访问本地文件的工作任务中授权导出目录并显式读入口；原生导入格式未核实，不猜路径。
+默认用户级安装，已有目录会被保护，更新先备份。前四种可追加项目根参数；MiniMax 可用 `--data-dir <真实DATA_DIR>`，不要传 skills 子目录。安装后先核实实际读取的入口路径、配方和可执行工具——不要仅凭"已经加载"就认为渲染可用；无法执行 Shell 的环境可以帮你写稿和分镜，但不能交付一个实际渲染好的 MP4。完整说明与验证等级见 [docs/adapters.md](docs/adapters.md)，安装指南不等于全平台实测认证。自建发行包：`node scripts/build-editions.mjs <仓库外输出目录> --generic`（六份宿主专属包用不带 `--generic` 的原命令，加 `--overwrite` 可重建）。
 
-安装后，先要求助手说明它实际读取的入口路径、配方和可执行工具。不要仅凭它说"已经加载"就认为渲染可用。无法执行Shell的聊天环境可以帮你写稿和分镜，但不能交付一个实际渲染好的MP4。
+## 风格样片：61 张套餐卡全览
 
-[Releases](https://github.com/2021291696/anything2video/releases) 提供一份通用 ZIP（v4.1.0）：公共核心加全部六个宿主入口，**不含样片媒体**。解压后在目录内运行 `node scripts/install.mjs <宿主>`，按上表装进对应宿主；也可直接把它当克隆仓库使用初始化工程。自建：`node scripts/build-editions.mjs <仓库外输出目录> --generic`（加 `--overwrite` 可重建；六份专属包用不带 `--generic` 的原命令）。安装器现场组装宿主入口并核对 edition.json 哈希清单。
+套餐制选卡：**卡 = 类型骨架 × 风格视觉**，画幅是卡属性（花字卡 9:16 竖屏原生，其余 16:9）。每段样片 12–20 秒（史诗双卡为 20 秒三幕旗舰）、30fps、带完整音频（TTS 旁白 + 音效 + BGM）。**点击缩略图直接播放视频**；封面取自各片内容最丰富一帧的实测抽取。clone 后另有离线放映页 [samples/index.html](samples/index.html) 与全量页 [samples/all.html](samples/all.html)。
 
-完整说明与验证等级见 [docs/adapters.md](docs/adapters.md)。包检查、工程渲染和应用端完整制作分别记录，安装指南不等于全平台实测认证。
+> 样片只存在仓库 `samples/` 中，安装 ZIP 不含样片媒体；样片不是各宿主当前端到端认证。来源、许可与披露逐段登记在 [samples/README.md](samples/README.md) 与 `samples/manifest.json`。
+
+### 讲解型（46 张）
+|  |  |  |  |
+|:---:|:---:|:---:|:---:|
+| <a href="samples/mg-purple-sample.mp4" title="播放夜航样片"><img src="samples/posters/mg-purple-sample.jpg" alt="夜航样片关键帧" width="200"></a><br>**夜航** `mg-purple` | <a href="samples/chalk-sample.mp4" title="播放黑板样片"><img src="samples/posters/chalk-sample.jpg" alt="黑板样片关键帧" width="200"></a><br>**黑板** `chalk` | <a href="samples/blueprint-sample.mp4" title="播放蓝图样片"><img src="samples/posters/blueprint-sample.jpg" alt="蓝图样片关键帧" width="200"></a><br>**蓝图** `blueprint` | <a href="samples/pixel-arcade-sample.mp4" title="播放街机样片"><img src="samples/posters/pixel-arcade-sample.jpg" alt="街机样片关键帧" width="200"></a><br>**街机** `pixel-arcade` |
+| <a href="samples/paper-collage-sample.mp4" title="播放拼贴样片"><img src="samples/posters/paper-collage-sample.jpg" alt="拼贴样片关键帧" width="200"></a><br>**拼贴** `paper-collage` | <a href="samples/paperclip-sticker-sample.mp4" title="播放贴纸人样片"><img src="samples/posters/paperclip-sticker-sample.jpg" alt="贴纸人样片关键帧" width="200"></a><br>**贴纸人** `paperclip-sticker` | <a href="samples/hanazi-916-sample.mp4" title="播放花字样片"><img src="samples/posters/hanazi-916-sample.jpg" alt="花字样片关键帧" width="200"></a><br>**花字** `hanazi-916` | <a href="samples/line-art-sample.mp4" title="播放线条样片"><img src="samples/posters/line-art-sample.jpg" alt="线条样片关键帧" width="200"></a><br>**线条** `line-art` |
+| <a href="samples/popup-book-sample.mp4" title="播放立体书样片"><img src="samples/posters/popup-book-sample.jpg" alt="立体书样片关键帧" width="200"></a><br>**立体书** `popup-book` | <a href="samples/clay-town-sample.mp4" title="播放黏土样片"><img src="samples/posters/clay-town-sample.jpg" alt="黏土样片关键帧" width="200"></a><br>**黏土** `clay-town` | <a href="samples/pop-dot-sample.mp4" title="播放弹点样片"><img src="samples/posters/pop-dot-sample.jpg" alt="弹点样片关键帧" width="200"></a><br>**弹点** `pop-dot` | <a href="samples/ink-boil-sample.mp4" title="播放线沸样片"><img src="samples/posters/ink-boil-sample.jpg" alt="线沸样片关键帧" width="200"></a><br>**线沸** `ink-boil` |
+| <a href="samples/ink-plate-sample.mp4" title="播放墨版样片"><img src="samples/posters/ink-plate-sample.jpg" alt="墨版样片关键帧" width="200"></a><br>**墨版** `ink-plate` | <a href="samples/soft-jelly-sample.mp4" title="播放软糖样片"><img src="samples/posters/soft-jelly-sample.jpg" alt="软糖样片关键帧" width="200"></a><br>**软糖** `soft-jelly` | <a href="samples/target-lock-sample.mp4" title="播放锁定样片"><img src="samples/posters/target-lock-sample.jpg" alt="锁定样片关键帧" width="200"></a><br>**锁定** `target-lock` | <a href="samples/swirl-oil-sample.mp4" title="播放星涡样片"><img src="samples/posters/swirl-oil-sample.jpg" alt="星涡样片关键帧" width="200"></a><br>**星涡** `swirl-oil` |
+| <a href="samples/cave-wall-sample.mp4" title="播放岩壁样片"><img src="samples/posters/cave-wall-sample.jpg" alt="岩壁样片关键帧" width="200"></a><br>**岩壁** `cave-wall` | <a href="samples/tomb-wall-sample.mp4" title="播放墓室样片"><img src="samples/posters/tomb-wall-sample.jpg" alt="墓室样片关键帧" width="200"></a><br>**墓室** `tomb-wall` | <a href="samples/amphora-sample.mp4" title="播放陶瓶样片"><img src="samples/posters/amphora-sample.jpg" alt="陶瓶样片关键帧" width="200"></a><br>**陶瓶** `amphora` | <a href="samples/mosaic-sample.mp4" title="播放马赛克样片"><img src="samples/posters/mosaic-sample.jpg" alt="马赛克样片关键帧" width="200"></a><br>**马赛克** `mosaic` |
+| <a href="samples/gold-leaf-sample.mp4" title="播放金箔样片"><img src="samples/posters/gold-leaf-sample.jpg" alt="金箔样片关键帧" width="200"></a><br>**金箔** `gold-leaf` | <a href="samples/whiplash-line-sample.mp4" title="播放鞭线样片"><img src="samples/posters/whiplash-line-sample.jpg" alt="鞭线样片关键帧" width="200"></a><br>**鞭线** `whiplash-line` | <a href="samples/grain-flat-sample.mp4" title="播放颗粒扁平样片"><img src="samples/posters/grain-flat-sample.jpg" alt="颗粒扁平样片关键帧" width="200"></a><br>**颗粒扁平** `grain-flat` | <a href="samples/gold-robe-sample.mp4" title="播放金袍样片"><img src="samples/posters/gold-robe-sample.jpg" alt="金袍样片关键帧" width="200"></a><br>**金袍** `gold-robe` |
+| <a href="samples/dot-infinity-sample.mp4" title="播放波点样片"><img src="samples/posters/dot-infinity-sample.jpg" alt="波点样片关键帧" width="200"></a><br>**波点** `dot-infinity` | <a href="samples/hard-light-sample.mp4" title="播放硬光样片"><img src="samples/posters/hard-light-sample.jpg" alt="硬光样片关键帧" width="200"></a><br>**硬光** `hard-light` | <a href="samples/dance-line-sample.mp4" title="播放舞线样片"><img src="samples/posters/dance-line-sample.jpg" alt="舞线样片关键帧" width="200"></a><br>**舞线** `dance-line` | <a href="samples/rubberhose-sample.mp4" title="播放橡皮管样片"><img src="samples/posters/rubberhose-sample.jpg" alt="橡皮管样片关键帧" width="200"></a><br>**橡皮管** `rubberhose` |
+| <a href="samples/shadow-play-sample.mp4" title="播放皮影样片"><img src="samples/posters/shadow-play-sample.jpg" alt="皮影样片关键帧" width="200"></a><br>**皮影** `shadow-play` | <a href="samples/sfumato-sample.mp4" title="播放晕涂样片"><img src="samples/posters/sfumato-sample.jpg" alt="晕涂样片关键帧" width="200"></a><br>**晕涂** `sfumato` | <a href="samples/light-dabs-sample.mp4" title="播放光斑样片"><img src="samples/posters/light-dabs-sample.jpg" alt="光斑样片关键帧" width="200"></a><br>**光斑** `light-dabs` | <a href="samples/facets-sample.mp4" title="播放切面样片"><img src="samples/posters/facets-sample.jpg" alt="切面样片关键帧" width="200"></a><br>**切面** `facets` |
+| <a href="samples/chrome-ball-sample.mp4" title="播放铬球样片"><img src="samples/posters/chrome-ball-sample.jpg" alt="铬球样片关键帧" width="200"></a><br>**铬球** `chrome-ball` | <a href="samples/scream-warp-sample.mp4" title="播放呐喊样片"><img src="samples/posters/scream-warp-sample.jpg" alt="呐喊样片关键帧" width="200"></a><br>**呐喊** `scream-warp` | <a href="samples/soft-clock-sample.mp4" title="播放软钟样片"><img src="samples/posters/soft-clock-sample.jpg" alt="软钟样片关键帧" width="200"></a><br>**软钟** `soft-clock` | <a href="samples/watercolor-cel-sample.mp4" title="播放水彩赛璐璐样片"><img src="samples/posters/watercolor-cel-sample.jpg" alt="水彩赛璐璐样片关键帧" width="200"></a><br>**水彩赛璐璐** `watercolor-cel` |
+| <a href="samples/lily-pond-sample.mp4" title="播放睡莲样片"><img src="samples/posters/lily-pond-sample.jpg" alt="睡莲样片关键帧" width="200"></a><br>**睡莲** `lily-pond` | <a href="samples/optical-dots-sample.mp4" title="播放点彩样片"><img src="samples/posters/optical-dots-sample.jpg" alt="点彩样片关键帧" width="200"></a><br>**点彩** `optical-dots` | <a href="samples/candle-light-sample.mp4" title="播放烛光样片"><img src="samples/posters/candle-light-sample.jpg" alt="烛光样片关键帧" width="200"></a><br>**烛光** `candle-light` | <a href="samples/cumulus-light-sample.mp4" title="播放积雨云样片"><img src="samples/posters/cumulus-light-sample.jpg" alt="积雨云样片关键帧" width="200"></a><br>**积雨云** `cumulus-light` |
+| <a href="samples/blue-period-sample.mp4" title="播放蓝时期样片"><img src="samples/posters/blue-period-sample.jpg" alt="蓝时期样片关键帧" width="200"></a><br>**蓝时期** `blue-period` | <a href="samples/kinetic-type-sample.mp4" title="播放字动样片"><img src="samples/posters/kinetic-type-sample.jpg" alt="字动样片关键帧" width="200"></a><br>**字动** `kinetic-type` | <a href="samples/riso-print-sample.mp4" title="播放孔版样片"><img src="samples/posters/riso-print-sample.jpg" alt="孔版样片关键帧" width="200"></a><br>**孔版** `riso-print` | <a href="samples/math-lab-sample.mp4" title="播放数学屋样片"><img src="samples/posters/math-lab-sample.jpg" alt="数学屋样片关键帧" width="200"></a><br>**数学屋** `math-lab` |
+| <a href="samples/hypnotic-sample.mp4" title="播放催眠样片"><img src="samples/posters/hypnotic-sample.jpg" alt="催眠样片关键帧" width="200"></a><br>**催眠** `hypnotic` | <a href="samples/ink-tea-sample.mp4" title="播放水墨样片"><img src="samples/posters/ink-tea-sample.jpg" alt="水墨样片关键帧" width="200"></a><br>**水墨** `ink-tea` |   |   |
+
+### 宣传型（11 张）
+|  |  |  |  |
+|:---:|:---:|:---:|:---:|
+| <a href="samples/deep-space-sample.mp4" title="播放深空样片"><img src="samples/posters/deep-space-sample.jpg" alt="深空样片关键帧" width="200"></a><br>**深空** `deep-space` | <a href="samples/neon-sample.mp4" title="播放霓虹样片"><img src="samples/posters/neon-sample.jpg" alt="霓虹样片关键帧" width="200"></a><br>**霓虹** `neon` | <a href="samples/swiss-print-sample.mp4" title="播放版式样片"><img src="samples/posters/swiss-print-sample.jpg" alt="版式样片关键帧" width="200"></a><br>**版式** `swiss-print` | <a href="samples/crt-terminal-sample.mp4" title="播放终端样片"><img src="samples/posters/crt-terminal-sample.jpg" alt="终端样片关键帧" width="200"></a><br>**终端** `crt-terminal` |
+| <a href="samples/aurora-glass-sample.mp4" title="播放玻璃样片"><img src="samples/posters/aurora-glass-sample.jpg" alt="玻璃样片关键帧" width="200"></a><br>**玻璃** `aurora-glass` | <a href="samples/isometric-city-sample.mp4" title="播放等轴样片"><img src="samples/posters/isometric-city-sample.jpg" alt="等轴样片关键帧" width="200"></a><br>**等轴** `isometric-city` | <a href="samples/morph-sample.mp4" title="播放形变样片"><img src="samples/posters/morph-sample.jpg" alt="形变样片关键帧" width="200"></a><br>**形变** `morph` | <a href="samples/liquid-flow-sample.mp4" title="播放液态样片"><img src="samples/posters/liquid-flow-sample.jpg" alt="液态样片关键帧" width="200"></a><br>**液态** `liquid-flow` |
+| <a href="samples/pop-comic-sample.mp4" title="播放波普样片"><img src="samples/posters/pop-comic-sample.jpg" alt="波普样片关键帧" width="200"></a><br>**波普** `pop-comic` | <a href="samples/vhs-outrun-sample.mp4" title="播放公路夜样片"><img src="samples/posters/vhs-outrun-sample.jpg" alt="公路夜样片关键帧" width="200"></a><br>**公路夜** `vhs-outrun` | <a href="samples/whiteboard-sample.mp4" title="播放白板样片"><img src="samples/posters/whiteboard-sample.jpg" alt="白板样片关键帧" width="200"></a><br>**白板** `whiteboard` |   |
+
+### 史诗型（4 张）
+|  |  |  |  |
+|:---:|:---:|:---:|:---:|
+| <a href="samples/epic-paper-sample.mp4" title="播放神话样片"><img src="samples/posters/epic-paper-sample.jpg" alt="神话样片关键帧" width="200"></a><br>**神话** `epic-paper` | <a href="samples/sand-sample.mp4" title="播放沙画样片"><img src="samples/posters/sand-sample.jpg" alt="沙画样片关键帧" width="200"></a><br>**沙画** `sand` | <a href="samples/guofeng-scroll-sample.mp4" title="播放月窗样片"><img src="samples/posters/guofeng-scroll-sample.jpg" alt="月窗样片关键帧" width="200"></a><br>**月窗** `guofeng-scroll` | <a href="samples/studio-oneshot-sample.mp4" title="播放一镜样片"><img src="samples/posters/studio-oneshot-sample.jpg" alt="一镜样片关键帧" width="200"></a><br>**一镜** `studio-oneshot` |
+
+### 历史配方参考（6 秒、无音轨）
+|  |  |  |  |
+|:---:|:---:|:---:|:---:|
+| <a href="samples/recipe-epic-sample.mp4" title="播放recipe-epic样片"><img src="samples/posters/recipe-epic-sample.jpg" alt="recipe-epic样片关键帧" width="200"></a><br>**recipe-epic** `recipe-epic` | <a href="samples/recipe-explainer-sample.mp4" title="播放recipe-explainer样片"><img src="samples/posters/recipe-explainer-sample.jpg" alt="recipe-explainer样片关键帧" width="200"></a><br>**recipe-explainer** `recipe-explainer` | <a href="samples/recipe-promo-sample.mp4" title="播放recipe-promo样片"><img src="samples/posters/recipe-promo-sample.jpg" alt="recipe-promo样片关键帧" width="200"></a><br>**recipe-promo** `recipe-promo` |   |
+
+
+新旧卡名映射见 `reference/style-ledger.md`；每张卡的 SPEC/kit 在 `styles/<sku>/`。
 
 ## 能替代什么，不能证明什么
 
@@ -111,35 +148,23 @@ Remotion 把 React 组件按指定帧渲染成视频，因此文字、数字、�
 
 ## 配方与资产
 
-讲知识：`recipes/explainer.md`；卖功能：`promo.md`；风格化叙事：`custom.md`；谱系/品牌历史：`epic.md`。旧配方里的宿主、授权、画幅和音频口径统一由 [production-contract](reference/production-contract.md) 覆盖。explainer参考已随仓库附在 `reference/explainer/`，不依赖本机另一个skill目录。
-
-61张套餐卡（v4.1.0 套餐池）：sand、chalk、blueprint、neon、pixel-arcade、paper-collage、swiss-print、crt-terminal、deep-space、mg-purple、epic-paper，轴 D 八卡 guofeng-scroll、paperclip-sticker、hanazi-916（9:16 竖屏原生）、aurora-glass、line-art、isometric-city、morph、liquid-flow，及 v3.8–v4.0 吸收的 amphora、blue-period、candle-light、cave-wall、chrome-ball、clay-town、cumulus-light、dance-line、dot-infinity、facets、gold-leaf、gold-robe、grain-flat、hard-light、hypnotic、ink-boil、ink-plate、ink-tea、kinetic-type、light-dabs、lily-pond、math-lab、mosaic、optical-dots、pop-comic、pop-dot、popup-book、riso-print、rubberhose、scream-warp、sfumato、shadow-play、soft-clock、soft-jelly、studio-oneshot、swirl-oil、target-lock、tomb-wall、vhs-outrun、watercolor-cel、whiplash-line、whiteboard。每卡含图元、SPEC和回归样张；同风格后续片优先复用。材质场景参考在 `reference/materials.md`，混合素材纪律在 `ai-frame-sop.md`。
-
-### 风格样片：点缩略图直接播放
-
-每段 12-20 秒（史诗双卡为 20 秒三幕旗舰）、1280×720（花字卡竖屏）、30fps、带完整音频（TTS 旁白+音效+BGM），套餐制逐卡样片——卡的类型骨架 × 卡的风格视觉（封面为各片第 2 帧实测抽取）。点击缩略图在 GitHub 内嵌播放器中播放；clone 后也可打开离线放映页 [samples/index.html](samples/index.html) 与全量页 [samples/all.html](samples/all.html)。**样片只存在仓库 samples/ 中，安装 ZIP 不含样片媒体。**
-
-|  |  |  |  |
-| :---: | :---: | :---: | :---: |
-| <a href="samples/sand-sample.mp4" title="播放沙画样片"><img src="samples/posters/sand-sample.jpg" alt="沙画样片封面" width="200"></a><br>**沙画** `sand`<br>沙粒与轮廓逐步成形 | <a href="samples/chalk-sample.mp4" title="播放黑板样片"><img src="samples/posters/chalk-sample.jpg" alt="黑板样片封面" width="200"></a><br>**黑板** `chalk`<br>笔触与几何推导 | <a href="samples/blueprint-sample.mp4" title="播放蓝图样片"><img src="samples/posters/blueprint-sample.jpg" alt="蓝图样片封面" width="200"></a><br>**蓝图** `blueprint`<br>结构线稿与尺寸标注 | <a href="samples/neon-sample.mp4" title="播放霓虹样片"><img src="samples/posters/neon-sample.jpg" alt="霓虹样片封面" width="200"></a><br>**霓虹** `neon`<br>辉光与能量路径 |
-| <a href="samples/pixel-arcade-sample.mp4" title="播放街机样片"><img src="samples/posters/pixel-arcade-sample.jpg" alt="街机样片封面" width="200"></a><br>**街机** `pixel-arcade`<br>像素图形与游戏机语法 | <a href="samples/paper-collage-sample.mp4" title="播放拼贴样片"><img src="samples/posters/paper-collage-sample.jpg" alt="拼贴样片封面" width="200"></a><br>**拼贴** `paper-collage`<br>撕纸边缘与分层拼贴 | <a href="samples/swiss-print-sample.mp4" title="播放版式样片"><img src="samples/posters/swiss-print-sample.jpg" alt="版式样片封面" width="200"></a><br>**版式** `swiss-print`<br>网格与红黑字形 | <a href="samples/crt-terminal-sample.mp4" title="播放终端样片"><img src="samples/posters/crt-terminal-sample.jpg" alt="终端样片封面" width="200"></a><br>**终端** `crt-terminal`<br>磷光扫描线与命令行 |
-| <a href="samples/deep-space-sample.mp4" title="播放深空样片"><img src="samples/posters/deep-space-sample.jpg" alt="深空样片封面" width="200"></a><br>**深空** `deep-space`<br>星尘黑底与电光青 | <a href="samples/mg-purple-sample.mp4" title="播放夜航样片"><img src="samples/posters/mg-purple-sample.jpg" alt="夜航样片封面" width="200"></a><br>**夜航** `mg-purple`<br>紫调 HUD 讲解 | <a href="samples/epic-paper-sample.mp4" title="播放神话样片"><img src="samples/posters/epic-paper-sample.jpg" alt="神话样片封面" width="200"></a><br>**神话** `epic-paper`<br>暖纸描金与年代轴 |  |
-| <a href="samples/guofeng-scroll-sample.mp4" title="播放月窗样片"><img src="samples/posters/guofeng-scroll-sample.jpg" alt="月窗样片封面" width="200"></a><br>**月窗** `guofeng-scroll`<br>黑底月窗与朱印题跋 | <a href="samples/paperclip-sticker-sample.mp4" title="播放贴纸人样片"><img src="samples/posters/paperclip-sticker-sample.jpg" alt="贴纸人样片封面" width="200"></a><br>**贴纸人** `paperclip-sticker`<br>贴纸科普与图解 | <a href="samples/hanazi-916-sample.mp4" title="播放花字样片"><img src="samples/posters/hanazi-916-sample.jpg" alt="花字样片封面" width="200"></a><br>**花字** `hanazi-916`<br>9:16 竖屏综艺花字 | <a href="samples/aurora-glass-sample.mp4" title="播放玻璃样片"><img src="samples/posters/aurora-glass-sample.jpg" alt="玻璃样片封面" width="200"></a><br>**玻璃** `aurora-glass`<br>弥散渐变与玻璃拟态 |
-| <a href="samples/line-art-sample.mp4" title="播放线条样片"><img src="samples/posters/line-art-sample.jpg" alt="线条样片封面" width="200"></a><br>**线条** `line-art`<br>一笔画线条生长 | <a href="samples/isometric-city-sample.mp4" title="播放等轴样片"><img src="samples/posters/isometric-city-sample.jpg" alt="等轴样片封面" width="200"></a><br>**等轴** `isometric-city`<br>2.5D 等轴小城 | <a href="samples/morph-sample.mp4" title="播放形变样片"><img src="samples/posters/morph-sample.jpg" alt="形变样片封面" width="200"></a><br>**形变** `morph`<br>形状插值变形链 | <a href="samples/liquid-flow-sample.mp4" title="播放液态样片"><img src="samples/posters/liquid-flow-sample.jpg" alt="液态样片封面" width="200"></a><br>**液态** `liquid-flow`<br>goo 流体与液态融合 |
-
-以上为精选样片；全量 61 卡样片索引见 [samples/all.html](samples/all.html)。历史配方样片（6 秒、无音轨，作配方层参考）：
-
-|  |  |  |
-| :---: | :---: | :---: |
-| <a href="samples/recipe-explainer-sample.mp4" title="播放讲解片样片"><img src="samples/posters/recipe-explainer-sample.jpg" alt="讲解片样片封面" width="200"></a><br>**讲解片** `explainer`<br>知识讲解与流程轨 | <a href="samples/recipe-promo-sample.mp4" title="播放宣传片样片"><img src="samples/posters/recipe-promo-sample.jpg" alt="宣传片样片封面" width="200"></a><br>**宣传片** `promo`<br>功能演示与贯穿线 | <a href="samples/recipe-epic-sample.mp4" title="播放史诗品牌片样片"><img src="samples/posters/recipe-epic-sample.jpg" alt="史诗品牌片样片封面" width="200"></a><br>**史诗品牌片** `epic`<br>AI 生成世界底 + 代码字幕 |
-
-样片不是各宿主当前端到端认证；来源/许可与披露逐段登记在 [samples/README.md](samples/README.md) 与 `samples/manifest.json`。原生竖屏接线见 [portrait-wiring](reference/portrait-wiring.md)。历史代码样片见 [examples](examples/)。这些早期样片不代表全部新配方都纯代码；新片的素材模式以各自MANIFEST为准。
+| 资产 | 位置 | 说明 |
+|---|---|---|
+| 制作配方 | `recipes/` | 讲知识 `explainer.md` · 卖功能 `promo.md` · 风格化叙事 `custom.md` · 谱系/品牌历史 `epic.md`；explainer 参考随仓库附在 `reference/explainer/`，不依赖本机其他目录 |
+| 生产合同 | `reference/production-contract.md` | 旧配方里的宿主、授权、画幅和音频口径统一由它覆盖 |
+| 风格资产 | `styles/<sku>/` | 61 张套餐卡各自的 SPEC/kit 与回归样张；同风格后续片优先复用；新旧名映射见 `reference/style-ledger.md` |
+| 动效配方卡 | `gallery/` | 180 张配方卡 + demo 参考源码（移植自 video-shotcraft，Apache-2.0，分镜抽卡用），见 `gallery/README.md` |
+| 可编组件 | `template/src/common/kit/` | PageCam 2.5D 运镜、WordLitCaption 词级点亮字幕、ChapterBadge、GoldenQuote、RecapFrame、VarText 可变字体轴、StrokeText 单笔画字体、PhotoStage 底图语法；共享运动数学层 `common/motion/` |
+| 音乐 | `audio-engine/mgaudio` + `scripts/bgm_*.py` | 程序编曲（MIT+CC0 vendor，溯源见 `audio-engine/VENDOR.md`）与曲库分析/主题反查/标注轮；音乐反应层数据走 `audio_features`；纪律见 `reference/music-plan.md` 与 `reference/bgm-bakeoff.md` |
+| 声音设计 | `reference/sound-design.md` | 风格绑定 SFX、曲库与音效分类检索 |
+| 材质与镜头 | `reference/materials.md` · `reference/ai-frame-sop.md` | 材质场景参考；一帧先行四路线与首尾同帧图生视频见 ai-frame-sop §2.5 |
+| 方法论 | `reference/` | 导演手册 `directing-playbook.md`、参考片拆解 `reference_breakdown.py`、史诗方法论 `epic-brand-film`（市面爆款风向，热门向优先）、审美判例 `aesthetic-rules.md`、D 轮评审 `jury-review.md` |
 
 ## 生产与验收
 
 ```text
 调研 → 稿件与真实配音时间轴 → 结构化分镜 → 多点小样
-     → 建镜头 → 混音与渲染 → 三轮验收修复 →  measured delivery
+     → 建镜头 → 混音与渲染 → 三轮验收修复 → measured delivery
 ```
 
 - `scripts/init.mjs`：安全复制纯模板，无自动git动作。
@@ -148,7 +173,6 @@ Remotion 把 React 组件按指定帧渲染成视频，因此文字、数字、�
 - `scripts/render.mjs`：跨平台Node渲染，Composition规格与声明必须一致，保存ffprobe原始证据。
 - `scripts/check-qc.mjs`：拒绝草稿、片段、未审素材、缺项和旧媒体/源码证据，独立计帧与全片解码；不自动证明艺术质量或实际观看。
 - [导演手册](reference/directing-playbook.md) 与 [生产流程](reference/production-workflow.md)：原因/动作/结果、多点打样、根因修复及真实完整审片。
-- `gallery/`：157 张镜头动效配方卡（video-shotcraft 移植，Apache-2.0，分镜抽卡用）；`audio-engine/`：mgaudio 程序编曲 vendor（MIT+CC0）与 `scripts/bgm_generate.py` 长片适配层。
 - `template/scripts/tts_build.py`：按 project.json 的 slug/fps 生成清洁旁白、时间轴与字幕，同步 totalFrames；旧正本需 --force 才能更新。音频路径逃逸和 config 不一致会拒绝。
 - `template/scripts/mix_audio.py`：不可变旁白正本、可复测重混、音乐压低；默认不注入风格音效。
 - `template/scripts/mix_sfx.py`：钉帧音效通用通道（cues 表 + sfx-mix.json 台账，混音后第三步，防双混）。
@@ -195,6 +219,6 @@ npm run typecheck
 
 ## 许可与鸣谢
 
-代码与文档 [MIT](LICENSE)。字体分别为SIL OFL，许可随文件分发。早期样例音乐署名见 [examples/README.md](examples/README.md)。新工程音乐与AI素材分别记录，不将独立音乐原文件打包公开分发。参考来源：[Remotion 文档](https://www.remotion.dev/docs/)（代码渲染与帧约定）、[WorkBuddy Skill说明](https://open.workbuddy.cn/docs/skill)与[IDE Skills文档](https://www.workbuddy.cn/docs/ide/Features/Skills)（安装入口参考）、抖音AI标识公告的公开转述（发布时以平台当前规则和界面为准）。
+代码与文档 [MIT](LICENSE)。字体分别为SIL OFL，许可随文件分发。早期样例音乐署名见 [examples/README.md](examples/README.md)。新工程音乐与AI素材分别记录；曲库中 `wx-*` 四首为**外部音乐**（微信视频提取、曲目原名未识别），经作者决定随本仓库分发并在 [assets/audio/ATTRIBUTION.md](assets/audio/ATTRIBUTION.md) 逐条标注来源与状态，**版权归原作者所有**，商用/发布/跨平台使用前必须确权；其余外部用户曲不打包分发。参考来源：[Remotion 文档](https://www.remotion.dev/docs/)（代码渲染与帧约定）、[WorkBuddy Skill说明](https://open.workbuddy.cn/docs/skill)与[IDE Skills文档](https://www.workbuddy.cn/docs/ide/Features/Skills)（安装入口参考）、抖音AI标识公告的公开转述（发布时以平台当前规则和界面为准）。
 
 explainer规范与本模板同源于 [anything2explainer](https://github.com/Vincentwei1021/anything2explainer)。参考案例仅用于学习手法；不随包分发他人视频或抽帧。本项目无 Anthropic、平台或其他工具官方合作关系。
