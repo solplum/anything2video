@@ -66,6 +66,8 @@
 | `riso-print/` | Risograph 孔版印刷 | 科普视频/samples-v4/riso-print（借鉴 prompt-motion＋mg15） | 无（纯代码） |
 | `math-lab/` | 数学实验室 | 科普视频/samples-v4/math-lab（借鉴 prompt-motion＋huashu） | 无（纯代码） |
 | `hypnotic/` | 迷幻催眠视幻觉 | 科普视频/samples-v4/hypnotic（借鉴 prompt-motion） | 无（纯代码） |
+| `isometric-anatomy/` | 仪器解剖/物理机械 | 科普视频/samples-v4/isometric-anatomy（借鉴 Anatomy，MIT，wheresryan22） | 无（纯代码解析几何 SVG，四色调着色） |
+
 
 `ink-tea` 水墨在历史记录中未过关，不作为稳定SKU。后四风格历史上以用户确认的12秒小样入库；本包保留静态样张与组件，未附等价的完整运动/声音审查证据，不能称为当前版本整片认证。每种字体和纹理检查实际随附许可，缺少许可时补证据或换资产。
 

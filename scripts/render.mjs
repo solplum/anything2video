@@ -42,7 +42,7 @@ export function renderOptions(cfg, args = [], env = process.env) {
 export function assertOutput(root, file, overwrite) {
   const base = fs.realpathSync(root);
   const parent = path.dirname(file);
-  if (!isWithin(base, path.resolve(file)) || !isWithin(base, resolvedPath(parent))) throw new Error(`Output escapes project: ${file}`);
+  if (!isWithin(base, resolvedPath(file)) || !isWithin(base, resolvedPath(parent))) throw new Error(`Output escapes project: ${file}`);
   try {if (fs.lstatSync(file).isSymbolicLink()) throw new Error(`Unsafe output symlink: ${file}`);}
   catch (error) {if (error.code !== 'ENOENT') throw error;}
   if (fs.existsSync(file)) {

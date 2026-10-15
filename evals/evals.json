@@ -1,0 +1,38 @@
+{
+  "skill_name": "anything2video",
+  "version": "4.6.0",
+  "evals": [
+    {
+      "id": 1,
+      "name": "hardcore_tech_explainer_anatomy",
+      "prompt": "帮我做一段讲解'高并发系统中的令牌桶限流算法（Token Bucket）'的动画视频工程。要求：不要浮动的方框和连线箭头，把它做成一台带漏斗进水、浮球连杆阀、分拣漏管与步进轮的机械工业仪器（使用 isometric-anatomy 风格）。底座、导轨、压力表针都要可动，保证无悬空线头通过 probe_line_ends 检测，并给出完整的 Remotion 工程配置与分镜。",
+      "expected_output": "完整的 Remotion 视频工程分镜与代码方案。分镜基于 isometric-anatomy 风格，包含由底座、双轨滑台、进出管路、带刻度活动千分表构成的物理机械模型。动作使用 dampedSettle 阻尼弹簧，口播与机械动作深度咬合。矢量线头闭合度通过 probe_line_ends 校验为 0 floating ends，无穿模无悬空。",
+      "target_recipe": "recipes/explainer.md",
+      "target_style": "styles/isometric-anatomy"
+    },
+    {
+      "id": 2,
+      "name": "enterprise_cloud_database_pooling",
+      "prompt": "制作一个关于'数据库连接池原理（HikariCP）'的 60 秒技术解剖科普片。要求文案走两段式确认门，画面展示由龙门导轨、滑块探针与多个连接通道组成的精密仪器，使用暗色工坊主题，包含实时 HUD 数据读数与千分表联动。",
+      "expected_output": "包含文案两段式（方向候选与全文定稿）、research/creative-brief.md 物理仪器隐喻映射方案、包含 40+ 零件的结构化分镜，调用 common/kit/iso 图元库（slabOf, cylinder, dial），镜头无死空间且相机平滑推移。",
+      "target_recipe": "recipes/explainer.md",
+      "target_style": "styles/isometric-anatomy"
+    },
+    {
+      "id": 3,
+      "name": "hardware_product_launch_promo",
+      "prompt": "制作一个智能硬件核心主板与散热架构的 30 秒工业产品宣传片，要求采用签名转场，Hero 扫掠与 BGM 拍点严格对齐，全片帧率 30fps，输出 1280x720 横屏标准工程。",
+      "expected_output": "符合 recipes/promo.md 规范，包含 beat sheet 与实测音乐 beat grid 对账，转场采用物理签名转场（从主板散热片网格生长演进），包含 3 处以内的重点高光冲击，三轮验收与 finalize_delivery 流程完整闭环。",
+      "target_recipe": "recipes/promo.md",
+      "target_style": "styles/isometric-anatomy"
+    },
+    {
+      "id": 4,
+      "name": "vertical_short_educational_algorithm",
+      "prompt": "制作一个 1080x1920 竖屏抖音科普短视频：'为什么 LRU 缓存能提速'。要求遵守抖音保守安全区，字幕带高度比例严格校验，文案幽默紧凑且包含演绎四件套组件。",
+      "expected_output": "project.json 声明 1080x1920 原生竖屏。无字幕成片通过 probe_subtitle_band.py --band-ratio 0.73 门禁，关键内容避开底部 350px 和右侧 160px。包含 WordLitCaption 逐字点亮字幕与 RecapFrame 结尾复习卡。",
+      "target_recipe": "recipes/explainer.md",
+      "target_style": "styles/hanazi-916"
+    }
+  ]
+}

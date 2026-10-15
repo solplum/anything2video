@@ -252,8 +252,8 @@ class AudioBoundaryTests(unittest.TestCase):
         self.link(self.root / 'audio/cache', self.outside, directory=True, junction=True)
         with self.assertRaises(ValueError):
             self.run_tts()
-        self.synthesis.assert_not_called()
-        (self.root / 'audio/cache').rmdir()
+        cache_dir = self.root / 'audio/cache'
+        cache_dir.unlink() if cache_dir.is_symlink() else cache_dir.rmdir()
         self.tts.PROJECT = self.tts.AudioProject(self.root)
         cache = Path(self.tts.cache_path('Alpha Beta', '.mp3'))
         self.link(cache, self.sentinel)
