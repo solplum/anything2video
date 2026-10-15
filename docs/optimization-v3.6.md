@@ -77,4 +77,4 @@ https://github.com/alchaincyf/huashu-art-motion，36 风格场景 + 9 解说语�
 
 实体在 `~/.agents/skills/anything2video/`，`anything2video-codex/`、`anything2video-zcode/` 为
 镜像副本（本版本三端同步 diff=0），`.claude/skills/`、`.codex/skills/` 为 junction 自动跟随。
-开源仓 fork（2021291696/anything2video）与本 skill 处于分叉状态，本轮不同步（回灌另行拍板）。
+开源仓 fork（solplum/anything2video）与本 skill 处于分叉状态，本轮不同步（回灌另行拍板）。
