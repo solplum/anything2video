@@ -13,7 +13,7 @@ English: A portable skill for producing researched, original code-composited vid
 需要 Node.js、npm、uv、ffmpeg/ffprobe 和可用 Chromium。Remotion 相关包固定同版本，依赖与字体、素材各有许可。
 
 ```powershell
-git clone https://github.com/2021291696/anything2video.git
+git clone https://github.com/solplum/anything2video.git
 cd anything2video
 node scripts/doctor.mjs
 node scripts/init.mjs D:/video-projects/my-video my-video
@@ -30,7 +30,7 @@ npx remotion browser ensure
 
 ## 安装
 
-[Releases](https://github.com/2021291696/anything2video/releases) 提供一份通用 ZIP（不含样片媒体），解压后在目录内运行；也可直接把它当克隆仓库使用：
+[Releases](https://github.com/solplum/anything2video/releases) 提供一份通用 ZIP（不含样片媒体），解压后在目录内运行；也可直接把它当克隆仓库使用：
 
 ```powershell
 node scripts/install.mjs claude-code    # zcode / codex / minimax-code / workbuddy 同理
