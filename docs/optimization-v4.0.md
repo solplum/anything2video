@@ -43,6 +43,6 @@
 
 - huashu 9 解说语法（3b1b/keynote UI/财经图表/kurzgesagt/vox/白板/storytime/kinetic type/presenter）**另立项**，本轮只做了撞车标注（y3↔chalk、y5↔hanazi 等 4 硬撞）
 - 候选池挂账：fresco（huashu 20 全屏壁画路线）、red-wedge（构成主义独立建卡）、photo-cutout（paper-collage 照片剪影亚种）——按需再启动
-- 开源仓（2021291696/anything2video）不回灌，与本地 skill 分叉继续拉大（用户拍板挂账）
+- 开源仓（solplum/anything2video）不回灌，与本地 skill 分叉继续拉大（用户拍板挂账）
 - prompt-motion 剩余 ~177 条详情页未抽样（低优先）；buildfast-skills 的 talking-avatar/threejs-game 两目录未下钻
 - 备料报告与全部工程证据留存于 `科普视频/samples-v4/`（RECON-*.md、PRNG-AUDIT.md、upgrade-lab/、总验收/）
