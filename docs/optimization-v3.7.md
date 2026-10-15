@@ -74,7 +74,7 @@ v3.5.0 池子 11→19 改版只更新了 SKILL.md/style-ledger/samples 资产，
 
 实体 `~/.agents/skills/anything2video/`，`-codex`/`-zcode` 为镜像 edition（共享文件 diff=0；
 SKILL.md 按拼合式入口必然仅 frontmatter 差异，见上）。`.claude/skills`、`.codex/skills` 等
-junction 自动跟随。开源仓 fork（2021291696/anything2video）自 v3.1.2 后持续分叉，本轮不同步，
+junction 自动跟随。开源仓 fork（solplum/anything2video）自 v3.1.2 后持续分叉，本轮不同步，
 回灌与 push 另行拍板。
 
 ## 七、v3.7.1 补丁：首用图像通道询问与欠费告知（2026-10-06 晚）
@@ -106,4 +106,4 @@ provider 可选 openai/minimax），缺口在「配了但没钱」只报泛化�
 - 验证：`node --test tests/*.test.mjs` 43/43 全绿；doctor 四态 + 探针三态（无 env 跳过红/
   假 key 真链路 1004 红/默认绿）实测；gen_world_frames `py_compile` + `http_hint` 单元抽查。
   两端 edition 同步走「共享文件拷贝 + stamp-editions」，镜像 diff 仅 SKILL.md frontmatter 与
-  edition.json（预期）。开源仓随本补丁回灌并推送（2021291696/anything2video）。
+  edition.json（预期）。开源仓随本补丁回灌并推送（solplum/anything2video）。
