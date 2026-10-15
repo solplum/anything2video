@@ -4,7 +4,7 @@ description: 在 WorkBuddy 桌面本地任务中，把主题、文章或产品�
 description_zh: 在 WorkBuddy 本地任务中制作原创代码视频，完成稿件、配音、分镜、渲染、修复与交付。
 description_en: Produce original teaching videos in WorkBuddy local tasks with researched narration, reproducible Remotion projects and measured review evidence.
 version: "4.5.0"
-author: "2021291696"
+author: "solplum"
 metadata:
   version: "4.5.0"
 ---
