@@ -1,59 +1,81 @@
-# 六端专属版安装与执行
+# 全平台统一 Harness 架构与宿主适配指南
 
-同一包提供 SKILL.md、recipes、reference、styles、template、scripts、gallery、audio-engine、samples。宿主差异限于加载与编排；事实、素材、音频、审片和交付规则完全共用。适配成功不能推导成模型质量一致。
+> **架构收束说明**：自 v5.0.0 起，项目全面放弃旧版的“六端独立发行包分立构建（`hosts/` + `edition.json`）”模式，收束为**全平台统一的单包架构**。所有宿主环境统一发现并运行名为 `anything2video` 的规范 Skill。
 
-v3.1 专属名称为 anything2video-doubao-work、anything2video-workbuddy、anything2video-claude-code、anything2video-codex、anything2video-zcode、anything2video-minimax-code，各包 `edition.json` 记录入口和公共核心完整 SHA256。公共核心一致、入口适配不同，不声称模型表现一致。豆包工作、WorkBuddy、Claude Code、Codex 为重点平台，ZCode 与 MiniMax Code 继续保留。
+同一包提供完整的 `SKILL.md`、`recipes`、`reference`、`styles`、`template`、`scripts`、`gallery`、`audio-engine` 与 `samples`。公共制作核心（事实、素材、音频、分镜、动效卡与 QC 交付合同）完全一致；宿主差异仅体现在加载路径与运行时能力（CLI/Shell 权限、多模态看片、生图通道与子代理分工），详见 [`reference/environment-capabilities.md`](../reference/environment-capabilities.md)。
 
-从仓库或对应完整独立包运行 `node scripts/install.mjs claude-code|zcode|codex|minimax-code|workbuddy`。默认用户级安装；可加项目根参数。目标存在会被保护，更新前备份并核对。MiniMax 可 `--data-dir <真实DATA_DIR>`，不要传 skills 子目录。豆包工作运行 `node scripts/install.mjs doubao-work --export-dir <导出根目录>` 得到完整包供手工导入；导出不写宿主配置，也不代表应用已发现。原 generic 目录和已有链接保留。
+---
 
-## ZCode
+## 1. 统一安装命令
 
-专属包正本在 `~/.agents/skills/anything2video-zcode`；generic 仍在原目录。用 `zcode skills list --json` 核对实际路径；有版本发现 `.zcode/skills` 或设置页导入，以随包 configuration-guide 和本机 help 为准。用户同名项可能遮盖项目项。普通 headless `zcode -p "完整阅读指定SKILL.md并执行" --cwd <工程>`；旧 dynamic workflow 可选，真实 API 存在才用，不要求每个版本都有注入函数。不同模型的图片/MP4/音频能力分别实测。仅在实际 Workflow API 中：args 可能是 JSON 字符串，先解析；agent() 必须 await，返回值先 toText；用 log 输出，不能靠 return；禁用 phase/log/agent/parallel/pipeline 作变量名；先跑三行最小脚本验证注入行为，再写完整逻辑；大段结构化数据落盘传路径，不经 agent prompt 往返。
+从仓库根目录直接运行通用安装器 `scripts/install.mjs`：
 
-## Claude Code
+```bash
+# 1. 默认/通用安装：安装至 ~/.agents/skills/anything2video（支持 Codex、Antigravity、Cursor、OpenClaw 等）
+node scripts/install.mjs
 
-项目 `.claude/skills/anything2video-claude-code/`，用户 `~/.claude/skills/anything2video-claude-code/`，完整保留资产。新会话 `/anything2video-claude-code <主题和平台>` 或给入口绝对路径。文件/shell/媒体工具与子代理按当前会话提供的能力执行；每组指定所有权、分镜与验收。headless 普通 `claude -p` 具体 flags 看本机 help，不默认绕过权限。依据：[官方 Skills](https://code.claude.com/docs/en/skills)。
+# 2. Claude Code：安装至 ~/.claude/skills/anything2video
+node scripts/install.mjs --claude
+# 也可指定项目级路径（安装至 <工程>/.claude/skills/anything2video）
+node scripts/install.mjs --claude /path/to/my-project
 
-## Codex
+# 3. WorkBuddy 桌面端：安装至 ~/.workbuddy/skills/anything2video
+node scripts/install.mjs --workbuddy
 
-项目 `.agents/skills/anything2video-codex/`，用户 `~/.agents/skills/anything2video-codex/`。已有 `.codex/skills` 链接可保留且核对正本。使用 `$anything2video-codex <任务>` 或入口绝对路径，新会话核对发现。CLI `codex exec` 参数以 help 为准；桌面媒体工具按当前会话实测，不套 ZCode workflow/tmux。主控负责设计、整合与审片。依据：[官方 Skills](https://developers.openai.com/codex/skills/)。
+# 4. MiniMax Code 桌面端：安装至 ~/.minimax/skills/anything2video
+node scripts/install.mjs --minimax
+# 若使用自定义 App Data 目录：
+node scripts/install.mjs --minimax --data-dir /path/to/minimax/data
 
-## MiniMax Code
+# 5. 导出独立完整包（用于豆包工作等无自动发现目录的宿主手动授权导入）
+node scripts/install.mjs --export-dir /path/to/export
 
-全局 `{{DATA_DIR}}/skills/anything2video-minimax-code/`，代理私有 `{{DATA_DIR}}/agents/<agent>/skills/<name>/`。默认常见 DATA_DIR=~/.minimax，以运行应用为准。下一会话查 available_skills，再调用原生 `skill({name: "anything2video-minimax-code"})` 核对 Location；不需要为了 skill 更新重启 local-runtime。依据是随应用 mavis 的 skill-management.md，它明确没有 skill CLI。不发明 minimax -p，不把 mcode-tools connector 当编码CLI。task/task_append/task_output 只在工具表实际提供时使用；多模态和图像/语音服务分别实测。
-
-## WorkBuddy（重点平台）
-
-专属包 `anything2video-workbuddy` 直接 `install.mjs workbuddy` 安装到 `~/.workbuddy/skills/`（本机实证的桌面版技能发现目录，依据见 `reference/desktop-hosts.md`），重启后在技能列表核对；入口含官方开放平台列出的 description_zh/description_en/version/author 字段。跨机分发用 `--export-dir` 导出，或在技能管理/添加技能入口导入完整包，格式与大小限制以该版本界面为准。CodeBuddy IDE/CLI 是另一产品，项目目录 `.codebuddy/skills/anything2video/` 走 generic 包安装（见[官方文档](https://www.workbuddy.cn/docs/ide/Features/Skills)），两种入口不能混称。实测注意（2026-10-05）：任务输入框**回车不一定发送**，确认消息上屏再等回复；开工前先让助手执行 `node --version` 并贴原始输出，作为执行力验证。内置生成通道与豆包工作同口径：该版本若提供内置图片/视频/声音生成，产物落盘、登记来源与许可（`--register` 同 `reference/ai-frame-sop.md`）后可作场景素材，**不绕过确定性渲染与 QC**；是否可用以当版实测为准，不按产品名假定，AI 镜头排布仍走统一合同的图像通道能力门。
-
-## 豆包工作（重点平台）
-
-专属包 `anything2video-doubao-work` 同样用 `--export-dir` 导出。截至本发布未核实到原生第三方 Skill 导入格式或自动发现目录，不猜 `.doubao/skills` 或 CLI 名：在支持本地文件访问的工作任务中授权完整目录并显式读入口；若该版本确有导入入口，先核对官方格式再用。豆包内置图片/视频/声音是独立生成通道，落盘登记来源与许可后可作场景素材，不绕过确定性渲染与 QC。依据与未知项见 `reference/desktop-hosts.md`。
-
-## 首次接入核对
-
-豆包工作、WorkBuddy 首次接入后，要求助手返回它实际读取的入口路径、配方路径、可执行命令。能读包但不能执行 shell 的环境只能输出稿件/分镜，不声称已经渲染MP4。云端或沙箱若缺 ffmpeg/浏览器，按环境要求配置后重验。
-
-## 验证等级
-
-- 包检查：入口YAML、引用文件、离线素材/许可完整。
-- 工程检查：Node/uv/ffmpeg、类型检查、渲染、音画和规格实测。
-- 宿主发现：该应用确认实际加载的入口路径，不等于独立制片。
-- 宿主检查：该应用实际加载skill并独立完成一条片子。
-
-最终 `check-qc.mjs` 要求 production 全片、完整动态与听感声明及有效哈希证据。安装或打包不证明任何应用独立出片；未完成检查明确 not_performed，不能自动填 passed。生产数据合同见 production-contract.md。
-
-本次发布会附包与工程的实测记录；未独立跑完整条片子的应用明确标记未实测，不能把安装指南写成跨应用端到端认证。
-
-## 统一任务书
-
-```text
-完整阅读 anything2video/SKILL.md 和 production-contract.md。
-为初学者制作中文竖屏教学视频，1080x1920，约2分钟。
-先写可核实稿件；代码承载所有精确信息；不要复用别人的视频帧。
-交付完整工程、成片、字幕、封面、素材清单和ffprobe规格。
-我授权你选择音色和视觉方向。先验开场、复杂中段和结尾，至少三轮审片。
-没有子代理就顺序完成，不能跳过混音和QC。未完成项明确报告。
+# 6. 本地开发与实时调试（创建软链，改动即时生效）
+node scripts/install.mjs --symlink
+node scripts/install.mjs --symlink --claude
 ```
 
-成本来自模型调用、TTS、素材生成、计算和人工复核。不要据此宣称“完全免费”。
+安装器自动校验并复制完整资产，排除 `.git`、`.venv`、`node_modules`、测试缓存与私有凭据；若目标目录已存在，安装器会主动拦截以保护现有文件。
+
+---
+
+## 2. 各宿主发现与适配边界
+
+### Universal / Codex / Antigravity / Cursor
+- **路径**：`~/.agents/skills/anything2video`（或工程级 `.agents/skills/anything2video`）。
+- **发现方式**：标准 Agent Skills 规范，新开会话即可直接调用 `/anything2video` 或识别指令。
+- **依据**：遵循官方 [OpenAI Codex Skills](https://developers.openai.com/codex/skills/) 与通用 Agent 规范。
+
+### Claude Code
+- **路径**：全局 `~/.claude/skills/anything2video/` 或项目 `.claude/skills/anything2video/`。
+- **使用**：新会话通过 `/anything2video <主题>` 调用或直接给入口绝对路径。
+- **依据**：[Anthropic Claude Code Skills 官方规范](https://code.claude.com/docs/en/skills)。
+
+### WorkBuddy (桌面版)
+- **路径**：`~/.workbuddy/skills/anything2video/`。
+- **发现方式**：本机实证的桌面版本地技能发现目录（依据见 `reference/desktop-hosts.md`），安装后重启应用在技能列表呈现。
+- **注意**：`SKILL.md` frontmatter 已原生集成官方要求的 `description_zh`、`version` 与 `author` 字段；输入框回车确认消息上屏；开工前执行 `node --version` 验证真实执行力。
+
+### MiniMax Code (桌面版)
+- **路径**：`{{DATA_DIR}}/skills/anything2video/`（默认 `~/.minimax/skills/anything2video/`）。
+- **发现方式**：下一会话通过 `available_skills` 查验，或原生调用 `skill({name: "anything2video"})` 核对 Location。
+- **能力注意**：1M 上下文严格遵守“大文件落盘传路径”纪律；mcode-tools 生成通道与 `A2V_IMAGE_*` 环境变量配合使用；多模态看片用于 B/C 轮定性目检；Remotion 推荐设置 `BROWSER_EXECUTABLE`。
+
+### 豆包工作 (桌面版)
+- **路径**：通过 `--export-dir` 导出后在桌面端工作任务中显式授权读取。
+- **注意**：开启“电脑操作”后本地读取能力已实证；写文件与命令执行按当前版本实际权限验证。不可执行命令时自动降级为编剧与分镜输出。
+
+### ZCode
+- **路径**：`~/.agents/skills/anything2video`。
+- **使用**：支持普通 headless `zcode -p "完整阅读 anything2video/SKILL.md 并执行" --cwd <工程>`；工作流注入 API 仅在环境真实提供时可选使用。
+
+---
+
+## 3. 验证等级
+
+1. **包完整性检查**：入口 YAML frontmatter、通用超集元数据、配方、样片 manifest 与许可完整无缺。
+2. **工程环境检查**：`node scripts/doctor.mjs` 检查 Node/uv/ffmpeg/ffprobe 与生图通道状态。
+3. **宿主发现验证**：应用确认实际加载的入口路径与版本号，不等于独立出片。
+4. **端到端制片实测**：该应用实际加载 Skill 并独立完成一条视频工程渲染、三轮验收与交付。
+
+统一任务书与生产合同以 `reference/production-contract.md` 为唯一权威。

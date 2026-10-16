@@ -4,10 +4,9 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {collectCoreFiles, HOSTS} from '../scripts/build-editions.mjs';
+import {collectCoreFiles} from '../scripts/build-editions.mjs';
 
-// 真实源一致性门禁（2026-10-06 收尾轮新增）：editions.test.mjs 全部跑 fixture 沙箱，
-// 真实仓库的宿主入口版本漂移（v3.1.2 时代曾连续漏更四个版本）与缓存垃圾它看不见，本文件负责。
+// 真实源一致性门禁：校验统一 SKILL.md 超集元数据、核心文件清单与缓存防污染
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const read = file => fs.readFileSync(path.join(root, ...file.split('/')), 'utf8');
@@ -18,23 +17,31 @@ const declaredVersion = text => {
   return nested ?? frontmatter(text).match(/^version:\s*["']?([0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?)["']?\s*$/m)?.[1];
 };
 
-test('every host entry shares the SKILL.md version and correct identity', () => {
+test('unified skill entry declares superset metadata and correct identity', () => {
   const skill = read('SKILL.md');
   const version = declaredVersion(skill);
   assert.match(version, /^\d+\.\d+\.\d+$/, 'SKILL.md must declare a semver version');
   assert.match(frontmatter(skill), /^name:\s*anything2video\s*$/m);
-  for (const host of HOSTS) {
-    const entry = read(`hosts/${host}.md`);
-    assert.match(frontmatter(entry), new RegExp(`^name:\\s*anything2video-${host}\\s*$`, 'm'), host);
-    assert.ok(/^description:\s*\S/m.test(frontmatter(entry)), `description required: ${host}`);
-    assert.equal(declaredVersion(entry), version, `host entry version drift: ${host}`);
-  }
+  assert.match(frontmatter(skill), /^author:\s*\S+/m);
+  assert.match(frontmatter(skill), /zh-Hans:/);
+  assert.match(frontmatter(skill), /displayNames:/);
+  assert.equal(fs.existsSync(path.join(root, 'hosts')), false, 'legacy hosts directory must be removed in unified architecture');
+  assert.ok(fs.existsSync(path.join(root, 'reference', 'environment-capabilities.md')), 'reference/environment-capabilities.md must exist');
 });
 
 test('core inventory walks the real tree including gallery, audio-engine and samples', () => {
   const files = collectCoreFiles(root);
   assert.ok(files.length > 500, `inventory unexpectedly small: ${files.length}`);
-  for (const anchor of ['gallery/README.md', 'audio-engine/README.md', 'samples/manifest.json', 'docs/optimization-v3.7.md', 'template/scripts/mix_sfx.py', 'reference/production-contract.md', 'scripts/build-editions.mjs']) {
+  for (const anchor of [
+    'gallery/README.md',
+    'audio-engine/README.md',
+    'samples/manifest.json',
+    'docs/optimization-v3.7.md',
+    'template/scripts/mix_sfx.py',
+    'reference/production-contract.md',
+    'reference/environment-capabilities.md',
+    'scripts/build-editions.mjs',
+  ]) {
     assert.ok(files.includes(anchor), `core inventory missing ${anchor}`);
   }
   for (const absent of ['docs/audit.md', 'docs/optimization-v2.md', 'template/tests', 'hosts']) {

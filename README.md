@@ -28,25 +28,32 @@ npx remotion browser ensure
 - 首次使用会同轮问一次**可选的生图 API key**（MiniMax 或任意 OpenAI 兼容接口）：只用于 AI 材质/世界底画面（主要 epic 配方），**对成片约 5%–10% 的效果影响，不填不影响渲染、配音、音乐与交付**；决定（provider 或 none）存 `~/.anything2video/image-channel`，密钥只走环境变量 `A2V_IMAGE_*`、不落盘。
 - 浏览器可用环境变量 `BROWSER_EXECUTABLE` 指向已安装版本；风格拿不准先看 [离线视觉样片](samples/index.html)。
 
-## 安装
+## 安装（全平台统一单包架构）
 
-[Releases](https://github.com/solplum/anything2video/releases) 提供一份通用 ZIP（不含样片媒体），解压后在目录内运行；也可直接把它当克隆仓库使用：
+自 v5.0.0 起，项目收束为全平台统一的单包架构，所有宿主统一发现并运行名为 `anything2video` 的规范 Skill。克隆本仓库或解压 Release 包后，直接运行统一安装器：
 
-```powershell
-node scripts/install.mjs claude-code    # zcode / codex / minimax-code / workbuddy 同理
-node scripts/install.mjs doubao-work --export-dir D:/a2v-desktop-packages   # 豆包工作只导出完整包，手工导入
+```bash
+# 通用默认安装（支持 Codex、Antigravity、Cursor、OpenClaw 等）
+node scripts/install.mjs
+
+# 针对各主流宿主环境
+node scripts/install.mjs --claude       # Claude Code (~/.claude/skills/anything2video)
+node scripts/install.mjs --workbuddy    # WorkBuddy 桌面端 (~/.workbuddy/skills/anything2video)
+node scripts/install.mjs --minimax      # MiniMax Code (~/.minimax/skills/anything2video)
+node scripts/install.mjs --export-dir D:/a2v-pkg  # 导出独立完整包（用于豆包工作等手工授权导入）
+node scripts/install.mjs --symlink      # 本地开发与实时调试（创建软链，改动即时生效）
 ```
 
-| 宿主 | 安装位置 | 入口 |
+| 宿主 | 安装位置 | 入口与说明 |
 |---|---|---|
-| Claude Code | `.claude/skills/anything2video-claude-code/` | 新会话 `/anything2video-claude-code` |
-| Codex | `.agents/skills/anything2video-codex/` | 新会话 `$anything2video-codex` |
-| ZCode | `.agents/skills/anything2video-zcode/` | `zcode skills list --json` 核对实际路径 |
-| MiniMax Code | `{{DATA_DIR}}/skills/anything2video-minimax-code/` | 下一会话原生加载后核对 Location |
-| WorkBuddy 桌面 | `~/.workbuddy/skills/anything2video-workbuddy/` | 安装后重启应用核对发现；CodeBuddy IDE/CLI 项目用 `.codebuddy/skills/anything2video/` |
-| 豆包工作 | 原生导入格式未核实，不猜路径 | 在可访问本地文件的工作任务中授权导出目录并显式读入口 |
+| 通用 / Codex / Antigravity / Cursor | `~/.agents/skills/anything2video/` | 标准通用技能目录，新开会话即可识别并调用 `/anything2video` |
+| Claude Code | `~/.claude/skills/anything2video/` | 全局安装；亦可指定工程目录装入 `<工程>/.claude/skills/anything2video` |
+| WorkBuddy 桌面 | `~/.workbuddy/skills/anything2video/` | 安装后重启应用在技能列表呈现；原生内置官方中英描述与版本作者元数据 |
+| MiniMax Code | `{{DATA_DIR}}/skills/anything2video/` | 下一会话查验 `available_skills`，1M 上下文严格遵守大文件落盘传路径纪律 |
+| 豆包工作 | 导出独立包后桌面端授权读取 | 在可访问本地文件的工作任务中授权导出目录并显式读取入口 |
+| ZCode | `~/.agents/skills/anything2video/` | 支持标准 headless `zcode -p "完整阅读 anything2video/SKILL.md 并执行"` |
 
-默认用户级安装，已有目录会被保护，更新先备份。前四种可追加项目根参数；MiniMax 可用 `--data-dir <真实DATA_DIR>`，不要传 skills 子目录。安装后先核实实际读取的入口路径、配方和可执行工具——不要仅凭"已经加载"就认为渲染可用；无法执行 Shell 的环境可以帮你写稿和分镜，但不能交付一个实际渲染好的 MP4。完整说明与验证等级见 [docs/adapters.md](docs/adapters.md)，安装指南不等于全平台实测认证。自建发行包：`node scripts/build-editions.mjs <仓库外输出目录> --generic`（六份宿主专属包用不带 `--generic` 的原命令，加 `--overwrite` 可重建）。
+默认用户级安装，已有目录会被保护，更新先备份。安装后先核实实际读取的入口路径、配方和可执行工具——不要仅凭“已经加载”就认为渲染可用；无法执行 Shell 的环境可以帮你写稿和分镜，但不能交付一个实际渲染好的 MP4。完整说明、运行时能力面与验证等级见 [docs/adapters.md](docs/adapters.md) 与 [reference/environment-capabilities.md](reference/environment-capabilities.md)。自建发行包：`node scripts/build-editions.mjs <仓库外输出目录>`。
 
 ## 风格样片：61 张套餐卡全览
 

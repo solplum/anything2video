@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 export const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const HOSTS = Object.freeze(['doubao-work', 'workbuddy', 'claude-code', 'codex', 'zcode', 'minimax-code']);
+export const HOSTS = Object.freeze(['universal', 'claude-code', 'codex', 'workbuddy', 'minimax-code', 'zcode', 'doubao-work']);
 const directories = ['recipes', 'reference', 'styles', 'template', 'scripts', 'gallery', 'audio-engine'];
 const individual = ['LICENSE', 'docs/adapters.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md'];
 const excluded = /^(?:\.git|\.venv|node_modules|\.Codex|\.mimosa|\.zcode|__pycache__|\.pytest_cache|audio|renders|stills|fin_frames|out|dist|build.*|tests|examples|cache|\.cache|.*-cache|secrets?|credentials?|\..*stills|\.verify.*|\.probe.*|\.render-bundle.*)$/i;
@@ -23,47 +23,26 @@ const contains = (parent, child) => {
   const relative = path.relative(comparable(parent), comparable(child));
   return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
 };
+
 export function assertDisjoint(source, target) {
   const from = canonical(source), to = canonical(target);
   if (contains(from, to) || contains(to, from)) throw new Error('Source and target must not overlap, including aliases and ancestors');
   return to;
 }
-const readJson = file => {
-  try {
-    const value = JSON.parse(fs.readFileSync(file, 'utf8'));
-    if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Expected a JSON object');
-    return value;
-  } catch (error) {throw new Error(`Invalid package metadata: ${file}: ${error.message}`);}
-};
-function frontmatterOf(text) {
+
+export function frontmatterOf(text) {
   const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
   if (!match) throw new Error('Missing YAML frontmatter');
   return match[1];
 }
-function splitFrontmatter(text) {
-  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
-  if (!match) throw new Error('Missing YAML frontmatter');
-  return {frontmatter: match[0], body: text.slice(match[0].length)};
-}
-// Edition entrypoints compose the per-host frontmatter with the shared SKILL.md body:
-// host identity stays edition-specific while the entry guidance has one maintained source.
-// A host file may carry a `<!-- host-chapter -->` marker; everything after it is appended to
-// that host's edition only. Hosts without the marker compose byte-identically as before.
-const hostChapterMarker = '<!-- host-chapter -->';
-export function composeEntry(hostEntryText, coreSkillText) {
-  const host = splitFrontmatter(hostEntryText);
-  const core = splitFrontmatter(coreSkillText);
-  const markerAt = host.body.indexOf(hostChapterMarker);
-  const chapter = markerAt === -1 ? '' : `\n${host.body.slice(markerAt + hostChapterMarker.length).replace(/^\r?\n+/, '').replace(/\s+$/, '')}\n`;
-  return `${host.frontmatter.trimEnd()}\n\n${core.body.replace(/^\r?\n+/, '')}${chapter}`;
-}
-function declaredVersion(frontmatter) {
-  // Support the maintained metadata block and legacy packages, never Markdown body text.
+
+export function declaredVersion(frontmatter) {
   const block = frontmatter.match(/^metadata:\s*\r?\n((?:[ \t]+[^\r\n]*(?:\r?\n|$))*)/m)?.[1];
   const nested = block?.match(/^  version:\s*["']?([0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?)["']?\s*$/m)?.[1];
   return nested ?? frontmatter.match(/^version:\s*["']?([0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?)["']?\s*$/m)?.[1];
 }
-const versionOf = source => {
+
+export const versionOf = source => {
   const value = declaredVersion(frontmatterOf(fs.readFileSync(path.join(source, 'SKILL.md'), 'utf8')));
   if (!value) throw new Error('SKILL.md must declare a version');
   return value;
@@ -91,144 +70,72 @@ export function collectCoreFiles(source, {includeSamples = true} = {}) {
   return files.sort();
 }
 
-function validateEntry(source, host, version, file = path.join(source, 'hosts', `${host}.md`)) {
-  if (fs.lstatSync(file).isSymbolicLink() || !contains(canonical(source), fs.realpathSync.native(file))) throw new Error(`Host entrypoint must be a local regular file: ${file}`);
-  const text = fs.readFileSync(file, 'utf8');
-  const expected = `anything2video-${host}`;
-  if (!text.startsWith('---\n') && !text.startsWith('---\r\n')) throw new Error(`Missing YAML frontmatter: hosts/${host}.md`);
+export function validateSkill(source) {
+  const skillFile = path.join(source, 'SKILL.md');
+  if (!exists(skillFile)) throw new Error(`Missing SKILL.md in ${source}`);
+  if (fs.lstatSync(skillFile).isSymbolicLink()) throw new Error(`SKILL.md must not be a symbolic link: ${skillFile}`);
+  const text = fs.readFileSync(skillFile, 'utf8');
+  if (!text.startsWith('---\n') && !text.startsWith('---\r\n')) throw new Error('Missing YAML frontmatter in SKILL.md');
   const frontmatter = frontmatterOf(text);
-  if (!new RegExp(`^name:\\s*${expected}\\s*$`, 'm').test(frontmatter)) throw new Error(`Host entry name must be ${expected}`);
-  if (declaredVersion(frontmatter) !== version) throw new Error(`Host entry version differs from shared skill: ${host}`);
-  if (!/^description:\s*\S/m.test(frontmatter)) throw new Error(`Missing host entry description: ${host}`);
-  return text;
+  if (!/^name:\s*anything2video\s*$/m.test(frontmatter)) throw new Error('Skill name must be anything2video');
+  const version = declaredVersion(frontmatter);
+  if (!version) throw new Error('Skill must declare a version');
+  if (!/^description:\s*\S/m.test(frontmatter)) throw new Error('Skill must declare a description');
+  return {version, text, frontmatter};
 }
 
-function requireKnownDestination(destination, host) {
-  if (!exists(destination)) return;
-  if (fs.lstatSync(destination).isSymbolicLink() || !fs.statSync(destination).isDirectory()) throw new Error(`Refusing non-directory or linked target: ${destination}`);
-  const metadata = readJson(path.join(destination, 'edition.json'));
-  if (metadata.schemaVersion !== 1 || metadata.host !== host || metadata.name !== `anything2video-${host}`) {
-    throw new Error(`Refusing target without matching edition identity: ${destination}`);
+export function verifyPackage(target) {
+  const targetDir = canonical(target);
+  if (!exists(targetDir) || !fs.statSync(targetDir).isDirectory()) throw new Error(`Target is not a valid directory: ${target}`);
+  const skill = validateSkill(targetDir);
+  for (const required of ['reference/production-contract.md', 'reference/environment-capabilities.md', 'scripts/init.mjs', 'scripts/install.mjs', 'template/src/config.ts', 'LICENSE']) {
+    const full = path.join(targetDir, ...required.split('/'));
+    if (!exists(full)) throw new Error(`Package incomplete, missing: ${required}`);
   }
-  verifyEdition(destination);
+  return {name: 'anything2video', version: skill.version};
 }
 
-function packageInputs(source, {includeSamples = true} = {}) {
-  const version = versionOf(source);
-  const files = collectCoreFiles(source, {includeSamples});
-  const coreHashes = Object.fromEntries(files.map(relative => [relative, sha256(path.join(source, ...relative.split('/')))]));
-  const entries = Object.fromEntries(HOSTS.map(host => [host, validateEntry(source, host, version)]));
-  const coreText = fs.readFileSync(path.join(source, 'SKILL.md'), 'utf8');
-  return {version, files, coreHashes, entries, coreText};
-}
-
-function writePackage(source, destination, host, inputs) {
-  fs.mkdirSync(destination, {recursive: true});
-  for (const relative of inputs.files) {
-    const target = path.join(destination, ...relative.split('/'));
-    fs.mkdirSync(path.dirname(target), {recursive: true});
-    fs.copyFileSync(path.join(source, ...relative.split('/')), target);
-  }
-  fs.writeFileSync(path.join(destination, 'SKILL.md'), composeEntry(inputs.entries[host], inputs.coreText));
-  fs.writeFileSync(path.join(destination, 'edition.json'), JSON.stringify({
-    schemaVersion: 1, version: inputs.version, host, name: `anything2video-${host}`,
-    entrypointSha256: sha256(path.join(destination, 'SKILL.md')), coreHashes: inputs.coreHashes,
-  }, null, 2) + '\n');
-  verifyEdition(destination);
-}
-
-export function verifyEdition(source) {
-  const metadataFile = path.join(source, 'edition.json');
-  if (fs.lstatSync(metadataFile).isSymbolicLink()) throw new Error('Edition metadata cannot be a symbolic link');
-  const metadata = readJson(metadataFile);
-  if (metadata.schemaVersion !== 1 || !HOSTS.includes(metadata.host) || metadata.name !== `anything2video-${metadata.host}` || typeof metadata.version !== 'string') {
-    throw new Error('Unrecognized edition identity');
-  }
-  if (!metadata.coreHashes || Array.isArray(metadata.coreHashes) || typeof metadata.coreHashes !== 'object') throw new Error('Invalid core hash inventory');
-  const actual = collectCoreFiles(source);
-  const declared = Object.keys(metadata.coreHashes).sort();
-  if (JSON.stringify(actual) !== JSON.stringify(declared)) throw new Error('Shared package inventory differs from edition.json');
-  for (const relative of actual) {
-    if (!/^[a-f0-9]{64}$/.test(metadata.coreHashes[relative]) || sha256(path.join(source, ...relative.split('/'))) !== metadata.coreHashes[relative]) {
-      throw new Error(`Shared package hash mismatch: ${relative}`);
-    }
-  }
-  const entry = path.join(source, 'SKILL.md');
-  if (fs.lstatSync(entry).isSymbolicLink() || sha256(entry) !== metadata.entrypointSha256) throw new Error('Host entrypoint hash mismatch');
-  validateEntry(source, metadata.host, metadata.version, entry);
-  return metadata;
-}
-
-export function buildEdition(host, destination, {source = SOURCE_ROOT} = {}) {
-  if (!HOSTS.includes(host)) throw new Error(`Unknown edition host: ${host}`);
+export function buildPackage(destination, {source = SOURCE_ROOT, overwrite = false, includeSamples = true} = {}) {
   const target = assertDisjoint(source, destination);
-  if (exists(target)) throw new Error(`Existing installation preserved: ${target}`);
-  const inputs = packageInputs(source);
-  writePackage(source, target, host, inputs);
-  return target;
-}
-
-export function buildEditions(output, {source = SOURCE_ROOT, overwrite = false} = {}) {
-  const destination = assertDisjoint(source, output);
-  if (exists(destination) && !fs.statSync(destination).isDirectory()) throw new Error('Output must be a directory');
-  if (!overwrite && exists(destination) && fs.readdirSync(destination).length) throw new Error('Output is not empty; use --overwrite for known edition targets');
-  const inputs = packageInputs(source);
-  const targets = HOSTS.map(host => ({host, path: path.join(destination, `anything2video-${host}`)}));
-  for (const target of targets) {
-    assertDisjoint(source, target.path);
-    if (overwrite) requireKnownDestination(target.path, target.host);
+  if (exists(target)) {
+    if (!fs.statSync(target).isDirectory()) throw new Error('Target must be a directory');
+    if (!overwrite && fs.readdirSync(target).length > 0) throw new Error(`Target directory is not empty: ${target}. Use overwrite: true to replace.`);
+    if (overwrite) fs.rmSync(target, {recursive: true});
   }
-  // Check every target before replacing any package; preserve unrelated output files.
-  for (const target of targets) {
-    const checked = assertDisjoint(source, target.path);
-    if (!contains(destination, checked) || comparable(checked) !== comparable(target.path)) throw new Error(`Target escaped the named output directory: ${target.path}`);
-    if (overwrite && exists(checked)) {
-      requireKnownDestination(checked, target.host);
-      fs.rmSync(checked, {recursive: true});
-    }
-    writePackage(source, checked, target.host, inputs);
-  }
-  return targets.map(target => target.path);
-}
-
-// One host-agnostic package: shared core + all six host entrypoints + the generic SKILL.md,
-// without edition.json — so install.mjs treats the unpacked folder as a source and builds the
-// chosen host edition on the spot. Samples stay out: they are preview media, not runtime input.
-export function buildGeneric(output, {source = SOURCE_ROOT, overwrite = false} = {}) {
-  const destination = assertDisjoint(source, output);
-  if (exists(destination) && !fs.statSync(destination).isDirectory()) throw new Error('Output must be a directory');
-  if (!overwrite && exists(destination) && fs.readdirSync(destination).length) throw new Error('Output is not empty; use --overwrite');
-  const inputs = packageInputs(source, {includeSamples: false});
-  if (overwrite && exists(destination)) fs.rmSync(destination, {recursive: true});
-  fs.mkdirSync(destination, {recursive: true});
-  const extras = [...HOSTS.map(host => `hosts/${host}.md`), 'SKILL.md', 'README.md', 'LICENSE'];
-  const files = [...inputs.files, ...extras];
+  fs.mkdirSync(target, {recursive: true});
+  const skill = validateSkill(source);
+  const files = collectCoreFiles(source, {includeSamples});
   for (const relative of files) {
     const from = path.join(source, ...relative.split('/'));
-    if (!exists(from)) throw new Error(`Missing generic package input: ${relative}`);
-    const to = path.join(destination, ...relative.split('/'));
+    const to = path.join(target, ...relative.split('/'));
     fs.mkdirSync(path.dirname(to), {recursive: true});
     fs.copyFileSync(from, to);
   }
-  // A full packageInputs pass over the copy is the exact condition install.mjs relies on:
-  // inventory present, generic SKILL.md declares the version, every host entrypoint validates.
-  const repacked = packageInputs(destination, {includeSamples: false});
-  if (repacked.version !== inputs.version) throw new Error('Generic package version mismatch');
-  const declared = Object.keys(inputs.coreHashes);
-  if (declared.length !== Object.keys(repacked.coreHashes).length) throw new Error('Generic package inventory mismatch');
-  for (const relative of declared) {
-    if (repacked.coreHashes[relative] !== inputs.coreHashes[relative]) throw new Error(`Generic package hash mismatch: ${relative}`);
+  for (const extra of ['SKILL.md', 'README.md', 'LICENSE']) {
+    const from = path.join(source, extra);
+    if (exists(from)) {
+      const to = path.join(target, extra);
+      fs.copyFileSync(from, to);
+    }
   }
-  return destination;
+  verifyPackage(target);
+  return target;
+}
+
+// Backward compatibility helper
+export function buildEditions(output, {source = SOURCE_ROOT, overwrite = false} = {}) {
+  const destination = assertDisjoint(source, output);
+  if (exists(destination) && !fs.statSync(destination).isDirectory()) throw new Error('Output must be a directory');
+  const target = path.join(destination, 'anything2video');
+  buildPackage(target, {source, overwrite, includeSamples: true});
+  return [target];
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const overwrite = args.includes('--overwrite');
-  const generic = args.includes('--generic');
-  const positional = args.filter(arg => arg !== '--overwrite' && arg !== '--generic');
-  if (positional.length > 1 || positional.some(arg => arg.startsWith('--'))) throw new Error('Usage: node scripts/build-editions.mjs [output-directory] [--generic] [--overwrite]');
-  const output = positional[0] ?? path.join(path.dirname(SOURCE_ROOT), 'anything2video-editions');
-  if (generic) console.log(`Built verified generic package at ${buildGeneric(output, {overwrite})}`);
-  else for (const target of buildEditions(output, {overwrite})) console.log(`Built verified edition at ${target}`);
+  const positional = args.filter(arg => !arg.startsWith('--'));
+  const output = positional[0] ?? path.join(path.dirname(SOURCE_ROOT), 'anything2video-dist');
+  const result = buildPackage(path.join(output, 'anything2video'), {overwrite});
+  console.log(`Built unified anything2video package at ${result}`);
 }
