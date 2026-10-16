@@ -2,7 +2,7 @@
 name: anything2video-minimax-code
 description: Produce original teaching, explainer, promo and brand videos inside MiniMax Code: researched narration with the two-stage user-approved script gate, storyboards, deterministic Remotion animation, voiceover, three-round review plus jury scoring and gated delivery. MiniMax Code 专属能力面：多模态看片、mcode-tools 生成通道（含 H3 Max 类视频模型纪律）、子代理并行建组、1M 上下文与 Flash 档模型现实。Use for original video production in MiniMax Code.
 metadata:
-  version: "4.6.0"
+  version: "5.0.0"
   descriptions:
     zh-Hans: "MiniMax Code 专属版：在 MiniMax Code 中把主题、文章或产品做成原创教学、科普、宣传、品牌视频——调研、文案确认门（方向候选→全文定稿过用户）、分镜、Remotion 代码动画、配音音乐、三轮验收加 jury 评分与交付终检；并附本宿主专属能力面（多模态看片、mcode-tools 生图与 H3 Max 类视频通道、worker/verifier 子代理并行建组、1M 上下文读档策略与 Flash 档模型对策）。"
   displayNames:
@@ -15,7 +15,7 @@ metadata:
 
 ## MiniMax Code 能力面（专属附章，2026-10-11 本机基线）
 
-本包 = 共享核心 v4.6.0 + 本章。本章只在本宿主生效，只回答"在 MiniMax Code 里怎么做到"；工程、许可、验收与授权规则一律以共享合同（`reference/production-contract.md`）为准，本章与之冲突时合同赢。基线来自本机实测，当版应用行为有变时以实测为准重核本章。
+本包 = 共享核心 v5.0.0 + 本章。本章只在本宿主生效，只回答"在 MiniMax Code 里怎么做到"；工程、许可、验收与授权规则一律以共享合同（`reference/production-contract.md`）为准，本章与之冲突时合同赢。基线来自本机实测，当版应用行为有变时以实测为准重核本章。
 
 ### 模型与上下文现实
 

@@ -4,7 +4,7 @@
 
 看过一条有材质、镜头推进和首尾呼应的 AI 视频后，很容易产生一个判断：只要换成同一个模型，再抄一条提示词，就能得到同等作品。实际动手往往得到另一种结果：标题很大，字幕很密，背景很炫，信息却没有被解释。anything2video 把这些环节串成可复现的工程；你仍然需要能完成任务的模型，但不必把每个导演决定都绑在某个模型上。
 
-**当前 v4.6.0。** 下载一份通用 ZIP 解压即用，或克隆仓库直接安装。导演方法、原生画幅、多点打样与证据门禁帮助稳定制作；Skill 不改变模型权重，不承诺全面等价于 Opus 或一次提示生成精品。代码承担精确信息，审核后的生成素材承担场景，逐件登记来源和披露。
+**当前 v5.0.0。** 下载一份通用 ZIP 解压即用，或克隆仓库直接安装。导演方法、原生画幅、多点打样与证据门禁帮助稳定制作；Skill 不改变模型权重，不承诺全面等价于 Opus 或一次提示生成精品。代码承担精确信息，审核后的生成素材承担场景，逐件登记来源和披露。
 
 English: A portable skill for producing researched, original code-composited videos with narration, shot contracts, deterministic rendering and measured quality evidence. Model capabilities and application support still need real validation.
 
@@ -150,11 +150,11 @@ Remotion 把 React 组件按指定帧渲染成视频，因此文字、数字、�
 
 | 资产 | 位置 | 说明 |
 |---|---|---|
-| 制作配方 | `recipes/` | 讲知识 `explainer.md` · 卖功能 `promo.md` · 风格化叙事 `custom.md` · 谱系/品牌历史 `epic.md`；explainer 参考随仓库附在 `reference/explainer/`，不依赖本机其他目录 |
+| 制作配方 | `recipes/` | 讲知识 `explainer.md` · 卖功能 `promo.md` · 风格化叙事 `custom.md` · 谱系/品牌历史 `epic.md` · 历史档案纪录片 `documentary.md`；explainer 参考随仓库附在 `reference/explainer/`，不依赖本机其他目录 |
 | 生产合同 | `reference/production-contract.md` | 旧配方里的宿主、授权、画幅和音频口径统一由它覆盖 |
 | 风格资产 | `styles/<sku>/` | 61 张套餐卡各自的 SPEC/kit 与回归样张；同风格后续片优先复用；新旧名映射见 `reference/style-ledger.md` |
 | 动效配方卡 | `gallery/` | 180 张配方卡 + demo 参考源码（移植自 video-shotcraft，Apache-2.0，分镜抽卡用），见 `gallery/README.md` |
-| 可编组件 | `template/src/common/kit/` | PageCam 2.5D 运镜、WordLitCaption 词级点亮字幕、ChapterBadge、GoldenQuote、RecapFrame、VarText 可变字体轴、StrokeText 单笔画字体、PhotoStage 底图语法；共享运动数学层 `common/motion/` |
+| 可编组件 | `template/src/common/kit/` | PageCam 2.5D 运镜、WordLitCaption 词级点亮字幕、ChapterBadge、GoldenQuote、RecapFrame、VarText 可变字体轴、StrokeText 单笔画字体、PhotoStage 底图语法、RostrumStage 档案翻拍微距舞台；共享运动数学层 `common/motion/` |
 | 音乐 | `audio-engine/mgaudio` + `scripts/bgm_*.py` | 程序编曲（MIT+CC0 vendor，溯源见 `audio-engine/VENDOR.md`）与曲库分析/主题反查/标注轮；音乐反应层数据走 `audio_features`；纪律见 `reference/music-plan.md` 与 `reference/bgm-bakeoff.md` |
 | 声音设计 | `reference/sound-design.md` | 风格绑定 SFX、曲库与音效分类检索 |
 | 材质与镜头 | `reference/materials.md` · `reference/ai-frame-sop.md` | 材质场景参考；一帧先行四路线与首尾同帧图生视频见 ai-frame-sop §2.5 |
@@ -179,6 +179,8 @@ Remotion 把 React 组件按指定帧渲染成视频，因此文字、数字、�
 - 三轮验收后加 D 轮独立评分评审（[jury-review](reference/jury-review.md)）：7 维锚点评分，任一维度 <7 阻塞。
 - `probe_av_sync.mjs`：纯旁白首句检查，最终媒体时长另测；不能代表全部字幕逐句对齐。
 - `probe_delivery.py`：实际规格，交付说明不手写分辨率。
+- `scripts/export_jianying.py`：全轨草稿导出（视频/旁白/BGM/字幕全轨拆分，Mac 沙盒隔离与 Windows 路径支持）。
+- `scripts/probe_readability.mjs`：移动端 480px 字号折算与底部 170px 字幕安全区侵入探针。
 
 ```powershell
 npm run typecheck

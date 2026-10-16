@@ -12,7 +12,7 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 
 ## 工程合同
 
-工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、fps、totalFrames、composition（默认 Video）、recipe。默认横屏 1280×720；原生竖屏 1080×1920。故意无声时额外声明 `audio: {mode: "silent"}`，有旁白作品不能用此字段掩盖丢失音轨。
+工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、fps、totalFrames、composition（默认 Video）、recipe（支持 promo / explainer / epic / documentary）。默认横屏 1280×720；原生竖屏 1080×1920。故意无声时额外声明 `audio: {mode: "silent"}`，有旁白作品不能用此字段掩盖丢失音轨。
 
 初始化支持 `<slug>` 单参：数据根优先 `A2V_DATA_ROOT`，再读持久化文件；未知或相对根直接拒绝，不退回当前目录。也支持 `<工程绝对路径> <slug>`。工程顶层 renders/stills/fin_frames/qc/delivery/versions 与依赖、音频缓存为保留产物位置（delivery/ 为 finalize_delivery 原子发布产物、versions/ 为 jury 修复轮版本留存，两者均在源快照排除清单内），不放导入源码；源码与素材应放入被记录的项目位置。`src/build`、自定义 components 及普通 build/out/dist 目录仍是输入。
 
@@ -53,7 +53,7 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 
 ## 竖屏
 
-1080×1920 片建议关键信息 x80–900、y180–1500，字幕 y1400–1570；底部约350px和右侧约160px不放必要信息。这是保守制作区，**不是抖音官方固定UI尺寸**，发布前依实际预览复核。中文正文建议至少42px，字幕48–56px，每行约12–16字；命令分段显示，不能缩到不可读。封面需独立测试方形裁切。**字幕带门禁**：渲染后、烧字幕前，对无字幕版成片跑 `uv run scripts/probe_subtitle_band.py <成片> --band-ratio 0.73`——命中时间码逐条看帧定性（浅底风格主路；纹理底/深底粒子层会误报，定性纪律同探针总则），设计内元素（结尾卡、进度条）登记豁免；能挪的先挪内容，字幕让位参数（safe 区）在分镜阶段就声明。
+1080×1920 片建议关键信息 x80–900、y180–1500，字幕 y1400–1570；底部约350px和右侧约160px不放必要信息。这是保守制作区，**不是抖音官方固定UI尺寸**，发布前依实际预览复核。中文正文建议至少42px，字幕48–56px，每行约12–16字；命令分段显示，不能缩到不可读。封面需独立测试方形裁切。**字幕带门禁**：渲染后、烧字幕前，对无字幕版成片跑 `uv run scripts/probe_subtitle_band.py <成片> --band-ratio 0.73`——命中时间码逐条看帧定性（浅底风格主路；纹理底/深底粒子层会误报，定性纪律同探针总则），设计内元素（结尾卡、进度条）登记豁免；能挪的先挪内容，字幕让位参数（safe 区）在分镜阶段就声明。**移动端 480px 可读性与安全区探针（v5.0.0）**：抽查代表静帧运行 `node scripts/probe_readability.mjs <工程> stills/frame-XX.png --mobile-width 480 --safe-bottom 170`，自动评估移动设备物理缩放下的中文可读性并验证底部 170px 平台 UI 安全区侵入情况，生成结构化 JSON 报告。
 
 ## 素材与参考片
 
@@ -61,7 +61,7 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 
 分镜排布 AI 生成素材前必须先确认图像通道：doctor 的 `imageChannel` 报告、宿主实测图像生成、已有手工素材三者有其一。三者皆无时不得把镜头设计成依赖 AI 生成，世界层改走程序材质路线——通道缺失要在分镜阶段暴露并改道，不能留到生成阶段才发现。通道已配置但调用失败（欠费、key 失效、限流）时如实向用户透传上游错误与含义：余额不足给「充值后重跑」与「降级程序材质/手工生成+--register」两条路，鉴权失败给 key 检查指引，不把欠费泛化成“无候选图”或静默跳过。
 
-结构化 assets 记录 `{path, sha256, source, license, usage, ai}`，sha256 为完整64位；AI 再加 `{model,prompt,seed,disclosure,qc:{textFree,geometry,continuity}}`。三查分别记录 passed/failed/not_performed，尚未审核必须 not_performed。草稿可带待审素材，最终三项必须 passed；不能以 pending 或一句“已检查”冒充。生成脚本输出 MANIFEST.json，主控审核后纳入 storyboard.assets，未实际使用的候选不算成片资产。品牌、字体和声音同样登记来源与授权。
+结构化 assets 记录 `{path, sha256, source, license, usage, ai}`，sha256 为完整64位；AI 再加 `{model,prompt,seed,disclosure,qc:{textFree,geometry,continuity}}`。三查分别记录 passed/failed/not_performed，尚未审核必须 not_performed。草稿可带待审素材，最终三项必须 passed；不能以 pending 或一句“已检查”冒充。生成脚本输出 MANIFEST.json，主控审核后纳入 storyboard.assets，未实际使用的候选不算成片资产。品牌、字体和声音同样登记来源与授权。**历史档案纪录片权属清单（v5.0.0，吸收自 archival-doc）**：对于 `documentary` 配方，必须在 `research/archival-rights.json` 严格维护真实档案（文献、版画、老照片、历史实拍视频）的权属台账（登记 source, collection, license: Public Domain / CC-BY, permalink, verificationMethod），未通过公共领域核验的素材严禁作为主资产入片。
 
 参考片只借结构、材质、运动与首尾呼应，不拿抽帧拼片。观察到“像AI”只能写推测，不声明其官方制作技术或比例。案例库候选总量不等于已核实原创模型作品数。
 
@@ -122,3 +122,5 @@ render.mjs 为每个媒体写 `.delivery.json`：schemaVersion=1、mediaSha256�
 抖音：实际含AI生成画面/合成配音时，按当期发布界面启用适用AI声明并保留相关标识。视频内小字说明不能代替平台按钮。不提供账户交易、地域绕行或过审保证。标题写“替代Opus做视频的流程”，避免未经测试的全面模型等价。
 
 X：提供长文与可拆线程，不假设所有账号都能发Articles；以账号界面权限为准。GitHub：只发授权仓库，保留许可证和上游署名；不得上传密钥、参考片、带隐私的日志或运行缓存。
+
+**剪映 / CapCut 原生工程草稿导出（v5.0.0，借鉴 dashi-animationstyle）**：完成渲染与验收后，可执行 `uv run python scripts/export_jianying.py <工程> --out <导出目录>`。脚本自动读取 storyboard、narration、timeline 与 mix_audio 台账，将全片分层拆解为视频主轨、解说旁白轨、背景音乐轨、逐句字幕轨，生成原生草稿工程目录（Mac 写入 `draft_info.json` 并隔离媒体至 Resources 规避沙盒权限阻断，Windows 写入 `draft_content.json`），用户可直接在剪映/CapCut 桌面端打开草稿进行可视化二次剪辑与微调。

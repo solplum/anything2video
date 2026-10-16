@@ -65,6 +65,30 @@
 
 全片节拍骨架按秒写进 `research/beat-sheet.json`：钩子 0.5s 内出现（禁 0.3s 以上空场/黑场开场）、hero moment 落位 60–75%、结尾定帧 0.8–1.2s 带微动效。beat sheet 是音画同读的创作正本（与实测 beat_grid 的分工见统一生产契约），先于建组定稿；音乐提名（曲库与程序编曲两通道）与 SFX 钉帧都从它取落点。
 
+## 动效四段律与介质法则（v5.0.0，方法论吸收 mg-styles-15 / xilo-opus-video / huashu-art-motion / dashi-animationstyle）
+
+### 1. 动效四段律（4-Phase Motion Protocol）
+单个镜头的生命周期严禁使用单一机械平移或线性透明度渐变，必须遵循微影视四段生命节律：
+1. **进场（Entrance，0.2–0.5s）**：带弹性质感（spring/overshoot 或 easeOutBack），引导视线聚焦。
+2. **主动作（Primary Action）**：紧密咬合解说关键词与物理事件（生动、变形、展开、计算、推演），经阻尼衰减回稳（damped settle）。
+3. **次要呼吸微动（Secondary Ambient Motion）**：主动作到位后，严禁画面全死；必须有背景环境层（浮尘 DustDrift、光晕呼吸 PaperBreath、微粒子微漂）持续运转，确保人眼能感知世界存活。
+4. **出场与转场（Exit / Transition）**：优雅收束或被下一镜头的签名物理过程吸收，严禁断崖式暴硬切。
+
+### 2. 独有介质动作法则（One Native Move）
+每部视频在其高潮或核心解释处（60%–75% hero moment），**必须有至少一次「只能由该介质/材质完成」的特征动作**：
+- **水墨**：墨滴入水晕开、水纹荡漾散发；
+- **粉笔**：板擦拂拭抹除、粉笔细碎尘末滑落；
+- **剪纸/拼贴**：折痕阴影透射、纸片错层掀开；
+- **工业机械**：齿轮啮合、插销卡嗒回弹、刻度表指针震颤；
+- **历史档案**：朱砂印鉴落章渗透、火漆印熔压、泛黄纸张微卷翻页。
+杜绝「不同风格只换了一套色板和 CSS 滤镜，运动全是千篇一律的 opacity/translate」。
+
+### 3. 时长最大值闭合定理（Timing Max Theorem）
+单镜头时长必须由三项客观时间的最大值决定：
+$$\text{duration} \ge \max(\text{action\_duration},\ \text{reading\_time\_of\_visual\_text},\ \text{narration\_duration} + \text{pauses})$$
+- 若解说词极短但画面包含复杂图表或代码，时长由观众阅读时间（按 5–7 字/秒或代码 3 token/秒）托底，后段由次要微动层承接，严禁未读完就切走。
+- 若更换音色导致旁白拉长，时长自动延伸，由全程次要微动层平滑吸收长尾，绝不允许出现动作做完了画面干等。
+
 ## 母题与复现（v4.3.0，方法论吸收 mexicat/pdoom-video，MIT）
 
 creative-brief 在「贯穿示例」之上升格为 treatment 六件套，写进 `research/creative-brief.md`：

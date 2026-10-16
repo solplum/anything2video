@@ -58,7 +58,7 @@ test('no python or pytest caches are committed into the skill tree', () => {
   const offenders = [];
   const walk = directory => {
     for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
-      if (entry.name === 'node_modules' || entry.name === '.git') continue;
+      if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === '.venv') continue;
       const full = path.join(directory, entry.name);
       if (entry.isDirectory()) {
         if (entry.name === '__pycache__' || entry.name === '.pytest_cache') offenders.push(path.relative(root, full));

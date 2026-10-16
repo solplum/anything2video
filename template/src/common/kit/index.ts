@@ -23,4 +23,7 @@ export * from './StrokeText';
 // v4.6.0 仪器解剖几何引擎（移植与重构自 Anatomy，MIT，wheresryan22）
 export * as iso from './iso';
 export * from './iso';
+// v5.0.0 历史档案与文献翻拍机摄影台（吸收自 archival-doc，MIT，用于真实历史影像纪录片）
+export * from './RostrumStage';
+
 
