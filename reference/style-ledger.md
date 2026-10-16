@@ -73,6 +73,7 @@
 | riso-print（riso-print） | 印刷不匀的表现深度有限；版纸翻动是形制简化；构图全程单机位固定 | 科普视频/samples-v4/riso-print/report.md 自陈三弱点 | 待首部正片复验 |
 | math-lab（math-lab） | 「平方」一幕 1:4:9 依赖柱高读数而非面积直觉；SC01 释放段运动密度偏低；SC02 秒刻度只到 t=2s | 科普视频/samples-v4/math-lab/report.md 自陈三弱点 | 待首部正片复验 |
 | hypnotic（hypnotic） | 万花筒楔内容偏「十字花」而非有机曼陀罗；隧道段信息量平；眼/隧道/万花筒三段过渡全靠 opacity 包络 | 科普视频/samples-v4/hypnotic/report.md 自陈三弱点 | 待首部正片复验 |
+| isometric-anatomy（isometric-anatomy） | 工业 3D 几何面数较密，大装配多零件时须注意分层渲染性能 | v4.6.0 Anatomy 移植 | 首版待首部正片复验 |
 
 新卡入库时本表必须有一行（无短板写「无已知短板（首版）」，不留空）。
 
@@ -141,6 +142,7 @@
 | 孔版 | Risograph 孔版印刷 | riso-print | 讲解 |
 | 数学屋 | 数学实验室 | math-lab | 讲解 |
 | 催眠 | 迷幻催眠视幻觉 | hypnotic | 讲解 |
+| 仪器解剖 | 工业机械与真实体解剖（v4.6.0） | isometric-anatomy | 讲解 |
 
 **v4.0.0 战役批注（2026-10-08）**：38 新卡显示名如上（主类型取自各工程 project.json `recipe`：explainer=讲解 / promo=宣传）；逐卡短板已登记短板表（实据=各工程 report.md 自陈三弱点）。ink-tea 历史行状态已改「已复活重做（v4.0.0），待总验收」。
 

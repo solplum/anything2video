@@ -1,6 +1,6 @@
 {
   "skill_name": "anything2video",
-  "version": "4.6.0",
+  "version": "5.0.0",
   "evals": [
     {
       "id": 1,
@@ -33,6 +33,14 @@
       "expected_output": "project.json 声明 1080x1920 原生竖屏。无字幕成片通过 probe_subtitle_band.py --band-ratio 0.73 门禁，关键内容避开底部 350px 和右侧 160px。包含 WordLitCaption 逐字点亮字幕与 RecapFrame 结尾复习卡。",
       "target_recipe": "recipes/explainer.md",
       "target_style": "styles/hanazi-916"
+    },
+    {
+      "id": 5,
+      "name": "historical_archival_documentary",
+      "prompt": "根据公有领域历史档案制作一段关于'1911年第一届索尔维会议（Solvay Conference）'的文献纪录片。要求严格维护 research/archival-rights.json 权属存证台账，使用 RostrumStage 进行照片微距平滑扫描与学者标注，遵循动效四段律，并导出支持二次微调的剪映原生草稿工程。",
+      "expected_output": "project.json 声明 recipe 为 documentary。生成真实的 research/archival-rights.json 台账记录 Public Domain 馆藏凭证。使用 RostrumStage 呈现老照片 Ken Burns 慢推、光学暗角与文献存证题头。通过 export_jianying.py 成功导出多轨草稿目录。",
+      "target_recipe": "recipes/documentary.md",
+      "target_style": "styles/sand"
     }
   ]
 }
