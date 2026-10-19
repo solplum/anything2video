@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-19",
+  "renderer": "Remotion 4.0.507; official pinned Chrome Headless Shell; existing scripts/render.mjs",
+  "scope": "Controlled opt-in teaching treatment; reconstructed kit baseline, not a pixel-identical historical source recreation or a full production acceptance.",
+  "sources": {
+    "historicalAudioSource": "samples/line-art-sample.mp4",
+    "historicalAudioSourceSha256": "925b5becb5d6c4d2171056733de060b6d45257106f91878924cc6bd110883b86",
+    "kitSha256": "9b5537ddd4cd753ecdc7b7d5ee402e730bd2bcfc50e4e8b9c418c348063e543d",
+    "copiedAudioSha256": "a0b1d9b1e8928a78b1eafc6cec87fea458f705a9e853914ef0cd5af920576906",
+    "decodedOutputAudioPcmS16leSha256": "cdbb1aab8d7a899a84dcf2f7f509b40d315c4d4fe06edd8311de23263196eea9",
+    "audioMatchedBetweenVariants": true
+  },
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "frames": 411,
+    "pictureSeconds": 13.7,
+    "audioAndContainerSeconds": 13.76,
+    "fullDecode": "passed: both variants and side-by-side comparison",
+    "originalDrawAndForceCueTimings": "unchanged"
+  },
+  "tests": {
+    "command": "node --test tests/*.test.mjs",
+    "passed": 104,
+    "failed": 0,
+    "skipped": 0,
+    "newTests": 5,
+    "bothProjectTypechecks": "passed",
+    "bothStoryboardChecks": "passed",
+    "freshFixturePreparation": "passed",
+    "kitDefaultByteIdentity": "passed"
+  },
+  "visualReview": {
+    "status": "reviewed_selected_frames",
+    "oneBasedFramesPerVariant": [
+      16,
+      103,
+      244,
+      256,
+      261,
+      295,
+      301,
+      324,
+      337,
+      343,
+      401,
+      411
+    ],
+    "decodedFramesViewedAtMobileWidth": 480,
+    "observations": [
+      "Opening question provides context before the bridge is recognizable.",
+      "40px load/cable labels and 38px caveat remain readable at 480px wide, without text clipping or labels covering the force path.",
+      "End conclusion shares the unchanged bridge diagram; upper whitespace is deliberately used for teaching."
+    ],
+    "stillness": {
+      "sourceFrameRange": [
+        343,
+        411
+      ],
+      "frames": 69,
+      "seconds": 2.3,
+      "renderStill343Equals401": true,
+      "note": "Source stills are identical; decoded H.264 frames need not be byte-identical because of inter-frame compression."
+    }
+  },
+  "notPerformed": [
+    "Continuous real-time playback review",
+    "New listening/voice-intelligibility review",
+    "Audience comprehension study",
+    "New TTS generation or full end-to-end production certification"
+  ],
+  "files": {
+    "control.mp4": "bfc72265ba0e451585258152b61e95449fe60889b7e7c949e0020f9f4289005e",
+    "teaching.mp4": "f27f8fb36ba688944bd664c873483ce803e9ef0e6fd687825d4db366871b9d63",
+    "comparison.mp4": "3d0da2271e8558cf6030ae6b31b67a815270207eb0ba5c6ed788ce279e17de1d",
+    "teaching-480.png": "662ed4f885fd992e2c918dbbddd48c731da953ff687b00d623318d42da76a1f9",
+    "Scene.tsx": "92de8574f29d5ec1325eccc5e6a906967932933d62a9204d0753e5c6af5eddc6",
+    "Root.tsx": "d3d68b0b7842832373d2af9f6fc031fc575032af34cf058ff45be12c5a045ab3",
+    "prepare.mjs": "d0dd7d403ed84ca6fc068ea3ea2adfa8a3218e32055d3188ac0239b5c0ad2d6d"
+  },
+  "sourceModules": {
+    "styles/line-art/teaching.tsx": "802236a89086f42ecd4c49f559b67e4bc603cf0903613f16b4a12e0365e43ee9",
+    "styles/line-art/teaching-timing.mjs": "a909ea64fa342af86c4953742895ef8ed4a0edad454dffbc841c22755b6900d6",
+    "styles/line-art/teaching-timing.d.mts": "ce893ed42104367e5aeeff22fc038d5eeaa09bb7e33e0e9a088221190e80db0b"
+  },
+  "frameEvidence": {
+    "control": {
+      "16": "1d2bef42f69062084c4798072daa92573f9e55d3fa6f786c3403f5767ae18b17",
+      "103": "f678afac4088d2b6a3bb34407c7afd11f0d5f6eaa00e9eb8a1a7965af280606e",
+      "244": "07f88c89802ac3f0788244468f8d1936aa4b9cf534c6eead27af55cff9ac109d",
+      "256": "d3d4f26112be62e878696453808f4baaf78d87f9e5ca32080b3437e799c2b2aa",
+      "261": "ad94ba9eb7e627c13a567e16c8fe7f810d9c4b99d964f14ad6a672e55f484e3c",
+      "295": "68fc31903932fbcb4571eaa4e2cf70d5baab66bd80c6de356f75b2748243ec7f",
+      "301": "f9fb8a56e6b6fd85496786e0d99d44d679394d195ac80459876670ceba52a77d",
+      "324": "a427778060621ba95416571ef4db4e87030799c6e64f06b10aad9dae1675eb40",
+      "337": "26f8088f2819434bac5f3c0a91d1cda654236b7b8ceb7070480b8f6e2dc73ee1",
+      "343": "66d4c4d91323c068c7c7c4e85ff44ff54fa975c6dd9fbe7e9055d9e45896124c",
+      "401": "a3466fd977ab7e29facfedb6dd4bd46417093092f7e9f7978eda0c572ca6986f",
+      "411": "512ae49176c8ab7048ae308550a3f06cb8f92ddeac3f78a5aaf287cbc51886d6"
+    },
+    "teaching": {
+      "16": "ec2b4524bce630b01770ca8212cc2275e82b7bb3f24386d7be5ae41ef9ded4b8",
+      "103": "bfb549e8e190b7675694797713d8cbebb52c9abc3e20fa338ff050c7c5f1c749",
+      "244": "ef4230775daa92d7c4bd539e17daaf94a351a1358e9970148b2a55323f29788a",
+      "256": "58454f3b111eb9ff04eaa46d63da15c241e751a60079e9d3dc5ad98c311e4baf",
+      "261": "f290764ad593818b520a1ea082718969c419ea3efa5e2a56c1362356c8bd3424",
+      "295": "088bc0b72c0803d3c1c252a9f3bc329efc28efa1970f9f8f5e319307e2ecea7f",
+      "301": "73a86bcc17819dd9580f04216cb22ee846b893fee36aa169627bf02fc3301950",
+      "324": "f865e3011ebbcbc39379a863b169411a0948c23ddf8a15d5b5f09ed37696da7d",
+      "337": "81efd01958c07240075c0b4fc1fc7b8e636c138cc0b8f2f6496981f045353ea8",
+      "343": "ccdf3e2efa8d44153448c6b7e9b6bd089f34dd3f1d16af213a2c14f8a46ea5bd",
+      "401": "358b59b74035a34f36fde687fafec3f8bb679dc3f0f6c1b4961c4a4c1ae959f5",
+      "411": "850cef28d329dda3d115f57e2393fdd9358bd4a3af46d7414db01990bfb0b554"
+    }
+  }
+}

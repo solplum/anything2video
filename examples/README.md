@@ -11,6 +11,10 @@
 
 每条配同名 `.gif` 预览（前 4.5s）。完整讲解片（黑底 MG、配音字幕章节进度条）参考 `reference/explainer/sample-rag/`（含成片参考帧与全套镜头源码）。
 
+## 可复现的讲解对照
+
+[line-art teaching A/B](line-art-teaching/README.md)：同音轨、同绘制时间轴的 13.7 秒对照，提供 opt-in 可读层、源码和验证记录。保留原风格，改善观看理由、标注与结尾读图驻留；不替换历史样片。
+
 ## 素材署名
 
 样片中全部画面均为 Remotion 代码绘制；配音为 TTS 合成。BGM 来自 Kevin MacLeod（incompetech.com），以 CC BY 4.0 / 免费许可使用：
