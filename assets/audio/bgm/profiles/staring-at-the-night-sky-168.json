@@ -351,5 +351,12 @@
   "date": "2026-10-11",
   "basis": "用户授权主控定标：bgm-library 实战映射 + bgm_analyze 结构数据推定"
  },
- "owner": "skill"
+ "owner": "skill",
+ "release_use": {
+  "status": "cleared",
+  "license": "Mixkit Stock Music Free License",
+  "evidence": "assets/audio/ATTRIBUTION.md",
+  "license_url": "https://mixkit.co/license/#musicFree",
+  "note": "Existing repository attribution record; verify intended distribution and current terms before release. Ownership alone is not clearance."
+ }
 }
