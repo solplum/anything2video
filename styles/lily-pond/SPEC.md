@@ -1,5 +1,7 @@
 # SPEC：莫奈睡莲（lily-pond）
 
+> **本仓复用更新（2026-10-19）**：本目录 `strokes.ts` 现在保留为兼容入口，唯一实现位于 `../shared/paint/strokes.ts`。新手动复制必须带上共享兄弟目录，布局见 [共享代码说明](../shared/README.md)；下文 `samples-v4/` 是历史源工程记录，旧包外工程中的完整副本不受影响。
+
 **正本源工程**：`samples-v4/lily-pond`（2026-10-08 交付）｜**图元库**：工程 `src/style/strokes.ts`（油画族共享渲染器，与共享正本 `samples-v4/shared/paint/strokes.ts` 逐字节一致，diff 核实）+ `src/style/world.ts`（底稿/四遍 boil 分档笔触/桥独立成层/色彩阴影/烘焙 6 态）+ `src/style/motion.ts`（光斑颤动群/睡莲漂/柳影波动/涟漪/紫藤/桥倒影/hero 包络）+ `src/style/kit.tsx`（PaintCanvas 6fps 烘焙轮换 + rippleWipe 转场 + 信息层）；**共享正本**：`samples-v4/shared/paint/strokes.ts`
 **风格句**：短横笔水面 + 分档 boil（水与叶沸、结构与岸不沸）+ 光斑颤动群 + 桥深衬底亮线——「莫奈睡莲池：水面替天空记笔记，记的全是光」。
 **技法借鉴** huashu-art-motion `lib/paint.js` P.strokes/P.swatch + `scenes/28_monet.js`（176 行）+ `lib/transitions.js` ripple（:486-507 已核行，MIT, alchaincyf），TS/TSX 重写——机制与参数级借鉴（四遍 boil 分档/区域色板/桥深衬底亮线/光斑双正弦截断+10fps 跳位/涟漪虚线椭圆/紫藤点列/色彩阴影 source-atop/ripple 行条错位+横笔椭圆荡开），结构、命名、API 全部按 Remotion/TS 惯用法重写，零代码拷贝。借鉴登记：`技法借鉴 huashu-art-motion 28_monet (MIT, alchaincyf), TS 重写`。

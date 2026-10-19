@@ -1,5 +1,7 @@
 # SPEC：蒙克表现主义（scream-warp）
 
+> **本仓复用更新（2026-10-19）**：本目录 `strokes.ts` 现在保留为兼容入口，唯一实现位于 `../shared/paint/strokes.ts`。新手动复制必须带上共享兄弟目录，布局见 [共享代码说明](../shared/README.md)；下文 `samples-v4/` 是历史源工程记录，旧包外工程中的完整副本不受影响。
+
 **正本源工程**：`samples-v4/scream-warp`（2026-10-08 续作交付）｜**图元库**：工程 `src/style/flow.ts`（长弯流线笔 + 整幅行列 warp）+ `src/style/world.ts`（呐喊世界：底稿/方向场/分区参数/血色色带/烘焙）+ `src/style/kit.tsx`（React 层：ScreamCanvas/ScreamWarp/SurgeReveal/TitleCard/EndCard）+ `src/style/strokes.ts`（油画族共享底座拷入）；**共享正本**：`samples-v4/shared/paint/strokes.ts`（swirl-oil 工人产出，油画族四卡共用）
 **风格句**：长弯流线笔沿方向场积分 + 整幅行列正弦 warp（世界本身在扭）+ 血色天空 7 色波浪色带 + screamWarp 呐喊色带下压转场 + 8fps boil——「蒙克的尖叫是看不见的声音把整个世界扭弯」。
 **技法借鉴** huashu-art-motion `lib/brush.js` P.flowSeeds/P.flowLines + `lib/kit.js` K.warpRows/K.warpCols + `transitions.js:442-454` screamWarp + `references/风格配方/19_munch.md`（MIT, alchaincyf），TS 重写——「种子沿随时间扭动的方向场积分、越出本区即停」「行列整体正弦位移 + margin 拉伸防露缝」「波浪前沿压色带」机制与参数级借鉴，结构、命名、API 全部按 Remotion/TS 惯用法重写，零代码拷贝。借鉴登记：`移植自 huashu-art-motion lib/brush.js P.flowSeeds/flowLines (MIT, alchaincyf), TS 重写`。

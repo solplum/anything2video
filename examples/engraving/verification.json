@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "renderedAt": "2026-10-19",
+  "renderer": "Remotion 4.0.507; pinned official Chrome Headless Shell",
+  "audio": "No narration/music/SFX; both decoded AAC tracks are exactly zero-valued PCM (1,157,120 float32 samples each).",
+  "visualReview": {
+    "method": "Inspect actual final PNGs at one-based frames 30,120,210,300,360 in landscape and portrait, then sampled decoded video frames.",
+    "observed": [
+      "No text clipping or callout overlap",
+      "Lit/shadow leader endpoints inside target regions",
+      "Outline, contour hatching, crosshatching and later transparent wash are visible",
+      "Portrait uses a native reflowed composition"
+    ],
+    "limitations": [
+      "Sampled-frame inspection, not continuous human playback",
+      "Stylized distance-field contours retain a central cusp; no cross-platform pixel-identity claim",
+      "Material study, not full narrated-film acceptance"
+    ]
+  },
+  "videos": [
+    {
+      "path": "samples/engraving-sample.mp4",
+      "sha256": "0ef73b3d3e219e7df02c22379e7c1a4d3efb00a3d871825261cb82e17ec6ed8a",
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "frames": 360,
+      "videoDurationSeconds": 12.0,
+      "containerDurationSeconds": 12.053333,
+      "fullDecode": "pass"
+    },
+    {
+      "path": "examples/engraving/portrait.mp4",
+      "sha256": "4f9cf5d736eed06f43b9b1ffa990ee46aa45421257d754fc22f9e2a87448314f",
+      "width": 720,
+      "height": 1280,
+      "fps": "30/1",
+      "frames": 360,
+      "videoDurationSeconds": 12.0,
+      "containerDurationSeconds": 12.053333,
+      "fullDecode": "pass"
+    }
+  ],
+  "pixelSeek": {
+    "pass": true,
+    "browser": "Remotion 4.0.507 pinned official Chrome Headless Shell",
+    "results": [
+      {
+        "width": 640,
+        "height": 490,
+        "hashes": [
+          {
+            "frame": 300,
+            "hash": "b10c8fdfd4438e6b28459cddbaab68cf5c0e45081ae4ed74d684c9b3f918ddb7"
+          },
+          {
+            "frame": 30,
+            "hash": "3dfbf13819837bd0c987ceee9783b57ab193a0461b5bdc17dc21f543b85b2c14"
+          },
+          {
+            "frame": 300,
+            "hash": "b10c8fdfd4438e6b28459cddbaab68cf5c0e45081ae4ed74d684c9b3f918ddb7"
+          },
+          {
+            "frame": 120,
+            "hash": "5fc8b0157b80b11ba2b8cfe7721fbdd7c5f985d23ff29d283fd4278e3390c953"
+          },
+          {
+            "frame": 300,
+            "hash": "b10c8fdfd4438e6b28459cddbaab68cf5c0e45081ae4ed74d684c9b3f918ddb7"
+          },
+          {
+            "frame": 210,
+            "hash": "4474d7416d1d841861777517837a0d9be44e99f2e717ac77b4d5a49bb443f9b2"
+          },
+          {
+            "frame": 300,
+            "hash": "b10c8fdfd4438e6b28459cddbaab68cf5c0e45081ae4ed74d684c9b3f918ddb7"
+          }
+        ]
+      },
+      {
+        "width": 650,
+        "height": 650,
+        "hashes": [
+          {
+            "frame": 300,
+            "hash": "965c60d42ee75c5cc94a739e2f4bdecd3d79a1aa1173fb4fb6c17e4ef4d42c00"
+          },
+          {
+            "frame": 30,
+            "hash": "50f175c28fa3b9b04465ee864647923d7487f11d01317e90ead0ed188ffbdebd"
+          },
+          {
+            "frame": 300,
+            "hash": "965c60d42ee75c5cc94a739e2f4bdecd3d79a1aa1173fb4fb6c17e4ef4d42c00"
+          },
+          {
+            "frame": 120,
+            "hash": "bb80ee313f75d1a91ce2178d96e2c45d58fb1eb923397160782dd982e85e85c6"
+          },
+          {
+            "frame": 300,
+            "hash": "965c60d42ee75c5cc94a739e2f4bdecd3d79a1aa1173fb4fb6c17e4ef4d42c00"
+          },
+          {
+            "frame": 210,
+            "hash": "b47e98cb0a297108eba2ae99997c51e7a7a3168fa580226b86dde3a3b89eb471"
+          },
+          {
+            "frame": 300,
+            "hash": "965c60d42ee75c5cc94a739e2f4bdecd3d79a1aa1173fb4fb6c17e4ef4d42c00"
+          }
+        ]
+      }
+    ]
+  }
+}

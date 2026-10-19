@@ -19,7 +19,7 @@ export const VIDEO = {
   recipe: 'explainer' as 'explainer' | 'promo' | 'epic',
   /**
    * 风格（v3.4.0 套餐制风格侧）：视觉皮肤，浅合并覆写配方 palette/chrome（含字幕/进度条/结尾机身件）。
-   * 11 个：deep-space 深空｜mg-purple 夜航｜epic-paper 神话｜sand/chalk/blueprint/neon/
+   * 运行时支持见 styles/catalog.json 的 runtimeSkin；原始 11 个加 engraving 铜版雕刻。deep-space 深空｜mg-purple 夜航｜epic-paper 神话｜sand/chalk/blueprint/neon/
    * pixel-arcade/paper-collage/swiss-print/crt-terminal（8 SKU）。样片与锁死项见 samples/index.html。
    * 缺省 undefined = 纯配方视觉（与旧版逐值等价）。选型流程见 SKILL.md「确认与授权」：单问挑一张套餐卡。
    */

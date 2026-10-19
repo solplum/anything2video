@@ -1,10 +1,12 @@
 # styles/ 风格库正本
 
-每个子目录提供图元库、`SPEC.md` 风格约定、`sample.jpg` 静态回归样张和适用资产。目标是复用已有笔触、材质和组件，同时为本片重新解决内容、画幅、动作与声音。样张存在和风格组件可用，不等于新视频已通过完整验证。
+风格目录按实际能力提供图元库、`SPEC.md` 风格约定、静态回归样张和适用资产；`shared/` 只存公共依赖，不是风格卡。`isometric-anatomy` 尚无渲染预览，不能假定每个目录都带 `sample.jpg`。目标是复用已有笔触、材质和组件，同时为本片重新解决内容、画幅、动作与声音。样张存在和风格组件可用，不等于新视频已通过完整验证。
 
-> **套餐口径（v3.5.0 起）**：本目录 16 个 SKU + 3 张配方正本脸（deep-space 深空 / mg-purple 夜航 / epic-paper 神话，值=原配方正本）= 套餐池 19 张（卡=类型+风格，一张卡一次定盘；画幅是卡属性非第三筛选轴）。工程 `config.style` 选皮肤（token 级：调色板 + 字幕/进度条/结尾机身件）；**笔触与图元语言仍走本目录复用流程**——皮肤管 token，不管图元重画。选型先查 `reference/style-ledger.md`（口味锚、判例与新旧名映射表）。
+> **当前口径**：63 个兼容 ID、59 个选择入口、12 个实际 `config.style` 皮肤。
+>
+> **选型入口**：先看 [catalog.json](catalog.json) 与 [离线家族选择页](../samples/index.html)。相似外观作为家族变体展示，旧 ID、导入路径、种子、recipe 关联全部保留。catalog 的 runtimeSkin=true 才能用于 config.style；其余是手动接入的 kit。分类不替成员选择 renderer。四组理由与兼容验证见 [本轮记录](../docs/style-system-round1.md)。
 
-## 当前 SKU
+## 图元与历史资料索引
 
 | 目录 | 风格 | 历史源工程/样片 | 纹理或字体 |
 |---|---|---|---|
@@ -65,6 +67,7 @@
 | `kinetic-type/` | 信息排版动态字体 | 科普视频/samples-v4/kinetic-type（借鉴 prompt-motion＋mg15） | 无（纯代码） |
 | `riso-print/` | Risograph 孔版印刷 | 科普视频/samples-v4/riso-print（借鉴 prompt-motion＋mg15） | 无（纯代码） |
 | `math-lab/` | 数学实验室 | 科普视频/samples-v4/math-lab（借鉴 prompt-motion＋huashu） | 无（纯代码） |
+| `engraving/` | 铜版雕刻：随形排线、交叉加深、透明设色 | examples/engraving，原创梨形，横竖屏 12 秒无声研究 | 随包 Noto Serif SC / Fraunces（OFL） |
 | `hypnotic/` | 迷幻催眠视幻觉 | 科普视频/samples-v4/hypnotic（借鉴 prompt-motion） | 无（纯代码） |
 | `isometric-anatomy/` | 仪器解剖/物理机械 | 科普视频/samples-v4/isometric-anatomy（借鉴 Anatomy，MIT，wheresryan22） | 无（纯代码解析几何 SVG，四色调着色） |
 
@@ -80,12 +83,12 @@
 ## 同风格复用
 
 1. 用skill的 `scripts/init.mjs` 在包外建立空工程；进入工程执行 `npm install`、`uv sync`、`npx remotion browser ensure`。可显式设置 `BROWSER_EXECUTABLE` 使用可用浏览器。旧 `new_project.sh`、拷贝其他项目 `node_modules` 或浏览器缓存不作为依赖安装规范。
-2. 完整读所选 `SPEC.md`，选需用图元和资产复制到项目，修正导入与 `staticFile` 路径。登记纹理、字体、图标的来源、许可、完整sha256及用途。
+2. 完整读所选 `SPEC.md`，选需用图元和资产复制到项目，修正导入与 `staticFile` 路径。`light-dabs/lily-pond/swirl-oil/scream-warp` 的 `strokes.ts` 已是兼容包装，新复制必须同时带上 `shared/paint/strokes.ts`，保留共享兄弟目录关系，具体布局见 [共享代码复用说明](shared/README.md)。旧包外工程已有的完整实现不受影响。登记纹理、字体、图标的来源、许可、完整sha256及用途。
 3. 按本项目width/height/fps重排，保留风格语言；固定横屏坐标、旧探针阈值和旧效果配额不能覆盖 `reference/production-contract.md`。中文、长命令和平台安全区单独核定。
 4. 先渲两张签名帧与sample并排检查色板、笔触和构图，再渲开场、复杂中段、结尾的实际运动片段。静态回归只证明已比对的静态项；连续动作、字幕和声音另外审查。
 5. 组任务书写所选图元API、需要保持的风格参数和允许变化。风格有意使用阶梯、扫描线或静止时，记录范围并选择适合的探针；豁免不自动等于通过。
 
-可在技能根运行 `node template/scripts/styles_check.mjs` 检查资产存在性和icons正本关系。这个检查不能证明字形许可、动画正确、教学可读或整片好看。
+可在源码仓库运行 `node --test tests/style-system.test.mjs tests/engraving.test.mjs` 和 `node scripts/style-catalog.mjs --check` 检查兼容契约及选型一致性。历史 `node template/scripts/styles_check.mjs` 只覆盖 8 个旧 SKU 的资产存在性和 icons 正本关系，正本不可访问会 SKIP；它不是 63-ID 全库验证。这些检查均不能独自证明字形许可、栅格像素、连续动画、教学可读或整片好看。
 
 ## 新风格入库
 

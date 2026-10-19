@@ -41,6 +41,12 @@ test('core inventory walks the real tree including gallery, audio-engine and sam
     'reference/production-contract.md',
     'reference/environment-capabilities.md',
     'scripts/build-editions.mjs',
+    'LICENSE-THIRDPARTY/MIT-lemo-opuscar.txt',
+    'styles/engraving/UPSTREAM.md',
+    'styles/shared/paint/strokes.ts',
+    'examples/engraving/prepare.mjs',
+    'examples/engraving/README.md',
+    'docs/style-system-round1.md',
   ]) {
     assert.ok(files.includes(anchor), `core inventory missing ${anchor}`);
   }

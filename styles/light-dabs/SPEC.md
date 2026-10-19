@@ -1,5 +1,7 @@
 # SPEC：印象派光斑短笔触（light-dabs）
 
+> **本仓复用更新（2026-10-19）**：本目录 `strokes.ts` 现在保留为兼容入口，唯一实现位于 `../shared/paint/strokes.ts`。新手动复制必须带上共享兄弟目录，布局见 [共享代码说明](../shared/README.md)；下文 `samples-v4/` 是历史源工程记录，旧包外工程中的完整副本不受影响。
+
 **正本源工程**：`samples-v4/light-dabs`（2026-10-08 验证交付）｜**图元库**：工程 `src/style/strokes.ts`（流场笔触渲染器，与共享正本逐字节一致）+ `src/style/world.ts`（底稿/两遍分区笔触/方向场/区域色板/烘焙缓存）+ `src/style/actors.ts`（少女/猫/角色细笔触/五官线）+ `src/style/motion.ts`（光斑/罂粟/云/猫尾/帘缘微光运动层）+ `src/style/kit.tsx`（PaintCanvas 烘焙态轮换 + React 信息层）；**共享正本**：`samples-v4/shared/paint/strokes.ts`（油画族共用，本工程拷用件经 diff 核实与正本一致）
 **风格句**：两遍分区笔触（主画面粗笔＋窗景细笔）+ 方向场分区摇曳 + 光斑「双正弦截断」明灭 + 笔触位置固定不沸腾——「印象派=光斑短笔触：画的是光落在东西上那一秒」。
 **技法借鉴** huashu-art-motion `lib/paint.js` P.strokes/P.swatch + `scenes/08_impressionism.js`（206 行，MIT, alchaincyf），TS 重写——机制与参数级借鉴（抖动网格取底稿色/区域色板混底/两遍分区参数/方向场分区/stable 防重洗契约/双正弦截断光斑/角色 source-atop 细笔），结构、命名、API 全部按 Remotion/TS 惯用法重写，零代码拷贝。借鉴登记：`技法借鉴 huashu-art-motion 08_impressionism (MIT, alchaincyf), TS 重写`。

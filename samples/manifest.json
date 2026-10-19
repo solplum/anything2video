@@ -15,7 +15,10 @@
       "fps": "30/1",
       "frames": 385,
       "durationSeconds": 12.89,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "deep-space",
+      "familyId": "dark-editorial",
+      "runtimeSkin": true
     },
     {
       "path": "mg-purple-sample.mp4",
@@ -30,7 +33,10 @@
       "fps": "30/1",
       "frames": 420,
       "durationSeconds": 14.06,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "mg-purple",
+      "familyId": "dark-editorial",
+      "runtimeSkin": true
     },
     {
       "path": "epic-paper-sample.mp4",
@@ -45,7 +51,10 @@
       "fps": "30/1",
       "frames": 600,
       "durationSeconds": 20.05,
-      "poolType": "epic"
+      "poolType": "epic",
+      "styleId": "epic-paper",
+      "familyId": "epic-paper",
+      "runtimeSkin": true
     },
     {
       "path": "sand-sample.mp4",
@@ -60,7 +69,10 @@
       "fps": "30/1",
       "frames": 600,
       "durationSeconds": 20.05,
-      "poolType": "epic"
+      "poolType": "epic",
+      "styleId": "sand",
+      "familyId": "sand",
+      "runtimeSkin": true
     },
     {
       "path": "chalk-sample.mp4",
@@ -75,7 +87,10 @@
       "fps": "30/1",
       "frames": 418,
       "durationSeconds": 13.99,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "chalk",
+      "familyId": "chalk",
+      "runtimeSkin": true
     },
     {
       "path": "blueprint-sample.mp4",
@@ -90,7 +105,10 @@
       "fps": "30/1",
       "frames": 407,
       "durationSeconds": 13.61,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "blueprint",
+      "familyId": "blueprint",
+      "runtimeSkin": true
     },
     {
       "path": "neon-sample.mp4",
@@ -105,7 +123,10 @@
       "fps": "30/1",
       "frames": 362,
       "durationSeconds": 12.12,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "neon",
+      "familyId": "neon",
+      "runtimeSkin": true
     },
     {
       "path": "pixel-arcade-sample.mp4",
@@ -120,7 +141,10 @@
       "fps": "30/1",
       "frames": 411,
       "durationSeconds": 13.76,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "pixel-arcade",
+      "familyId": "pixel-arcade",
+      "runtimeSkin": true
     },
     {
       "path": "paper-collage-sample.mp4",
@@ -135,7 +159,10 @@
       "fps": "30/1",
       "frames": 391,
       "durationSeconds": 13.08,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "paper-collage",
+      "familyId": "paper-collage",
+      "runtimeSkin": true
     },
     {
       "path": "swiss-print-sample.mp4",
@@ -150,7 +177,10 @@
       "fps": "30/1",
       "frames": 385,
       "durationSeconds": 12.89,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "swiss-print",
+      "familyId": "swiss-print",
+      "runtimeSkin": true
     },
     {
       "path": "crt-terminal-sample.mp4",
@@ -165,7 +195,10 @@
       "fps": "30/1",
       "frames": 376,
       "durationSeconds": 12.59,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "crt-terminal",
+      "familyId": "crt-terminal",
+      "runtimeSkin": true
     },
     {
       "path": "recipe-promo-sample.mp4",
@@ -221,7 +254,10 @@
       "fps": "30/1",
       "frames": 405,
       "durationSeconds": 13.55,
-      "poolType": "epic"
+      "poolType": "epic",
+      "styleId": "guofeng-scroll",
+      "familyId": "guofeng-scroll",
+      "runtimeSkin": false
     },
     {
       "path": "paperclip-sticker-sample.mp4",
@@ -236,7 +272,10 @@
       "fps": "30/1",
       "frames": 414,
       "durationSeconds": 13.85,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "paperclip-sticker",
+      "familyId": "paperclip-sticker",
+      "runtimeSkin": false
     },
     {
       "path": "hanazi-916-sample.mp4",
@@ -251,7 +290,10 @@
       "fps": "30/1",
       "frames": 379,
       "durationSeconds": 12.63,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "hanazi-916",
+      "familyId": "hanazi-916",
+      "runtimeSkin": false
     },
     {
       "path": "aurora-glass-sample.mp4",
@@ -266,7 +308,10 @@
       "fps": "30/1",
       "frames": 431,
       "durationSeconds": 14.42,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "aurora-glass",
+      "familyId": "aurora-glass",
+      "runtimeSkin": false
     },
     {
       "path": "line-art-sample.mp4",
@@ -281,7 +326,10 @@
       "fps": "30/1",
       "frames": 411,
       "durationSeconds": 13.76,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "line-art",
+      "familyId": "line-art",
+      "runtimeSkin": false
     },
     {
       "path": "isometric-city-sample.mp4",
@@ -296,7 +344,10 @@
       "fps": "30/1",
       "frames": 389,
       "durationSeconds": 13.01,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "isometric-city",
+      "familyId": "miniature-diorama",
+      "runtimeSkin": false
     },
     {
       "path": "morph-sample.mp4",
@@ -311,7 +362,10 @@
       "fps": "30/1",
       "frames": 413,
       "durationSeconds": 13.82,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "morph",
+      "familyId": "morph",
+      "runtimeSkin": false
     },
     {
       "path": "liquid-flow-sample.mp4",
@@ -326,7 +380,10 @@
       "fps": "30/1",
       "frames": 411,
       "durationSeconds": 13.76,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "liquid-flow",
+      "familyId": "liquid-flow",
+      "runtimeSkin": false
     },
     {
       "path": "pop-comic-sample.mp4",
@@ -341,7 +398,10 @@
       "fps": "30/1",
       "frames": 367,
       "durationSeconds": 12.288,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "pop-comic",
+      "familyId": "pop-comic",
+      "runtimeSkin": false
     },
     {
       "path": "popup-book-sample.mp4",
@@ -356,7 +416,10 @@
       "fps": "30/1",
       "frames": 387,
       "durationSeconds": 12.949,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "popup-book",
+      "familyId": "popup-book",
+      "runtimeSkin": false
     },
     {
       "path": "clay-town-sample.mp4",
@@ -371,7 +434,10 @@
       "fps": "30/1",
       "frames": 378,
       "durationSeconds": 12.65,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "clay-town",
+      "familyId": "miniature-diorama",
+      "runtimeSkin": false
     },
     {
       "path": "studio-oneshot-sample.mp4",
@@ -386,7 +452,10 @@
       "fps": "30/1",
       "frames": 386,
       "durationSeconds": 12.928,
-      "poolType": "epic"
+      "poolType": "epic",
+      "styleId": "studio-oneshot",
+      "familyId": "studio-oneshot",
+      "runtimeSkin": false
     },
     {
       "path": "pop-dot-sample.mp4",
@@ -401,7 +470,10 @@
       "fps": "30/1",
       "frames": 369,
       "durationSeconds": 12.352,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "pop-dot",
+      "familyId": "pop-dot",
+      "runtimeSkin": false
     },
     {
       "path": "ink-boil-sample.mp4",
@@ -416,7 +488,10 @@
       "fps": "30/1",
       "frames": 361,
       "durationSeconds": 12.096,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "ink-boil",
+      "familyId": "ink-boil",
+      "runtimeSkin": false
     },
     {
       "path": "ink-plate-sample.mp4",
@@ -431,7 +506,10 @@
       "fps": "30/1",
       "frames": 389,
       "durationSeconds": 13.013,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "ink-plate",
+      "familyId": "print-motion",
+      "runtimeSkin": false
     },
     {
       "path": "soft-jelly-sample.mp4",
@@ -446,7 +524,10 @@
       "fps": "30/1",
       "frames": 365,
       "durationSeconds": 12.224,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "soft-jelly",
+      "familyId": "soft-jelly",
+      "runtimeSkin": false
     },
     {
       "path": "vhs-outrun-sample.mp4",
@@ -461,7 +542,10 @@
       "fps": "30/1",
       "frames": 397,
       "durationSeconds": 13.291,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "vhs-outrun",
+      "familyId": "vhs-outrun",
+      "runtimeSkin": false
     },
     {
       "path": "target-lock-sample.mp4",
@@ -476,7 +560,10 @@
       "fps": "30/1",
       "frames": 385,
       "durationSeconds": 12.885,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "target-lock",
+      "familyId": "target-lock",
+      "runtimeSkin": false
     },
     {
       "path": "swirl-oil-sample.mp4",
@@ -491,7 +578,10 @@
       "fps": "30/1",
       "frames": 391,
       "durationSeconds": 13.077,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "swirl-oil",
+      "familyId": "swirl-oil",
+      "runtimeSkin": false
     },
     {
       "path": "cave-wall-sample.mp4",
@@ -506,7 +596,10 @@
       "fps": "30/1",
       "frames": 397,
       "durationSeconds": 13.291,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "cave-wall",
+      "familyId": "cave-wall",
+      "runtimeSkin": false
     },
     {
       "path": "tomb-wall-sample.mp4",
@@ -521,7 +614,10 @@
       "fps": "30/1",
       "frames": 372,
       "durationSeconds": 12.459,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "tomb-wall",
+      "familyId": "tomb-wall",
+      "runtimeSkin": false
     },
     {
       "path": "amphora-sample.mp4",
@@ -536,7 +632,10 @@
       "fps": "30/1",
       "frames": 367,
       "durationSeconds": 12.288,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "amphora",
+      "familyId": "amphora",
+      "runtimeSkin": false
     },
     {
       "path": "mosaic-sample.mp4",
@@ -551,7 +650,10 @@
       "fps": "30/1",
       "frames": 392,
       "durationSeconds": 13.12,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "mosaic",
+      "familyId": "mosaic",
+      "runtimeSkin": false
     },
     {
       "path": "gold-leaf-sample.mp4",
@@ -566,7 +668,10 @@
       "fps": "30/1",
       "frames": 372,
       "durationSeconds": 12.459,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "gold-leaf",
+      "familyId": "gold-leaf",
+      "runtimeSkin": false
     },
     {
       "path": "whiplash-line-sample.mp4",
@@ -581,7 +686,10 @@
       "fps": "30/1",
       "frames": 413,
       "durationSeconds": 13.824,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "whiplash-line",
+      "familyId": "whiplash-line",
+      "runtimeSkin": false
     },
     {
       "path": "grain-flat-sample.mp4",
@@ -596,7 +704,10 @@
       "fps": "30/1",
       "frames": 383,
       "durationSeconds": 12.821,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "grain-flat",
+      "familyId": "grain-flat",
+      "runtimeSkin": false
     },
     {
       "path": "gold-robe-sample.mp4",
@@ -611,7 +722,10 @@
       "fps": "30/1",
       "frames": 405,
       "durationSeconds": 13.547,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "gold-robe",
+      "familyId": "gold-robe",
+      "runtimeSkin": false
     },
     {
       "path": "dot-infinity-sample.mp4",
@@ -626,7 +740,10 @@
       "fps": "30/1",
       "frames": 398,
       "durationSeconds": 13.312,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "dot-infinity",
+      "familyId": "dot-infinity",
+      "runtimeSkin": false
     },
     {
       "path": "hard-light-sample.mp4",
@@ -641,7 +758,10 @@
       "fps": "30/1",
       "frames": 387,
       "durationSeconds": 12.949,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "hard-light",
+      "familyId": "hard-light",
+      "runtimeSkin": false
     },
     {
       "path": "dance-line-sample.mp4",
@@ -656,7 +776,10 @@
       "fps": "30/1",
       "frames": 367,
       "durationSeconds": 12.288,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "dance-line",
+      "familyId": "dance-line",
+      "runtimeSkin": false
     },
     {
       "path": "rubberhose-sample.mp4",
@@ -671,7 +794,10 @@
       "fps": "30/1",
       "frames": 396,
       "durationSeconds": 13.248,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "rubberhose",
+      "familyId": "rubberhose",
+      "runtimeSkin": false
     },
     {
       "path": "shadow-play-sample.mp4",
@@ -686,7 +812,10 @@
       "fps": "30/1",
       "frames": 408,
       "durationSeconds": 13.653,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "shadow-play",
+      "familyId": "shadow-play",
+      "runtimeSkin": false
     },
     {
       "path": "sfumato-sample.mp4",
@@ -701,7 +830,10 @@
       "fps": "30/1",
       "frames": 368,
       "durationSeconds": 12.309,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "sfumato",
+      "familyId": "sfumato",
+      "runtimeSkin": false
     },
     {
       "path": "light-dabs-sample.mp4",
@@ -716,7 +848,10 @@
       "fps": "30/1",
       "frames": 369,
       "durationSeconds": 12.352,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "light-dabs",
+      "familyId": "impressionist",
+      "runtimeSkin": false
     },
     {
       "path": "facets-sample.mp4",
@@ -731,7 +866,10 @@
       "fps": "30/1",
       "frames": 410,
       "durationSeconds": 13.717,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "facets",
+      "familyId": "facets",
+      "runtimeSkin": false
     },
     {
       "path": "chrome-ball-sample.mp4",
@@ -746,7 +884,10 @@
       "fps": "30/1",
       "frames": 377,
       "durationSeconds": 12.629,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "chrome-ball",
+      "familyId": "chrome-ball",
+      "runtimeSkin": false
     },
     {
       "path": "scream-warp-sample.mp4",
@@ -761,7 +902,10 @@
       "fps": "30/1",
       "frames": 406,
       "durationSeconds": 13.589,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "scream-warp",
+      "familyId": "scream-warp",
+      "runtimeSkin": false
     },
     {
       "path": "soft-clock-sample.mp4",
@@ -776,7 +920,10 @@
       "fps": "30/1",
       "frames": 365,
       "durationSeconds": 12.224,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "soft-clock",
+      "familyId": "soft-clock",
+      "runtimeSkin": false
     },
     {
       "path": "watercolor-cel-sample.mp4",
@@ -791,7 +938,10 @@
       "fps": "30/1",
       "frames": 384,
       "durationSeconds": 12.843,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "watercolor-cel",
+      "familyId": "watercolor-cel",
+      "runtimeSkin": false
     },
     {
       "path": "lily-pond-sample.mp4",
@@ -806,7 +956,10 @@
       "fps": "30/1",
       "frames": 380,
       "durationSeconds": 12.715,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "lily-pond",
+      "familyId": "impressionist",
+      "runtimeSkin": false
     },
     {
       "path": "optical-dots-sample.mp4",
@@ -821,7 +974,10 @@
       "fps": "30/1",
       "frames": 404,
       "durationSeconds": 13.525,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "optical-dots",
+      "familyId": "optical-dots",
+      "runtimeSkin": false
     },
     {
       "path": "candle-light-sample.mp4",
@@ -836,7 +992,10 @@
       "fps": "30/1",
       "frames": 394,
       "durationSeconds": 13.184,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "candle-light",
+      "familyId": "candle-light",
+      "runtimeSkin": false
     },
     {
       "path": "cumulus-light-sample.mp4",
@@ -851,7 +1010,10 @@
       "fps": "30/1",
       "frames": 360,
       "durationSeconds": 12.053,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "cumulus-light",
+      "familyId": "cumulus-light",
+      "runtimeSkin": false
     },
     {
       "path": "blue-period-sample.mp4",
@@ -866,7 +1028,10 @@
       "fps": "30/1",
       "frames": 390,
       "durationSeconds": 13.056,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "blue-period",
+      "familyId": "blue-period",
+      "runtimeSkin": false
     },
     {
       "path": "whiteboard-sample.mp4",
@@ -881,7 +1046,10 @@
       "fps": "30/1",
       "frames": 399,
       "durationSeconds": 13.355,
-      "poolType": "promo"
+      "poolType": "promo",
+      "styleId": "whiteboard",
+      "familyId": "whiteboard",
+      "runtimeSkin": false
     },
     {
       "path": "kinetic-type-sample.mp4",
@@ -896,7 +1064,10 @@
       "fps": "30/1",
       "frames": 393,
       "durationSeconds": 13.163,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "kinetic-type",
+      "familyId": "kinetic-type",
+      "runtimeSkin": false
     },
     {
       "path": "riso-print-sample.mp4",
@@ -911,7 +1082,10 @@
       "fps": "30/1",
       "frames": 372,
       "durationSeconds": 12.459,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "riso-print",
+      "familyId": "print-motion",
+      "runtimeSkin": false
     },
     {
       "path": "math-lab-sample.mp4",
@@ -926,7 +1100,10 @@
       "fps": "30/1",
       "frames": 376,
       "durationSeconds": 12.587,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "math-lab",
+      "familyId": "math-lab",
+      "runtimeSkin": false
     },
     {
       "path": "hypnotic-sample.mp4",
@@ -941,7 +1118,10 @@
       "fps": "30/1",
       "frames": 376,
       "durationSeconds": 12.587,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "hypnotic",
+      "familyId": "hypnotic",
+      "runtimeSkin": false
     },
     {
       "path": "ink-tea-sample.mp4",
@@ -956,7 +1136,37 @@
       "fps": "30/1",
       "frames": 387,
       "durationSeconds": 12.949,
-      "poolType": "explainer"
+      "poolType": "explainer",
+      "styleId": "ink-tea",
+      "familyId": "ink-tea",
+      "runtimeSkin": false
+    },
+    {
+      "path": "engraving-sample.mp4",
+      "sha256": "0ef73b3d3e219e7df02c22379e7c1a4d3efb00a3d871825261cb82e17ec6ed8a",
+      "inputSha256": "0ef73b3d3e219e7df02c22379e7c1a4d3efb00a3d871825261cb82e17ec6ed8a",
+      "origin": "examples/engraving (original procedural pear, 2026-10-19)",
+      "mode": "code",
+      "disclosure": "Silent material study: original pear geometry and Remotion composition using the MIT LemoLab line engine. Re-rendered in cloud from the included source on 2026-10-19. No upstream demo images, poses, fonts or audio copied. Silent AAC container track; not a full narrated film or general host certification.",
+      "audio": "none",
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "frames": 360,
+      "durationSeconds": 12.053333,
+      "poolType": "explainer",
+      "styleId": "engraving",
+      "familyId": "engraving",
+      "runtimeSkin": true
     }
-  ]
+  ],
+  "catalog": {
+    "path": "../styles/catalog.json",
+    "styleIds": 63,
+    "selectionEntries": 59,
+    "runtimeSkins": 12,
+    "missingPreviews": [
+      "isometric-anatomy"
+    ]
+  }
 }

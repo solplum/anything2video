@@ -1,0 +1,1199 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Selection families group appearances only. IDs, renderer imports, seeds and recipe associations are never aliases. runtimeSkin explicitly distinguishes config.style support from manually composed kits.",
+  "families": [
+    {
+      "id": "dark-editorial",
+      "name": "暗色信息设计",
+      "members": [
+        "deep-space",
+        "mg-purple"
+      ],
+      "reason": "共享暗底与信息版式；青色产品宣传和紫色知识讲解仍保留各自皮肤、配方和覆盖层。"
+    },
+    {
+      "id": "miniature-diorama",
+      "name": "微缩等距场景",
+      "members": [
+        "isometric-city",
+        "clay-town"
+      ],
+      "reason": "共享等距投影；硬面建筑的位移与黏土软材质的逐帧弹动分别保留。"
+    },
+    {
+      "id": "impressionist",
+      "name": "印象派光色",
+      "members": [
+        "light-dabs",
+        "lily-pond"
+      ],
+      "reason": "共享光斑短笔触语法；前者固定笔位，后者水面与植物分档沸腾，保留各自参数和场景。"
+    },
+    {
+      "id": "print-motion",
+      "name": "套色印刷",
+      "members": [
+        "ink-plate",
+        "riso-print"
+      ],
+      "reason": "共享分版与套印；四墨网格几何编舞和双色滚筒工艺仍是两个独立变体。"
+    }
+  ],
+  "styles": [
+    {
+      "id": "deep-space",
+      "name": "深空",
+      "description": "深空黑底 #0B0B12 + 电光青强调；冷峻产品向的默认答案，真 UI 截图最出效果。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": true,
+      "family": "dark-editorial",
+      "source": "template/src/recipes/styles/deep-space.ts",
+      "preview": {
+        "status": "available",
+        "path": "deep-space-sample.mp4",
+        "poster": "posters/deep-space-sample.jpg"
+      }
+    },
+    {
+      "id": "neon",
+      "name": "霓虹",
+      "description": "夜幕 + 白芯彩晕霓虹描边 + 雨丝湿地反光，能量感强。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "glow",
+        "cool"
+      ],
+      "runtimeSkin": true,
+      "family": "neon",
+      "source": "styles/neon",
+      "preview": {
+        "status": "available",
+        "path": "neon-sample.mp4",
+        "poster": "posters/neon-sample.jpg"
+      }
+    },
+    {
+      "id": "swiss-print",
+      "name": "版式",
+      "description": "严格四色（白/黑/红/灰）、超大 grotesk 900、12 列网格、大量留白、硬切精确位移。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": true,
+      "family": "swiss-print",
+      "source": "styles/swiss-print",
+      "preview": {
+        "status": "available",
+        "path": "swiss-print-sample.mp4",
+        "poster": "posters/swiss-print-sample.jpg"
+      }
+    },
+    {
+      "id": "crt-terminal",
+      "name": "终端",
+      "description": "黑绿磷光 + 等宽字逐字敲入 + 扫描线，CLI 工程美学。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool",
+        "glow"
+      ],
+      "runtimeSkin": true,
+      "family": "crt-terminal",
+      "source": "styles/crt-terminal",
+      "preview": {
+        "status": "available",
+        "path": "crt-terminal-sample.mp4",
+        "poster": "posters/crt-terminal-sample.jpg"
+      }
+    },
+    {
+      "id": "mg-purple",
+      "name": "夜航",
+      "description": "黑底紫调 + HUD/章节卡/流程轨——a2v 出身的讲解脸，知识科普主线。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": true,
+      "family": "dark-editorial",
+      "source": "template/src/recipes/styles/mg-purple.ts",
+      "preview": {
+        "status": "available",
+        "path": "mg-purple-sample.mp4",
+        "poster": "posters/mg-purple-sample.jpg"
+      }
+    },
+    {
+      "id": "chalk",
+      "name": "黑板",
+      "description": "深绿黑板 + 白垩压力笔触（颗粒/粉尘/双影）+ 板书字 + 板擦转场。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": true,
+      "family": "chalk",
+      "source": "styles/chalk",
+      "preview": {
+        "status": "available",
+        "path": "chalk-sample.mp4",
+        "poster": "posters/chalk-sample.jpg"
+      }
+    },
+    {
+      "id": "blueprint",
+      "name": "蓝图",
+      "description": "深蓝晒图底 + 白工程线 + 黄色尺寸标注——「把系统当造物拆解」的精密工程隐喻。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": true,
+      "family": "blueprint",
+      "source": "styles/blueprint",
+      "preview": {
+        "status": "available",
+        "path": "blueprint-sample.mp4",
+        "poster": "posters/blueprint-sample.jpg"
+      }
+    },
+    {
+      "id": "pixel-arcade",
+      "name": "街机",
+      "description": "8px 像素网格 + CRT 扫描线 + 品红/荧绿/金有限色；所有\"圆\"都是方块拼的。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro",
+        "glow"
+      ],
+      "runtimeSkin": true,
+      "family": "pixel-arcade",
+      "source": "styles/pixel-arcade",
+      "preview": {
+        "status": "available",
+        "path": "pixel-arcade-sample.mp4",
+        "poster": "posters/pixel-arcade-sample.jpg"
+      }
+    },
+    {
+      "id": "paper-collage",
+      "name": "拼贴",
+      "description": "Vox 式撕纸边缘 + 纸片投影 + 胶带（qr-scan 验证片即此风格全片实作）。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": true,
+      "family": "paper-collage",
+      "source": "styles/paper-collage",
+      "preview": {
+        "status": "available",
+        "path": "paper-collage-sample.mp4",
+        "poster": "posters/paper-collage-sample.jpg"
+      }
+    },
+    {
+      "id": "epic-paper",
+      "name": "神话",
+      "description": "暖纸白信息层 + 印章红 + 描金辅色；三幕旗舰：雾山世界叶落 → 描金年代轴穿越 → 俯视茶碗印章钤落。",
+      "notes": "",
+      "recipe": "epic",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": true,
+      "family": "epic-paper",
+      "source": "template/src/recipes/styles/epic-paper.ts",
+      "preview": {
+        "status": "available",
+        "path": "epic-paper-sample.mp4",
+        "poster": "posters/epic-paper-sample.jpg"
+      }
+    },
+    {
+      "id": "sand",
+      "name": "沙画",
+      "description": "灯箱沙画全工艺：手影铺沙显影 → 抹沙破晓出海（碎金光路）→ 体积光落窗台。",
+      "notes": "",
+      "recipe": "epic",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": true,
+      "family": "sand",
+      "source": "styles/sand",
+      "preview": {
+        "status": "available",
+        "path": "sand-sample.mp4",
+        "poster": "posters/sand-sample.jpg"
+      }
+    },
+    {
+      "id": "guofeng-scroll",
+      "name": "月窗",
+      "description": "暖黑底描金月窗 + 竖排题跋 + 朱印 + 长卷横移 + 唯一虹彩主角；国风历史叙事。",
+      "notes": "",
+      "recipe": "epic",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "guofeng-scroll",
+      "source": "styles/guofeng-scroll",
+      "preview": {
+        "status": "available",
+        "path": "guofeng-scroll-sample.mp4",
+        "poster": "posters/guofeng-scroll-sample.jpg"
+      }
+    },
+    {
+      "id": "paperclip-sticker",
+      "name": "贴纸人",
+      "description": "主体贴纸化粗白描边 + 超宽大画布摄像机串信息点 + 精确图表（count-up/柱状/描边）。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "paperclip-sticker",
+      "source": "styles/paperclip-sticker",
+      "preview": {
+        "status": "available",
+        "path": "paperclip-sticker-sample.mp4",
+        "poster": "posters/paperclip-sticker-sample.jpg"
+      }
+    },
+    {
+      "id": "hanazi-916",
+      "name": "花字",
+      "description": "综艺花字三层描边 + 弹簧逐字入场 + 爆炸框/闪光/印章符号；9:16 竖屏原生（画幅=卡属性）。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "hanazi-916",
+      "source": "styles/hanazi-916",
+      "preview": {
+        "status": "available",
+        "path": "hanazi-916-sample.mp4",
+        "poster": "posters/hanazi-916-sample.jpg"
+      }
+    },
+    {
+      "id": "line-art",
+      "name": "线条",
+      "description": "等宽细线一笔画 + draw-on 自我描绘 + 线转面 + 大量负空间；墨+唯一暖金双色。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "line-art",
+      "source": "styles/line-art",
+      "preview": {
+        "status": "available",
+        "path": "line-art-sample.mp4",
+        "poster": "posters/line-art-sample.jpg"
+      }
+    },
+    {
+      "id": "pop-comic",
+      "name": "波普",
+      "description": "粗黑描边硬错位阴影 + 半调网点 + 拟声词爆炸星 + 贴纸拍入（0.16s 砸落）；高饱和有限色。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "warm",
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "pop-comic",
+      "source": "styles/pop-comic",
+      "preview": {
+        "status": "available",
+        "path": "pop-comic-sample.mp4",
+        "poster": "posters/pop-comic-sample.jpg"
+      }
+    },
+    {
+      "id": "popup-book",
+      "name": "立体书",
+      "description": "牛皮纸立体书 + rotateX 铰链翻折（地影随折角）+ 三层视差 + 拉页转场。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "popup-book",
+      "source": "styles/popup-book",
+      "preview": {
+        "status": "available",
+        "path": "popup-book-sample.mp4",
+        "poster": "posters/popup-book-sample.jpg"
+      }
+    },
+    {
+      "id": "clay-town",
+      "name": "黏土",
+      "description": "等轴黏土小镇（软材质手捏感 + kawaii 拟人件）+ 双层标注（白话比喻+真实术语）。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "miniature-diorama",
+      "source": "styles/clay-town",
+      "preview": {
+        "status": "available",
+        "path": "clay-town-sample.mp4",
+        "poster": "posters/clay-town-sample.jpg"
+      }
+    },
+    {
+      "id": "studio-oneshot",
+      "name": "一镜",
+      "description": "three.js 石墨影棚一镜到底 + 瓷质道具 + 双色 rim + 假景深；Hermite 相机禁停泊。",
+      "notes": "",
+      "recipe": "epic",
+      "vibes": [
+        "cool",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "studio-oneshot",
+      "source": "styles/studio-oneshot",
+      "preview": {
+        "status": "available",
+        "path": "studio-oneshot-sample.mp4",
+        "poster": "posters/studio-oneshot-sample.jpg"
+      }
+    },
+    {
+      "id": "isometric-city",
+      "name": "等轴",
+      "description": "30° 等轴微缩世界（SSR 三面纯 CSS）+ 楼体生长 + 整组平移三层视差。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "miniature-diorama",
+      "source": "styles/isometric-city",
+      "preview": {
+        "status": "available",
+        "path": "isometric-city-sample.mp4",
+        "poster": "posters/isometric-city-sample.jpg"
+      }
+    },
+    {
+      "id": "aurora-glass",
+      "name": "玻璃",
+      "description": "暗底弥散光斑慢漂 + 磨砂玻璃卡 + 皆慢呼吸节奏；慢、透、高级。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "aurora-glass",
+      "source": "styles/aurora-glass",
+      "preview": {
+        "status": "available",
+        "path": "aurora-glass-sample.mp4",
+        "poster": "posters/aurora-glass-sample.jpg"
+      }
+    },
+    {
+      "id": "liquid-flow",
+      "name": "液态",
+      "description": "goo 液态融合 + 波浪前沿转场 + 拉丝断裂回弹 + 次级液滴跟随；有机曲线永不直线。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "liquid-flow",
+      "source": "styles/liquid-flow",
+      "preview": {
+        "status": "available",
+        "path": "liquid-flow-sample.mp4",
+        "poster": "posters/liquid-flow-sample.jpg"
+      }
+    },
+    {
+      "id": "morph",
+      "name": "形变",
+      "description": "图形丝滑互变（中介简形桥接）+ 挤压拉伸 + 位移旋转；图形叙事核心语法。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "morph",
+      "source": "styles/morph",
+      "preview": {
+        "status": "available",
+        "path": "morph-sample.mp4",
+        "poster": "posters/morph-sample.jpg"
+      }
+    },
+    {
+      "id": "pop-dot",
+      "name": "弹点",
+      "description": "六色平涂 + SHADE 自明暗对 + 弹簧物理三段 + 色块擦除转场；企业 explainer 弹性 MG。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "pop-dot",
+      "source": "styles/pop-dot",
+      "preview": {
+        "status": "available",
+        "path": "pop-dot-sample.mp4",
+        "poster": "posters/pop-dot-sample.jpg"
+      }
+    },
+    {
+      "id": "ink-boil",
+      "name": "线沸",
+      "description": "逐帧线沸腾：变宽笔刷 + 错位填色 + 低帧率打帧时基；手绘动画的生命感。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "ink-boil",
+      "source": "styles/ink-boil",
+      "preview": {
+        "status": "available",
+        "path": "ink-boil-sample.mp4",
+        "poster": "posters/ink-boil-sample.jpg"
+      }
+    },
+    {
+      "id": "ink-plate",
+      "name": "墨版",
+      "description": "包豪斯丝印：几何编舞 + 双版错位 + 十字规线；印刷秩序感。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "print-motion",
+      "source": "styles/ink-plate",
+      "preview": {
+        "status": "available",
+        "path": "ink-plate-sample.mp4",
+        "poster": "posters/ink-plate-sample.jpg"
+      }
+    },
+    {
+      "id": "soft-jelly",
+      "name": "软糖",
+      "description": "C4D 软渲染：SSS 软胶材质 + 克隆阵列波；治愈系 3D。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "soft-jelly",
+      "source": "styles/soft-jelly",
+      "preview": {
+        "status": "available",
+        "path": "soft-jelly-sample.mp4",
+        "poster": "posters/soft-jelly-sample.jpg"
+      }
+    },
+    {
+      "id": "vhs-outrun",
+      "name": "公路夜",
+      "description": "合成波 VHS：网格地平线 + 切缝日落 + rgbSplit/扫描线。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "retro",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "vhs-outrun",
+      "source": "styles/vhs-outrun",
+      "preview": {
+        "status": "available",
+        "path": "vhs-outrun-sample.mp4",
+        "poster": "posters/vhs-outrun-sample.jpg"
+      }
+    },
+    {
+      "id": "target-lock",
+      "name": "锁定",
+      "description": "赛博 HUD/FUI：锁定编排 + 数据位流 + 空间化 UI；雷达扫描叙事。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "target-lock",
+      "source": "styles/target-lock",
+      "preview": {
+        "status": "available",
+        "path": "target-lock-sample.mp4",
+        "poster": "posters/target-lock-sample.jpg"
+      }
+    },
+    {
+      "id": "swirl-oil",
+      "name": "星涡",
+      "description": "梵高后印象派：流场长笔触三遍分区 + 区域色板 + 星空漩涡转场。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "swirl-oil",
+      "source": "styles/swirl-oil",
+      "preview": {
+        "status": "available",
+        "path": "swirl-oil-sample.mp4",
+        "poster": "posters/swirl-oil-sample.jpg"
+      }
+    },
+    {
+      "id": "cave-wall",
+      "name": "岩壁",
+      "description": "史前岩壁画：赭红手印 + 粗粝矿彩 + 火光摇曳。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "cave-wall",
+      "source": "styles/cave-wall",
+      "preview": {
+        "status": "available",
+        "path": "cave-wall-sample.mp4",
+        "poster": "posters/cave-wall-sample.jpg"
+      }
+    },
+    {
+      "id": "tomb-wall",
+      "name": "墓室",
+      "description": "古埃及墓室壁画：正面律人物 + 象形注记 + 圣甲虫推日轮。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "tomb-wall",
+      "source": "styles/tomb-wall",
+      "preview": {
+        "status": "available",
+        "path": "tomb-wall-sample.mp4",
+        "poster": "posters/tomb-wall-sample.jpg"
+      }
+    },
+    {
+      "id": "amphora",
+      "name": "陶瓶",
+      "description": "希腊黑绘陶瓶：黑釉剪影 + 橙红陶底 + 环形叙事带。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "amphora",
+      "source": "styles/amphora",
+      "preview": {
+        "status": "available",
+        "path": "amphora-sample.mp4",
+        "poster": "posters/amphora-sample.jpg"
+      }
+    },
+    {
+      "id": "mosaic",
+      "name": "马赛克",
+      "description": "庞贝马赛克：万块石子拼图 + 逐块震颤 + 镶边警句。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "mosaic",
+      "source": "styles/mosaic",
+      "preview": {
+        "status": "available",
+        "path": "mosaic-sample.mp4",
+        "poster": "posters/mosaic-sample.jpg"
+      }
+    },
+    {
+      "id": "gold-leaf",
+      "name": "金箔",
+      "description": "哥特金箔手抄本：贴金菱格 + 泥金首字母 + 抄写员夜灯。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "gold-leaf",
+      "source": "styles/gold-leaf",
+      "preview": {
+        "status": "available",
+        "path": "gold-leaf-sample.mp4",
+        "poster": "posters/gold-leaf-sample.jpg"
+      }
+    },
+    {
+      "id": "whiplash-line",
+      "name": "鞭线",
+      "description": "慕夏新艺术：鞭线生长 + 粗细呼吸 + 海报藤蔓框。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "whiplash-line",
+      "source": "styles/whiplash-line",
+      "preview": {
+        "status": "available",
+        "path": "whiplash-line-sample.mp4",
+        "poster": "posters/whiplash-line-sample.jpg"
+      }
+    },
+    {
+      "id": "grain-flat",
+      "name": "颗粒扁平",
+      "description": "当代扁平插画：噪点颗粒 + 姿势库表演 + 挤压拉伸。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "grain-flat",
+      "source": "styles/grain-flat",
+      "preview": {
+        "status": "available",
+        "path": "grain-flat-sample.mp4",
+        "poster": "posters/grain-flat-sample.jpg"
+      }
+    },
+    {
+      "id": "gold-robe",
+      "name": "金袍",
+      "description": "克里姆特：金袍图案裹身 + 写实脸孔 + 马赛克金纹。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "gold-robe",
+      "source": "styles/gold-robe",
+      "preview": {
+        "status": "available",
+        "path": "gold-robe-sample.mp4",
+        "poster": "posters/gold-robe-sample.jpg"
+      }
+    },
+    {
+      "id": "dot-infinity",
+      "name": "波点",
+      "description": "草间弥生：波点铺满一切 + 南瓜阵 + 点阵呼吸。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "dot-infinity",
+      "source": "styles/dot-infinity",
+      "preview": {
+        "status": "available",
+        "path": "dot-infinity-sample.mp4",
+        "poster": "posters/dot-infinity-sample.jpg"
+      }
+    },
+    {
+      "id": "hard-light",
+      "name": "硬光",
+      "description": "霍珀式硬边光：光斑斜切房间 + 长影 + 城市孤独。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "hard-light",
+      "source": "styles/hard-light",
+      "preview": {
+        "status": "available",
+        "path": "hard-light-sample.mp4",
+        "poster": "posters/hard-light-sample.jpg"
+      }
+    },
+    {
+      "id": "dance-line",
+      "name": "舞线",
+      "description": "凯斯·哈林：街头小人 + 全局 BPM 弹跳 + 涂鸦能量。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "dance-line",
+      "source": "styles/dance-line",
+      "preview": {
+        "status": "available",
+        "path": "dance-line-sample.mp4",
+        "poster": "posters/dance-line-sample.jpg"
+      }
+    },
+    {
+      "id": "rubberhose",
+      "name": "橡皮管",
+      "description": "1930s 橡皮管动画：无关节软肢 + 摆线波动 + 复古晨曲。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "rubberhose",
+      "source": "styles/rubberhose",
+      "preview": {
+        "status": "available",
+        "path": "rubberhose-sample.mp4",
+        "poster": "posters/rubberhose-sample.jpg"
+      }
+    },
+    {
+      "id": "shadow-play",
+      "name": "皮影",
+      "description": "中国皮影：刀刻镂空 + 关节杆件 + 油灯白布影窗。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "shadow-play",
+      "source": "styles/shadow-play",
+      "preview": {
+        "status": "available",
+        "path": "shadow-play-sample.mp4",
+        "poster": "posters/shadow-play-sample.jpg"
+      }
+    },
+    {
+      "id": "sfumato",
+      "name": "晕涂",
+      "description": "达·芬奇晕涂法：轮廓溶进光雾 + 层层罩染。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "sfumato",
+      "source": "styles/sfumato",
+      "preview": {
+        "status": "available",
+        "path": "sfumato-sample.mp4",
+        "poster": "posters/sfumato-sample.jpg"
+      }
+    },
+    {
+      "id": "light-dabs",
+      "name": "光斑",
+      "description": "莫奈印象派：碎笔光斑 + 颜色换班 + stable() 防重洗。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "impressionist",
+      "source": "styles/light-dabs",
+      "preview": {
+        "status": "available",
+        "path": "light-dabs-sample.mp4",
+        "poster": "posters/light-dabs-sample.jpg"
+      }
+    },
+    {
+      "id": "facets",
+      "name": "切面",
+      "description": "立体主义：形体拆成切面 + 多视角并置。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "facets",
+      "source": "styles/facets",
+      "preview": {
+        "status": "available",
+        "path": "facets-sample.mp4",
+        "poster": "posters/facets-sample.jpg"
+      }
+    },
+    {
+      "id": "chrome-ball",
+      "name": "铬球",
+      "description": "早期光追：铬球 + 棋盘房间 + 无限反射；90 年代 CG 崇拜。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "chrome-ball",
+      "source": "styles/chrome-ball",
+      "preview": {
+        "status": "available",
+        "path": "chrome-ball-sample.mp4",
+        "poster": "posters/chrome-ball-sample.jpg"
+      }
+    },
+    {
+      "id": "scream-warp",
+      "name": "呐喊",
+      "description": "蒙克：世界随呐喊扭曲 + 血色天空 + 桥上不安身影。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "scream-warp",
+      "source": "styles/scream-warp",
+      "preview": {
+        "status": "available",
+        "path": "scream-warp-sample.mp4",
+        "poster": "posters/scream-warp-sample.jpg"
+      }
+    },
+    {
+      "id": "soft-clock",
+      "name": "软钟",
+      "description": "达利超现实：软钟挂枝滴淌 + 荒漠长影。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "soft-clock",
+      "source": "styles/soft-clock",
+      "preview": {
+        "status": "available",
+        "path": "soft-clock-sample.mp4",
+        "poster": "posters/soft-clock-sample.jpg"
+      }
+    },
+    {
+      "id": "watercolor-cel",
+      "name": "水彩赛璐璐",
+      "description": "吉卜力式水彩赛璐璐：水彩底 + 赛璐璐角色 + 风的层次。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "watercolor-cel",
+      "source": "styles/watercolor-cel",
+      "preview": {
+        "status": "available",
+        "path": "watercolor-cel-sample.mp4",
+        "poster": "posters/watercolor-cel-sample.jpg"
+      }
+    },
+    {
+      "id": "lily-pond",
+      "name": "睡莲",
+      "description": "莫奈睡莲：水面记光 + 莲叶漂移 + 柳影摇晃。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "impressionist",
+      "source": "styles/lily-pond",
+      "preview": {
+        "status": "available",
+        "path": "lily-pond-sample.mp4",
+        "poster": "posters/lily-pond-sample.jpg"
+      }
+    },
+    {
+      "id": "optical-dots",
+      "name": "点彩",
+      "description": "修拉点彩：纯色圆点并置 + 视觉混色。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "optical-dots",
+      "source": "styles/optical-dots",
+      "preview": {
+        "status": "available",
+        "path": "optical-dots-sample.mp4",
+        "poster": "posters/optical-dots-sample.jpg"
+      }
+    },
+    {
+      "id": "candle-light",
+      "name": "烛光",
+      "description": "伦勃朗明暗：单烛光源 + 暗部吞没 + 光照处才存在。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "candle-light",
+      "source": "styles/candle-light",
+      "preview": {
+        "status": "available",
+        "path": "candle-light-sample.mp4",
+        "poster": "posters/candle-light-sample.jpg"
+      }
+    },
+    {
+      "id": "cumulus-light",
+      "name": "积雨云",
+      "description": "新海诚式天光：积雨云 + 丁达尔光柱 + 高饱和渐变。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm",
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "cumulus-light",
+      "source": "styles/cumulus-light",
+      "preview": {
+        "status": "available",
+        "path": "cumulus-light-sample.mp4",
+        "poster": "posters/cumulus-light-sample.jpg"
+      }
+    },
+    {
+      "id": "blue-period",
+      "name": "蓝时期",
+      "description": "毕加索蓝时期：整片蓝调 + 慢半拍的情绪。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "blue-period",
+      "source": "styles/blue-period",
+      "preview": {
+        "status": "available",
+        "path": "blue-period-sample.mp4",
+        "poster": "posters/blue-period-sample.jpg"
+      }
+    },
+    {
+      "id": "whiteboard",
+      "name": "白板",
+      "description": "白板马克笔：讲一句画一句 + 笔尖跟随 + 多色批注墨水分工。",
+      "notes": "",
+      "recipe": "promo",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "whiteboard",
+      "source": "styles/whiteboard",
+      "preview": {
+        "status": "available",
+        "path": "whiteboard-sample.mp4",
+        "poster": "posters/whiteboard-sample.jpg"
+      }
+    },
+    {
+      "id": "kinetic-type",
+      "name": "字动",
+      "description": "动态文字排版：重点词砸进重音 + 词位编排。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "kinetic-type",
+      "source": "styles/kinetic-type",
+      "preview": {
+        "status": "available",
+        "path": "kinetic-type-sample.mp4",
+        "poster": "posters/kinetic-type-sample.jpg"
+      }
+    },
+    {
+      "id": "riso-print",
+      "name": "孔版",
+      "description": "Risograph 孔版印刷：双色版叠印 + 网点质感 + 套准偏移。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "retro"
+      ],
+      "runtimeSkin": false,
+      "family": "print-motion",
+      "source": "styles/riso-print",
+      "preview": {
+        "status": "available",
+        "path": "riso-print-sample.mp4",
+        "poster": "posters/riso-print-sample.jpg"
+      }
+    },
+    {
+      "id": "math-lab",
+      "name": "数学屋",
+      "description": "数学可视化小屋：规律演示图形化 + 直觉先行。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "math-lab",
+      "source": "styles/math-lab",
+      "preview": {
+        "status": "available",
+        "path": "math-lab-sample.mp4",
+        "poster": "posters/math-lab-sample.jpg"
+      }
+    },
+    {
+      "id": "hypnotic",
+      "name": "催眠",
+      "description": "迷幻催眠：同心圈漩涡 + 视觉后效 + 节律牵引。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "glow"
+      ],
+      "runtimeSkin": false,
+      "family": "hypnotic",
+      "source": "styles/hypnotic",
+      "preview": {
+        "status": "available",
+        "path": "hypnotic-sample.mp4",
+        "poster": "posters/hypnotic-sample.jpg"
+      }
+    },
+    {
+      "id": "ink-tea",
+      "name": "水墨",
+      "description": "中国水墨写意：淡墨洇开 + 留白呼吸 + 浓淡五色。",
+      "notes": "",
+      "recipe": "explainer",
+      "vibes": [
+        "warm"
+      ],
+      "runtimeSkin": false,
+      "family": "ink-tea",
+      "source": "styles/ink-tea",
+      "preview": {
+        "status": "available",
+        "path": "ink-tea-sample.mp4",
+        "poster": "posters/ink-tea-sample.jpg"
+      }
+    },
+    {
+      "id": "isometric-anatomy",
+      "name": "等距剖解",
+      "description": "可拆装机器与系统剖解图元；已有源码，尚无随包渲染样片。",
+      "notes": "实验图元：需手动接线；没有已验证的预览。",
+      "recipe": "explainer",
+      "vibes": [
+        "cool"
+      ],
+      "runtimeSkin": false,
+      "family": "isometric-anatomy",
+      "source": "styles/isometric-anatomy",
+      "preview": {
+        "status": "missing",
+        "path": null,
+        "poster": null
+      }
+    },
+    {
+      "id": "engraving",
+      "name": "铜版雕刻",
+      "description": "随形凹版排线、交叉加深、渐细刀口与后置透明设色；原创梨形演示。",
+      "notes": "12 秒无声材质研究；横屏与原生竖屏均有源码和实渲染。",
+      "recipe": "explainer",
+      "vibes": [
+        "retro",
+        "warm"
+      ],
+      "runtimeSkin": true,
+      "family": "engraving",
+      "source": "styles/engraving",
+      "preview": {
+        "status": "available",
+        "path": "engraving-sample.mp4",
+        "poster": "posters/engraving-sample.jpg"
+      }
+    }
+  ]
+}

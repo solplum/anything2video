@@ -69,8 +69,8 @@ export type ChromePalette = {
 };
 
 /** 风格侧：独立于配方的视觉皮肤。palette/chrome 均为浅合并覆写（未覆盖字段沿用配方默认）。
- *  11 个风格 = 3 张配方正本脸（值=现配方，保证吸收后逐值等价）+ 8 个 SKU（值从各 SPEC 锁死色板派生）。
- *  选型流程见 SKILL.md「确认与授权」：单问挑一张套餐卡（样片库 samples/index.html）。 */
+ *  原始 11 个风格 = 3 张配方正本脸（值=现配方，保证吸收后逐值等价）+ 8 个 SKU（值从各 SPEC 锁死色板派生）。
+ *  新增 engraving 铜版雕刻；完整选择目录与运行时能力见 styles/catalog.json。 */
 export type StyleId =
   | 'deep-space' // 深空电光青（吸收自 promo）
   | 'mg-purple' // 紫调黑底 MG（吸收自 explainer）
@@ -82,7 +82,8 @@ export type StyleId =
   | 'pixel-arcade'
   | 'paper-collage'
   | 'swiss-print'
-  | 'crt-terminal';
+  | 'crt-terminal'
+  | 'engraving';
 
 /** 风格皮肤：accentLegal = 本风格合法主色集合（并入配方 accentFrom 参与断言，皮肤换血后不误伤）。 */
 export type StyleSkin = {id: StyleId; name: string; accentLegal: string[]; palette: Partial<RecipePalette>; chrome: Partial<ChromePalette>};

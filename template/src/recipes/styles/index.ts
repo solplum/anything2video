@@ -10,8 +10,9 @@ import {PIXEL_ARCADE} from './pixel-arcade';
 import {PAPER_COLLAGE} from './paper-collage';
 import {SWISS_PRINT} from './swiss-print';
 import {CRT_TERMINAL} from './crt-terminal';
+import {ENGRAVING} from './engraving';
 
-/** 皮肤注册表（v3.3.0 起，11 个 = 3 配方正本脸 + 8 SKU）。
+/** 运行时皮肤注册表（原始 11 个 + engraving；不是全部 kit 的注册表）。
  *  SKU 皮肤的 token 为各 SPEC 锁死色的派生近似——类型 × 风格组合首用时按该 SKU 的 sample.jpg 做回归（spec §2 约束）。
  *  选型流程与判例：SKILL.md「确认与授权」+ reference/style-ledger.md；样片库 samples/index.html。 */
 export const STYLE_SKINS: Partial<Record<StyleId, StyleSkin>> = {
@@ -26,6 +27,7 @@ export const STYLE_SKINS: Partial<Record<StyleId, StyleSkin>> = {
   'paper-collage': PAPER_COLLAGE,
   'swiss-print': SWISS_PRINT,
   'crt-terminal': CRT_TERMINAL,
+  engraving: ENGRAVING,
 };
 
 export const styleSkinOf = (id?: StyleId): StyleSkin | undefined => (id ? STYLE_SKINS[id] : undefined);

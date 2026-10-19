@@ -6,8 +6,11 @@ import {fileURLToPath} from 'node:url';
 
 export const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const HOSTS = Object.freeze(['universal', 'claude-code', 'codex', 'workbuddy', 'minimax-code', 'zcode', 'doubao-work']);
-const directories = ['recipes', 'reference', 'styles', 'template', 'scripts', 'gallery', 'audio-engine'];
-const individual = ['LICENSE', 'docs/adapters.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md'];
+const directories = ['recipes', 'reference', 'styles', 'template', 'scripts', 'gallery', 'audio-engine', 'LICENSE-THIRDPARTY'];
+const individual = ['LICENSE', 'docs/adapters.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md', 'docs/style-system-round1.md'];
+// Only reviewed, redistributable examples are included. Arbitrary working
+// projects under examples/ remain excluded, as do their render/cache folders.
+const publicExamples = ['examples/engraving', 'examples/line-art-teaching'];
 const excluded = /^(?:\.git|\.venv|node_modules|\.Codex|\.mimosa|\.zcode|__pycache__|\.pytest_cache|audio|renders|stills|fin_frames|out|dist|build.*|tests|examples|cache|\.cache|.*-cache|secrets?|credentials?|\..*stills|\.verify.*|\.probe.*|\.render-bundle.*)$/i;
 const privateFile = /(?:^\.env(?:\..*)?$|^(?:secrets?|credentials?)(?:\..*)?$|^\.(?:npmrc|pypirc|netrc|git-credentials)$|\.(?:log|pyc|pem|key|p12|pfx)$|(?:^|[._-])worker-report(?:[._-]|$))/i;
 const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -65,6 +68,9 @@ export function collectCoreFiles(source, {includeSamples = true} = {}) {
   for (const relative of [...directories, ...individual]) {
     if (!exists(path.join(root, ...relative.split('/')))) throw new Error(`Missing shared package input: ${relative}`);
     walk(relative);
+  }
+  for (const relative of publicExamples) {
+    if (exists(path.join(root, ...relative.split('/')))) walk(relative);
   }
   if (includeSamples && exists(path.join(root, 'samples'))) walk('samples');
   return files.sort();

@@ -1,0 +1,2498 @@
+{
+  "base": "45c917cf9ea9f9731e0aa487b99807bbc4f945fd",
+  "styles": [
+    {
+      "id": "deep-space",
+      "recipe": "promo",
+      "source": "template/src/recipes/styles/deep-space.ts"
+    },
+    {
+      "id": "neon",
+      "recipe": "promo",
+      "source": "styles/neon"
+    },
+    {
+      "id": "swiss-print",
+      "recipe": "promo",
+      "source": "styles/swiss-print"
+    },
+    {
+      "id": "crt-terminal",
+      "recipe": "promo",
+      "source": "styles/crt-terminal"
+    },
+    {
+      "id": "mg-purple",
+      "recipe": "explainer",
+      "source": "template/src/recipes/styles/mg-purple.ts"
+    },
+    {
+      "id": "chalk",
+      "recipe": "explainer",
+      "source": "styles/chalk"
+    },
+    {
+      "id": "blueprint",
+      "recipe": "explainer",
+      "source": "styles/blueprint"
+    },
+    {
+      "id": "pixel-arcade",
+      "recipe": "explainer",
+      "source": "styles/pixel-arcade"
+    },
+    {
+      "id": "paper-collage",
+      "recipe": "explainer",
+      "source": "styles/paper-collage"
+    },
+    {
+      "id": "epic-paper",
+      "recipe": "epic",
+      "source": "template/src/recipes/styles/epic-paper.ts"
+    },
+    {
+      "id": "sand",
+      "recipe": "epic",
+      "source": "styles/sand"
+    },
+    {
+      "id": "guofeng-scroll",
+      "recipe": "epic",
+      "source": "styles/guofeng-scroll"
+    },
+    {
+      "id": "paperclip-sticker",
+      "recipe": "explainer",
+      "source": "styles/paperclip-sticker"
+    },
+    {
+      "id": "hanazi-916",
+      "recipe": "explainer",
+      "source": "styles/hanazi-916"
+    },
+    {
+      "id": "line-art",
+      "recipe": "explainer",
+      "source": "styles/line-art"
+    },
+    {
+      "id": "pop-comic",
+      "recipe": "promo",
+      "source": "styles/pop-comic"
+    },
+    {
+      "id": "popup-book",
+      "recipe": "explainer",
+      "source": "styles/popup-book"
+    },
+    {
+      "id": "clay-town",
+      "recipe": "explainer",
+      "source": "styles/clay-town"
+    },
+    {
+      "id": "studio-oneshot",
+      "recipe": "epic",
+      "source": "styles/studio-oneshot"
+    },
+    {
+      "id": "isometric-city",
+      "recipe": "promo",
+      "source": "styles/isometric-city"
+    },
+    {
+      "id": "aurora-glass",
+      "recipe": "promo",
+      "source": "styles/aurora-glass"
+    },
+    {
+      "id": "liquid-flow",
+      "recipe": "promo",
+      "source": "styles/liquid-flow"
+    },
+    {
+      "id": "morph",
+      "recipe": "promo",
+      "source": "styles/morph"
+    },
+    {
+      "id": "pop-dot",
+      "recipe": "explainer",
+      "source": "styles/pop-dot"
+    },
+    {
+      "id": "ink-boil",
+      "recipe": "explainer",
+      "source": "styles/ink-boil"
+    },
+    {
+      "id": "ink-plate",
+      "recipe": "explainer",
+      "source": "styles/ink-plate"
+    },
+    {
+      "id": "soft-jelly",
+      "recipe": "explainer",
+      "source": "styles/soft-jelly"
+    },
+    {
+      "id": "vhs-outrun",
+      "recipe": "promo",
+      "source": "styles/vhs-outrun"
+    },
+    {
+      "id": "target-lock",
+      "recipe": "explainer",
+      "source": "styles/target-lock"
+    },
+    {
+      "id": "swirl-oil",
+      "recipe": "explainer",
+      "source": "styles/swirl-oil"
+    },
+    {
+      "id": "cave-wall",
+      "recipe": "explainer",
+      "source": "styles/cave-wall"
+    },
+    {
+      "id": "tomb-wall",
+      "recipe": "explainer",
+      "source": "styles/tomb-wall"
+    },
+    {
+      "id": "amphora",
+      "recipe": "explainer",
+      "source": "styles/amphora"
+    },
+    {
+      "id": "mosaic",
+      "recipe": "explainer",
+      "source": "styles/mosaic"
+    },
+    {
+      "id": "gold-leaf",
+      "recipe": "explainer",
+      "source": "styles/gold-leaf"
+    },
+    {
+      "id": "whiplash-line",
+      "recipe": "explainer",
+      "source": "styles/whiplash-line"
+    },
+    {
+      "id": "grain-flat",
+      "recipe": "explainer",
+      "source": "styles/grain-flat"
+    },
+    {
+      "id": "gold-robe",
+      "recipe": "explainer",
+      "source": "styles/gold-robe"
+    },
+    {
+      "id": "dot-infinity",
+      "recipe": "explainer",
+      "source": "styles/dot-infinity"
+    },
+    {
+      "id": "hard-light",
+      "recipe": "explainer",
+      "source": "styles/hard-light"
+    },
+    {
+      "id": "dance-line",
+      "recipe": "explainer",
+      "source": "styles/dance-line"
+    },
+    {
+      "id": "rubberhose",
+      "recipe": "explainer",
+      "source": "styles/rubberhose"
+    },
+    {
+      "id": "shadow-play",
+      "recipe": "explainer",
+      "source": "styles/shadow-play"
+    },
+    {
+      "id": "sfumato",
+      "recipe": "explainer",
+      "source": "styles/sfumato"
+    },
+    {
+      "id": "light-dabs",
+      "recipe": "explainer",
+      "source": "styles/light-dabs"
+    },
+    {
+      "id": "facets",
+      "recipe": "explainer",
+      "source": "styles/facets"
+    },
+    {
+      "id": "chrome-ball",
+      "recipe": "explainer",
+      "source": "styles/chrome-ball"
+    },
+    {
+      "id": "scream-warp",
+      "recipe": "explainer",
+      "source": "styles/scream-warp"
+    },
+    {
+      "id": "soft-clock",
+      "recipe": "explainer",
+      "source": "styles/soft-clock"
+    },
+    {
+      "id": "watercolor-cel",
+      "recipe": "explainer",
+      "source": "styles/watercolor-cel"
+    },
+    {
+      "id": "lily-pond",
+      "recipe": "explainer",
+      "source": "styles/lily-pond"
+    },
+    {
+      "id": "optical-dots",
+      "recipe": "explainer",
+      "source": "styles/optical-dots"
+    },
+    {
+      "id": "candle-light",
+      "recipe": "explainer",
+      "source": "styles/candle-light"
+    },
+    {
+      "id": "cumulus-light",
+      "recipe": "explainer",
+      "source": "styles/cumulus-light"
+    },
+    {
+      "id": "blue-period",
+      "recipe": "explainer",
+      "source": "styles/blue-period"
+    },
+    {
+      "id": "whiteboard",
+      "recipe": "promo",
+      "source": "styles/whiteboard"
+    },
+    {
+      "id": "kinetic-type",
+      "recipe": "explainer",
+      "source": "styles/kinetic-type"
+    },
+    {
+      "id": "riso-print",
+      "recipe": "explainer",
+      "source": "styles/riso-print"
+    },
+    {
+      "id": "math-lab",
+      "recipe": "explainer",
+      "source": "styles/math-lab"
+    },
+    {
+      "id": "hypnotic",
+      "recipe": "explainer",
+      "source": "styles/hypnotic"
+    },
+    {
+      "id": "ink-tea",
+      "recipe": "explainer",
+      "source": "styles/ink-tea"
+    },
+    {
+      "id": "isometric-anatomy",
+      "recipe": "explainer",
+      "source": "styles/isometric-anatomy"
+    }
+  ],
+  "runtime": [
+    {
+      "recipe": "explainer",
+      "style": null,
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#6630F8",
+          "accentLight": "#A175F1",
+          "accentTech": "#6530F4",
+          "accentDeep": "#5A3AD5",
+          "accentPale": "#E6DCFF",
+          "secondary": "#F05F41",
+          "secondaryAlt": "#F16043",
+          "warning": "#EC081F",
+          "correct": "#8FF740",
+          "bg": "#000000",
+          "bgFog": "#212121",
+          "bgPanel": "#2A2A2A",
+          "grey": "#A0A0A1",
+          "greyMid": "#747474",
+          "greyLine": "#4A4A4A",
+          "greyLight": "#D4D4D4",
+          "white": "#FFFFFF",
+          "magenta": "#D100D6",
+          "cyan": "#58FFEE",
+          "glowAccent": "0 0 12px 3px rgba(102,45,248,.35), 0 0 42px 14px rgba(102,45,248,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(102,45,248,.6)",
+          "glowSecondary": "0 0 40px rgba(243,95,69,.75), 0 0 100px 10px rgba(243,95,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(236,8,31,.42), 0 0 20px 6px rgba(236,8,31,.45)",
+          "accentGlowRgb": "102,45,248",
+          "haloDark": "#3A1E8C",
+          "haloLight": "#8F62F5",
+          "techGlow": "0 0 6px rgba(80,30,200,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(200,180,255,.6))",
+          "pillTextOnAccent": "#FFFFFF",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(102,45,248,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "deep-space",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#21E6C1",
+          "accentLight": "#7BF7E2",
+          "accentTech": "#1FD0AE",
+          "accentDeep": "#0FA98D",
+          "accentPale": "#D3F8EF",
+          "secondary": "#FF7A45",
+          "secondaryAlt": "#FF9468",
+          "warning": "#FF3B5C",
+          "correct": "#3DDC84",
+          "bg": "#0B0B12",
+          "bgFog": "#151527",
+          "bgPanel": "#1A1A26",
+          "grey": "#9A9AA6",
+          "greyMid": "#6E6E7A",
+          "greyLine": "#3C3C4A",
+          "greyLight": "#C9C9D4",
+          "white": "#FFFFFF",
+          "magenta": "#FF2E9A",
+          "cyan": "#21E6C1",
+          "glowAccent": "0 0 12px 3px rgba(33,230,193,.35), 0 0 42px 14px rgba(33,230,193,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(33,230,193,.6)",
+          "glowSecondary": "0 0 40px rgba(255,122,69,.75), 0 0 100px 10px rgba(255,122,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,59,92,.42), 0 0 20px 6px rgba(255,59,92,.45)",
+          "accentGlowRgb": "33,230,193",
+          "haloDark": "#073D33",
+          "haloLight": "#8FFCE8",
+          "techGlow": "0 0 6px rgba(15,169,141,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(180,240,230,.6))",
+          "pillTextOnAccent": "#06231D",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(33,230,193,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(33,230,193,0.45)",
+          "barTrack": "rgba(60,60,74,0.50)",
+          "barLabel": "rgba(154,154,166,0.70)",
+          "barDivider": "rgba(154,154,166,0.40)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "mg-purple",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#6630F8",
+          "accentLight": "#A175F1",
+          "accentTech": "#6530F4",
+          "accentDeep": "#5A3AD5",
+          "accentPale": "#E6DCFF",
+          "secondary": "#F05F41",
+          "secondaryAlt": "#F16043",
+          "warning": "#EC081F",
+          "correct": "#8FF740",
+          "bg": "#000000",
+          "bgFog": "#212121",
+          "bgPanel": "#2A2A2A",
+          "grey": "#A0A0A1",
+          "greyMid": "#747474",
+          "greyLine": "#4A4A4A",
+          "greyLight": "#D4D4D4",
+          "white": "#FFFFFF",
+          "magenta": "#D100D6",
+          "cyan": "#58FFEE",
+          "glowAccent": "0 0 12px 3px rgba(102,45,248,.35), 0 0 42px 14px rgba(102,45,248,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(102,45,248,.6)",
+          "glowSecondary": "0 0 40px rgba(243,95,69,.75), 0 0 100px 10px rgba(243,95,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(236,8,31,.42), 0 0 20px 6px rgba(236,8,31,.45)",
+          "accentGlowRgb": "102,45,248",
+          "haloDark": "#3A1E8C",
+          "haloLight": "#8F62F5",
+          "techGlow": "0 0 6px rgba(80,30,200,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(200,180,255,.6))",
+          "pillTextOnAccent": "#FFFFFF",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(102,45,248,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "epic-paper",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#C43C2E",
+          "accentLight": "#E06A55",
+          "accentTech": "#A83226",
+          "accentDeep": "#8E2A20",
+          "accentPale": "#F3D5CE",
+          "secondary": "#C9A86A",
+          "secondaryAlt": "#DDBE85",
+          "warning": "#B3261E",
+          "correct": "#4A7C59",
+          "bg": "#F2EDDF",
+          "bgFog": "#E8E1CE",
+          "bgPanel": "#E5DECB",
+          "grey": "#8A8375",
+          "greyMid": "#A9A290",
+          "greyLine": "#D6CFBC",
+          "greyLight": "#C4BCA8",
+          "white": "#FFFFFF",
+          "magenta": "#D24A3A",
+          "cyan": "#7A9E9F",
+          "glowAccent": "0 0 12px 3px rgba(196,60,46,.35), 0 0 42px 14px rgba(196,60,46,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(196,60,46,.6)",
+          "glowSecondary": "0 0 40px rgba(201,168,106,.75), 0 0 100px 10px rgba(201,168,106,.25)",
+          "glowWarning": "0 0 60px 20px rgba(179,38,30,.42), 0 0 20px 6px rgba(179,38,30,.45)",
+          "accentGlowRgb": "196,60,46",
+          "haloDark": "#5E1B14",
+          "haloLight": "#F5B7A8",
+          "techGlow": "0 0 6px rgba(168,50,38,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(245,214,200,.6))",
+          "pillTextOnAccent": "#FFF6EE",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.4), 0 -1px 0 rgba(0,0,0,.4), 0 0 10px rgba(196,60,46,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "sand",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#a06a28",
+          "accentLight": "#c98f4a",
+          "accentTech": "#8a5c20",
+          "accentDeep": "#6e4a1a",
+          "accentPale": "#f0e2c8",
+          "secondary": "#7d5f36",
+          "secondaryAlt": "#c8a76b",
+          "warning": "#8f4a1a",
+          "correct": "#6b7d36",
+          "bg": "#e9d9b4",
+          "bgFog": "#eedcb6",
+          "bgPanel": "#d9c391",
+          "grey": "#8a7a58",
+          "greyMid": "#a8946c",
+          "greyLine": "#c9b384",
+          "greyLight": "#f6ecd0",
+          "white": "#f7edd2",
+          "magenta": "#b06a4a",
+          "cyan": "#8a9a6a",
+          "glowAccent": "0 0 12px 3px rgba(247,237,210,.5), 0 0 42px 14px rgba(247,237,210,.4)",
+          "glowAccentS": "0 0 24px 8px rgba(247,237,210,.55)",
+          "glowSecondary": "0 0 40px rgba(125,95,54,.5), 0 0 100px 10px rgba(125,95,54,.2)",
+          "glowWarning": "0 0 60px 20px rgba(143,74,26,.35), 0 0 20px 6px rgba(143,74,26,.4)",
+          "accentGlowRgb": "247,237,210",
+          "haloDark": "#c9b384",
+          "haloLight": "#f7edd2",
+          "techGlow": "0 0 6px rgba(160,106,40,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(247,237,210,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(247,237,210,0.35))",
+          "textGlow": "0 0 12px rgba(247,237,210,.55), 0 0 4px rgba(247,237,210,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(240,226,190,.6))",
+          "pillTextOnAccent": "#f7edd2",
+          "textShadowOnSolid": "0 1px 0 rgba(120,90,50,.4), 0 -1px 0 rgba(120,90,50,.4), 0 0 10px rgba(160,106,40,.35)"
+        },
+        "chrome": {
+          "subColor": "#4a3520",
+          "subStroke": "#f6ecd0",
+          "barFill": "rgba(160,106,40,0.55)",
+          "barTrack": "rgba(74,53,32,0.18)",
+          "barLabel": "rgba(74,53,32,0.55)",
+          "barDivider": "rgba(74,53,32,0.35)",
+          "barGlow": false,
+          "endFade": "#e9d9b4",
+          "subAccent": "#a06a28",
+          "barHair": "#7d5f36"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "chalk",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#e8d48b",
+          "accentLight": "#f2e3ad",
+          "accentTech": "#d4c078",
+          "accentDeep": "#b8a260",
+          "accentPale": "#33544a",
+          "secondary": "#a8c8e8",
+          "secondaryAlt": "#e8a8b0",
+          "warning": "#e8a8b0",
+          "correct": "#a8e8b8",
+          "bg": "#1e3b2f",
+          "bgFog": "#152b23",
+          "bgPanel": "#24473a",
+          "grey": "#9ab8a8",
+          "greyMid": "#6f9484",
+          "greyLine": "#3a5a4c",
+          "greyLight": "#c8dccf",
+          "white": "#f5f2e8",
+          "magenta": "#e8a8b0",
+          "cyan": "#a8c8e8",
+          "glowAccent": "0 0 12px 3px rgba(232,212,139,.28), 0 0 42px 14px rgba(232,212,139,.35)",
+          "glowAccentS": "0 0 24px 8px rgba(232,212,139,.45)",
+          "glowSecondary": "0 0 40px rgba(168,200,232,.5), 0 0 100px 10px rgba(168,200,232,.2)",
+          "glowWarning": "0 0 60px 20px rgba(232,168,176,.32), 0 0 20px 6px rgba(232,168,176,.4)",
+          "accentGlowRgb": "232,212,139",
+          "haloDark": "#33544a",
+          "haloLight": "#f2e3ad",
+          "techGlow": "0 0 6px rgba(212,192,120,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(245,242,232,0.4))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(245,242,232,0.3))",
+          "textGlow": "0 0 12px rgba(245,242,232,.4), 0 0 4px rgba(245,242,232,.3)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(232,212,139,.5))",
+          "pillTextOnAccent": "#1e3b2f",
+          "textShadowOnSolid": "0 1px 0 rgba(15,32,25,.5), 0 -1px 0 rgba(15,32,25,.5), 0 0 10px rgba(232,212,139,.35)"
+        },
+        "chrome": {
+          "subColor": "#f5f2e8",
+          "subStroke": "#0f2019",
+          "barFill": "rgba(232,212,139,0.50)",
+          "barTrack": "rgba(21,43,35,0.50)",
+          "barLabel": "rgba(245,242,232,0.50)",
+          "barDivider": "rgba(245,242,232,0.30)",
+          "barGlow": false,
+          "endFade": "#1e3b2f",
+          "subAccent": "#e8d48b"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "blueprint",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#ffd23f",
+          "accentLight": "#ffe37a",
+          "accentTech": "#e6b92a",
+          "accentDeep": "#b8941f",
+          "accentPale": "#24466b",
+          "secondary": "#7fa8d9",
+          "secondaryAlt": "#a8c8e8",
+          "warning": "#ff8c5a",
+          "correct": "#7fe8a8",
+          "bg": "#0d2a4a",
+          "bgFog": "#123a63",
+          "bgPanel": "#16406b",
+          "grey": "#7fa8d9",
+          "greyMid": "#5f83ad",
+          "greyLine": "rgba(160,200,255,0.25)",
+          "greyLight": "#d7e8ff",
+          "white": "#d7e8ff",
+          "magenta": "#e07a9d",
+          "cyan": "#7fd7ff",
+          "glowAccent": "0 0 12px 3px rgba(255,210,63,.28), 0 0 42px 14px rgba(255,210,63,.32)",
+          "glowAccentS": "0 0 24px 8px rgba(255,210,63,.4)",
+          "glowSecondary": "0 0 40px rgba(127,168,217,.45), 0 0 100px 10px rgba(127,168,217,.18)",
+          "glowWarning": "0 0 60px 20px rgba(255,140,90,.3), 0 0 20px 6px rgba(255,140,90,.35)",
+          "accentGlowRgb": "255,210,63",
+          "haloDark": "#16406b",
+          "haloLight": "#ffe37a",
+          "techGlow": "0 0 6px rgba(230,185,42,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(215,232,255,0.4))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(215,232,255,0.3))",
+          "textGlow": "0 0 12px rgba(215,232,255,.4), 0 0 4px rgba(215,232,255,.3)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(255,210,63,.45))",
+          "pillTextOnAccent": "#0d2a4a",
+          "textShadowOnSolid": "0 1px 0 rgba(8,26,46,.5), 0 -1px 0 rgba(8,26,46,.5), 0 0 10px rgba(255,210,63,.35)"
+        },
+        "chrome": {
+          "subColor": "#d7e8ff",
+          "subStroke": "#0d2a4a",
+          "barFill": "rgba(255,210,63,0.50)",
+          "barTrack": "rgba(127,168,217,0.18)",
+          "barLabel": "rgba(215,232,255,0.50)",
+          "barDivider": "rgba(127,168,217,0.35)",
+          "barGlow": false,
+          "endFade": "#0d2a4a",
+          "subAccent": "#ffd23f"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "neon",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#33e0ff",
+          "accentLight": "#7deaff",
+          "accentTech": "#2ac2dd",
+          "accentDeep": "#1f96ad",
+          "accentPale": "#12253a",
+          "secondary": "#ff4d9d",
+          "secondaryAlt": "#ffe14d",
+          "warning": "#ff4d6a",
+          "correct": "#2ee6a8",
+          "bg": "#07070f",
+          "bgFog": "#12101f",
+          "bgPanel": "#181626",
+          "grey": "#9a97b0",
+          "greyMid": "#6a6880",
+          "greyLine": "#2c2a40",
+          "greyLight": "#c9c6dc",
+          "white": "#ffffff",
+          "magenta": "#ff4d9d",
+          "cyan": "#33e0ff",
+          "glowAccent": "0 0 12px 3px rgba(51,224,255,.4), 0 0 42px 14px rgba(51,224,255,.5)",
+          "glowAccentS": "0 0 24px 8px rgba(51,224,255,.65)",
+          "glowSecondary": "0 0 40px rgba(255,77,157,.6), 0 0 100px 10px rgba(255,77,157,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,77,106,.4), 0 0 20px 6px rgba(255,77,106,.45)",
+          "accentGlowRgb": "51,224,255",
+          "haloDark": "#12253a",
+          "haloLight": "#7deaff",
+          "techGlow": "0 0 6px rgba(42,194,221,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.55))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.4))",
+          "textGlow": "0 0 12px rgba(255,255,255,.6), 0 0 4px rgba(255,255,255,.4)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(125,234,255,.6))",
+          "pillTextOnAccent": "#06231f",
+          "textShadowOnSolid": "0 1px 0 rgba(4,4,10,.5), 0 -1px 0 rgba(4,4,10,.5), 0 0 10px rgba(51,224,255,.45)"
+        },
+        "chrome": {
+          "subColor": "#ffffff",
+          "subStroke": "#07070f",
+          "barFill": "rgba(51,224,255,0.45)",
+          "barTrack": "rgba(30,28,48,0.50)",
+          "barLabel": "rgba(201,198,220,0.50)",
+          "barDivider": "rgba(51,224,255,0.30)",
+          "barGlow": true,
+          "endFade": "#07070f",
+          "subAccent": "#33e0ff"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "pixel-arcade",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#2ee6a8",
+          "accentLight": "#6ff2c8",
+          "accentTech": "#29c795",
+          "accentDeep": "#1f9a74",
+          "accentPale": "#1a1f3a",
+          "secondary": "#ff3d81",
+          "secondaryAlt": "#ffc93c",
+          "warning": "#ff3d5a",
+          "correct": "#2ee6a8",
+          "bg": "#0d0f1c",
+          "bgFog": "#12142a",
+          "bgPanel": "#1a1f3a",
+          "grey": "#a2a2a6",
+          "greyMid": "#3c3c44",
+          "greyLine": "#3c3c44",
+          "greyLight": "#f4f6ff",
+          "white": "#f4f6ff",
+          "magenta": "#ff3d81",
+          "cyan": "#2ee6a8",
+          "glowAccent": "0 0 12px 3px rgba(46,230,168,.3), 0 0 42px 14px rgba(46,230,168,.35)",
+          "glowAccentS": "0 0 24px 8px rgba(46,230,168,.5)",
+          "glowSecondary": "0 0 40px rgba(255,61,129,.5), 0 0 100px 10px rgba(255,61,129,.2)",
+          "glowWarning": "0 0 60px 20px rgba(255,61,90,.32), 0 0 20px 6px rgba(255,61,90,.4)",
+          "accentGlowRgb": "46,230,168",
+          "haloDark": "#1a1f3a",
+          "haloLight": "#6ff2c8",
+          "techGlow": "0 0 6px rgba(41,199,149,.6)",
+          "bloom": "drop-shadow(0 0 3px rgba(244,246,255,0.45))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(244,246,255,0.35))",
+          "textGlow": "0 0 12px rgba(244,246,255,.45), 0 0 4px rgba(244,246,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(111,242,200,.55))",
+          "pillTextOnAccent": "#0d0f1c",
+          "textShadowOnSolid": "0 1px 0 rgba(6,8,16,.5), 0 -1px 0 rgba(6,8,16,.5), 0 0 10px rgba(46,230,168,.4)"
+        },
+        "chrome": {
+          "subColor": "#f4f6ff",
+          "subStroke": "#0d0f1c",
+          "barFill": "rgba(46,230,168,0.50)",
+          "barTrack": "rgba(60,60,68,0.50)",
+          "barLabel": "rgba(162,162,166,0.70)",
+          "barDivider": "rgba(60,60,68,0.90)",
+          "barGlow": true,
+          "endFade": "#0d0f1c",
+          "subAccent": "#ffc93c"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "paper-collage",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#d94f3d",
+          "accentLight": "#e2705f",
+          "accentTech": "#c24434",
+          "accentDeep": "#a83a2c",
+          "accentPale": "#f3e7d9",
+          "secondary": "#e0a63c",
+          "secondaryAlt": "#d9c6a3",
+          "warning": "#a83a2c",
+          "correct": "#6b8a4a",
+          "bg": "#f6f1e7",
+          "bgFog": "#efe7d8",
+          "bgPanel": "#e5dcc8",
+          "grey": "#8a8676",
+          "greyMid": "#b0a995",
+          "greyLine": "#d9d2bf",
+          "greyLight": "#f6f1e7",
+          "white": "#fbf8f1",
+          "magenta": "#d94f8a",
+          "cyan": "#5f8a9e",
+          "glowAccent": "0 0 12px 3px rgba(217,79,61,.18), 0 0 42px 14px rgba(217,79,61,.22)",
+          "glowAccentS": "0 0 24px 8px rgba(217,79,61,.25)",
+          "glowSecondary": "0 0 40px rgba(224,166,60,.35), 0 0 100px 10px rgba(224,166,60,.15)",
+          "glowWarning": "0 0 60px 20px rgba(168,58,44,.28), 0 0 20px 6px rgba(168,58,44,.32)",
+          "accentGlowRgb": "217,79,61",
+          "haloDark": "#d9c6a3",
+          "haloLight": "#f3e7d9",
+          "techGlow": "0 0 6px rgba(194,68,52,.35)",
+          "bloom": "drop-shadow(0 0 3px rgba(251,248,241,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(251,248,241,0.35))",
+          "textGlow": "0 0 12px rgba(251,248,241,.5), 0 0 4px rgba(251,248,241,.35)",
+          "pillShadow": "drop-shadow(0 2px 3px rgba(39,64,96,.25))",
+          "pillTextOnAccent": "#ffffff",
+          "textShadowOnSolid": "0 1px 0 rgba(39,64,96,.25), 0 -1px 0 rgba(39,64,96,.25), 0 0 10px rgba(217,79,61,.25)"
+        },
+        "chrome": {
+          "subColor": "#274060",
+          "subStroke": "#f6f1e7",
+          "barFill": "rgba(217,79,61,0.82)",
+          "barTrack": "rgba(217,198,163,0.50)",
+          "barLabel": "rgba(39,64,96,0.55)",
+          "barDivider": "rgba(39,64,96,0.35)",
+          "barGlow": false,
+          "endFade": "#f6f1e7",
+          "subAccent": "#d94f3d",
+          "barHair": "#274060"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "swiss-print",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#e63329",
+          "accentLight": "#f06055",
+          "accentTech": "#cc2e25",
+          "accentDeep": "#a8251e",
+          "accentPale": "#f2d7d5",
+          "secondary": "#9a9a9a",
+          "secondaryAlt": "#c4c4c4",
+          "warning": "#e63329",
+          "correct": "#4a7c59",
+          "bg": "#fafafa",
+          "bgFog": "#f0f0f0",
+          "bgPanel": "#eaeaea",
+          "grey": "#9a9a9a",
+          "greyMid": "#c4c4c4",
+          "greyLine": "#d9d9d9",
+          "greyLight": "#111111",
+          "white": "#ffffff",
+          "magenta": "#e63329",
+          "cyan": "#9a9a9a",
+          "glowAccent": "none",
+          "glowAccentS": "none",
+          "glowSecondary": "none",
+          "glowWarning": "none",
+          "accentGlowRgb": "230,51,41",
+          "haloDark": "#d9d9d9",
+          "haloLight": "#ffffff",
+          "techGlow": "none",
+          "bloom": "none",
+          "bloomSoft": "none",
+          "textGlow": "none",
+          "pillShadow": "none",
+          "pillTextOnAccent": "#ffffff",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.35), 0 -1px 0 rgba(0,0,0,.35)"
+        },
+        "chrome": {
+          "subColor": "#111111",
+          "subStroke": "#fafafa",
+          "barFill": "rgba(230,51,41,0.85)",
+          "barTrack": "rgba(154,154,154,0.30)",
+          "barLabel": "rgba(17,17,17,0.55)",
+          "barDivider": "rgba(17,17,17,0.30)",
+          "barGlow": false,
+          "endFade": "#fafafa",
+          "subAccent": "#e63329",
+          "barHair": "#111111"
+        }
+      }
+    },
+    {
+      "recipe": "explainer",
+      "style": "crt-terminal",
+      "value": {
+        "id": "explainer",
+        "name": "讲解片（a2e 视觉）",
+        "overlaySet": "explainer",
+        "accentFrom": [
+          "#6630F8",
+          "#e63329",
+          "#33ff66",
+          "#ffd23f",
+          "#a06a28"
+        ],
+        "palette": {
+          "accent": "#33ff66",
+          "accentLight": "#7dff9f",
+          "accentTech": "#2acc55",
+          "accentDeep": "#1a8f3c",
+          "accentPale": "#0a2012",
+          "secondary": "#ffb000",
+          "secondaryAlt": "#ffd066",
+          "warning": "#ffb000",
+          "correct": "#33ff66",
+          "bg": "#050a06",
+          "bgFog": "#071108",
+          "bgPanel": "#0a140c",
+          "grey": "#3fa85f",
+          "greyMid": "#2a7a46",
+          "greyLine": "#1a5a32",
+          "greyLight": "#7dff9f",
+          "white": "#c8ffd8",
+          "magenta": "#ff66aa",
+          "cyan": "#33ffcc",
+          "glowAccent": "0 0 12px 3px rgba(51,255,102,.4), 0 0 42px 14px rgba(51,255,102,.5)",
+          "glowAccentS": "0 0 24px 8px rgba(51,255,102,.6)",
+          "glowSecondary": "0 0 40px rgba(255,176,0,.5), 0 0 100px 10px rgba(255,176,0,.2)",
+          "glowWarning": "0 0 60px 20px rgba(255,176,0,.35), 0 0 20px 6px rgba(255,176,0,.45)",
+          "accentGlowRgb": "51,255,102",
+          "haloDark": "#0a2012",
+          "haloLight": "#7dff9f",
+          "techGlow": "0 0 6px rgba(42,204,85,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(200,255,216,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(200,255,216,0.35))",
+          "textGlow": "0 0 12px rgba(200,255,216,.55), 0 0 4px rgba(200,255,216,.4)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(125,255,159,.55))",
+          "pillTextOnAccent": "#050a06",
+          "textShadowOnSolid": "0 1px 0 rgba(2,6,3,.6), 0 -1px 0 rgba(2,6,3,.6), 0 0 10px rgba(51,255,102,.5)"
+        },
+        "chrome": {
+          "subColor": "#33ff66",
+          "subStroke": "#050a06",
+          "barFill": "rgba(51,255,102,0.45)",
+          "barTrack": "rgba(26,143,60,0.20)",
+          "barLabel": "rgba(51,255,102,0.45)",
+          "barDivider": "rgba(26,143,60,0.50)",
+          "barGlow": true,
+          "endFade": "#050a06",
+          "subAccent": "#7dff9f"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": null,
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#21E6C1",
+          "accentLight": "#7BF7E2",
+          "accentTech": "#1FD0AE",
+          "accentDeep": "#0FA98D",
+          "accentPale": "#D3F8EF",
+          "secondary": "#FF7A45",
+          "secondaryAlt": "#FF9468",
+          "warning": "#FF3B5C",
+          "correct": "#3DDC84",
+          "bg": "#0B0B12",
+          "bgFog": "#151527",
+          "bgPanel": "#1A1A26",
+          "grey": "#9A9AA6",
+          "greyMid": "#6E6E7A",
+          "greyLine": "#3C3C4A",
+          "greyLight": "#C9C9D4",
+          "white": "#FFFFFF",
+          "magenta": "#FF2E9A",
+          "cyan": "#21E6C1",
+          "glowAccent": "0 0 12px 3px rgba(33,230,193,.35), 0 0 42px 14px rgba(33,230,193,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(33,230,193,.6)",
+          "glowSecondary": "0 0 40px rgba(255,122,69,.75), 0 0 100px 10px rgba(255,122,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,59,92,.42), 0 0 20px 6px rgba(255,59,92,.45)",
+          "accentGlowRgb": "33,230,193",
+          "haloDark": "#073D33",
+          "haloLight": "#8FFCE8",
+          "techGlow": "0 0 6px rgba(15,169,141,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(180,240,230,.6))",
+          "pillTextOnAccent": "#06231D",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(33,230,193,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "deep-space",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#21E6C1",
+          "accentLight": "#7BF7E2",
+          "accentTech": "#1FD0AE",
+          "accentDeep": "#0FA98D",
+          "accentPale": "#D3F8EF",
+          "secondary": "#FF7A45",
+          "secondaryAlt": "#FF9468",
+          "warning": "#FF3B5C",
+          "correct": "#3DDC84",
+          "bg": "#0B0B12",
+          "bgFog": "#151527",
+          "bgPanel": "#1A1A26",
+          "grey": "#9A9AA6",
+          "greyMid": "#6E6E7A",
+          "greyLine": "#3C3C4A",
+          "greyLight": "#C9C9D4",
+          "white": "#FFFFFF",
+          "magenta": "#FF2E9A",
+          "cyan": "#21E6C1",
+          "glowAccent": "0 0 12px 3px rgba(33,230,193,.35), 0 0 42px 14px rgba(33,230,193,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(33,230,193,.6)",
+          "glowSecondary": "0 0 40px rgba(255,122,69,.75), 0 0 100px 10px rgba(255,122,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,59,92,.42), 0 0 20px 6px rgba(255,59,92,.45)",
+          "accentGlowRgb": "33,230,193",
+          "haloDark": "#073D33",
+          "haloLight": "#8FFCE8",
+          "techGlow": "0 0 6px rgba(15,169,141,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(180,240,230,.6))",
+          "pillTextOnAccent": "#06231D",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(33,230,193,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(33,230,193,0.45)",
+          "barTrack": "rgba(60,60,74,0.50)",
+          "barLabel": "rgba(154,154,166,0.70)",
+          "barDivider": "rgba(154,154,166,0.40)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "mg-purple",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#6630F8",
+          "accentLight": "#A175F1",
+          "accentTech": "#6530F4",
+          "accentDeep": "#5A3AD5",
+          "accentPale": "#E6DCFF",
+          "secondary": "#F05F41",
+          "secondaryAlt": "#F16043",
+          "warning": "#EC081F",
+          "correct": "#8FF740",
+          "bg": "#000000",
+          "bgFog": "#212121",
+          "bgPanel": "#2A2A2A",
+          "grey": "#A0A0A1",
+          "greyMid": "#747474",
+          "greyLine": "#4A4A4A",
+          "greyLight": "#D4D4D4",
+          "white": "#FFFFFF",
+          "magenta": "#D100D6",
+          "cyan": "#58FFEE",
+          "glowAccent": "0 0 12px 3px rgba(102,45,248,.35), 0 0 42px 14px rgba(102,45,248,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(102,45,248,.6)",
+          "glowSecondary": "0 0 40px rgba(243,95,69,.75), 0 0 100px 10px rgba(243,95,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(236,8,31,.42), 0 0 20px 6px rgba(236,8,31,.45)",
+          "accentGlowRgb": "102,45,248",
+          "haloDark": "#3A1E8C",
+          "haloLight": "#8F62F5",
+          "techGlow": "0 0 6px rgba(80,30,200,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(200,180,255,.6))",
+          "pillTextOnAccent": "#FFFFFF",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(102,45,248,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "epic-paper",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#C43C2E",
+          "accentLight": "#E06A55",
+          "accentTech": "#A83226",
+          "accentDeep": "#8E2A20",
+          "accentPale": "#F3D5CE",
+          "secondary": "#C9A86A",
+          "secondaryAlt": "#DDBE85",
+          "warning": "#B3261E",
+          "correct": "#4A7C59",
+          "bg": "#F2EDDF",
+          "bgFog": "#E8E1CE",
+          "bgPanel": "#E5DECB",
+          "grey": "#8A8375",
+          "greyMid": "#A9A290",
+          "greyLine": "#D6CFBC",
+          "greyLight": "#C4BCA8",
+          "white": "#FFFFFF",
+          "magenta": "#D24A3A",
+          "cyan": "#7A9E9F",
+          "glowAccent": "0 0 12px 3px rgba(196,60,46,.35), 0 0 42px 14px rgba(196,60,46,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(196,60,46,.6)",
+          "glowSecondary": "0 0 40px rgba(201,168,106,.75), 0 0 100px 10px rgba(201,168,106,.25)",
+          "glowWarning": "0 0 60px 20px rgba(179,38,30,.42), 0 0 20px 6px rgba(179,38,30,.45)",
+          "accentGlowRgb": "196,60,46",
+          "haloDark": "#5E1B14",
+          "haloLight": "#F5B7A8",
+          "techGlow": "0 0 6px rgba(168,50,38,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(245,214,200,.6))",
+          "pillTextOnAccent": "#FFF6EE",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.4), 0 -1px 0 rgba(0,0,0,.4), 0 0 10px rgba(196,60,46,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "sand",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#a06a28",
+          "accentLight": "#c98f4a",
+          "accentTech": "#8a5c20",
+          "accentDeep": "#6e4a1a",
+          "accentPale": "#f0e2c8",
+          "secondary": "#7d5f36",
+          "secondaryAlt": "#c8a76b",
+          "warning": "#8f4a1a",
+          "correct": "#6b7d36",
+          "bg": "#e9d9b4",
+          "bgFog": "#eedcb6",
+          "bgPanel": "#d9c391",
+          "grey": "#8a7a58",
+          "greyMid": "#a8946c",
+          "greyLine": "#c9b384",
+          "greyLight": "#f6ecd0",
+          "white": "#f7edd2",
+          "magenta": "#b06a4a",
+          "cyan": "#8a9a6a",
+          "glowAccent": "0 0 12px 3px rgba(247,237,210,.5), 0 0 42px 14px rgba(247,237,210,.4)",
+          "glowAccentS": "0 0 24px 8px rgba(247,237,210,.55)",
+          "glowSecondary": "0 0 40px rgba(125,95,54,.5), 0 0 100px 10px rgba(125,95,54,.2)",
+          "glowWarning": "0 0 60px 20px rgba(143,74,26,.35), 0 0 20px 6px rgba(143,74,26,.4)",
+          "accentGlowRgb": "247,237,210",
+          "haloDark": "#c9b384",
+          "haloLight": "#f7edd2",
+          "techGlow": "0 0 6px rgba(160,106,40,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(247,237,210,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(247,237,210,0.35))",
+          "textGlow": "0 0 12px rgba(247,237,210,.55), 0 0 4px rgba(247,237,210,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(240,226,190,.6))",
+          "pillTextOnAccent": "#f7edd2",
+          "textShadowOnSolid": "0 1px 0 rgba(120,90,50,.4), 0 -1px 0 rgba(120,90,50,.4), 0 0 10px rgba(160,106,40,.35)"
+        },
+        "chrome": {
+          "subColor": "#4a3520",
+          "subStroke": "#f6ecd0",
+          "barFill": "rgba(160,106,40,0.55)",
+          "barTrack": "rgba(74,53,32,0.18)",
+          "barLabel": "rgba(74,53,32,0.55)",
+          "barDivider": "rgba(74,53,32,0.35)",
+          "barGlow": false,
+          "endFade": "#e9d9b4",
+          "subAccent": "#a06a28",
+          "barHair": "#7d5f36"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "chalk",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#e8d48b",
+          "accentLight": "#f2e3ad",
+          "accentTech": "#d4c078",
+          "accentDeep": "#b8a260",
+          "accentPale": "#33544a",
+          "secondary": "#a8c8e8",
+          "secondaryAlt": "#e8a8b0",
+          "warning": "#e8a8b0",
+          "correct": "#a8e8b8",
+          "bg": "#1e3b2f",
+          "bgFog": "#152b23",
+          "bgPanel": "#24473a",
+          "grey": "#9ab8a8",
+          "greyMid": "#6f9484",
+          "greyLine": "#3a5a4c",
+          "greyLight": "#c8dccf",
+          "white": "#f5f2e8",
+          "magenta": "#e8a8b0",
+          "cyan": "#a8c8e8",
+          "glowAccent": "0 0 12px 3px rgba(232,212,139,.28), 0 0 42px 14px rgba(232,212,139,.35)",
+          "glowAccentS": "0 0 24px 8px rgba(232,212,139,.45)",
+          "glowSecondary": "0 0 40px rgba(168,200,232,.5), 0 0 100px 10px rgba(168,200,232,.2)",
+          "glowWarning": "0 0 60px 20px rgba(232,168,176,.32), 0 0 20px 6px rgba(232,168,176,.4)",
+          "accentGlowRgb": "232,212,139",
+          "haloDark": "#33544a",
+          "haloLight": "#f2e3ad",
+          "techGlow": "0 0 6px rgba(212,192,120,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(245,242,232,0.4))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(245,242,232,0.3))",
+          "textGlow": "0 0 12px rgba(245,242,232,.4), 0 0 4px rgba(245,242,232,.3)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(232,212,139,.5))",
+          "pillTextOnAccent": "#1e3b2f",
+          "textShadowOnSolid": "0 1px 0 rgba(15,32,25,.5), 0 -1px 0 rgba(15,32,25,.5), 0 0 10px rgba(232,212,139,.35)"
+        },
+        "chrome": {
+          "subColor": "#f5f2e8",
+          "subStroke": "#0f2019",
+          "barFill": "rgba(232,212,139,0.50)",
+          "barTrack": "rgba(21,43,35,0.50)",
+          "barLabel": "rgba(245,242,232,0.50)",
+          "barDivider": "rgba(245,242,232,0.30)",
+          "barGlow": false,
+          "endFade": "#1e3b2f",
+          "subAccent": "#e8d48b"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "blueprint",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#ffd23f",
+          "accentLight": "#ffe37a",
+          "accentTech": "#e6b92a",
+          "accentDeep": "#b8941f",
+          "accentPale": "#24466b",
+          "secondary": "#7fa8d9",
+          "secondaryAlt": "#a8c8e8",
+          "warning": "#ff8c5a",
+          "correct": "#7fe8a8",
+          "bg": "#0d2a4a",
+          "bgFog": "#123a63",
+          "bgPanel": "#16406b",
+          "grey": "#7fa8d9",
+          "greyMid": "#5f83ad",
+          "greyLine": "rgba(160,200,255,0.25)",
+          "greyLight": "#d7e8ff",
+          "white": "#d7e8ff",
+          "magenta": "#e07a9d",
+          "cyan": "#7fd7ff",
+          "glowAccent": "0 0 12px 3px rgba(255,210,63,.28), 0 0 42px 14px rgba(255,210,63,.32)",
+          "glowAccentS": "0 0 24px 8px rgba(255,210,63,.4)",
+          "glowSecondary": "0 0 40px rgba(127,168,217,.45), 0 0 100px 10px rgba(127,168,217,.18)",
+          "glowWarning": "0 0 60px 20px rgba(255,140,90,.3), 0 0 20px 6px rgba(255,140,90,.35)",
+          "accentGlowRgb": "255,210,63",
+          "haloDark": "#16406b",
+          "haloLight": "#ffe37a",
+          "techGlow": "0 0 6px rgba(230,185,42,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(215,232,255,0.4))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(215,232,255,0.3))",
+          "textGlow": "0 0 12px rgba(215,232,255,.4), 0 0 4px rgba(215,232,255,.3)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(255,210,63,.45))",
+          "pillTextOnAccent": "#0d2a4a",
+          "textShadowOnSolid": "0 1px 0 rgba(8,26,46,.5), 0 -1px 0 rgba(8,26,46,.5), 0 0 10px rgba(255,210,63,.35)"
+        },
+        "chrome": {
+          "subColor": "#d7e8ff",
+          "subStroke": "#0d2a4a",
+          "barFill": "rgba(255,210,63,0.50)",
+          "barTrack": "rgba(127,168,217,0.18)",
+          "barLabel": "rgba(215,232,255,0.50)",
+          "barDivider": "rgba(127,168,217,0.35)",
+          "barGlow": false,
+          "endFade": "#0d2a4a",
+          "subAccent": "#ffd23f"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "neon",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#33e0ff",
+          "accentLight": "#7deaff",
+          "accentTech": "#2ac2dd",
+          "accentDeep": "#1f96ad",
+          "accentPale": "#12253a",
+          "secondary": "#ff4d9d",
+          "secondaryAlt": "#ffe14d",
+          "warning": "#ff4d6a",
+          "correct": "#2ee6a8",
+          "bg": "#07070f",
+          "bgFog": "#12101f",
+          "bgPanel": "#181626",
+          "grey": "#9a97b0",
+          "greyMid": "#6a6880",
+          "greyLine": "#2c2a40",
+          "greyLight": "#c9c6dc",
+          "white": "#ffffff",
+          "magenta": "#ff4d9d",
+          "cyan": "#33e0ff",
+          "glowAccent": "0 0 12px 3px rgba(51,224,255,.4), 0 0 42px 14px rgba(51,224,255,.5)",
+          "glowAccentS": "0 0 24px 8px rgba(51,224,255,.65)",
+          "glowSecondary": "0 0 40px rgba(255,77,157,.6), 0 0 100px 10px rgba(255,77,157,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,77,106,.4), 0 0 20px 6px rgba(255,77,106,.45)",
+          "accentGlowRgb": "51,224,255",
+          "haloDark": "#12253a",
+          "haloLight": "#7deaff",
+          "techGlow": "0 0 6px rgba(42,194,221,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.55))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.4))",
+          "textGlow": "0 0 12px rgba(255,255,255,.6), 0 0 4px rgba(255,255,255,.4)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(125,234,255,.6))",
+          "pillTextOnAccent": "#06231f",
+          "textShadowOnSolid": "0 1px 0 rgba(4,4,10,.5), 0 -1px 0 rgba(4,4,10,.5), 0 0 10px rgba(51,224,255,.45)"
+        },
+        "chrome": {
+          "subColor": "#ffffff",
+          "subStroke": "#07070f",
+          "barFill": "rgba(51,224,255,0.45)",
+          "barTrack": "rgba(30,28,48,0.50)",
+          "barLabel": "rgba(201,198,220,0.50)",
+          "barDivider": "rgba(51,224,255,0.30)",
+          "barGlow": true,
+          "endFade": "#07070f",
+          "subAccent": "#33e0ff"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "pixel-arcade",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#2ee6a8",
+          "accentLight": "#6ff2c8",
+          "accentTech": "#29c795",
+          "accentDeep": "#1f9a74",
+          "accentPale": "#1a1f3a",
+          "secondary": "#ff3d81",
+          "secondaryAlt": "#ffc93c",
+          "warning": "#ff3d5a",
+          "correct": "#2ee6a8",
+          "bg": "#0d0f1c",
+          "bgFog": "#12142a",
+          "bgPanel": "#1a1f3a",
+          "grey": "#a2a2a6",
+          "greyMid": "#3c3c44",
+          "greyLine": "#3c3c44",
+          "greyLight": "#f4f6ff",
+          "white": "#f4f6ff",
+          "magenta": "#ff3d81",
+          "cyan": "#2ee6a8",
+          "glowAccent": "0 0 12px 3px rgba(46,230,168,.3), 0 0 42px 14px rgba(46,230,168,.35)",
+          "glowAccentS": "0 0 24px 8px rgba(46,230,168,.5)",
+          "glowSecondary": "0 0 40px rgba(255,61,129,.5), 0 0 100px 10px rgba(255,61,129,.2)",
+          "glowWarning": "0 0 60px 20px rgba(255,61,90,.32), 0 0 20px 6px rgba(255,61,90,.4)",
+          "accentGlowRgb": "46,230,168",
+          "haloDark": "#1a1f3a",
+          "haloLight": "#6ff2c8",
+          "techGlow": "0 0 6px rgba(41,199,149,.6)",
+          "bloom": "drop-shadow(0 0 3px rgba(244,246,255,0.45))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(244,246,255,0.35))",
+          "textGlow": "0 0 12px rgba(244,246,255,.45), 0 0 4px rgba(244,246,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(111,242,200,.55))",
+          "pillTextOnAccent": "#0d0f1c",
+          "textShadowOnSolid": "0 1px 0 rgba(6,8,16,.5), 0 -1px 0 rgba(6,8,16,.5), 0 0 10px rgba(46,230,168,.4)"
+        },
+        "chrome": {
+          "subColor": "#f4f6ff",
+          "subStroke": "#0d0f1c",
+          "barFill": "rgba(46,230,168,0.50)",
+          "barTrack": "rgba(60,60,68,0.50)",
+          "barLabel": "rgba(162,162,166,0.70)",
+          "barDivider": "rgba(60,60,68,0.90)",
+          "barGlow": true,
+          "endFade": "#0d0f1c",
+          "subAccent": "#ffc93c"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "paper-collage",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#d94f3d",
+          "accentLight": "#e2705f",
+          "accentTech": "#c24434",
+          "accentDeep": "#a83a2c",
+          "accentPale": "#f3e7d9",
+          "secondary": "#e0a63c",
+          "secondaryAlt": "#d9c6a3",
+          "warning": "#a83a2c",
+          "correct": "#6b8a4a",
+          "bg": "#f6f1e7",
+          "bgFog": "#efe7d8",
+          "bgPanel": "#e5dcc8",
+          "grey": "#8a8676",
+          "greyMid": "#b0a995",
+          "greyLine": "#d9d2bf",
+          "greyLight": "#f6f1e7",
+          "white": "#fbf8f1",
+          "magenta": "#d94f8a",
+          "cyan": "#5f8a9e",
+          "glowAccent": "0 0 12px 3px rgba(217,79,61,.18), 0 0 42px 14px rgba(217,79,61,.22)",
+          "glowAccentS": "0 0 24px 8px rgba(217,79,61,.25)",
+          "glowSecondary": "0 0 40px rgba(224,166,60,.35), 0 0 100px 10px rgba(224,166,60,.15)",
+          "glowWarning": "0 0 60px 20px rgba(168,58,44,.28), 0 0 20px 6px rgba(168,58,44,.32)",
+          "accentGlowRgb": "217,79,61",
+          "haloDark": "#d9c6a3",
+          "haloLight": "#f3e7d9",
+          "techGlow": "0 0 6px rgba(194,68,52,.35)",
+          "bloom": "drop-shadow(0 0 3px rgba(251,248,241,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(251,248,241,0.35))",
+          "textGlow": "0 0 12px rgba(251,248,241,.5), 0 0 4px rgba(251,248,241,.35)",
+          "pillShadow": "drop-shadow(0 2px 3px rgba(39,64,96,.25))",
+          "pillTextOnAccent": "#ffffff",
+          "textShadowOnSolid": "0 1px 0 rgba(39,64,96,.25), 0 -1px 0 rgba(39,64,96,.25), 0 0 10px rgba(217,79,61,.25)"
+        },
+        "chrome": {
+          "subColor": "#274060",
+          "subStroke": "#f6f1e7",
+          "barFill": "rgba(217,79,61,0.82)",
+          "barTrack": "rgba(217,198,163,0.50)",
+          "barLabel": "rgba(39,64,96,0.55)",
+          "barDivider": "rgba(39,64,96,0.35)",
+          "barGlow": false,
+          "endFade": "#f6f1e7",
+          "subAccent": "#d94f3d",
+          "barHair": "#274060"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "swiss-print",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#e63329",
+          "accentLight": "#f06055",
+          "accentTech": "#cc2e25",
+          "accentDeep": "#a8251e",
+          "accentPale": "#f2d7d5",
+          "secondary": "#9a9a9a",
+          "secondaryAlt": "#c4c4c4",
+          "warning": "#e63329",
+          "correct": "#4a7c59",
+          "bg": "#fafafa",
+          "bgFog": "#f0f0f0",
+          "bgPanel": "#eaeaea",
+          "grey": "#9a9a9a",
+          "greyMid": "#c4c4c4",
+          "greyLine": "#d9d9d9",
+          "greyLight": "#111111",
+          "white": "#ffffff",
+          "magenta": "#e63329",
+          "cyan": "#9a9a9a",
+          "glowAccent": "none",
+          "glowAccentS": "none",
+          "glowSecondary": "none",
+          "glowWarning": "none",
+          "accentGlowRgb": "230,51,41",
+          "haloDark": "#d9d9d9",
+          "haloLight": "#ffffff",
+          "techGlow": "none",
+          "bloom": "none",
+          "bloomSoft": "none",
+          "textGlow": "none",
+          "pillShadow": "none",
+          "pillTextOnAccent": "#ffffff",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.35), 0 -1px 0 rgba(0,0,0,.35)"
+        },
+        "chrome": {
+          "subColor": "#111111",
+          "subStroke": "#fafafa",
+          "barFill": "rgba(230,51,41,0.85)",
+          "barTrack": "rgba(154,154,154,0.30)",
+          "barLabel": "rgba(17,17,17,0.55)",
+          "barDivider": "rgba(17,17,17,0.30)",
+          "barGlow": false,
+          "endFade": "#fafafa",
+          "subAccent": "#e63329",
+          "barHair": "#111111"
+        }
+      }
+    },
+    {
+      "recipe": "promo",
+      "style": "crt-terminal",
+      "value": {
+        "id": "promo",
+        "name": "宣传片（promo）",
+        "overlaySet": "promo",
+        "accentFrom": [
+          "#21E6C1"
+        ],
+        "palette": {
+          "accent": "#33ff66",
+          "accentLight": "#7dff9f",
+          "accentTech": "#2acc55",
+          "accentDeep": "#1a8f3c",
+          "accentPale": "#0a2012",
+          "secondary": "#ffb000",
+          "secondaryAlt": "#ffd066",
+          "warning": "#ffb000",
+          "correct": "#33ff66",
+          "bg": "#050a06",
+          "bgFog": "#071108",
+          "bgPanel": "#0a140c",
+          "grey": "#3fa85f",
+          "greyMid": "#2a7a46",
+          "greyLine": "#1a5a32",
+          "greyLight": "#7dff9f",
+          "white": "#c8ffd8",
+          "magenta": "#ff66aa",
+          "cyan": "#33ffcc",
+          "glowAccent": "0 0 12px 3px rgba(51,255,102,.4), 0 0 42px 14px rgba(51,255,102,.5)",
+          "glowAccentS": "0 0 24px 8px rgba(51,255,102,.6)",
+          "glowSecondary": "0 0 40px rgba(255,176,0,.5), 0 0 100px 10px rgba(255,176,0,.2)",
+          "glowWarning": "0 0 60px 20px rgba(255,176,0,.35), 0 0 20px 6px rgba(255,176,0,.45)",
+          "accentGlowRgb": "51,255,102",
+          "haloDark": "#0a2012",
+          "haloLight": "#7dff9f",
+          "techGlow": "0 0 6px rgba(42,204,85,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(200,255,216,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(200,255,216,0.35))",
+          "textGlow": "0 0 12px rgba(200,255,216,.55), 0 0 4px rgba(200,255,216,.4)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(125,255,159,.55))",
+          "pillTextOnAccent": "#050a06",
+          "textShadowOnSolid": "0 1px 0 rgba(2,6,3,.6), 0 -1px 0 rgba(2,6,3,.6), 0 0 10px rgba(51,255,102,.5)"
+        },
+        "chrome": {
+          "subColor": "#33ff66",
+          "subStroke": "#050a06",
+          "barFill": "rgba(51,255,102,0.45)",
+          "barTrack": "rgba(26,143,60,0.20)",
+          "barLabel": "rgba(51,255,102,0.45)",
+          "barDivider": "rgba(26,143,60,0.50)",
+          "barGlow": true,
+          "endFade": "#050a06",
+          "subAccent": "#7dff9f"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": null,
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#C43C2E",
+          "accentLight": "#E06A55",
+          "accentTech": "#A83226",
+          "accentDeep": "#8E2A20",
+          "accentPale": "#F3D5CE",
+          "secondary": "#C9A86A",
+          "secondaryAlt": "#DDBE85",
+          "warning": "#B3261E",
+          "correct": "#4A7C59",
+          "bg": "#F2EDDF",
+          "bgFog": "#E8E1CE",
+          "bgPanel": "#E5DECB",
+          "grey": "#8A8375",
+          "greyMid": "#A9A290",
+          "greyLine": "#D6CFBC",
+          "greyLight": "#C4BCA8",
+          "white": "#FFFFFF",
+          "magenta": "#D24A3A",
+          "cyan": "#7A9E9F",
+          "glowAccent": "0 0 12px 3px rgba(196,60,46,.35), 0 0 42px 14px rgba(196,60,46,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(196,60,46,.6)",
+          "glowSecondary": "0 0 40px rgba(201,168,106,.75), 0 0 100px 10px rgba(201,168,106,.25)",
+          "glowWarning": "0 0 60px 20px rgba(179,38,30,.42), 0 0 20px 6px rgba(179,38,30,.45)",
+          "accentGlowRgb": "196,60,46",
+          "haloDark": "#5E1B14",
+          "haloLight": "#F5B7A8",
+          "techGlow": "0 0 6px rgba(168,50,38,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(245,214,200,.6))",
+          "pillTextOnAccent": "#FFF6EE",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.4), 0 -1px 0 rgba(0,0,0,.4), 0 0 10px rgba(196,60,46,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "deep-space",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#21E6C1",
+          "accentLight": "#7BF7E2",
+          "accentTech": "#1FD0AE",
+          "accentDeep": "#0FA98D",
+          "accentPale": "#D3F8EF",
+          "secondary": "#FF7A45",
+          "secondaryAlt": "#FF9468",
+          "warning": "#FF3B5C",
+          "correct": "#3DDC84",
+          "bg": "#0B0B12",
+          "bgFog": "#151527",
+          "bgPanel": "#1A1A26",
+          "grey": "#9A9AA6",
+          "greyMid": "#6E6E7A",
+          "greyLine": "#3C3C4A",
+          "greyLight": "#C9C9D4",
+          "white": "#FFFFFF",
+          "magenta": "#FF2E9A",
+          "cyan": "#21E6C1",
+          "glowAccent": "0 0 12px 3px rgba(33,230,193,.35), 0 0 42px 14px rgba(33,230,193,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(33,230,193,.6)",
+          "glowSecondary": "0 0 40px rgba(255,122,69,.75), 0 0 100px 10px rgba(255,122,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,59,92,.42), 0 0 20px 6px rgba(255,59,92,.45)",
+          "accentGlowRgb": "33,230,193",
+          "haloDark": "#073D33",
+          "haloLight": "#8FFCE8",
+          "techGlow": "0 0 6px rgba(15,169,141,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(180,240,230,.6))",
+          "pillTextOnAccent": "#06231D",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(33,230,193,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(33,230,193,0.45)",
+          "barTrack": "rgba(60,60,74,0.50)",
+          "barLabel": "rgba(154,154,166,0.70)",
+          "barDivider": "rgba(154,154,166,0.40)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "mg-purple",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#6630F8",
+          "accentLight": "#A175F1",
+          "accentTech": "#6530F4",
+          "accentDeep": "#5A3AD5",
+          "accentPale": "#E6DCFF",
+          "secondary": "#F05F41",
+          "secondaryAlt": "#F16043",
+          "warning": "#EC081F",
+          "correct": "#8FF740",
+          "bg": "#000000",
+          "bgFog": "#212121",
+          "bgPanel": "#2A2A2A",
+          "grey": "#A0A0A1",
+          "greyMid": "#747474",
+          "greyLine": "#4A4A4A",
+          "greyLight": "#D4D4D4",
+          "white": "#FFFFFF",
+          "magenta": "#D100D6",
+          "cyan": "#58FFEE",
+          "glowAccent": "0 0 12px 3px rgba(102,45,248,.35), 0 0 42px 14px rgba(102,45,248,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(102,45,248,.6)",
+          "glowSecondary": "0 0 40px rgba(243,95,69,.75), 0 0 100px 10px rgba(243,95,69,.25)",
+          "glowWarning": "0 0 60px 20px rgba(236,8,31,.42), 0 0 20px 6px rgba(236,8,31,.45)",
+          "accentGlowRgb": "102,45,248",
+          "haloDark": "#3A1E8C",
+          "haloLight": "#8F62F5",
+          "techGlow": "0 0 6px rgba(80,30,200,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(200,180,255,.6))",
+          "pillTextOnAccent": "#FFFFFF",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(0,0,0,.5), 0 0 10px rgba(102,45,248,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "epic-paper",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#C43C2E",
+          "accentLight": "#E06A55",
+          "accentTech": "#A83226",
+          "accentDeep": "#8E2A20",
+          "accentPale": "#F3D5CE",
+          "secondary": "#C9A86A",
+          "secondaryAlt": "#DDBE85",
+          "warning": "#B3261E",
+          "correct": "#4A7C59",
+          "bg": "#F2EDDF",
+          "bgFog": "#E8E1CE",
+          "bgPanel": "#E5DECB",
+          "grey": "#8A8375",
+          "greyMid": "#A9A290",
+          "greyLine": "#D6CFBC",
+          "greyLight": "#C4BCA8",
+          "white": "#FFFFFF",
+          "magenta": "#D24A3A",
+          "cyan": "#7A9E9F",
+          "glowAccent": "0 0 12px 3px rgba(196,60,46,.35), 0 0 42px 14px rgba(196,60,46,.45)",
+          "glowAccentS": "0 0 24px 8px rgba(196,60,46,.6)",
+          "glowSecondary": "0 0 40px rgba(201,168,106,.75), 0 0 100px 10px rgba(201,168,106,.25)",
+          "glowWarning": "0 0 60px 20px rgba(179,38,30,.42), 0 0 20px 6px rgba(179,38,30,.45)",
+          "accentGlowRgb": "196,60,46",
+          "haloDark": "#5E1B14",
+          "haloLight": "#F5B7A8",
+          "techGlow": "0 0 6px rgba(168,50,38,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+          "textGlow": "0 0 12px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(245,214,200,.6))",
+          "pillTextOnAccent": "#FFF6EE",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.4), 0 -1px 0 rgba(0,0,0,.4), 0 0 10px rgba(196,60,46,.45)"
+        },
+        "chrome": {
+          "subColor": "#FFFFFF",
+          "subStroke": "#000000",
+          "barFill": "rgba(190,170,250,0.52)",
+          "barTrack": "rgba(243,243,243,0.32)",
+          "barLabel": "rgba(255,255,255,0.55)",
+          "barDivider": "rgba(255,255,255,0.55)",
+          "barGlow": true,
+          "endFade": "#000000"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "sand",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#a06a28",
+          "accentLight": "#c98f4a",
+          "accentTech": "#8a5c20",
+          "accentDeep": "#6e4a1a",
+          "accentPale": "#f0e2c8",
+          "secondary": "#7d5f36",
+          "secondaryAlt": "#c8a76b",
+          "warning": "#8f4a1a",
+          "correct": "#6b7d36",
+          "bg": "#e9d9b4",
+          "bgFog": "#eedcb6",
+          "bgPanel": "#d9c391",
+          "grey": "#8a7a58",
+          "greyMid": "#a8946c",
+          "greyLine": "#c9b384",
+          "greyLight": "#f6ecd0",
+          "white": "#f7edd2",
+          "magenta": "#b06a4a",
+          "cyan": "#8a9a6a",
+          "glowAccent": "0 0 12px 3px rgba(247,237,210,.5), 0 0 42px 14px rgba(247,237,210,.4)",
+          "glowAccentS": "0 0 24px 8px rgba(247,237,210,.55)",
+          "glowSecondary": "0 0 40px rgba(125,95,54,.5), 0 0 100px 10px rgba(125,95,54,.2)",
+          "glowWarning": "0 0 60px 20px rgba(143,74,26,.35), 0 0 20px 6px rgba(143,74,26,.4)",
+          "accentGlowRgb": "247,237,210",
+          "haloDark": "#c9b384",
+          "haloLight": "#f7edd2",
+          "techGlow": "0 0 6px rgba(160,106,40,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(247,237,210,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(247,237,210,0.35))",
+          "textGlow": "0 0 12px rgba(247,237,210,.55), 0 0 4px rgba(247,237,210,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(240,226,190,.6))",
+          "pillTextOnAccent": "#f7edd2",
+          "textShadowOnSolid": "0 1px 0 rgba(120,90,50,.4), 0 -1px 0 rgba(120,90,50,.4), 0 0 10px rgba(160,106,40,.35)"
+        },
+        "chrome": {
+          "subColor": "#4a3520",
+          "subStroke": "#f6ecd0",
+          "barFill": "rgba(160,106,40,0.55)",
+          "barTrack": "rgba(74,53,32,0.18)",
+          "barLabel": "rgba(74,53,32,0.55)",
+          "barDivider": "rgba(74,53,32,0.35)",
+          "barGlow": false,
+          "endFade": "#e9d9b4",
+          "subAccent": "#a06a28",
+          "barHair": "#7d5f36"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "chalk",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#e8d48b",
+          "accentLight": "#f2e3ad",
+          "accentTech": "#d4c078",
+          "accentDeep": "#b8a260",
+          "accentPale": "#33544a",
+          "secondary": "#a8c8e8",
+          "secondaryAlt": "#e8a8b0",
+          "warning": "#e8a8b0",
+          "correct": "#a8e8b8",
+          "bg": "#1e3b2f",
+          "bgFog": "#152b23",
+          "bgPanel": "#24473a",
+          "grey": "#9ab8a8",
+          "greyMid": "#6f9484",
+          "greyLine": "#3a5a4c",
+          "greyLight": "#c8dccf",
+          "white": "#f5f2e8",
+          "magenta": "#e8a8b0",
+          "cyan": "#a8c8e8",
+          "glowAccent": "0 0 12px 3px rgba(232,212,139,.28), 0 0 42px 14px rgba(232,212,139,.35)",
+          "glowAccentS": "0 0 24px 8px rgba(232,212,139,.45)",
+          "glowSecondary": "0 0 40px rgba(168,200,232,.5), 0 0 100px 10px rgba(168,200,232,.2)",
+          "glowWarning": "0 0 60px 20px rgba(232,168,176,.32), 0 0 20px 6px rgba(232,168,176,.4)",
+          "accentGlowRgb": "232,212,139",
+          "haloDark": "#33544a",
+          "haloLight": "#f2e3ad",
+          "techGlow": "0 0 6px rgba(212,192,120,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(245,242,232,0.4))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(245,242,232,0.3))",
+          "textGlow": "0 0 12px rgba(245,242,232,.4), 0 0 4px rgba(245,242,232,.3)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(232,212,139,.5))",
+          "pillTextOnAccent": "#1e3b2f",
+          "textShadowOnSolid": "0 1px 0 rgba(15,32,25,.5), 0 -1px 0 rgba(15,32,25,.5), 0 0 10px rgba(232,212,139,.35)"
+        },
+        "chrome": {
+          "subColor": "#f5f2e8",
+          "subStroke": "#0f2019",
+          "barFill": "rgba(232,212,139,0.50)",
+          "barTrack": "rgba(21,43,35,0.50)",
+          "barLabel": "rgba(245,242,232,0.50)",
+          "barDivider": "rgba(245,242,232,0.30)",
+          "barGlow": false,
+          "endFade": "#1e3b2f",
+          "subAccent": "#e8d48b"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "blueprint",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#ffd23f",
+          "accentLight": "#ffe37a",
+          "accentTech": "#e6b92a",
+          "accentDeep": "#b8941f",
+          "accentPale": "#24466b",
+          "secondary": "#7fa8d9",
+          "secondaryAlt": "#a8c8e8",
+          "warning": "#ff8c5a",
+          "correct": "#7fe8a8",
+          "bg": "#0d2a4a",
+          "bgFog": "#123a63",
+          "bgPanel": "#16406b",
+          "grey": "#7fa8d9",
+          "greyMid": "#5f83ad",
+          "greyLine": "rgba(160,200,255,0.25)",
+          "greyLight": "#d7e8ff",
+          "white": "#d7e8ff",
+          "magenta": "#e07a9d",
+          "cyan": "#7fd7ff",
+          "glowAccent": "0 0 12px 3px rgba(255,210,63,.28), 0 0 42px 14px rgba(255,210,63,.32)",
+          "glowAccentS": "0 0 24px 8px rgba(255,210,63,.4)",
+          "glowSecondary": "0 0 40px rgba(127,168,217,.45), 0 0 100px 10px rgba(127,168,217,.18)",
+          "glowWarning": "0 0 60px 20px rgba(255,140,90,.3), 0 0 20px 6px rgba(255,140,90,.35)",
+          "accentGlowRgb": "255,210,63",
+          "haloDark": "#16406b",
+          "haloLight": "#ffe37a",
+          "techGlow": "0 0 6px rgba(230,185,42,.5)",
+          "bloom": "drop-shadow(0 0 3px rgba(215,232,255,0.4))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(215,232,255,0.3))",
+          "textGlow": "0 0 12px rgba(215,232,255,.4), 0 0 4px rgba(215,232,255,.3)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(255,210,63,.45))",
+          "pillTextOnAccent": "#0d2a4a",
+          "textShadowOnSolid": "0 1px 0 rgba(8,26,46,.5), 0 -1px 0 rgba(8,26,46,.5), 0 0 10px rgba(255,210,63,.35)"
+        },
+        "chrome": {
+          "subColor": "#d7e8ff",
+          "subStroke": "#0d2a4a",
+          "barFill": "rgba(255,210,63,0.50)",
+          "barTrack": "rgba(127,168,217,0.18)",
+          "barLabel": "rgba(215,232,255,0.50)",
+          "barDivider": "rgba(127,168,217,0.35)",
+          "barGlow": false,
+          "endFade": "#0d2a4a",
+          "subAccent": "#ffd23f"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "neon",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#33e0ff",
+          "accentLight": "#7deaff",
+          "accentTech": "#2ac2dd",
+          "accentDeep": "#1f96ad",
+          "accentPale": "#12253a",
+          "secondary": "#ff4d9d",
+          "secondaryAlt": "#ffe14d",
+          "warning": "#ff4d6a",
+          "correct": "#2ee6a8",
+          "bg": "#07070f",
+          "bgFog": "#12101f",
+          "bgPanel": "#181626",
+          "grey": "#9a97b0",
+          "greyMid": "#6a6880",
+          "greyLine": "#2c2a40",
+          "greyLight": "#c9c6dc",
+          "white": "#ffffff",
+          "magenta": "#ff4d9d",
+          "cyan": "#33e0ff",
+          "glowAccent": "0 0 12px 3px rgba(51,224,255,.4), 0 0 42px 14px rgba(51,224,255,.5)",
+          "glowAccentS": "0 0 24px 8px rgba(51,224,255,.65)",
+          "glowSecondary": "0 0 40px rgba(255,77,157,.6), 0 0 100px 10px rgba(255,77,157,.25)",
+          "glowWarning": "0 0 60px 20px rgba(255,77,106,.4), 0 0 20px 6px rgba(255,77,106,.45)",
+          "accentGlowRgb": "51,224,255",
+          "haloDark": "#12253a",
+          "haloLight": "#7deaff",
+          "techGlow": "0 0 6px rgba(42,194,221,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(255,255,255,0.55))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(255,255,255,0.4))",
+          "textGlow": "0 0 12px rgba(255,255,255,.6), 0 0 4px rgba(255,255,255,.4)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(125,234,255,.6))",
+          "pillTextOnAccent": "#06231f",
+          "textShadowOnSolid": "0 1px 0 rgba(4,4,10,.5), 0 -1px 0 rgba(4,4,10,.5), 0 0 10px rgba(51,224,255,.45)"
+        },
+        "chrome": {
+          "subColor": "#ffffff",
+          "subStroke": "#07070f",
+          "barFill": "rgba(51,224,255,0.45)",
+          "barTrack": "rgba(30,28,48,0.50)",
+          "barLabel": "rgba(201,198,220,0.50)",
+          "barDivider": "rgba(51,224,255,0.30)",
+          "barGlow": true,
+          "endFade": "#07070f",
+          "subAccent": "#33e0ff"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "pixel-arcade",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#2ee6a8",
+          "accentLight": "#6ff2c8",
+          "accentTech": "#29c795",
+          "accentDeep": "#1f9a74",
+          "accentPale": "#1a1f3a",
+          "secondary": "#ff3d81",
+          "secondaryAlt": "#ffc93c",
+          "warning": "#ff3d5a",
+          "correct": "#2ee6a8",
+          "bg": "#0d0f1c",
+          "bgFog": "#12142a",
+          "bgPanel": "#1a1f3a",
+          "grey": "#a2a2a6",
+          "greyMid": "#3c3c44",
+          "greyLine": "#3c3c44",
+          "greyLight": "#f4f6ff",
+          "white": "#f4f6ff",
+          "magenta": "#ff3d81",
+          "cyan": "#2ee6a8",
+          "glowAccent": "0 0 12px 3px rgba(46,230,168,.3), 0 0 42px 14px rgba(46,230,168,.35)",
+          "glowAccentS": "0 0 24px 8px rgba(46,230,168,.5)",
+          "glowSecondary": "0 0 40px rgba(255,61,129,.5), 0 0 100px 10px rgba(255,61,129,.2)",
+          "glowWarning": "0 0 60px 20px rgba(255,61,90,.32), 0 0 20px 6px rgba(255,61,90,.4)",
+          "accentGlowRgb": "46,230,168",
+          "haloDark": "#1a1f3a",
+          "haloLight": "#6ff2c8",
+          "techGlow": "0 0 6px rgba(41,199,149,.6)",
+          "bloom": "drop-shadow(0 0 3px rgba(244,246,255,0.45))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(244,246,255,0.35))",
+          "textGlow": "0 0 12px rgba(244,246,255,.45), 0 0 4px rgba(244,246,255,.35)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(111,242,200,.55))",
+          "pillTextOnAccent": "#0d0f1c",
+          "textShadowOnSolid": "0 1px 0 rgba(6,8,16,.5), 0 -1px 0 rgba(6,8,16,.5), 0 0 10px rgba(46,230,168,.4)"
+        },
+        "chrome": {
+          "subColor": "#f4f6ff",
+          "subStroke": "#0d0f1c",
+          "barFill": "rgba(46,230,168,0.50)",
+          "barTrack": "rgba(60,60,68,0.50)",
+          "barLabel": "rgba(162,162,166,0.70)",
+          "barDivider": "rgba(60,60,68,0.90)",
+          "barGlow": true,
+          "endFade": "#0d0f1c",
+          "subAccent": "#ffc93c"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "paper-collage",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#d94f3d",
+          "accentLight": "#e2705f",
+          "accentTech": "#c24434",
+          "accentDeep": "#a83a2c",
+          "accentPale": "#f3e7d9",
+          "secondary": "#e0a63c",
+          "secondaryAlt": "#d9c6a3",
+          "warning": "#a83a2c",
+          "correct": "#6b8a4a",
+          "bg": "#f6f1e7",
+          "bgFog": "#efe7d8",
+          "bgPanel": "#e5dcc8",
+          "grey": "#8a8676",
+          "greyMid": "#b0a995",
+          "greyLine": "#d9d2bf",
+          "greyLight": "#f6f1e7",
+          "white": "#fbf8f1",
+          "magenta": "#d94f8a",
+          "cyan": "#5f8a9e",
+          "glowAccent": "0 0 12px 3px rgba(217,79,61,.18), 0 0 42px 14px rgba(217,79,61,.22)",
+          "glowAccentS": "0 0 24px 8px rgba(217,79,61,.25)",
+          "glowSecondary": "0 0 40px rgba(224,166,60,.35), 0 0 100px 10px rgba(224,166,60,.15)",
+          "glowWarning": "0 0 60px 20px rgba(168,58,44,.28), 0 0 20px 6px rgba(168,58,44,.32)",
+          "accentGlowRgb": "217,79,61",
+          "haloDark": "#d9c6a3",
+          "haloLight": "#f3e7d9",
+          "techGlow": "0 0 6px rgba(194,68,52,.35)",
+          "bloom": "drop-shadow(0 0 3px rgba(251,248,241,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(251,248,241,0.35))",
+          "textGlow": "0 0 12px rgba(251,248,241,.5), 0 0 4px rgba(251,248,241,.35)",
+          "pillShadow": "drop-shadow(0 2px 3px rgba(39,64,96,.25))",
+          "pillTextOnAccent": "#ffffff",
+          "textShadowOnSolid": "0 1px 0 rgba(39,64,96,.25), 0 -1px 0 rgba(39,64,96,.25), 0 0 10px rgba(217,79,61,.25)"
+        },
+        "chrome": {
+          "subColor": "#274060",
+          "subStroke": "#f6f1e7",
+          "barFill": "rgba(217,79,61,0.82)",
+          "barTrack": "rgba(217,198,163,0.50)",
+          "barLabel": "rgba(39,64,96,0.55)",
+          "barDivider": "rgba(39,64,96,0.35)",
+          "barGlow": false,
+          "endFade": "#f6f1e7",
+          "subAccent": "#d94f3d",
+          "barHair": "#274060"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "swiss-print",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#e63329",
+          "accentLight": "#f06055",
+          "accentTech": "#cc2e25",
+          "accentDeep": "#a8251e",
+          "accentPale": "#f2d7d5",
+          "secondary": "#9a9a9a",
+          "secondaryAlt": "#c4c4c4",
+          "warning": "#e63329",
+          "correct": "#4a7c59",
+          "bg": "#fafafa",
+          "bgFog": "#f0f0f0",
+          "bgPanel": "#eaeaea",
+          "grey": "#9a9a9a",
+          "greyMid": "#c4c4c4",
+          "greyLine": "#d9d9d9",
+          "greyLight": "#111111",
+          "white": "#ffffff",
+          "magenta": "#e63329",
+          "cyan": "#9a9a9a",
+          "glowAccent": "none",
+          "glowAccentS": "none",
+          "glowSecondary": "none",
+          "glowWarning": "none",
+          "accentGlowRgb": "230,51,41",
+          "haloDark": "#d9d9d9",
+          "haloLight": "#ffffff",
+          "techGlow": "none",
+          "bloom": "none",
+          "bloomSoft": "none",
+          "textGlow": "none",
+          "pillShadow": "none",
+          "pillTextOnAccent": "#ffffff",
+          "textShadowOnSolid": "0 1px 0 rgba(0,0,0,.35), 0 -1px 0 rgba(0,0,0,.35)"
+        },
+        "chrome": {
+          "subColor": "#111111",
+          "subStroke": "#fafafa",
+          "barFill": "rgba(230,51,41,0.85)",
+          "barTrack": "rgba(154,154,154,0.30)",
+          "barLabel": "rgba(17,17,17,0.55)",
+          "barDivider": "rgba(17,17,17,0.30)",
+          "barGlow": false,
+          "endFade": "#fafafa",
+          "subAccent": "#e63329",
+          "barHair": "#111111"
+        }
+      }
+    },
+    {
+      "recipe": "epic",
+      "style": "crt-terminal",
+      "value": {
+        "id": "epic",
+        "name": "史诗品牌片（epic）",
+        "overlaySet": "epic",
+        "accentFrom": [
+          "#C43C2E"
+        ],
+        "palette": {
+          "accent": "#33ff66",
+          "accentLight": "#7dff9f",
+          "accentTech": "#2acc55",
+          "accentDeep": "#1a8f3c",
+          "accentPale": "#0a2012",
+          "secondary": "#ffb000",
+          "secondaryAlt": "#ffd066",
+          "warning": "#ffb000",
+          "correct": "#33ff66",
+          "bg": "#050a06",
+          "bgFog": "#071108",
+          "bgPanel": "#0a140c",
+          "grey": "#3fa85f",
+          "greyMid": "#2a7a46",
+          "greyLine": "#1a5a32",
+          "greyLight": "#7dff9f",
+          "white": "#c8ffd8",
+          "magenta": "#ff66aa",
+          "cyan": "#33ffcc",
+          "glowAccent": "0 0 12px 3px rgba(51,255,102,.4), 0 0 42px 14px rgba(51,255,102,.5)",
+          "glowAccentS": "0 0 24px 8px rgba(51,255,102,.6)",
+          "glowSecondary": "0 0 40px rgba(255,176,0,.5), 0 0 100px 10px rgba(255,176,0,.2)",
+          "glowWarning": "0 0 60px 20px rgba(255,176,0,.35), 0 0 20px 6px rgba(255,176,0,.45)",
+          "accentGlowRgb": "51,255,102",
+          "haloDark": "#0a2012",
+          "haloLight": "#7dff9f",
+          "techGlow": "0 0 6px rgba(42,204,85,.7)",
+          "bloom": "drop-shadow(0 0 3px rgba(200,255,216,0.5))",
+          "bloomSoft": "drop-shadow(0 0 2px rgba(200,255,216,0.35))",
+          "textGlow": "0 0 12px rgba(200,255,216,.55), 0 0 4px rgba(200,255,216,.4)",
+          "pillShadow": "drop-shadow(0 0 2px rgba(125,255,159,.55))",
+          "pillTextOnAccent": "#050a06",
+          "textShadowOnSolid": "0 1px 0 rgba(2,6,3,.6), 0 -1px 0 rgba(2,6,3,.6), 0 0 10px rgba(51,255,102,.5)"
+        },
+        "chrome": {
+          "subColor": "#33ff66",
+          "subStroke": "#050a06",
+          "barFill": "rgba(51,255,102,0.45)",
+          "barTrack": "rgba(26,143,60,0.20)",
+          "barLabel": "rgba(51,255,102,0.45)",
+          "barDivider": "rgba(26,143,60,0.50)",
+          "barGlow": true,
+          "endFade": "#050a06",
+          "subAccent": "#7dff9f"
+        }
+      }
+    }
+  ],
+  "paintSourceSha256": "e65318de5cd6f2099096dffb6c3bf67e951207b7f5332a47fa4b0696dd7a0c1d",
+  "paintTraces": [
+    {
+      "t": 0,
+      "boil": 0,
+      "sha256": "c5ee8abf62e1eaba39585bd609c8d9cc93b66e2a8f05dbd03de5eff6acc2725e"
+    },
+    {
+      "t": 0,
+      "boil": 6,
+      "sha256": "c5ee8abf62e1eaba39585bd609c8d9cc93b66e2a8f05dbd03de5eff6acc2725e"
+    },
+    {
+      "t": 0,
+      "boil": 8,
+      "sha256": "c5ee8abf62e1eaba39585bd609c8d9cc93b66e2a8f05dbd03de5eff6acc2725e"
+    },
+    {
+      "t": 0.125,
+      "boil": 0,
+      "sha256": "ee5f34da9bbd5c28977922e5065bf671a04146d421def5605fcaaf7d7c1046b2"
+    },
+    {
+      "t": 0.125,
+      "boil": 6,
+      "sha256": "ee5f34da9bbd5c28977922e5065bf671a04146d421def5605fcaaf7d7c1046b2"
+    },
+    {
+      "t": 0.125,
+      "boil": 8,
+      "sha256": "014921d1cddcbfb21bed8605d9a325e943cc24eb9c8b48a219aca60c52db5096"
+    },
+    {
+      "t": 1.1,
+      "boil": 0,
+      "sha256": "1d93b77079100ef5e44116d7b12f4afd206f5bf09d8bd375101e9a492e9825c5"
+    },
+    {
+      "t": 1.1,
+      "boil": 6,
+      "sha256": "2f004658f2195841c672c4f4efa61a91512c559ab585b4550712a946f584a95e"
+    },
+    {
+      "t": 1.1,
+      "boil": 8,
+      "sha256": "e568a3e027e55b0aea755283a1c49731cc45012df91a5161d3e742e7ffe97a85"
+    }
+  ]
+}

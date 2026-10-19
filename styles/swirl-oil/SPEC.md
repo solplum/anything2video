@@ -1,5 +1,7 @@
 # SPEC：梵高后印象派（swirl-oil）
 
+> **本仓复用更新（2026-10-19）**：本目录 `strokes.ts` 现在保留为兼容入口，唯一实现位于 `../shared/paint/strokes.ts`。新手动复制必须带上共享兄弟目录，布局见 [共享代码说明](../shared/README.md)；下文 `samples-v4/` 是历史源工程记录，旧包外工程中的完整副本不受影响。
+
 **正本源工程**：`samples-v4/swirl-oil`（2026-10-07 验证交付）｜**图元库**：工程 `src/style/strokes.ts`（流场笔触渲染器）+ `src/style/world.ts`（油画世界：底稿/方向场/区域色板/缓存）+ `src/style/kit.tsx`（React 层）；**共享正本**：`samples-v4/shared/paint/strokes.ts`（油画族四卡共用，`light-dabs`/`scream-warp`/`lily-pond` 拷用）
 **风格句**：流场长笔触三遍分区 + 区域色板十几种色相 + 深色描边 + 星空漩涡卷入转场 + 灯晕虚线环外扩 + 8fps boil 换种子——「梵高的感觉来自区域色板里十几种色相，只有颜色抖动=同一个蓝的噪点」。
 **技法借鉴** huashu-art-motion `lib/paint.js` P.strokes/P.swatch + `scenes/09_postimp.js`（MIT, alchaincyf），TS 重写——抖动网格取底稿色/先描后画/swatch 混底/boilSeed 机制与三遍分区参数级借鉴，结构、命名、API 全部按 Remotion/TS 惯用法重写，零代码拷贝。借鉴登记：`移植自 huashu-art-motion lib/paint.js (MIT, alchaincyf), TS 重写`。

@@ -45,12 +45,14 @@ metadata:
 `
   );
   write(source, 'LICENSE', 'Fixture license\n');
+  write(source, 'LICENSE-THIRDPARTY/MIT-fixture.txt', 'Third-party notice\n');
   write(source, 'README.md', '# anything2video fixture\n');
   write(source, 'docs/adapters.md', 'Installation and verification\n');
   write(source, 'docs/optimization-v3.md', 'Measured v3 results and limitations\n');
   write(source, 'docs/optimization-v3.1.md', 'Six-edition expansion and desktop boundaries\n');
   write(source, 'docs/optimization-v3.6.md', 'huashu absorption record\n');
   write(source, 'docs/optimization-v3.7.md', 'release contract repair record\n');
+  write(source, 'docs/style-system-round1.md', 'Style catalog and reuse contract\n');
   write(source, 'gallery/README.md', 'Motion card gallery\n');
   write(source, 'audio-engine/README.md', 'Programmatic score vendor\n');
   write(source, 'recipes/explainer.md', 'A complete recipe\n');
@@ -70,6 +72,8 @@ metadata:
   write(source, 'reference/.env', 'secret');
   write(source, 'reference/research-worker-report.md', 'transient review');
   write(source, 'examples/private.md', 'not distributed');
+  write(source, 'examples/engraving/README.md', 'Redistributable example\n');
+  write(source, 'examples/engraving/renders/private.mp4', 'not distributed');
   write(source, 'styles/building-label.md', 'A legitimate style reference');
   for (const file of fs.readdirSync(path.join(root, 'scripts')).filter(name => name.endsWith('.mjs'))) {
     write(source, `scripts/${file}`, fs.readFileSync(path.join(root, 'scripts', file)));
@@ -89,7 +93,8 @@ test('unified package builds cleanly and excludes caches and private files', t =
   assert.equal(metadata.version, '5.0.0');
 
   for (const relative of [
-    'examples',
+    'examples/private.md',
+    'examples/engraving/renders',
     'tests',
     'template/tests',
     'template/node_modules',
@@ -102,6 +107,9 @@ test('unified package builds cleanly and excludes caches and private files', t =
     assert.equal(fs.existsSync(path.join(target, relative)), false, relative);
   }
   assert.ok(fs.existsSync(path.join(target, 'styles/building-label.md')));
+  assert.ok(fs.existsSync(path.join(target, 'LICENSE-THIRDPARTY/MIT-fixture.txt')));
+  assert.ok(fs.existsSync(path.join(target, 'examples/engraving/README.md')));
+  assert.ok(fs.existsSync(path.join(target, 'docs/style-system-round1.md')));
   assert.equal(fs.readFileSync(path.join(target, 'samples/sample.mp4'), 'utf8'), 'Fixture media');
   for (const relative of [
     'scripts/init.mjs',
