@@ -52,6 +52,8 @@
 
 渲染 sidecar 记录实际媒体 SHA256、源码清单哈希、模式、帧范围和 ffprobe；默认 visualReview/audioReview=not_performed。它是技术记录，不是成片合格证。
 
+关键接触/交接/跟踪动作可按 [action-review.md](action-review.md) 对成片显式选窗，运行 `scripts/action_review.py` 生成默认 0.2 秒间隔的全画面与 ROI 放大条带。它保持 needs_review，只补充人工复核证据，不替代原速播放，也不把刻意静止判坏。
+
 三轮分别看：工程真实性；视觉、动作、教学和听感；反向挑最弱镜头、事实和发布说明。每轮写 qc/round-N.md：缺陷、原因、改动文件、重渲哈希、检查范围与保留项。轮数不替代结果，阻塞项未清零就继续修根因，必要时重做稿件或整章。
 
 ## 7. 最终证据与交付

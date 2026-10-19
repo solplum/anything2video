@@ -87,7 +87,7 @@ metadata:
 
 ### 7 三轮验收与修复
 
-A 工程真实性：覆盖/时间窗/素材/音画/规格/解码；运动连续性加采 `uv run scripts/probe_motion_quality.py <成片>`（运动面积/静止帧对/孤立跳变/最长静止＋跳变证据拼图；数字是线索，合法静止按 beat sheet 豁免登记定性，判读口径见 `directing-playbook.md`）；矢量/机械类工程加跑 `node <skill>/scripts/probe_line_ends.mjs <图元>` 查悬空线头闭合度（浮空数必须清零）。B 视觉与教学：真实片段、因果、可读性、动作落点、素材伪影、听感；480px 缩略图与显式图元检查按 `reference/readability.md` 运行，failed / not_performed / needs_review 不作通过；C 反向审查：最弱镜头、中后段、结尾、事实与发布说明（数字口径三条判例见 directing-playbook）。每轮记录发现、修改、重渲证据、保留项；阻塞缺陷未清零不交最终版。新门禁/探针上线时故意制造一次它要抓的失败确认会红（统一合同「验收工具也要被验收」）。
+A 工程真实性：覆盖/时间窗/素材/音画/规格/解码；运动连续性加采 `uv run scripts/probe_motion_quality.py <成片>`（运动面积/静止帧对/孤立跳变/最长静止＋跳变证据拼图；数字是线索，合法静止按 beat sheet 豁免登记定性，判读口径见 `directing-playbook.md`）；矢量/机械类工程加跑 `node <skill>/scripts/probe_line_ends.mjs <图元>` 查悬空线头闭合度（浮空数必须清零）。关键接触/交接/跟踪动作可加 `uv run <skill>/scripts/action_review.py <成片> --window <起秒,止秒> --out <新目录>`（默认 0.2s，按需 ROI 放大，真实 PTS 与哈希，始终 needs_review；见 `reference/action-review.md`）。B 视觉与教学：真实片段、因果、可读性、动作落点、素材伪影、听感；480px 缩略图与显式图元检查按 `reference/readability.md` 运行，failed / not_performed / needs_review 不作通过；C 反向审查：最弱镜头、中后段、结尾、事实与发布说明（数字口径三条判例见 directing-playbook）。每轮记录发现、修改、重渲证据、保留项；阻塞缺陷未清零不交最终版。新门禁/探针上线时故意制造一次它要抓的失败确认会红（统一合同「验收工具也要被验收」）。
 
 
 性能同机热渲比较；主体/活性/空场探针需声明ROI、背景掩码、合法静止。不能默默跳过失败，也不能把无检查能力当通过。音画探针默认检查纯旁白首句，最终媒体时长另查，还需中段/末段对位。

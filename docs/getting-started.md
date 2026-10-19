@@ -166,6 +166,8 @@ npm --prefix template ci
 npm --prefix template run typecheck
 node --test tests/*.test.mjs
 node scripts/style-catalog.mjs --check
+# 动作复核与曲库查询的仓库级 Python 测试（须 Pillow/FFmpeg）
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
 cd template
 uv sync
 uv run python -m unittest discover -s tests -v
