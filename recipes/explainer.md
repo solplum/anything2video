@@ -21,13 +21,13 @@
 
 **事实绑定（v3.9.0）**：讲解片的"事实镜头"建议全部声明 `facts: [claims 下标]`（格式与校验见统一合同分镜节）——画面演绎的事实以登记过的 claims 为准，C 轮反审逐镜头按绑定核对；纯装饰/过渡镜头用空数组显式声明。
 
-**演绎三铁律**（全文见 directing-playbook.md）在本配方是硬要求：每个口播关键词一个可见解释动作；禁死空间（合法静止只有 0.3–0.7s 逗号档与带微动效的结尾定帧）；旁白进行中相机禁停泊。
+**演绎三铁律**（全文见 directing-playbook.md）：关键词有可见依据、留白有目的、相机有任务。机制演示优先 continuous，演示到总结常用 hybrid；比较/章节转换可用 montage 硬切。阅读与比较允许真正静止，动作按关键词需要触发，不逐词加动画或用微动填时间。
 
 **结构四件套**（`common/kit/`，v3.9.0，颜色 props 传入配方 chrome token）：
 - `WordLitCaption`：逐字点亮字幕，底料是 tts_build 写进 `SubEntry.chars` 的逐字符起始帧（edge=实测词边界；kokoro=估计）。整片卡拉OK风或重点句升级按块选用；不传 chars（旧工程）自动退化整块淡入。
 - `ChapterBadge`：章节角标，数据源 `timeline.ts` 的 CHAPTER_STARTS，to 传下一章 from-1。
 - `GoldenQuote`：结尾金句（maskRise 升起 + emphasis 染色 + 规线画出），放在收尾段、复习帧之前。
-- `RecapFrame`：一帧复习（tagline + 要点网格 + 阅读高亮轮巡 + 恒速微推），占结尾定帧段 0.8–1.2s 以上的呼吸位，替代"最后一帧死静止"。
+- `RecapFrame`：一帧复习（tagline + 要点网格 + 阅读高亮轮巡 + 恒速微推），可用于结尾复习；停留按实际阅读时间，当前组件没有关闭微推的参数，需要稳定时另做静态复习构图，不把静止本身视为缺陷。
 
 明确授权无旁白样片时，用 chapter_timeline.py 从 project.json 建字幕/章表，并声明故意无声 audio.mode=silent；静音床仅保证技术接线。正式有声教学不能借此掩盖失败配音。无声也需实际全片播放审查。
 

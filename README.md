@@ -187,7 +187,8 @@ Remotion 把 React 组件按指定帧渲染成视频，因此文字、数字、�
 - `probe_av_sync.mjs`：纯旁白首句检查，最终媒体时长另测；不能代表全部字幕逐句对齐。
 - `probe_delivery.py`：实际规格，交付说明不手写分辨率。
 - `scripts/export_jianying.py`：全轨草稿导出（视频/旁白/BGM/字幕全轨拆分，Mac 沙盒隔离与 Windows 路径支持）。
-- `scripts/probe_readability.mjs`：移动端 480px 字号折算与底部 170px 字幕安全区侵入探针。
+- `scripts/probe_readability.mjs`：真实视频抽取 480px 缩略图，结合显式图元清单检查字号、字幕带与越界；不做 OCR，抽帧成功仍需实际看片。命令、schema 与退出码见 [可读性检查](reference/readability.md)。
+- `project.visualDirection`：同文案关键帧/运动方向比较或既有 SKU 回归，接入现有 check-plan；[证据格式与选择方法](reference/visual-direction.md)。
 
 ```powershell
 npm run typecheck
@@ -216,7 +217,7 @@ node <skill>/scripts/check-qc.mjs <project> qc/final.json
 ## 回归验证
 
 ```powershell
-node --test tests/runtime.test.mjs tests/editions.test.mjs tests/qc.test.mjs tests/source-consistency.test.mjs
+node --test tests/runtime.test.mjs tests/editions.test.mjs tests/qc.test.mjs tests/source-consistency.test.mjs tests/readability.test.mjs tests/visual-direction.test.mjs
 cd template
 uv sync
 uv run python -m unittest discover -s tests -v

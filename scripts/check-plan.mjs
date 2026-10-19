@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {isRecord, nonempty, projectFile, sha256File} from './runtime-lib.mjs';
+import {checkVisualDirection} from './visual-direction-lib.mjs';
 
 export function validatePlan(project, plan) {
   const errors = [];
@@ -79,7 +80,9 @@ export function checkPlan(root) {
       if (!nonempty(asset.sha256) || sha256File(file) !== asset.sha256.toLowerCase()) errors.push(`Stale asset hash: ${asset.path}`);
     } catch (error) {errors.push(`Missing/outside asset: ${nonempty(asset.path) ? asset.path : '<invalid>'} (${error.message})`);}
   }
-  return {pass: errors.length === 0, errors, note: 'Coverage checks are not visual acceptance. Review moving sequences and final media separately.'};
+  const visualDirection = checkVisualDirection(root, project);
+  errors.push(...visualDirection.errors);
+  return {pass: errors.length === 0, errors, visualDirection, note: 'Coverage checks are not visual acceptance. Review moving sequences and final media separately.'};
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
