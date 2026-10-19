@@ -4,6 +4,27 @@
 
 先选一条路线：只想验证渲染，运行首页的 [铜版雕刻样片](../examples/engraving/README.md)；要做自己的主题，安装 Skill 并按下面的流程建工程。样片自带镜头，通用模板则需要助手继续创作。
 
+## 下载与安装
+
+先准备下表列出的工具，再下载项目。在终端执行：
+
+```sh
+git clone https://github.com/solplum/anything2video.git
+cd anything2video
+node scripts/doctor.mjs
+```
+
+`doctor` 检查本地命令和可选生图配置，不自动安装依赖。完整制作前修复对应缺项；下方无声雕刻样片可跳过 uv/Python。然后选择适合助手的一条安装命令：
+
+```sh
+node scripts/install.mjs               # 通用目录：~/.agents/skills/anything2video
+node scripts/install.mjs --claude      # Claude Code
+node scripts/install.mjs --workbuddy   # WorkBuddy
+node scripts/install.mjs --minimax     # MiniMax Code
+```
+
+重新加载助手后，确认实际读到了 `anything2video/SKILL.md`。更完整的宿主路径、手动导入和更新说明见 [宿主适配](adapters.md)。
+
 ## 环境与依赖
 
 | 能力 | 依赖与检查 | 边界 |
@@ -24,6 +45,21 @@
 - 生图是可选能力，程序材质不需要图像 API。使用 MiniMax 或 OpenAI 兼容图像服务时，配置 `A2V_IMAGE_API_BASE`、`A2V_IMAGE_API_KEY`、`A2V_IMAGE_MODEL`，必要时设置 `A2V_IMAGE_PROVIDER`。不要把 key 发进文档、提交到 Git，或粘进命令日志。
 - 首用选择可记在 `~/.anything2video/image-channel`，只记录 `minimax`、`openai` 或 `none`；密钥只通过环境配置提供。
 - 默认 doctor 不调用生图服务，也不检查余额。只有显式执行 `node scripts/doctor.mjs --probe-image` 才会发送真实请求，生成一张图并可能计费。
+
+## 先跑一个可复现样片
+
+铜版雕刻示例自带场景与字体，不需要模型、生图或 TTS API key，也不需要 Python 音频工具。在仓库根目录运行，目标目录必须尚不存在：
+
+```sh
+node examples/engraving/prepare.mjs ../a2v-engraving-demo
+cd ../a2v-engraving-demo
+npm ci
+npm run typecheck
+npx remotion browser ensure
+npx remotion render src/index.ts Engraving out/engraving.mp4 --codec=h264 --crf=18 --concurrency=2
+```
+
+结果是 `out/engraving.mp4`：1280×720、30fps、12 秒的无声研究片。原生竖屏与带媒体/源码哈希的渲染入口见 [完整复现说明](../examples/engraving/README.md)。它验证渲染链路，不代替有旁白影片的完整制作流程。
 
 ## 第一条自己的视频
 

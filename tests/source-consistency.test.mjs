@@ -88,7 +88,8 @@ test('no python or pytest caches are committed into the skill tree', () => {
 test('README and getting-started links resolve in both checkout and distribution', () => {
   const packaged = new Set([...collectCoreFiles(root), 'README.md', 'SKILL.md', 'LICENSE']);
   for (const doc of ['README.md', 'docs/getting-started.md']) {
-    for (const [, target] of read(doc).matchAll(/\]\(([^)]+)\)/g)) {
+    const targets = [...read(doc).matchAll(/\]\(([^)]+)\)/g), ...read(doc).matchAll(/(?:src|href)="([^"]+)"/g)];
+    for (const [, target] of targets) {
       if (/^(?:[a-z][a-z\d+.-]*:|#)/i.test(target)) continue;
       const relative = decodeURIComponent(target.split('#')[0]);
       if (!relative) continue;

@@ -1,132 +1,181 @@
 # anything2video
 
-**把主题、文章或产品，做成有旁白、图解和动画的原创视频。**
+**把一个想法、一篇文章或一份产品资料，做成有画面、有配音的视频。**
 
-一套给 AI 编程助手使用的制作 Skill：从调研与文案，到分镜、Remotion 代码动画、配音、渲染和审片。交付 MP4，也保留可以继续改稿、换镜头、重新渲染的工程。
+想讲清一个知识点，介绍自己的产品，或把一个故事讲得更有画面感？anything2video 是一套给 AI 助手使用的视频制作工具包，把调研、写稿、配音、动画、审片和交付串成完整流程。
 
-*A portable agent skill for researched, narrated videos built with Remotion, with editable source and verifiable delivery evidence.*
+你提供材料、选择喜欢的画风、确认内容，助手负责继续制作。最后拿到视频，也保留后续能改稿、换镜头、重新导出的工程文件。
 
-[快速开始](#快速开始) · [选择风格](#选择风格) · [制作流程](#制作流程) · [文档导航](#文档导航)
+[能做什么](#能做什么) · [怎么使用](#怎么使用) · [全部风格](#全部风格) · [开始安装](#开始安装) · [常见问题](#常见问题)
 
-## 先看效果
+## 能做什么
 
-下面都是仓库中的实际渲染，点击图片打开 MP4。GitHub 如未内嵌播放，可下载后查看。
+| 你的想法 | 可以做成 |
+|---|---|
+| “这篇文章很有意思，想让更多人看懂” | 有旁白、有图解的知识短片，把重点和来龙去脉讲清楚 |
+| “想介绍我的产品，但不想只是翻几张图” | 围绕使用场景、功能和卖点展开的产品视频 |
+| “想讲一个历史、文化或品牌故事” | 有统一画风和叙事节奏的故事片，也可结合有来源的图片与档案影像 |
+| “课程里的这个概念，总是解释不明白” | 用动作、对比和流程展示原理的教学动画 |
 
-| 线条讲解 · 把受力关系画清楚 | 铜版雕刻 · 用排线表现明暗 |
-|:---:|:---:|
-| [![桥梁受力：线条讲解实际编码帧](examples/line-art-teaching/teaching-480.png)](examples/line-art-teaching/teaching.mp4) | [![一枚梨的明暗：铜版雕刻实际渲染帧](samples/posters/engraving-sample.jpg)](samples/engraving-sample.mp4) |
-| 13.7 秒，有旁白、音乐与音效。[A/B 对照与源码](examples/line-art-teaching/README.md) | 12 秒无声材质研究。[原生竖屏](examples/engraving/portrait.mp4) · [复现与源码](examples/engraving/README.md) |
+支持中文、英文旁白和中英双语字幕。可以做横屏或竖屏；不同画幅会分别安排画面。它更适合图解、动画与素材合成，以实拍采访或真人口播剪辑为主的任务需要其他工具配合。
 
-更多视觉方向见 [风格样片库](samples/README.md)。短样片展示的是具体风格和处理方法，不代表任意主题都已完成端到端验证。
+## 怎么使用
 
-## 适合做什么
+使用前，需要在一个能读写文件、运行制作工具的 **AI 编程助手** 中安装并配置环境，例如 Codex、Claude Code 等。准备好后，你可以直接用自然语言提需求；具体安装步骤放在[上手指南](docs/getting-started.md)。
 
-- **知识讲解、文章改视频**：把概念拆成因果、流程、对比和可读的图解
-- **产品与软件演示**：围绕问题、功能、证据与行动组织镜头
-- **风格叙事、品牌历史、档案纪录片**：结合代码动画与有来源、经过审核的图片或影像
+1. **给材料**：一个主题、一篇文章、一份产品介绍都可以。补充“讲给谁听、想让观众记住什么、大概多长、发在哪里”。
+2. **选画风**：往下看全部风格，告诉助手喜欢哪一种，也可以请它按你的主题推荐。
+3. **定内容、看小样**：先讨论文案方向，再确认全文；选好声音和音乐后，先看开头、复杂中段和结尾的小样，再继续制作。
+4. **拿到视频和可修改文件**：交付目标包括视频、字幕、封面、工程与素材来源。以后想改一句话或一个镜头，可以接着修改和重新制作。
 
-你提供主题或资料，以及受众、平台、语言、时长和目标。助手按制作流程完成调研、稿件与工程；默认会先与你确认文案方向和全文。支持中文/英文旁白与中英双语字幕，横竖屏需要各自布局。
+比如，你可以这样开口：
 
-交付目标包括 MP4、可编辑工程、旁白与字幕、封面、事实/素材来源及实际规格与 QC 记录。纯聊天窗口无法执行渲染；以实拍采访为主或真人口播剪辑，也不是这套工具的主要用途。
+> 请用 anything2video，把“自来水怎样到我家”做成一条约一分钟的中文科普视频，给小学生看。想要黏土小镇的感觉，横屏。先和我确认文案，再给我看几个关键片段，最后交付视频、字幕和封面。
 
-## 快速开始
-
-### 1. 准备环境
-
-- 能读写文件、执行 Shell 的 AI 编程助手；宿主需要能实际检查图像、视频和声音，或把对应审查留给人完成
-- **Node.js + npm、Git、ffmpeg/ffprobe、可用 Chromium**；配音与音频工具另需 **uv、Python 3.11–3.14**
-- 首次安装依赖、下载浏览器和云端配音需要网络。Remotion 依赖版本已锁定，使用仓库锁文件
-
-```sh
-git clone https://github.com/solplum/anything2video.git
-cd anything2video
-node scripts/doctor.mjs
-```
-
-`doctor` 检查本地命令和可选图像通道配置；它不会安装依赖，也不证明浏览器、账户额度或宿主加载已就绪。完整制作前修复对应缺项；无声雕刻样片可跳过 uv/Python。详见 [环境与常见问题](docs/getting-started.md#环境与依赖)。
-
-### 2. 安装给助手使用
-
-在仓库根目录选择适合宿主的一条命令：
-
-```sh
-node scripts/install.mjs               # 通用目录：~/.agents/skills/anything2video
-node scripts/install.mjs --claude      # Claude Code
-node scripts/install.mjs --workbuddy   # WorkBuddy
-node scripts/install.mjs --minimax     # MiniMax Code
-```
-
-重新加载宿主后，确认它实际读到了 `anything2video/SKILL.md`。如果宿主未自动发现，显式提供入口的绝对路径。安装器会拒绝覆盖已有目录；更多宿主、手动导入和更新方法见 [安装与宿主适配](docs/adapters.md)。
-
-然后给助手一个清楚的任务，例如：
-
-```text
-使用 anything2video，先完整阅读 SKILL.md 和 reference/production-contract.md。
-为刚入门的开发者解释缓存命中与未命中，中文旁白，约 90 秒，16:9 横屏。
-观众看完应能判断一个请求什么时候需要读数据库。
-先给我文案方向，再确认全文；用同一个请求贯穿演示。
-先做开场、复杂中段和结尾的小样，再制作全片。
-交付 MP4、可编辑工程、字幕、封面和来源/QC 记录。
-```
-
-助手会在 Skill 目录之外建项目。自己初始化工程的命令和后续步骤见 [第一条自己的视频](docs/getting-started.md#第一条自己的视频)。初始化只产生草稿骨架，仍需完成稿件、配音、分镜与镜头代码。
-
-### 3. 先跑通一个样片（可选）
-
-想先确认渲染环境，可以复现上面的铜版雕刻。它自带场景与字体，**不需要模型、生图或 TTS API key**，也不需要 Python 音频工具。在仓库根目录运行，目标目录必须尚不存在：
-
-```sh
-node examples/engraving/prepare.mjs ../a2v-engraving-demo
-cd ../a2v-engraving-demo
-npm ci
-npm run typecheck
-npx remotion browser ensure
-npx remotion render src/index.ts Engraving out/engraving.mp4 --codec=h264 --crf=18 --concurrency=2
-```
-
-结果是 `out/engraving.mp4`：1280×720、30fps、12 秒的无声研究片。原生竖屏与带媒体/源码哈希的渲染入口见 [完整复现说明](examples/engraving/README.md)。这个例子验证渲染链路，不代替有旁白影片的完整制作流程。
+下面的样片可以帮你判断画风。选中某个风格后，内容、构图和节奏会围绕你的主题重新设计。
 
 <!-- style-catalog:start -->
-## 选择风格
+## 全部风格
 
-克隆或解压后，用本地浏览器打开 [samples/index.html](samples/index.html)：先选家族，再切换变体；也可搜索名称、ID，或按类型/气质筛选。[全部变体](samples/all.html) 保留旧 ID。GitHub 中的 HTML 链接显示源码，需在本地打开完整样片包。
+**63 种风格全部列在下面，其中 62 种有实际视频预览。** 点击图片或播放链接看动态效果；GitHub 未内嵌播放时，可以下载查看。同一家族的变体并排展示，你可以直接用中文名告诉助手想选哪一种。
 
-当前目录：**63 个风格 ID · 59 个选择入口 · 62 个有预览 · 12 个运行时皮肤**。数据自动来自 [styles/catalog.json](styles/catalog.json)，未提供预览的风格会在选择页明确标出。
+[图文讲解](#图文讲解) · [夜色与未来](#夜色与未来) · [纸艺与手绘](#纸艺与手绘) · [立体与微缩](#立体与微缩) · [古典与东方](#古典与东方) · [光影与绘画](#光影与绘画) · [图形与幻想](#图形与幻想) · [印刷与装饰](#印刷与装饰)
 
-只有标记 `runtimeSkin: true` 的 ID 可用于 `config.style`，且只覆盖配色与覆盖层；主体动画仍需接入对应图元。其他风格按 [各自规范与 kit](styles/README.md) 手动接入。选择风格不会自动重写镜头。
+缩略图均来自随仓库分发的真实样片，没有自动播放。多数是短片段，完整音频与来源见 [样片说明](samples/README.md)；铜版雕刻是 12 秒无声材质研究，等距剖解暂缺样片并明确标出。
+
+### 图文讲解
+
+从白板板书到大字排版，让文字、图形和重点信息走到画面前。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/swiss-print-sample.jpg" width="320" alt="版式风格实际样片预览">](samples/swiss-print-sample.mp4)<br>**版式**<br>黑白红大字配整齐留白，像会动的海报<br>[播放版式样片](samples/swiss-print-sample.mp4) | [<img src="samples/posters/chalk-sample.jpg" width="320" alt="黑板风格实际样片预览">](samples/chalk-sample.mp4)<br>**黑板**<br>深绿黑板配粉笔字，擦写之间带出课堂感<br>[播放黑板样片](samples/chalk-sample.mp4) |
+| [<img src="samples/posters/blueprint-sample.jpg" width="320" alt="蓝图风格实际样片预览">](samples/blueprint-sample.mp4)<br>**蓝图**<br>深蓝底上铺开白色线稿，像在读工程图纸<br>[播放蓝图样片](samples/blueprint-sample.mp4) | [<img src="samples/posters/paperclip-sticker-sample.jpg" width="320" alt="贴纸人风格实际样片预览">](samples/paperclip-sticker-sample.mp4)<br>**贴纸人**<br>白边贴纸串起信息，跟着镜头边走边看<br>[播放贴纸人样片](samples/paperclip-sticker-sample.mp4) |
+| [<img src="samples/posters/hanazi-916-sample.jpg" width="101" alt="花字风格实际样片预览">](samples/hanazi-916-sample.mp4)<br>**花字**<br>彩色大字蹦进竖屏，带着综艺式热闹节奏<br>[播放花字样片](samples/hanazi-916-sample.mp4) | [<img src="samples/posters/line-art-sample.jpg" width="320" alt="线条风格实际样片预览">](samples/line-art-sample.mp4)<br>**线条**<br>细线一笔笔画出轮廓，黑金配色干净舒展<br>[播放线条样片](samples/line-art-sample.mp4) |
+| [<img src="samples/posters/grain-flat-sample.jpg" width="320" alt="颗粒扁平风格实际样片预览">](samples/grain-flat-sample.mp4)<br>**颗粒扁平**<br>平涂色块配细碎颗粒，人物动作富有弹性<br>[播放颗粒扁平样片](samples/grain-flat-sample.mp4) | [<img src="samples/posters/whiteboard-sample.jpg" width="320" alt="白板风格实际样片预览">](samples/whiteboard-sample.mp4)<br>**白板**<br>彩色笔尖边讲边画，像面对面在白板说明<br>[播放白板样片](samples/whiteboard-sample.mp4) |
+| [<img src="samples/posters/kinetic-type-sample.jpg" width="320" alt="字动风格实际样片预览">](samples/kinetic-type-sample.mp4)<br>**字动**<br>重点词跟着节奏跳出来，让文字成为主角<br>[播放字动样片](samples/kinetic-type-sample.mp4) | [<img src="samples/posters/math-lab-sample.jpg" width="320" alt="数学屋风格实际样片预览">](samples/math-lab-sample.mp4)<br>**数学屋**<br>让几何图形动起来，把抽象规律画给你看<br>[播放数学屋样片](samples/math-lab-sample.mp4) |
+
+### 夜色与未来
+
+暗色背景、发光线条和复古电子屏，呈现不同的科技氛围。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/deep-space-sample.jpg" width="320" alt="深空风格实际样片预览">](samples/deep-space-sample.mp4)<br>**深空**<br><sub>暗色信息设计家族</sub><br>深黑底配冷青亮色，让产品画面更醒目<br>[播放深空样片](samples/deep-space-sample.mp4) | [<img src="samples/posters/mg-purple-sample.jpg" width="320" alt="夜航风格实际样片预览">](samples/mg-purple-sample.mp4)<br>**夜航**<br><sub>暗色信息设计家族</sub><br>黑底紫色章节卡，沿着清晰步骤展开讲解<br>[播放夜航样片](samples/mg-purple-sample.mp4) |
+| [<img src="samples/posters/neon-sample.jpg" width="320" alt="霓虹风格实际样片预览">](samples/neon-sample.mp4)<br>**霓虹**<br>霓虹亮边映着雨夜反光，像走进发光街景<br>[播放霓虹样片](samples/neon-sample.mp4) | [<img src="samples/posters/crt-terminal-sample.jpg" width="320" alt="终端风格实际样片预览">](samples/crt-terminal-sample.mp4)<br>**终端**<br>黑底绿字逐字敲出，重现老式电脑屏幕<br>[播放终端样片](samples/crt-terminal-sample.mp4) |
+| [<img src="samples/posters/pixel-arcade-sample.jpg" width="320" alt="街机风格实际样片预览">](samples/pixel-arcade-sample.mp4)<br>**街机**<br>彩色方块拼出画面，找回老街机的趣味<br>[播放街机样片](samples/pixel-arcade-sample.mp4) | [<img src="samples/posters/aurora-glass-sample.jpg" width="320" alt="玻璃风格实际样片预览">](samples/aurora-glass-sample.mp4)<br>**玻璃**<br>柔光在暗处慢慢漂移，磨砂玻璃卡片透亮<br>[播放玻璃样片](samples/aurora-glass-sample.mp4) |
+| [<img src="samples/posters/vhs-outrun-sample.jpg" width="320" alt="公路夜风格实际样片预览">](samples/vhs-outrun-sample.mp4)<br>**公路夜**<br>网格公路通向落日，带着旧录像带的色差<br>[播放公路夜样片](samples/vhs-outrun-sample.mp4) | [<img src="samples/posters/target-lock-sample.jpg" width="320" alt="锁定风格实际样片预览">](samples/target-lock-sample.mp4)<br>**锁定**<br>雷达圆环扫描锁定，像电影中的未来仪表<br>[播放锁定样片](samples/target-lock-sample.mp4) |
+
+### 纸艺与手绘
+
+撕纸、折页、涂鸦和弹跳小人，保留手工制作的趣味。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/paper-collage-sample.jpg" width="320" alt="拼贴风格实际样片预览">](samples/paper-collage-sample.mp4)<br>**拼贴**<br>撕纸边、胶带和叠放纸片，拼出手作感<br>[播放拼贴样片](samples/paper-collage-sample.mp4) | [<img src="samples/posters/pop-comic-sample.jpg" width="320" alt="波普风格实际样片预览">](samples/pop-comic-sample.mp4)<br>**波普**<br>粗黑线配鲜艳网点，爆炸框带出漫画冲劲<br>[播放波普样片](samples/pop-comic-sample.mp4) |
+| [<img src="samples/posters/popup-book-sample.jpg" width="320" alt="立体书风格实际样片预览">](samples/popup-book-sample.mp4)<br>**立体书**<br>牛皮纸场景随书页翻起，像打开立体绘本<br>[播放立体书样片](samples/popup-book-sample.mp4) | [<img src="samples/posters/ink-boil-sample.jpg" width="320" alt="线沸风格实际样片预览">](samples/ink-boil-sample.mp4)<br>**线沸**<br>线条轻轻抖动、色块略微错位，像手绘草稿<br>[播放线沸样片](samples/ink-boil-sample.mp4) |
+| [<img src="samples/posters/dance-line-sample.jpg" width="320" alt="舞线风格实际样片预览">](samples/dance-line-sample.mp4)<br>**舞线**<br>涂鸦小人跟着节拍蹦跳，画面充满活力<br>[播放舞线样片](samples/dance-line-sample.mp4) | [<img src="samples/posters/rubberhose-sample.jpg" width="320" alt="橡皮管风格实际样片预览">](samples/rubberhose-sample.mp4)<br>**橡皮管**<br>软软的手脚摇摆伸展，像早期卡通动画<br>[播放橡皮管样片](samples/rubberhose-sample.mp4) |
+
+### 立体与微缩
+
+从玩具般的小镇到影棚物件，用空间、材质和镜头讲故事。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/clay-town-sample.jpg" width="320" alt="黏土风格实际样片预览">](samples/clay-town-sample.mp4)<br>**黏土**<br><sub>微缩等距场景家族</sub><br>像手捏出来的黏土小镇，柔软圆润又亲切<br>[播放黏土样片](samples/clay-town-sample.mp4) | [<img src="samples/posters/isometric-city-sample.jpg" width="320" alt="等轴风格实际样片预览">](samples/isometric-city-sample.mp4)<br>**等轴**<br><sub>微缩等距场景家族</sub><br>斜看微缩城市，楼房一座座长出并移过<br>[播放等轴样片](samples/isometric-city-sample.mp4) |
+| [<img src="samples/posters/studio-oneshot-sample.jpg" width="320" alt="一镜风格实际样片预览">](samples/studio-oneshot-sample.mp4)<br>**一镜**<br>镜头穿行暗色影棚，瓷质物件泛起双色光<br>[播放一镜样片](samples/studio-oneshot-sample.mp4) | [<img src="samples/posters/soft-jelly-sample.jpg" width="320" alt="软糖风格实际样片预览">](samples/soft-jelly-sample.mp4)<br>**软糖**<br>软糖般的立体物件，成排起伏像柔软波浪<br>[播放软糖样片](samples/soft-jelly-sample.mp4) |
+| [<img src="samples/posters/chrome-ball-sample.jpg" width="320" alt="铬球风格实际样片预览">](samples/chrome-ball-sample.mp4)<br>**铬球**<br>金属球映着棋盘房间，像早期电脑动画<br>[播放铬球样片](samples/chrome-ball-sample.mp4) | **等距剖解**<br>**预览待补**<br>机器分层拆解的实验素材，暂无随包预览<br>[查看现有素材说明](styles/isometric-anatomy/SPEC.md) |
+
+### 古典与东方
+
+岩壁、陶器、金箔、皮影与水墨，把传统材料带进画面。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/epic-paper-sample.jpg" width="320" alt="神话风格实际样片预览">](samples/epic-paper-sample.mp4)<br>**神话**<br>暖纸、朱红印章与金线，铺开古风叙事<br>[播放神话样片](samples/epic-paper-sample.mp4) | [<img src="samples/posters/sand-sample.jpg" width="320" alt="沙画风格实际样片预览">](samples/sand-sample.mp4)<br>**沙画**<br>手影铺开细沙，擦出海上晨光与窗边光影<br>[播放沙画样片](samples/sand-sample.mp4) |
+| [<img src="samples/posters/guofeng-scroll-sample.jpg" width="320" alt="月窗风格实际样片预览">](samples/guofeng-scroll-sample.mp4)<br>**月窗**<br>金线月窗配竖排题字，像缓缓展开的长卷<br>[播放月窗样片](samples/guofeng-scroll-sample.mp4) | [<img src="samples/posters/cave-wall-sample.jpg" width="320" alt="岩壁风格实际样片预览">](samples/cave-wall-sample.mp4)<br>**岩壁**<br>赭红手印落在粗粝岩壁，火光摇出远古感<br>[播放岩壁样片](samples/cave-wall-sample.mp4) |
+| [<img src="samples/posters/tomb-wall-sample.jpg" width="320" alt="墓室风格实际样片预览">](samples/tomb-wall-sample.mp4)<br>**墓室**<br>古埃及人物与象形符号，沿着壁画讲故事<br>[播放墓室样片](samples/tomb-wall-sample.mp4) | [<img src="samples/posters/amphora-sample.jpg" width="320" alt="陶瓶风格实际样片预览">](samples/amphora-sample.mp4)<br>**陶瓶**<br>黑色剪影衬橙红陶底，故事环绕古希腊陶瓶<br>[播放陶瓶样片](samples/amphora-sample.mp4) |
+| [<img src="samples/posters/mosaic-sample.jpg" width="320" alt="马赛克风格实际样片预览">](samples/mosaic-sample.mp4)<br>**马赛克**<br>细小石块拼出图案，带着古老镶嵌画质感<br>[播放马赛克样片](samples/mosaic-sample.mp4) | [<img src="samples/posters/gold-leaf-sample.jpg" width="320" alt="金箔风格实际样片预览">](samples/gold-leaf-sample.mp4)<br>**金箔**<br>金箔纹样与华丽字母，映着抄写员的夜灯<br>[播放金箔样片](samples/gold-leaf-sample.mp4) |
+| [<img src="samples/posters/shadow-play-sample.jpg" width="320" alt="皮影风格实际样片预览">](samples/shadow-play-sample.mp4)<br>**皮影**<br>镂空人物在灯前活动，白布上映出皮影戏<br>[播放皮影样片](samples/shadow-play-sample.mp4) | [<img src="samples/posters/ink-tea-sample.jpg" width="320" alt="水墨风格实际样片预览">](samples/ink-tea-sample.mp4)<br>**水墨**<br>淡墨在纸上缓缓洇开，浓淡与留白相映<br>[播放水墨样片](samples/ink-tea-sample.mp4) |
+
+### 光影与绘画
+
+用笔触、水色、天光和阴影，营造安静、明亮或浓烈的情绪。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/light-dabs-sample.jpg" width="320" alt="光斑风格实际样片预览">](samples/light-dabs-sample.mp4)<br>**光斑**<br><sub>印象派光色家族</sub><br>碎短笔触汇成光斑，色彩缓缓变换<br>[播放光斑样片](samples/light-dabs-sample.mp4) | [<img src="samples/posters/lily-pond-sample.jpg" width="320" alt="睡莲风格实际样片预览">](samples/lily-pond-sample.mp4)<br>**睡莲**<br><sub>印象派光色家族</sub><br>莲叶漂在粼粼水面，柳影与光色轻轻摇晃<br>[播放睡莲样片](samples/lily-pond-sample.mp4) |
+| [<img src="samples/posters/swirl-oil-sample.jpg" width="320" alt="星涡风格实际样片预览">](samples/swirl-oil-sample.mp4)<br>**星涡**<br>长笔触卷成星空漩涡，浓烈色彩随之流动<br>[播放星涡样片](samples/swirl-oil-sample.mp4) | [<img src="samples/posters/hard-light-sample.jpg" width="320" alt="硬光风格实际样片预览">](samples/hard-light-sample.mp4)<br>**硬光**<br>斜光切入安静房间，长长阴影带出孤独感<br>[播放硬光样片](samples/hard-light-sample.mp4) |
+| [<img src="samples/posters/sfumato-sample.jpg" width="320" alt="晕涂风格实际样片预览">](samples/sfumato-sample.mp4)<br>**晕涂**<br>轮廓融入柔和光雾，颜色层层晕开<br>[播放晕涂样片](samples/sfumato-sample.mp4) | [<img src="samples/posters/watercolor-cel-sample.jpg" width="320" alt="水彩赛璐璐风格实际样片预览">](samples/watercolor-cel-sample.mp4)<br>**水彩赛璐璐**<br>水彩背景衬着动画人物，风吹出层层动感<br>[播放水彩赛璐璐样片](samples/watercolor-cel-sample.mp4) |
+| [<img src="samples/posters/optical-dots-sample.jpg" width="320" alt="点彩风格实际样片预览">](samples/optical-dots-sample.mp4)<br>**点彩**<br>细小彩点并排铺开，远看汇成柔和色彩<br>[播放点彩样片](samples/optical-dots-sample.mp4) | [<img src="samples/posters/candle-light-sample.jpg" width="320" alt="烛光风格实际样片预览">](samples/candle-light-sample.mp4)<br>**烛光**<br>一束烛光照亮暗处，让明暗成为画面主角<br>[播放烛光样片](samples/candle-light-sample.mp4) |
+| [<img src="samples/posters/cumulus-light-sample.jpg" width="320" alt="积雨云风格实际样片预览">](samples/cumulus-light-sample.mp4)<br>**积雨云**<br>高耸云团间透出光柱，天空色彩明亮浓郁<br>[播放积雨云样片](samples/cumulus-light-sample.mp4) | [<img src="samples/posters/blue-period-sample.jpg" width="320" alt="蓝时期风格实际样片预览">](samples/blue-period-sample.mp4)<br>**蓝时期**<br>蓝色铺满画面，缓慢节奏带出低沉情绪<br>[播放蓝时期样片](samples/blue-period-sample.mp4) |
+
+### 图形与幻想
+
+液滴相融、图形变身、空间扭曲，适合浏览大胆的视觉变化。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/liquid-flow-sample.jpg" width="320" alt="液态风格实际样片预览">](samples/liquid-flow-sample.mp4)<br>**液态**<br>圆润液滴相融又拉开，像流动的彩色软胶<br>[播放液态样片](samples/liquid-flow-sample.mp4) | [<img src="samples/posters/morph-sample.jpg" width="320" alt="形变风格实际样片预览">](samples/morph-sample.mp4)<br>**形变**<br>图形不断伸缩变身，一个形状接着另一个<br>[播放形变样片](samples/morph-sample.mp4) |
+| [<img src="samples/posters/pop-dot-sample.jpg" width="320" alt="弹点风格实际样片预览">](samples/pop-dot-sample.mp4)<br>**弹点**<br>明快色块弹跳入场，轻轻挤压后再回弹<br>[播放弹点样片](samples/pop-dot-sample.mp4) | [<img src="samples/posters/dot-infinity-sample.jpg" width="320" alt="波点风格实际样片预览">](samples/dot-infinity-sample.mp4)<br>**波点**<br>波点铺满南瓜与画面，点阵一呼一吸<br>[播放波点样片](samples/dot-infinity-sample.mp4) |
+| [<img src="samples/posters/facets-sample.jpg" width="320" alt="切面风格实际样片预览">](samples/facets-sample.mp4)<br>**切面**<br>物体拆成几何切面，不同角度同时展开<br>[播放切面样片](samples/facets-sample.mp4) | [<img src="samples/posters/scream-warp-sample.jpg" width="320" alt="呐喊风格实际样片预览">](samples/scream-warp-sample.mp4)<br>**呐喊**<br>血红天空扭曲翻涌，桥上身影透出不安<br>[播放呐喊样片](samples/scream-warp-sample.mp4) |
+| [<img src="samples/posters/soft-clock-sample.jpg" width="320" alt="软钟风格实际样片预览">](samples/soft-clock-sample.mp4)<br>**软钟**<br>柔软时钟垂挂在荒漠，长影拉出梦境感<br>[播放软钟样片](samples/soft-clock-sample.mp4) | [<img src="samples/posters/hypnotic-sample.jpg" width="320" alt="催眠风格实际样片预览">](samples/hypnotic-sample.mp4)<br>**催眠**<br>同心圆卷成旋转漩涡，循环节奏带来迷幻感<br>[播放催眠样片](samples/hypnotic-sample.mp4) |
+
+### 印刷与装饰
+
+错位套色、细密刻线、藤蔓花框与金色纹样，突出图案和纸面质感。
+
+| 风格预览 | 风格预览 |
+|:---:|:---:|
+| [<img src="samples/posters/ink-plate-sample.jpg" width="320" alt="墨版风格实际样片预览">](samples/ink-plate-sample.mp4)<br>**墨版**<br><sub>套色印刷家族</sub><br>几何色块交错移动，像纸上错位叠印的油墨<br>[播放墨版样片](samples/ink-plate-sample.mp4) | [<img src="samples/posters/riso-print-sample.jpg" width="320" alt="孔版风格实际样片预览">](samples/riso-print-sample.mp4)<br>**孔版**<br><sub>套色印刷家族</sub><br>双色油墨错位叠在一起，留下细密印刷网点<br>[播放孔版样片](samples/riso-print-sample.mp4) |
+| [<img src="samples/posters/whiplash-line-sample.jpg" width="320" alt="鞭线风格实际样片预览">](samples/whiplash-line-sample.mp4)<br>**鞭线**<br>藤蔓般的弧线伸展，围成优雅海报花框<br>[播放鞭线样片](samples/whiplash-line-sample.mp4) | [<img src="samples/posters/gold-robe-sample.jpg" width="320" alt="金袍风格实际样片预览">](samples/gold-robe-sample.mp4)<br>**金袍**<br>金色纹样裹住人物，脸孔与华丽图案相映<br>[播放金袍样片](samples/gold-robe-sample.mp4) |
+| [<img src="samples/posters/engraving-sample.jpg" width="320" alt="铜版雕刻风格实际样片预览">](samples/engraving-sample.mp4)<br>**铜版雕刻**<br>细密刻线描出梨形，十二秒无声材质研究<br>[播放铜版雕刻样片](samples/engraving-sample.mp4) · [竖屏](examples/engraving/portrait.mp4) |  |
+
+想按名称、类型或气质筛选？下载完整项目后，用本地浏览器打开 [风格选择页](samples/index.html)，或看 [全部变体页](samples/all.html)。GitHub 中的 HTML 链接显示源码，需要在本地打开。
+
+<sub>本展示由 [风格目录](styles/catalog.json) 自动生成。风格选项是制作方向；其中 12 个支持模板的配色/覆盖层切换，其余按对应图元接入，主体镜头都需要围绕内容制作。[开发接入说明](styles/README.md)</sub>
 <!-- style-catalog:end -->
 
-## 制作流程
+## 开始安装
 
-**任务与资料 → 文案确认 → 真实配音时间轴 → 分镜 → 多点小样 → 镜头代码 → 混音与渲染 → 审片修复 → 交付**
+需要一个能执行制作任务的 AI 助手，以及视频制作环境。你可以把[上手指南](docs/getting-started.md)交给助手，请它先检查条件，再按你的授权配置；也可以照着文档自己操作。
 
-- **先解释清楚**：每个镜头说明一个问题，有具体动作和结果；文字、数字、图表与字幕由代码控制
-- **先打样再铺开**：同时看开场、复杂中段和结尾，使用实际音色、字幕和目标画幅
-- **以真实输出验收**：检查工程、画面与听感，再反向挑错并独立评审；类型检查和截图不能替代整片观看
-- **改动可追溯**：渲染保存实际规格、媒体哈希和源码指纹；修改后重新渲染并复核，未执行的检查保持 `not_performed`
+- [第一次使用：下载、安装、创建视频工程](docs/getting-started.md)
+- [不同助手的安装位置与使用说明](docs/adapters.md)
+- [先试跑一段不需要 API key 的铜版雕刻样片](examples/engraving/README.md)
 
-制作契约见 [production-contract](reference/production-contract.md)，操作顺序见 [production-workflow](reference/production-workflow.md)。Skill 提供方法与工具，成片仍取决于模型能力、素材和审片；不保证一次提示就完成精品，也不证明不同模型能力等价。
+底层使用 Remotion 制作动画，完整流程需要 Node.js/npm、ffmpeg、浏览器，以及配音工具使用的 Python/uv。安装成功后，还要确认助手确实能运行工具和检查输出；普通的纯聊天窗口无法直接生成这里所说的成片。
 
-## API key、成本与许可
+## 常见问题
 
-- **助手本身**：使用你所在宿主的模型与计费方式；仓库不附带模型服务或额度
-- **配音**：默认脚本可用 `edge-tts` 在线合成，无需单独填写 TTS key；依赖服务可用性，也可导入已授权配音。其他 TTS 的账户与费用按所选服务处理
-- **AI 图像**：可选，仅生成材质/场景底时需要；程序绘制路线无需生图 key。配置使用 `A2V_IMAGE_API_BASE`、`A2V_IMAGE_API_KEY`、`A2V_IMAGE_MODEL` 环境变量，不把密钥写进仓库。`doctor --probe-image` 会真实生成一张图并可能计费，默认不运行
-- **制作成本**：模型、语音、素材、渲染算力和复核分别计算。先用小样测自己的环境，不提供未经实测的单片价格或质量提升比例
+### 不会写代码，可以用吗？
 
-代码与文档采用 [MIT](LICENSE)。Remotion、字体、音乐、音效和生成素材各有自己的许可，**仓库许可不等于素材可任意商用**。尤其曲库 `wx-*` 外部音乐仍需确权，详见 [音频来源](assets/audio/ATTRIBUTION.md)。发布时核对素材权限、平台当前规则与适用的 AI 内容标识。
+你可以用自然语言说明需求、选画风和改内容。代码制作交给有相应能力的 AI 助手；首次环境配置仍需要完成，遇到权限或运行错误时也需要处理。它不能保证所有助手都一次做成功。
 
-## 文档导航
+### 是一键生成吗？
 
-| 想做什么 | 从这里开始 |
+制作会经过稿件确认、小样和审片。默认先与你确认文案方向与全文，再继续配音和画面；模型能力、资料质量和修改轮次都会影响结果。样片展示的是已有的具体效果，不承诺任意主题都能一次做到相同水准。
+
+### 需要付费或填 API key 吗？
+
+仓库代码与文档开源。AI 助手的模型费用、部分配音或素材服务，以及渲染算力可能产生费用，取决于你选择的工具。默认配音可使用无需单独填写 key 的在线服务；AI 生图是可选项，程序绘制画面不需要生图 key。配置、联网要求与费用边界见[上手指南](docs/getting-started.md#网络密钥与费用)。
+
+### 我能拿到什么？还能修改吗？
+
+目标交付包括 MP4、可编辑工程、字幕、封面、旁白和来源/检查记录，由助手按任务整理。工程保留了文案、镜头和素材，方便后续修改；改动后需要重新制作并检查，不是改一个文件就自动更新所有成品。
+
+### 能直接商用或发布吗？
+
+项目代码和文档采用 [MIT](LICENSE)。字体、音乐、音效、图片和生成素材各有许可，发布前需要确认实际使用权限和适用的 AI 内容标识。尤其曲库 `wx-*` 外部音乐仍需确权，见[音频来源与许可](assets/audio/ATTRIBUTION.md)。仓库开源不代表所有素材都可任意商用。
+
+## 进一步了解
+
+| 你想了解 | 文档 |
 |---|---|
-| 配好环境、建第一个工程、排查失败 | [上手指南](docs/getting-started.md) · [宿主适配](docs/adapters.md) |
-| 理解制作与交付标准 | [Skill 入口](SKILL.md) · [生产合同](reference/production-contract.md) · [导演手册](reference/directing-playbook.md) |
-| 选择叙事结构 | [知识讲解](recipes/explainer.md) · [产品宣传](recipes/promo.md) · [自由风格](recipes/custom.md) · [品牌史诗](recipes/epic.md) · [档案纪录片](recipes/documentary.md) |
-| 选风格、接入图元或设计运动 | [风格资产](styles/README.md) · [样片来源](samples/README.md) · [动效配方卡](gallery/README.md) |
-| 做好声音、字幕与小屏可读性 | [音色选择](reference/voice-bakeoff.md) · [音乐编排](reference/music-plan.md) · [声音设计](reference/sound-design.md) · [可读性检查](reference/readability.md) |
-| 复现案例或贡献修改 | [线条讲解 A/B](examples/line-art-teaching/README.md) · [铜版雕刻](examples/engraving/README.md) · [回归验证](docs/getting-started.md#回归验证) |
+| 开始制作、解决环境问题 | [上手指南](docs/getting-started.md) · [宿主适配](docs/adapters.md) |
+| 样片来源与可复现案例 | [样片说明](samples/README.md) · [线条讲解 A/B](examples/line-art-teaching/README.md) · [铜版雕刻](examples/engraving/README.md) |
+| 如何写稿、设计镜头与检查成片 | [制作入口](SKILL.md) · [导演手册](reference/directing-playbook.md) · [生产合同](reference/production-contract.md) |
+| 按题材选择制作方法 | [知识讲解](recipes/explainer.md) · [产品宣传](recipes/promo.md) · [自由风格](recipes/custom.md) · [品牌史诗](recipes/epic.md) · [档案纪录片](recipes/documentary.md) |
+| 开发与贡献 | [风格资产与接入](styles/README.md) · [动效配方卡](gallery/README.md) · [回归验证](docs/getting-started.md#回归验证) |
 
-## 鸣谢
-
-讲解规范与模板源于 [anything2explainer](https://github.com/Vincentwei1021/anything2explainer)。第三方代码归属见 [LICENSE-THIRDPARTY](LICENSE-THIRDPARTY)，程序编曲来源见 [audio-engine/VENDOR.md](audio-engine/VENDOR.md)，样片与素材的来源和使用边界随对应目录保留。本项目与所列模型、宿主或发布平台无官方合作关系。
+讲解规范与模板源于 [anything2explainer](https://github.com/Vincentwei1021/anything2explainer)。第三方代码归属见 [LICENSE-THIRDPARTY](LICENSE-THIRDPARTY)，程序编曲来源见 [audio-engine/VENDOR.md](audio-engine/VENDOR.md)。本项目与所列模型、助手或发布平台无官方合作关系。

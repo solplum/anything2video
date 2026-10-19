@@ -189,3 +189,39 @@ test('all-variants filtering pauses hidden previews and retains anatomy as a sea
   ui.filter('search','');ui.filter('type','all');
   assert.equal(ui.controls.status.textContent,'当前显示 63 个变体');
 });
+
+test('public README shows every style, genuine preview and family variant inline', () => {
+  const readme = generatedFiles().get('README.md');
+  const block = readme.match(/<!-- style-catalog:start -->([\s\S]*?)<!-- style-catalog:end -->/)[1];
+  const sections = new Set(catalog.showcaseSections.map(s => s.id));
+  assert.equal(sections.size, catalog.showcaseSections.length);
+  for (const section of catalog.showcaseSections) {
+    assert.ok(catalog.styles.some(s => s.showcase.section === section.id), section.id);
+    assert.ok(block.includes(`### ${section.name}`));
+  }
+  for (const s of catalog.styles) {
+    assert.ok(sections.has(s.showcase.section), s.id);
+    assert.ok(s.showcase.summary.trim(), s.id);
+    assert.equal(block.split(`**${s.name}**`).length - 1, 1, `${s.id} must appear exactly once`);
+    if (s.preview.status === 'available') {
+      assert.ok(block.includes(`[播放${s.name}样片](samples/${s.preview.path})`), s.id);
+    } else {
+      const row = block.split('\n').find(line => line.includes(`**${s.name}**`));
+      const cell = row.split(' | ').find(part => part.includes(`**${s.name}**`));
+      assert.match(cell, /预览待补/);
+      assert.doesNotMatch(cell, /<img|\.mp4/);
+    }
+  }
+  const images = [...block.matchAll(/<img src="([^"]+)"[^>]*alt="([^"]+)"/g)];
+  assert.deepEqual(images.map(([,src]) => src).sort(), catalog.styles.filter(s => s.preview.status === 'available').map(s => `samples/${s.preview.poster}`).sort());
+  assert.ok(images.every(([, , alt]) => alt.trim()));
+  assert.doesNotMatch(block, /<details|<video|autoplay/i);
+  for (const family of catalog.families) {
+    const members = family.members.map(id => catalog.styles.find(s => s.id === id));
+    assert.equal(new Set(members.map(s => s.showcase.section)).size, 1, family.id);
+    const row = block.split('\n').find(line => line.includes(`**${members[0].name}**`));
+    for (const member of members) assert.ok(row.includes(`**${member.name}**`), family.id);
+  }
+  assert.match(block, /hanazi-916-sample\.jpg" width="101"/);
+  generate({check: true});
+});

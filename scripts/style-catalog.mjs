@@ -47,9 +47,45 @@ function locate(){let id;try{id=decodeURIComponent(location.hash.slice(1))}catch
 </script></body></html>\n`;
 }
 function readmeBlock() {
-  return `<!-- style-catalog:start -->\n## 选择风格\n\n克隆或解压后，用本地浏览器打开 [samples/index.html](samples/index.html)：先选家族，再切换变体；也可搜索名称、ID，或按类型/气质筛选。[全部变体](samples/all.html) 保留旧 ID。GitHub 中的 HTML 链接显示源码，需在本地打开完整样片包。\n\n当前目录：**${catalog.styles.length} 个风格 ID · ${selectionGroups().length} 个选择入口 · ${catalog.styles.filter(s => s.preview.status === 'available').length} 个有预览 · ${catalog.styles.filter(s => s.runtimeSkin).length} 个运行时皮肤**。数据自动来自 [styles/catalog.json](styles/catalog.json)，未提供预览的风格会在选择页明确标出。\n\n只有标记 \`runtimeSkin: true\` 的 ID 可用于 \`config.style\`，且只覆盖配色与覆盖层；主体动画仍需接入对应图元。其他风格按 [各自规范与 kit](styles/README.md) 手动接入。选择风格不会自动重写镜头。\n<!-- style-catalog:end -->`;
+  const manifest = JSON.parse(read('samples/manifest.json'));
+  const groups = selectionGroups();
+  const card = s => {
+    const summary = esc(s.showcase.summary);
+    const family = catalog.families.find(f => f.id === s.family);
+    const familyLabel = family ? `<br><sub>${esc(family.name)}家族</sub>` : '';
+    const spec = s.source.endsWith('.ts') ? s.source : `${s.source}/SPEC.md`;
+    if (s.preview.status !== 'available') {
+      return `**${esc(s.name)}**${familyLabel}<br>**预览待补**<br>${summary}<br>[查看现有素材说明](${spec})`;
+    }
+    const media = `samples/${s.preview.path}`;
+    const sample = manifest.samples.find(m => m.path === s.preview.path);
+    // Fit the actual aspect ratio into a 320 × 180 preview box. In particular,
+    // never stretch the portrait sample to the landscape cards' dimensions.
+    const width = Math.round(Math.min(320, 180 * sample.width / sample.height));
+    const picture = `[<img src="samples/${esc(s.preview.poster)}" width="${width}" alt="${esc(s.name)}风格实际样片预览">](${media})`;
+    const portrait = s.id === 'engraving' ? ' · [竖屏](examples/engraving/portrait.mp4)' : '';
+    return `${picture}<br>**${esc(s.name)}**${familyLabel}<br>${summary}<br>[播放${esc(s.name)}样片](${media})${portrait}`;
+  };
+  const sections = catalog.showcaseSections.map(section => {
+    const families = groups.filter(g => g.members[0].showcase.section === section.id)
+      .sort((a, b) => b.members.length - a.members.length);
+    const rows = [];
+    let single = null;
+    for (const family of families) {
+      if (family.members.length > 1) {
+        if (single) {rows.push([single, '']); single = null;}
+        rows.push(family.members.map(card));
+      } else if (single) {
+        rows.push([single, card(family.members[0])]); single = null;
+      } else single = card(family.members[0]);
+    }
+    if (single) rows.push([single, '']);
+    return `### ${section.name}\n\n${section.description}\n\n| 风格预览 | 风格预览 |\n|:---:|:---:|\n${rows.map(row => `| ${row.join(' | ')} |`).join('\n')}`;
+  });
+  const available = catalog.styles.filter(s => s.preview.status === 'available').length;
+  const links = catalog.showcaseSections.map(s => `[${s.name}](#${s.name})`).join(' · ');
+  return `<!-- style-catalog:start -->\n## 全部风格\n\n**${catalog.styles.length} 种风格全部列在下面，其中 ${available} 种有实际视频预览。** 点击图片或播放链接看动态效果；GitHub 未内嵌播放时，可以下载查看。同一家族的变体并排展示，你可以直接用中文名告诉助手想选哪一种。\n\n${links}\n\n缩略图均来自随仓库分发的真实样片，没有自动播放。多数是短片段，完整音频与来源见 [样片说明](samples/README.md)；铜版雕刻是 12 秒无声材质研究，等距剖解暂缺样片并明确标出。\n\n${sections.join('\n\n')}\n\n想按名称、类型或气质筛选？下载完整项目后，用本地浏览器打开 [风格选择页](samples/index.html)，或看 [全部变体页](samples/all.html)。GitHub 中的 HTML 链接显示源码，需要在本地打开。\n\n<sub>本展示由 [风格目录](styles/catalog.json) 自动生成。风格选项是制作方向；其中 ${catalog.styles.filter(s => s.runtimeSkin).length} 个支持模板的配色/覆盖层切换，其余按对应图元接入，主体镜头都需要围绕内容制作。[开发接入说明](styles/README.md)</sub>\n<!-- style-catalog:end -->`;
 }
-
 export function generatedFiles() {
   let readme = read('README.md');
   if (readme.includes('<!-- style-catalog:start -->')) readme = readme.replace(/<!-- style-catalog:start -->[\s\S]*?<!-- style-catalog:end -->/, readmeBlock());
