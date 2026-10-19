@@ -45,9 +45,11 @@ metadata:
 `
   );
   write(source, 'LICENSE', 'Fixture license\n');
+  write(source, 'assets/audio/ATTRIBUTION.md', 'Audio sources and rights\n');
   write(source, 'LICENSE-THIRDPARTY/MIT-fixture.txt', 'Third-party notice\n');
   write(source, 'README.md', '# anything2video fixture\n');
   write(source, 'docs/adapters.md', 'Installation and verification\n');
+  write(source, 'docs/getting-started.md', 'First project and troubleshooting\n');
   write(source, 'docs/optimization-v3.md', 'Measured v3 results and limitations\n');
   write(source, 'docs/optimization-v3.1.md', 'Six-edition expansion and desktop boundaries\n');
   write(source, 'docs/optimization-v3.6.md', 'huashu absorption record\n');
@@ -110,6 +112,8 @@ test('unified package builds cleanly and excludes caches and private files', t =
   assert.ok(fs.existsSync(path.join(target, 'LICENSE-THIRDPARTY/MIT-fixture.txt')));
   assert.ok(fs.existsSync(path.join(target, 'examples/engraving/README.md')));
   assert.ok(fs.existsSync(path.join(target, 'docs/style-system-round1.md')));
+  assert.ok(fs.existsSync(path.join(target, 'docs/getting-started.md')));
+  assert.ok(fs.existsSync(path.join(target, 'assets/audio/ATTRIBUTION.md')));
   assert.equal(fs.readFileSync(path.join(target, 'samples/sample.mp4'), 'utf8'), 'Fixture media');
   for (const relative of [
     'scripts/init.mjs',

@@ -47,6 +47,8 @@ test('core inventory walks the real tree including gallery, audio-engine and sam
     'examples/engraving/prepare.mjs',
     'examples/engraving/README.md',
     'docs/style-system-round1.md',
+    'docs/getting-started.md',
+    'assets/audio/ATTRIBUTION.md',
   ]) {
     assert.ok(files.includes(anchor), `core inventory missing ${anchor}`);
   }
@@ -81,4 +83,22 @@ test('no python or pytest caches are committed into the skill tree', () => {
   };
   walk(root);
   assert.deepEqual(offenders, [], `runtime caches must not be committed: ${offenders.join(', ')}`);
+});
+
+test('README and getting-started links resolve in both checkout and distribution', () => {
+  const packaged = new Set([...collectCoreFiles(root), 'README.md', 'SKILL.md', 'LICENSE']);
+  for (const doc of ['README.md', 'docs/getting-started.md']) {
+    for (const [, target] of read(doc).matchAll(/\]\(([^)]+)\)/g)) {
+      if (/^(?:[a-z][a-z\d+.-]*:|#)/i.test(target)) continue;
+      const relative = decodeURIComponent(target.split('#')[0]);
+      if (!relative) continue;
+      const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(doc), relative));
+      const full = path.join(root, ...resolved.split('/'));
+      assert.ok(fs.existsSync(full), `${doc}: missing target ${target}`);
+      const included = fs.statSync(full).isDirectory()
+        ? [...packaged].some(file => file.startsWith(`${resolved}/`))
+        : packaged.has(resolved);
+      assert.ok(included, `${doc}: target missing from distribution: ${target}`);
+    }
+  }
 });

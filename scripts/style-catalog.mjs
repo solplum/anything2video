@@ -47,9 +47,9 @@ function locate(){let id;try{id=decodeURIComponent(location.hash.slice(1))}catch
 </script></body></html>\n`;
 }
 function readmeBlock() {
-  const groups = selectionGroups();
-  return `<!-- style-catalog:start -->\n## 风格：家族与变体\n\n${catalog.styles.length} 个兼容 ID → ${groups.length} 个选择入口；${catalog.styles.filter(s => s.preview.status === 'available').length} 个有样片，等距剖解仍缺预览。${catalog.styles.filter(s=>s.runtimeSkin).length} 个支持 config.style；其余通过 kit 手动接线。唯一元数据源：[styles/catalog.json](styles/catalog.json)。\n\n| 家族 | 保留的变体 | 归类原因 |\n|---|---|---|\n${catalog.families.map(f=>`| ${f.name} | ${f.members.map(id=>`[${id}](samples/index.html#${id})`).join(' / ')} | ${f.reason} |`).join('\n')}\n\n新增 [铜版雕刻 engraving](styles/engraving/SPEC.md)：随形排线与渐细刀口塑造明暗，交叉线加深背光，透明设色后置。[横屏样片](samples/engraving-sample.mp4) · [原生竖屏](examples/engraving/portrait.mp4) · [可复现源码](examples/engraving)。12 秒无声材质研究，不能当作完整旁白影片验收。\n\n[![铜版雕刻实际渲染](samples/posters/engraving-sample.jpg)](samples/engraving-sample.mp4)\n\n打开 [离线家族选择页](samples/index.html) 先挑家族，再切换变体；[全部变体与历史配方参考](samples/all.html) 可查每个旧 ID。分类不改变 renderer、种子、recipe 关联或旧导入路径。绘画材料不同的风格继续保留，不按同一展示题材删除。\n<!-- style-catalog:end -->`;
+  return `<!-- style-catalog:start -->\n## 选择风格\n\n克隆或解压后，用本地浏览器打开 [samples/index.html](samples/index.html)：先选家族，再切换变体；也可搜索名称、ID，或按类型/气质筛选。[全部变体](samples/all.html) 保留旧 ID。GitHub 中的 HTML 链接显示源码，需在本地打开完整样片包。\n\n当前目录：**${catalog.styles.length} 个风格 ID · ${selectionGroups().length} 个选择入口 · ${catalog.styles.filter(s => s.preview.status === 'available').length} 个有预览 · ${catalog.styles.filter(s => s.runtimeSkin).length} 个运行时皮肤**。数据自动来自 [styles/catalog.json](styles/catalog.json)，未提供预览的风格会在选择页明确标出。\n\n只有标记 \`runtimeSkin: true\` 的 ID 可用于 \`config.style\`，且只覆盖配色与覆盖层；主体动画仍需接入对应图元。其他风格按 [各自规范与 kit](styles/README.md) 手动接入。选择风格不会自动重写镜头。\n<!-- style-catalog:end -->`;
 }
+
 export function generatedFiles() {
   let readme = read('README.md');
   if (readme.includes('<!-- style-catalog:start -->')) readme = readme.replace(/<!-- style-catalog:start -->[\s\S]*?<!-- style-catalog:end -->/, readmeBlock());

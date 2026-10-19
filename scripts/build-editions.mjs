@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 export const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const HOSTS = Object.freeze(['universal', 'claude-code', 'codex', 'workbuddy', 'minimax-code', 'zcode', 'doubao-work']);
 const directories = ['recipes', 'reference', 'styles', 'template', 'scripts', 'gallery', 'audio-engine', 'LICENSE-THIRDPARTY'];
-const individual = ['LICENSE', 'docs/adapters.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md', 'docs/style-system-round1.md'];
+const individual = ['LICENSE', 'assets/audio/ATTRIBUTION.md', 'docs/adapters.md', 'docs/getting-started.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md', 'docs/style-system-round1.md'];
 // Only reviewed, redistributable examples are included. Arbitrary working
 // projects under examples/ remain excluded, as do their render/cache folders.
 const publicExamples = ['examples/engraving', 'examples/line-art-teaching'];
