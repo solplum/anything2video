@@ -57,3 +57,17 @@
 - 技法借鉴 mg-styles-15 demos/09-bauhaus（MIT, Vincentwei1021），经 samples-v4/ink-plate 同构转译——Remotion/TSX 重写，未整段拷贝。具体借鉴点与重写方式：双版错位叠印管线（源 WebGL press pass → 多层偏移 SVG × mix-blend-mode multiply）、版偏移状态机（源 registration() 思路 → plateOffset() 重锚定为「游移→定格在错位」的 riso 语义）、纸牙/纤维/颗粒完成层（源 tooth/grain → 独立参数重写：bf 0.0028/0.016/0.85，seed 23/29/31）、印边粗糙（源 feTurbulence 位移 → 双版独立 seed 43/47, scale 2.6）、ink kiss 上墨率（源 densAt → densityAt 重锚定）。
 - 技法借鉴 samples-l1/pop-comic 半调网点平铺（a2v 战役自有卡）——本卡改走 SVG pattern（网点需随帧呼吸缩放且参与 multiply 叠印），非拷贝。
 - 手法参考 prompt-motion rneayan（网站条目，作品归创作者所有）——仅领地发现与手法研究（RECON-pm-watch §2.6 签名五件套），零素材搬运、零 prompt 搬运。
+
+## 叙事扩展：可复用分版
+
+旧机台/海报实现仍按上文历史锁死项复现。新题材不必复制它的机器床、1208×640版面、10fps游移或固定图案；可使用独立的 `template/src/common/riso`。它仍保持本白纸、粉/蓝双专色与 multiply 叠印，但把纸面、版内容、显墨事件、套色事件分开。
+
+- `RisoPaper`：隔离的 SVG 纸面及固定纸纤维；调用方决定画幅。
+- `InkPlate`：任意 SVG children 作为分版 mask，`maskMode="luminance"` 时白=有墨、黑=挖空；默认 alpha 可将普通彩色 SVG 的轮廓压成单专色。`ink`/`opacity` 只管该版，网点在纸空间，不跟角色移动。
+- `reveal={startFrame,endFrame,direction,bounds?}`：一次显墨扫入；局部 bounds 让**实际艺术内容的首尾**对准事件，不把全画幅扫入中点误记为完成时刻。
+- `registration={x,y,kicks?,drift?}`：镜头内固定套色，特定事件才 kick 或单次 drift；不要求无意义逐帧抖动。所有状态为纯帧函数，支持随机寻帧。
+- 每版的 id 自动加 React 实例作用域，避免多个纸面复用时 mask/pattern 相互串扰；children 自建 SVG id 仍由调用方保证唯一。
+
+新增 [《留一条路》36秒示例](../../examples/riso-story/README.md)：粉色折纸变桥，蓝版在桥面叠印成可通行的深色；两位甲虫持续身份与结尾使用结果体现“材质变化承担叙事”，没有改掉原样片。组件不含故事图形；只换 artwork 与现有 cue sheet 即可用在另一题材。
+
+此项吸收 [Lemo-Opuscar](https://lemomo-ai.github.io/lemo-opuscar/) 的分版叙事/事件套准方法，原创故事、原创图形、独立实现，不复制其引擎、配乐或素材。完整影片审阅仍走现有 directing-playbook、action-review 与音频门禁；这里不另建通用规则或宣称草稿已验收。

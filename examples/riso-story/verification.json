@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "status": "visual-functional-draft",
+  "date": "2026-10-22",
+  "baseCommit": "f55c9018d4239b52dd5b6ea4bd83edd01fcc22b5",
+  "sourceSha256": {
+    "template/src/Root.tsx": "6bdc1d799a6e4d2a96a3a31dbb1b87b4b04d33db55e46ffc616261ff3e0c298a",
+    "styles/riso-print/SPEC.md": "6a2e6e523567a6ee228b899d5921f52eb559d4fcaabae61759a7627c5b12ec61",
+    "template/src/common/riso/index.ts": "81b7fd3fd11d5d1da7f6b91353bbe4b38fd62e1971c18218b029a77486e5764e",
+    "template/src/common/riso/Plates.tsx": "ba6e422007f0a105376a87dc25fcad95ef77fd81d7f956e467ef66b764ea590a",
+    "template/src/common/riso/timing.ts": "823e0445652d5ec8ee37842a35c9fb24e508ed531c5e95561f018c5d38073037",
+    "template/src/shots/riso-story/Demo.tsx": "9d1e7f7b8d58eefc6f633d71f64235320f8527817d41c409d7bf3645509cfb09",
+    "template/src/shots/riso-story/timing.ts": "34c4be8876d94ae04b6bab77986af9524ffbacfa61e77b8f5702d545cfa14aff",
+    "examples/riso-story/mix-preview.mjs": "bfb8f2d04cced3c5a1297080f6635c65617275f4e18d484c068cca120ee4a577",
+    "tests/riso-plates.test.mjs": "97c56729a63c62d7c69d2a63a0ed8538cda7e92fce5f64d866976a61f0318971",
+    "tests/riso-story.test.mjs": "ecb75cdf8867bc7cb580dbbf521b8339eaa0bdcdc7bbcb4fe15e3da05aec2e24"
+  },
+  "media": {
+    "path": "preview.mp4",
+    "sha256": "1798932b394d6e5405e2d7a45892ae7d96ed46ae115bed4341b57744beb35cb1",
+    "width": 1280,
+    "height": 720,
+    "fps": "24/1",
+    "frames": 864,
+    "videoDurationSeconds": 36.0,
+    "audioDurationSeconds": 36.0,
+    "fullDecode": "passed"
+  },
+  "checks": {
+    "templateTypecheck": "passed",
+    "nodeTests": {
+      "passed": 137,
+      "failed": 0
+    },
+    "rootPythonTests": {
+      "passed": 24,
+      "failed": 0
+    },
+    "styleCatalog": "passed",
+    "gitDiffWhitespace": "passed",
+    "legacyFiles": "unchanged: riso-print film.tsx, kit.tsx, world.ts, sample.jpg and samples/riso-print-sample.mp4",
+    "studioDefault": "Video preserved"
+  },
+  "render": {
+    "method": "Public @remotion/player 4.0.507, deterministic seek of every frame through sandboxed official Chrome Headless Shell 149, PNG capture then FFmpeg H.264 encode and recorded-audio mux",
+    "chromiumSandbox": true,
+    "frameCount": 864,
+    "limitations": "Normal Remotion CLI render was not exercised in this run; documented standard CLI is a reproduction path, not a claimed execution."
+  },
+  "review": {
+    "encoded480px": {
+      "status": "sampled_frames_reviewed",
+      "file": "preview-480.png",
+      "timeSeconds": 25,
+      "note": "Two ink overprint, paper creases, recognizable continuous subject and bridge silhouette readable at 480px. No text in film."
+    },
+    "encodedActionWindows": {
+      "status": "sampled_frames_reviewed",
+      "file": "action-windows.jpg",
+      "zeroBasedFrames": [
+        288,
+        300,
+        311,
+        312,
+        324,
+        348,
+        420,
+        431,
+        432,
+        438,
+        479,
+        480,
+        492,
+        504,
+        516,
+        527,
+        528,
+        534,
+        552,
+        576,
+        600,
+        624,
+        648,
+        671,
+        696,
+        720,
+        744,
+        768,
+        792,
+        816
+      ],
+      "findings": [
+        "Fixed actor layer order so bridge cannot occlude feet.",
+        "Added tangent body tilt and curve-constrained foot endpoints; pure tests cover crossing interval.",
+        "Localized blue-ink reveal to the bridge so last ink lands at named overprint cue.",
+        "Paper handoff remains a stylized shape change; walking cycle is not biological simulation."
+      ]
+    },
+    "normalSpeedFullWatch": "not_performed",
+    "fullMixListening": "not_performed",
+    "reason": "No actual video-motion/audio perception channel available. Frame inspection, playback encoding and audio measurement do not substitute for watching/listening."
+  },
+  "audio": {
+    "track": "Classical Vibes 2 (Mixkit 684)",
+    "source": "assets/audio/bgm/classical-vibes-2-684.mp3",
+    "sourceSha256": "45f5275e91f05dfa5bd8b7451955596566ef02419570b8888dda2ef20a401515",
+    "sourceRangeSeconds": [
+      0,
+      36
+    ],
+    "sfx": [
+      {
+        "path": "assets/audio/sfx/paper/paper-page-turn.mp3",
+        "sha256": "3b2b05dd402127a6ee15f33c5c6690568f389848b1a8d11d6d70cab7d0268bd4"
+      },
+      {
+        "path": "assets/audio/sfx/paper/paper-move-quick.mp3",
+        "sha256": "22558bf3e8ee65ffd6f31f420caf4952334316f4d818bd6f6291b5ae7621a744"
+      }
+    ],
+    "licenseVerifiedDate": "2026-10-22",
+    "licenseUrls": [
+      "https://mixkit.co/license/modal/musicFree/",
+      "https://mixkit.co/license/modal/sfxFree/"
+    ],
+    "usage": "Embedded in this original online video only; no added standalone recording files; recording rights remain separate from code MIT.",
+    "integratedLufs": -15.6,
+    "truePeakDbfs": -3.2,
+    "measurement": "FFmpeg ebur128 on final AAC mix; technical only",
+    "audition": "not_performed"
+  },
+  "artwork": {
+    "type": "original SVG geometry",
+    "externalAssets": false,
+    "methodReference": "https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/risograph/STYLE.md",
+    "copiedUpstreamCode": false
+  }
+}
