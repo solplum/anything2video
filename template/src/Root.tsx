@@ -2,6 +2,7 @@ import React from 'react';
 import {Composition} from 'remotion';
 import {W, H, FPS, TOTAL_FRAMES} from './common';
 import {Video} from './Main';
+import {CueDemo} from './shots/cue-demo/Demo';
 import {PreviewOverlay} from './overlay/Preview';
 import {PreviewG1} from './shots/G1/Preview';
 import {PreviewG2} from './shots/G2/Preview';
@@ -17,6 +18,7 @@ import {PromoDemo, PROMO_DEMO_FRAMES} from './shots/promo/Demo';
 export const Root: React.FC = () => (
   <>
     <Composition id="Video" component={Video} durationInFrames={TOTAL_FRAMES} fps={FPS} width={W} height={H} />
+    <Composition id="CueDemo" component={CueDemo} durationInFrames={Math.round(6 * FPS)} fps={FPS} width={W} height={H} />
     <Composition id="PromoDemo" component={PromoDemo} durationInFrames={PROMO_DEMO_FRAMES} fps={FPS} width={W} height={H} />
     <Composition id="Overlay" component={PreviewOverlay} durationInFrames={TOTAL_FRAMES} fps={FPS} width={W} height={H} />
     <Composition id="G1" component={PreviewG1} durationInFrames={TOTAL_FRAMES} fps={FPS} width={W} height={H} />

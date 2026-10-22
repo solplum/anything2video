@@ -54,7 +54,9 @@ export interface MusicApi {
   /** 拍/小节索引 → 帧号（最近可渲染帧，30fps 量化误差 ±16.7ms——music-beat-sync §5a）。 */
   timeOfBeatFrame(i: number): number;
   timeOfDownbeatFrame(i: number): number;
+  /** 吸附最近的实测拍点后换算为帧；等距取后拍，首尾外取端点，无拍点时仅取整输入帧。 */
   nearestBeatFrame(frame: number): number;
+  /** 同 nearestBeatFrame，使用实测 downbeat 序列；不凭 BPM 外推或补造小节。 */
   nearestDownbeatFrame(frame: number): number;
   /** (f0, f1] 帧窗内的 onset 事件，返回 [帧号, 强度] 升序。 */
   events(kind: string, f0: number, f1: number): [number, number][];
@@ -94,6 +96,19 @@ const continuousIndex = (anchors: number[], x: number): number => {
   }
   const i = bisectRight(anchors, x);
   return i + (x - anchors[i]) / (anchors[i + 1] - anchors[i]);
+};
+
+/** 按秒选最近的实测锚点，最后才量化为帧；不把连续拍索引当成帧或外推新拍点。 */
+const nearestAnchorFrame = (anchors: number[], frame: number, fps: number): number => {
+  if (anchors.length === 0) return Math.round(frame);
+  const now = frame / fps;
+  const i = bisectRight(anchors, now);
+  if (i < 0) return Math.round(anchors[0] * fps);
+  if (i === anchors.length - 1) return Math.round(anchors[i] * fps);
+  // 小数秒的减法可能把等距点算成略偏前；只在浮点舍入误差内按等距取后拍。
+  const epsilon = Number.EPSILON * Math.max(1, Math.abs(now), Math.abs(anchors[i + 1]));
+  const nearest = now - anchors[i] < anchors[i + 1] - now - epsilon ? anchors[i] : anchors[i + 1];
+  return Math.round(nearest * fps);
 };
 
 const HALF_LIFE: Record<string, number> = {kick: 0.12, snare: 0.14, hat: 0.06}; // pdoom sample() 口径
@@ -172,8 +187,8 @@ export const createMusic = (d: MusicFeaturesJSON, fps: number): MusicApi => {
         : downs[Math.floor(i)] + (downs[Math.floor(i) + 1] - downs[Math.floor(i)]) * (i - Math.floor(i));
       return Math.round(tt * fps);
     },
-    nearestBeatFrame: (frame) => Math.round(continuousIndex(beats, t(frame))),
-    nearestDownbeatFrame: (frame) => Math.round(continuousIndex(downs, t(frame))),
+    nearestBeatFrame: (frame) => nearestAnchorFrame(beats, frame, fps),
+    nearestDownbeatFrame: (frame) => nearestAnchorFrame(downs, frame, fps),
     events(kind, f0, f1) {
       const list = onsets[kind] ?? [];
       const out: [number, number][] = [];

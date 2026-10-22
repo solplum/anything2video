@@ -27,7 +27,7 @@ metadata:
 1. 完整读 `reference/production-contract.md` 和 `reference/production-workflow.md`：它们是跨宿主的工程与验收权威。
 2. 套餐卡定配方：宣传卡读 `recipes/promo.md`，讲解卡读 `recipes/explainer.md`，史诗卡读 `recipes/epic.md`，纪录片卡读 `recipes/documentary.md`；点名风格+类型自由组合时按需读 `recipes/custom.md`。先完整读所选配方。
 3. 文化/历史/文学/诗词/神话/科普等题材：调研阶段读 `reference/corpus-sources.md` 语料源注册表，按两阶段取用（候选前轻摸底、定稿前重核对）；软件教程/产品等现代题材不触发。
-4. 分镜前读 `reference/directing-playbook.md`。需要动作设计时读 `reference/motion-language.md`，并到 `gallery/` 按镜头抽配方卡（157 张，用法见 `gallery/README.md`，卡的参数表与判例优先于直觉）；连续做片时读 `reference/style-ledger.md`。历史 `reference/explainer/` 是特定黑底MG风格的上游快照，固定画幅、效果配额、确认点和宿主指令不覆盖共享契约。
+4. 分镜前读 `reference/directing-playbook.md`。需要动作设计时读 `reference/motion-language.md`；动作需跟随旁白/实录音乐或修改停留时，读 `reference/cue-choreography.md`，用命名事件对准到达/揭示并顺延下游；并到 `gallery/` 按镜头抽配方卡（157 张，用法见 `gallery/README.md`，卡的参数表与判例优先于直觉）；连续做片时读 `reference/style-ledger.md`。历史 `reference/explainer/` 是特定黑底MG风格的上游快照，固定画幅、效果配额、确认点和宿主指令不覆盖共享契约。
 5. 用AI世界底读 `reference/ai-frame-sop.md`；用已有风格读 `styles/README.md` 和对应SPEC。只加载本任务相关参考，避免全量文档压垮执行。
 6. 环境适配与能力面读 `reference/environment-capabilities.md` 与 `docs/adapters.md`。全平台统一采用单一 `anything2video` 入口，支持 Antigravity、Claude Code、Codex、Cursor、WorkBuddy、MiniMax Code、豆包工作、ZCode 等所有现代 Agent 环境。先检测真实执行与多模态能力，再选择并行或顺序。
 

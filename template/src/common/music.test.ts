@@ -1,4 +1,5 @@
 // music.ts 断言（纯 TS、零依赖、无 React）——node 直跑：
+//   仓库根目录：node --test tests/music.test.mjs（使用 template 的 TypeScript 依赖）
 //   npx esbuild src/common/music.test.ts --bundle --format=cjs --outfile=.music-test.cjs
 //   node -e "require('./.music-test.cjs').runAllMusicTests().forEach(l => console.log(l))"
 import {createMusic, type MusicFeaturesJSON} from './music';
@@ -79,12 +80,90 @@ const testBeats = (M: ReturnType<typeof createMusic>): string[] => {
   ok(ph >= 0 && ph < 1 && near(ph, 0.5, 1e-6), 'beatPhase 半拍=0.5');
   ok(near(M.beatAt(0), -1, 1e-6), 'beatAt 首拍前负外推'); // t=0，首拍 0.5s，局部拍距 0.5s → -1
   ok(M.beatAt(40 * FPS) > 39, 'beatAt 末拍后继续外推');
-  ok(M.nearestBeatFrame(f15 + FPS / 4) === Math.round((0.5 + 0.125) * FPS) || true, 'nearest 不抛错');
+  ok(M.nearestBeatFrame(f15) === f15, 'nearestBeatFrame 返回帧15，不是拍索引0');
+  ok(M.nearestBeatFrame(f15 + FPS / 4) === 30, 'nearestBeatFrame 等距取后拍');
   ok(M.timeOfBeatFrame(3) === Math.round(2.0 * FPS), 'timeOfBeatFrame 拍3=2.0s');
   ok(M.barAt(f15) === 0 && near(M.barAt(45), 0.5, 1e-6), 'barAt 小节指数'); // 半小节=1.0s=45帧
   ok(M.timeOfDownbeatFrame(1) === Math.round(2.5 * FPS), 'timeOfDownbeatFrame 小节1=2.5s');
   out.push('PASS beat/bar: 连续指数 + 相位 + 外推 + 帧/拍互转');
   return out;
+};
+
+const withAnchors = (beats: number[], downbeats: number[]): MusicFeaturesJSON => {
+  const d = fixture();
+  d.grid.beats_s = beats;
+  d.grid.downbeats_s = downbeats;
+  d.grid.beats_frame = beats.map((t) => Math.round(t * FPS));
+  d.grid.downbeats_frame = downbeats.map((t) => Math.round(t * FPS));
+  return d;
+};
+
+const testNearestFrames = (): string[] => {
+  const d = withAnchors([0.5, 0.75, 1.5, 2.75], [0.75, 2.25, 5.25]);
+  const original = JSON.stringify(d);
+  const M = createMusic(d, FPS);
+  ok(M.nearestBeatFrame(17) === 15, 'nearestBeatFrame 就近取前拍');
+  ok(M.nearestBeatFrame(20) === 23, 'nearestBeatFrame 就近取后拍并取整');
+  ok(M.nearestBeatFrame(18.75) === 23, 'nearestBeatFrame 非等距拍点的中点取后拍');
+  ok(M.nearestDownbeatFrame(25) === 23, 'nearestDownbeatFrame 返回独立 downbeat 帧');
+  ok(M.nearestDownbeatFrame(50) === 68, 'nearestDownbeatFrame 就近取后小节');
+  ok(M.nearestDownbeatFrame(45) === 68, 'nearestDownbeatFrame 等距取后小节');
+  for (const frame of [-1000, 0]) {
+    ok(M.nearestBeatFrame(frame) === 15, 'nearestBeatFrame 首拍前取首拍');
+    ok(M.nearestDownbeatFrame(frame) === 23, 'nearestDownbeatFrame 首小节前取首小节');
+  }
+  for (const frame of [200, 10000]) {
+    ok(M.nearestBeatFrame(frame) === 83, 'nearestBeatFrame 末拍后取末拍，不外推');
+    ok(M.nearestDownbeatFrame(frame) === 158, 'nearestDownbeatFrame 末小节后取末小节，不外推');
+  }
+
+  // 选择依据是真实秒值，不能先把锚点取整到帧再比较距离。
+  const subframe = createMusic(withAnchors([0.49, 0.62], [0.49, 0.62]), FPS);
+  ok(subframe.nearestBeatFrame(16.7) === 19, 'nearestBeatFrame 保留亚帧精度到最后一步');
+  ok(subframe.nearestDownbeatFrame(16.7) === 19, 'nearestDownbeatFrame 保留亚帧精度到最后一步');
+  const decimalTie = createMusic(withAnchors([0.1, 0.2], [0.1, 0.2]), FPS);
+  ok(decimalTie.nearestBeatFrame(4.5) === 6, 'nearestBeatFrame 小数秒等距不受浮点误差影响');
+  ok(decimalTie.nearestDownbeatFrame(4.5) === 6, 'nearestDownbeatFrame 小数秒等距不受浮点误差影响');
+  ok(decimalTie.nearestBeatFrame(4.5 - 1e-8) === 3, 'nearestBeatFrame 等距点之前仍取前拍');
+  ok(decimalTie.nearestDownbeatFrame(4.5 + 1e-8) === 6, 'nearestDownbeatFrame 等距点之后取后拍');
+
+  // 使用调用方 FPS，不能误用在分析时缓存的 30fps beats_frame/downbeats_frame。
+  for (const fps of [24, 29.97, 60]) {
+    const scaled = createMusic(d, fps);
+    for (const seconds of d.grid.beats_s) {
+      ok(scaled.nearestBeatFrame(seconds * fps) === Math.round(seconds * fps), `beat 精确命中 @${fps}fps`);
+    }
+    for (const seconds of d.grid.downbeats_s) {
+      ok(scaled.nearestDownbeatFrame(seconds * fps) === Math.round(seconds * fps), `downbeat 精确命中 @${fps}fps`);
+    }
+  }
+  ok(M.data === d && JSON.stringify(d) === original, '吸附不改写音乐分析数据');
+  return ['PASS nearest frames: 实测锚点 + 不等距/亚帧 + 前后/等距/越界 + 多FPS + 数据不变'];
+};
+
+const testSparseAnchors = (): string[] => {
+  for (const anchors of [[], [1.25]]) {
+    const M = createMusic(withAnchors(anchors, anchors), FPS);
+    for (const frame of [-12.4, 0, 31.2, 37.5, 10000]) {
+      const expected = anchors.length === 0 ? Math.round(frame) : 38;
+      ok(M.nearestBeatFrame(frame) === expected, `nearestBeatFrame 空/单拍数组 @${frame}`);
+      ok(M.nearestDownbeatFrame(frame) === expected, `nearestDownbeatFrame 空/单拍数组 @${frame}`);
+    }
+  }
+  // 运行时可能没有 grid 或拍点字段；与原有可选链降级行为保持一致。
+  const missingGrid = fixture();
+  delete (missingGrid as Partial<MusicFeaturesJSON>).grid;
+  const M = createMusic(missingGrid, FPS);
+  ok(M.nearestBeatFrame(42.6) === 43 && M.nearestDownbeatFrame(42.6) === 43, '缺 grid 时不补造拍点');
+  const missingAnchors = fixture();
+  delete (missingAnchors.grid as Partial<typeof missingAnchors.grid>).beats_s;
+  delete (missingAnchors.grid as Partial<typeof missingAnchors.grid>).downbeats_s;
+  const missing = createMusic(missingAnchors, FPS);
+  ok(missing.nearestBeatFrame(42.6) === 43 && missing.nearestDownbeatFrame(42.6) === 43, '缺拍点字段时不补造拍点');
+  const beatsOnly = createMusic(withAnchors([0.5, 1], []), FPS);
+  ok(beatsOnly.nearestBeatFrame(28) === 30, '无小节数据时正常吸附拍点');
+  ok(beatsOnly.nearestDownbeatFrame(28) === 28, '无小节数据时不把普通拍当正拍');
+  return ['PASS sparse anchors: 空/缺失网格保持输入帧 + 单拍保留实测偏移 + 不补造 downbeat'];
 };
 
 const testEvents = (M: ReturnType<typeof createMusic>): string[] => {
@@ -116,6 +195,8 @@ export function runAllMusicTests(): string[] {
   lines.push(...testEnv(M));
   lines.push(...testHit(M));
   lines.push(...testBeats(M));
+  lines.push(...testNearestFrames());
+  lines.push(...testSparseAnchors());
   lines.push(...testEvents(M));
   lines.push(...testDeterminism(M));
   return lines;

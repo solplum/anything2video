@@ -88,3 +88,7 @@ uv run python scripts/beat_grid.py public/assets/<slug>/bgm.wav --out script/bea
 - 框内是否有有意义的信息或状态？空槽仅在容量、等待、填入等机制明确时成立，不用一排空框假装代码或表格内容。
 
 技术探针只能说明所测项。实际运动、听感和教学判断见三轮审查；没有查看能力的检查标为 `not_performed`。
+
+## 8. 事件锚点与局部修改
+
+需要将到达/揭示对准旁白或已验证拍点，或修改一次停留并顺延后续动作时，见 [cue-choreography.md](cue-choreography.md)。模板 `common/motion/cues.ts` 提供具名依赖、到达点对齐和纯时间进度；Studio 的 CueDemo 是可运行例子。保留实录音乐，不以程序配乐替代。

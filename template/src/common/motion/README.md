@@ -1,6 +1,6 @@
 # common/motion —— 共享运动数学层（template 新工程模板通用）
 
-四个纯函数数学件：零依赖（无 React/DOM/随机源）、渲染无关（canvas/SVG/DOM 任一侧组装）、全确定性（禁 Math.random/Date/网络）。这是**新工程模板共享层**，不属于任何单卡；单卡库（如 `styles/paper-collage/paper.tsx`）保持自包含，各自内嵌同族实现。
+纯函数数学与时间编排件：零依赖（无 React/DOM/随机源）、渲染无关（canvas/SVG/DOM 任一侧组装）、全确定性（禁 Math.random/Date/网络）。这是**新工程模板共享层**，不属于任何单卡；单卡库（如 `styles/paper-collage/paper.tsx`）保持自包含，各自内嵌同族实现。
 
 | 文件 | 一句话用途 | 借鉴登记 |
 |---|---|---|
@@ -32,3 +32,7 @@ import {smearCap, smearStops} from '../common/motion/smear';  // 快段解析模
 npx esbuild src/common/motion/motion.test.ts --bundle --format=cjs --outfile=.motion-test.cjs
 node -e "require('./.motion-test.cjs').runAllMotionTests().forEach(l => console.log(l))"
 ```
+
+## 命名事件编排
+
+`cues.ts` 提供 `createCueSheet`、`alignMotion`、`motionProgress` 和显式分镜帧转换。以秒定义事件依赖，最终一次量化；修改阅读停留只顺延下游；过渡到达点或揭示点对准事件。实现为独立编写，方法参考 huashu-motion 的具名时间与 reveal-point 编排（详见仓库 `reference/cue-choreography.md`）。实际消费者为 `src/shots/cue-demo/`，Studio 选择 CueDemo。

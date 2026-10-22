@@ -179,3 +179,7 @@
 | 开发与贡献 | [风格资产与接入](styles/README.md) · [动效配方卡](gallery/README.md) · [回归验证](docs/getting-started.md#回归验证) |
 
 讲解规范与模板源于 [anything2explainer](https://github.com/Vincentwei1021/anything2explainer)。第三方代码归属见 [LICENSE-THIRDPARTY](LICENSE-THIRDPARTY)，程序编曲来源见 [audio-engine/VENDOR.md](audio-engine/VENDOR.md)。本项目与所列模型、助手或发布平台无官方合作关系。
+
+### 命名事件与到达点编排
+
+[事件编排指南](reference/cue-choreography.md) 将接触、确认、停留与交接写成同一条依赖链。改一处停留，下游自动顺延；动作到达/揭示对准真实旁白或已验证的录音拍点。新工程 Studio 的 CueDemo 可直接查看，默认 Video 与实录音乐选择不变。
