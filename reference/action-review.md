@@ -2,6 +2,47 @@
 
 全片 `probe_motion_quality.py` 的帧差只能定位疑点，不能判断手掌是否接住道具、接触点是否滑动、遮挡顺序是否正确、跟踪效果是否随镜头移动。对分镜中明确的关键动作，先看真实播放，再用 `scripts/action_review.py` 放大短时间窗；它不改变稿件、镜头、风格或既有 QC 门禁。
 
+<a id="batch-review"></a>
+## 可选：一份请求批量生成预览与动作审片包
+
+已有分镜后，可由制作代理从镜头动作和命名 cue 的真实时刻生成请求，**不要求用户手填 JSON，也不新增确认门**。这条可选路线调用同一个统一 renderer，一次完整计划/类型检查、一次 bundle 和一次共享浏览器会话处理多个片段/静帧；保持工程原画幅与 fps，不创建第二套授权或最终 QC。普通单窗命令仍保留。
+
+最小请求只需 `{"schemaVersion":1,"id":"review-v1"}`。默认提出开场、**时间轴中点（不是自动识别“复杂中段”）**、结尾各 3 秒，以及每个镜头切点前后各约 0.5 秒；片长不足时夹到合法范围。每窗首尾另出静帧。自动选择只覆盖结构，不理解任意跳跃、转身、接物或跟踪语义；关键动作须由既有分镜/场景 cue 明确给出。不同重叠窗口有意保留；完全相同范围、静帧只生成一次，所有选择理由合并保留。
+
+例如代理把下列文件写在工程的 `qc/review-request.json`。**示例数字仅对应一个至少 144 帧、具有 S2 的工程**，实际须用当前分镜/cue；`frame` / `from` / `to` 都是全片 **1 起含端点**，不是局部 Sequence 帧。将现有 cue 的 0 起帧转换一次，并先加回局部场景起点：
+
+```json
+{
+  "schemaVersion": 1,
+  "id": "review-v1",
+  "automatic": {"windowSeconds": 3, "cutContextSeconds": 0.5},
+  "windows": [{"id": "handoff", "from": 97, "to": 144, "shotId": "S2", "label": "交接与稳定", "note": "检查接触与遮挡，保留末尾阅读停留"}],
+  "cues": [{"id": "request-arrive", "frame": 120, "beforeFrames": 12, "afterFrames": 18, "shotId": "S2", "label": "请求抵达"}],
+  "stills": [{"id": "result", "frame": 144}],
+  "actionReview": {"samples": 8, "roi": [0.2, 0.1, 0.6, 0.8]},
+  "focus": ["道具身份与接触点连续"],
+  "preserve": ["结果页的刻意静止与阅读时间"]
+}
+```
+
+```sh
+# 先列范围、数量和总预览时长；只写计划，不启动浏览器或伪造媒体
+node <skill>/scripts/review-pack.mjs <工程> plan qc/review-request.json
+# 按既有制作授权执行；不是额外审批按钮。阻塞时停在上面的 plan。
+node <skill>/scripts/review-pack.mjs <工程> render qc/review-request.json
+```
+
+- `plan` 产 `qc/review-plans/<id>/`：`index.md`、`checklist.md`、`review.json` 和规范化 `request.json`；清楚标 `not_rendered`，没有媒体/抽帧哈希。它核对计划/素材，但不声称类型检查或浏览器渲染已运行。
+- `render` 产 `renders/reviews/<id>/`：独立命名片段/静帧及 `.delivery.json`、`batch.json`，并带同样索引与清单。完整目录在成功后发布；不覆盖已有包，同 id 并发互斥。`plan` 和 `render` 目录分开，先计划再渲染不冲突；重新生成时用新 id。
+- 开始渲染前打印片段/静帧数量与总预览时长（重叠片段重复计时）。`automatic` 可逐项关闭 `opening` / `middle` / `ending` / `cuts` / `endpointStills`；`automatic:false` 全关，改用明确选择。支持最多 128 个去重片段 / 512 张去重静帧，超预算报错，不偷偷少看。选项、帧范围、未知字段和大小写重复 id 均校验。
+- 明确的 `windows` / `cues` 会**自动复用刚渲出的预览**调用现有 `action_review.py`，生成 `actions/<window-id>/` 条带；没有第二次渲染。默认 8 个等距目标点仅用于概览，不等于逐帧通过。`actionReview.interval` 可替代 `samples`（互斥）；可选归一化 `roi:[x,y,w,h]` 固定坐标，不自动跟踪；`enabled:false` 保留用户不生成条带的选择。需要不同 ROI 时分别生成请求/包。
+- 自动条带需 Python 3.11+、Pillow、FFmpeg/ffprobe；`A2V_PYTHON` 可指向已有兼容 Python 环境，依赖不齐在启动渲染前明确报错，不静默安装。每次动作调用按**实际 PTS**拆成最多 12 个窗口，每窗 ≤30 秒且 ≤24 个目标；超过预算或单帧动作明确 `not_performed` 并解释原因。其他解码/抽帧错误中止包发布；不能拿空图或失败记录冒充已产证据。
+- 普通开中末/切点只出片段与首尾静帧；只有调用者明确选中的动作窗才产动作条带。`reviewer`、`focus`、`preserve` 及每项 `label` / `note` 保留在清单，不因静帧重复或窗口重叠丢失。无检测结果不自动新增运镜或删掉有意义的静止。
+- 索引显示完整起止帧/时间、涉及镜头、选择原因和相对媒体链接；清单绑定镜头目的/动作、组件哈希、媒体哈希、整个源码快照摘要及独立请求哈希。CLI 还绑定原始请求文件 SHA256；即使请求放在忽略输出的 `qc/`，运行中改动仍拒绝发布。不能把旧审查结论迁到新源码或新媒体。
+- 动作报告保留实际 PTS 和预览 0 起解码索引，另记 `sourceFrame1Based = preview.from + decodedIndex`。`sourceTimeSec=(sourceFrame1Based-1)/fps` 是工程时间，不能混作视频实际 PTS。预览最后一帧局部秒数为 `(to-from)/fps`，**不是**编码时长 `(to-from+1)/fps`。为可搬移审片包，仅将报告输入定位改为相对路径，并明确记录该定位变更；不改测得的时间戳、图像或哈希。
+
+所有清单初始 `needs_review`，视听始终 `not_performed`；成功退出只表示计划/证据生成成功。真正看过的范围、缺陷/刻意停顿、审片者与方法由实际观察记录。批量包仍是待审预览，不能当最终成片发布；最终完整看听与 [统一三轮/最终 QC 契约](production-contract.md#review) 不变。没有安全可用浏览器时只交 plan，不能绕过沙箱限制或用测试夹具冒充 Remotion 实渲。
+
 ## 用法
 
 在已渲染的真实成片上运行（Python 3.11+、FFmpeg/ffprobe、Pillow；`uv run` 使用脚本内依赖）：

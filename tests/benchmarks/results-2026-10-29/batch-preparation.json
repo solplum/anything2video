@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-29T07:00:08.864Z",
+  "finishedAt": "2026-10-29T07:01:38.042Z",
+  "sourceCommit": "30e3084fce2afc2a5b8e67a788c2c75dfc7811e7",
+  "node": "v24.22.1",
+  "platform": "linux",
+  "arch": "x64",
+  "cpu": "AMD EPYC 9V74 80-Core Processor",
+  "logicalCpus": 9,
+  "remotion": "4.0.507",
+  "typescript": "5.9.3",
+  "inputFileCount": 139,
+  "inputBytes": 44639518,
+  "inputManifestSha256": "64f60bcb0e12018e55e82cb03051b90af1ecabf57f9ffbca65830cb0b26cb931",
+  "inputsUnchanged": true,
+  "scope": "Preparation only. Each preparation invokes actual local TypeScript --noEmit followed by official @remotion/bundler with enableCaching:false. Three separate preparations versus one preparation for a hypothetical 3-item batch; actual renderBatch session counts are independently instrumented by tests. No production render path, browser, composition selection, rasterization, video encoding, review packet, source snapshot, gate timing, rendering FPS or end-to-end render time is measured.",
+  "method": "Same frozen template source and dependency versions, same machine. One unmeasured worker warmup. Three paired repetitions, alternating group order AB/BA/AB. Fresh process and output directory for each preparation. Private node_modules directory excludes shared .cache; caching disabled. OS filesystem cache uncontrolled and likely warm, not disk-cold. Stage sum excludes module import, process startup, output hashing, cleanup; wall includes output hashing. Worker maxRSS excludes tsc child peak. Coordinated no CPU-heavy project tests during measurements; host-wide load not instrumented.",
+  "warmup": {
+    "label": "warmup-unmeasured",
+    "wallMs": 7973.05241,
+    "typecheckMs": 3009.9053590000003,
+    "bundleMs": 4567.658851,
+    "stageSumMs": 7577.5642100000005,
+    "preparationWorkerMs": 7741.768013,
+    "maxRssKiB": 631756,
+    "outputFiles": 51,
+    "outputBytes": 65911162,
+    "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+  },
+  "groups": [
+    {
+      "repetition": 0,
+      "variant": "separate3",
+      "preparations": 3,
+      "typecheckMs": 8136.622904,
+      "bundleMs": 11758.376146999999,
+      "stageSumMs": 19894.999051,
+      "preparationWorkerMs": 20293.280358,
+      "wallMs": 20800.604041000002,
+      "runs": [
+        {
+          "label": "r0-separate3-0",
+          "wallMs": 6696.3971200000005,
+          "typecheckMs": 2668.494713,
+          "bundleMs": 3733.370864,
+          "stageSumMs": 6401.8655770000005,
+          "preparationWorkerMs": 6528.670969,
+          "maxRssKiB": 630696,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        },
+        {
+          "label": "r0-separate3-1",
+          "wallMs": 6792.895263000002,
+          "typecheckMs": 2567.2561969999997,
+          "bundleMs": 3930.009409,
+          "stageSumMs": 6497.265605999999,
+          "preparationWorkerMs": 6630.178228000001,
+          "maxRssKiB": 633352,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        },
+        {
+          "label": "r0-separate3-2",
+          "wallMs": 7311.311657999999,
+          "typecheckMs": 2900.871994,
+          "bundleMs": 4094.995874,
+          "stageSumMs": 6995.867868,
+          "preparationWorkerMs": 7134.431161,
+          "maxRssKiB": 630124,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        }
+      ]
+    },
+    {
+      "repetition": 0,
+      "variant": "batch1",
+      "preparations": 1,
+      "typecheckMs": 2887.2525929999997,
+      "bundleMs": 4201.239142,
+      "stageSumMs": 7088.491735,
+      "preparationWorkerMs": 7226.331544000001,
+      "wallMs": 7687.907452999996,
+      "runs": [
+        {
+          "label": "r0-batch1-0",
+          "wallMs": 7687.907452999996,
+          "typecheckMs": 2887.2525929999997,
+          "bundleMs": 4201.239142,
+          "stageSumMs": 7088.491735,
+          "preparationWorkerMs": 7226.331544000001,
+          "maxRssKiB": 614020,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        }
+      ]
+    },
+    {
+      "repetition": 1,
+      "variant": "batch1",
+      "preparations": 1,
+      "typecheckMs": 2752.892803,
+      "bundleMs": 4098.217930000001,
+      "stageSumMs": 6851.110733000001,
+      "preparationWorkerMs": 7000.487546,
+      "wallMs": 7180.272819999998,
+      "runs": [
+        {
+          "label": "r1-batch1-0",
+          "wallMs": 7180.272819999998,
+          "typecheckMs": 2752.892803,
+          "bundleMs": 4098.217930000001,
+          "stageSumMs": 6851.110733000001,
+          "preparationWorkerMs": 7000.487546,
+          "maxRssKiB": 632728,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        }
+      ]
+    },
+    {
+      "repetition": 1,
+      "variant": "separate3",
+      "preparations": 3,
+      "typecheckMs": 7657.229082,
+      "bundleMs": 11199.017466000001,
+      "stageSumMs": 18856.246548000003,
+      "preparationWorkerMs": 19247.216439,
+      "wallMs": 20196.200843,
+      "runs": [
+        {
+          "label": "r1-separate3-0",
+          "wallMs": 6659.378641000003,
+          "typecheckMs": 2585.9398269999997,
+          "bundleMs": 3777.011554,
+          "stageSumMs": 6362.951381,
+          "preparationWorkerMs": 6495.935167,
+          "maxRssKiB": 631736,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        },
+        {
+          "label": "r1-separate3-1",
+          "wallMs": 6808.050487,
+          "typecheckMs": 2524.330526,
+          "bundleMs": 3783.986093,
+          "stageSumMs": 6308.316619,
+          "preparationWorkerMs": 6446.326066,
+          "maxRssKiB": 608416,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        },
+        {
+          "label": "r1-separate3-2",
+          "wallMs": 6728.771714999995,
+          "typecheckMs": 2546.9587290000004,
+          "bundleMs": 3638.019819,
+          "stageSumMs": 6184.978548000001,
+          "preparationWorkerMs": 6304.9552060000005,
+          "maxRssKiB": 631048,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "variant": "separate3",
+      "preparations": 3,
+      "typecheckMs": 7462.082066999999,
+      "bundleMs": 10287.901468,
+      "stageSumMs": 17749.983535,
+      "preparationWorkerMs": 18155.416046,
+      "wallMs": 19372.902165000007,
+      "runs": [
+        {
+          "label": "r2-separate3-0",
+          "wallMs": 6255.851314,
+          "typecheckMs": 2368.949198,
+          "bundleMs": 3363.549519,
+          "stageSumMs": 5732.498717,
+          "preparationWorkerMs": 5865.862394,
+          "maxRssKiB": 608960,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        },
+        {
+          "label": "r2-separate3-1",
+          "wallMs": 6801.5760750000045,
+          "typecheckMs": 2588.677908,
+          "bundleMs": 3646.847975,
+          "stageSumMs": 6235.525883,
+          "preparationWorkerMs": 6385.860611,
+          "maxRssKiB": 619372,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        },
+        {
+          "label": "r2-separate3-2",
+          "wallMs": 6315.474776000003,
+          "typecheckMs": 2504.454961,
+          "bundleMs": 3277.5039739999997,
+          "stageSumMs": 5781.958935,
+          "preparationWorkerMs": 5903.693041,
+          "maxRssKiB": 609428,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "variant": "batch1",
+      "preparations": 1,
+      "typecheckMs": 2395.241549,
+      "bundleMs": 3240.674321,
+      "stageSumMs": 5635.91587,
+      "preparationWorkerMs": 5751.918448,
+      "wallMs": 5904.8595529999875,
+      "runs": [
+        {
+          "label": "r2-batch1-0",
+          "wallMs": 5904.8595529999875,
+          "typecheckMs": 2395.241549,
+          "bundleMs": 3240.674321,
+          "stageSumMs": 5635.91587,
+          "preparationWorkerMs": 5751.918448,
+          "maxRssKiB": 633644,
+          "outputFiles": 51,
+          "outputBytes": 65911162,
+          "outputDigest": "0d935d15cad7226ea83c10639c460211323a5b7bf9d421a571749c54ad02b204"
+        }
+      ]
+    }
+  ],
+  "medians": {
+    "separate3": {
+      "typecheckMs": 7657.229082,
+      "bundleMs": 11199.017466000001,
+      "stageSumMs": 18856.246548000003,
+      "preparationWorkerMs": 19247.216439,
+      "wallMs": 20196.200843
+    },
+    "batch1": {
+      "typecheckMs": 2752.892803,
+      "bundleMs": 4098.217930000001,
+      "stageSumMs": 6851.110733000001,
+      "preparationWorkerMs": 7000.487546,
+      "wallMs": 7180.272819999998
+    }
+  },
+  "summary": {
+    "stageSumSavedMs": 12005.135815000001,
+    "stageSumReductionPercent": 63.66662519202863,
+    "bundleSavedMs": 7100.799536
+  }
+}

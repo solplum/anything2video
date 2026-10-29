@@ -47,7 +47,7 @@
 | 世界底 / 一帧先行 | [gen_world_frames.py](../template/scripts/gen_world_frames.py)、[ai-frame-sop.md](ai-frame-sop.md)：四路线、首尾同帧图生视频、素材三查 |
 | 图生视频停顿分段 | [plan_segments.py](../scripts/plan_segments.py)：真实停顿切分，整数秒只取停顿内，计费秒数/接缝遮罩；见 AI SOP 路线 C |
 | 运动连续性 / 字幕带 | [probe_motion_quality.py](../scripts/probe_motion_quality.py)、[probe_subtitle_band.py](../scripts/probe_subtitle_band.py)；合法静止按分镜/beat sheet，命中看实际帧定性 |
-| 动作关键窗 | [action_review.py](../scripts/action_review.py)、[action-review.md](action-review.md)：接触/交接/跟踪动作，默认 0.2s 条带＋ROI，真实 PTS/哈希，仍 needs_review |
+| 批量预览 / 动作关键窗 | [review-pack.mjs](../scripts/review-pack.mjs)、[批量审片包](action-review.md#batch-review)：可选单请求开中末/切点＋明确动作/cue，一次 bundle，默认只待审；已有媒体单独复核仍用 [action_review.py](../scripts/action_review.py)，真实 PTS/ROI/哈希，仍 needs_review |
 | 小屏 / 线头闭合 | [probe_readability.mjs](../scripts/probe_readability.mjs)、[readability.md](readability.md)；[probe_line_ends.mjs](../scripts/probe_line_ends.mjs) 只读静态字面量 M/L/Z 路径起止点；非完整 SVG/TSX 几何检查，适用范围与缺口见契约 |
 | 音画 / 媒体 | [probe_av_sync.mjs](../template/scripts/probe_av_sync.mjs)、[probe_delivery.py](../template/scripts/probe_delivery.py)；首句探针不证明全片对位或听感 |
 | 其他工程探针 | [template/scripts](../template/scripts)：blank/liveness/subject/time/frame_cost/material_substance；先声明 ROI/背景/合法静止，不能无条件外推 |

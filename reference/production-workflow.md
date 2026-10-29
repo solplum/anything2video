@@ -42,7 +42,7 @@ node <skill>/scripts/init.mjs <工程绝对路径> <slug>
 
 沿既有套餐和稿件决定，按 [visual-direction.md](visual-direction.md) 比较实渲方向，或沿用已验证 SKU 并做回归；不重开风格问卷。开场、复杂中段、结尾都看，含真实配音、字幕与运动片段。
 
-未建完全片时用包外独立 draft 样片工程，不删主工程未完成镜头伪装完成。中后段预览：`node <skill>/scripts/render.mjs <工程> preview <秒数> <1起开始帧>`。多个范围默认同名 preview，改 VER 不会改其文件名；独立工程或成对归档媒体/sidecar 后再明确 `--overwrite`。
+未建完全片时用包外独立 draft 样片工程，不删主工程未完成镜头伪装完成。中后段预览：`node <skill>/scripts/render.mjs <工程> preview <秒数> <1起开始帧>`。单窗同名 preview 不随 VER 改名；多窗可用 [批量审片包](action-review.md#batch-review)，共享 bundle、独立命名、待审。重用原名先成对归档媒体/sidecar，再 `--overwrite`。
 
 ## 5. 建镜头与集成
 

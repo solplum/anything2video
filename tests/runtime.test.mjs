@@ -35,7 +35,7 @@ function fakeRenderer(base, behavior = '') {
   write(base, 'node_modules/@remotion/bundler/package.json', {name: '@remotion/bundler', main: 'index.cjs'});
   write(base, 'node_modules/@remotion/bundler/index.cjs', "const fs = require('fs'); const path = require('path'); exports.bundle = async ({outDir, enableCaching}) => {if (enableCaching !== false) throw new Error('Shared webpack cache must be disabled'); fs.appendFileSync(path.join(__dirname, '../../../bundle-events.log'), outDir + '\\n'); return outDir;};");
   write(base, 'node_modules/@remotion/renderer/package.json', {name: '@remotion/renderer', main: 'index.cjs'});
-  write(base, 'node_modules/@remotion/renderer/index.cjs', `const fs = require('fs'); const path = require('path'); const root = path.resolve(__dirname, '../../..'); exports.selectComposition = async () => (${JSON.stringify({...project, durationInFrames: project.totalFrames})}); exports.renderStill = async ({output, frame}) => {await new Promise(resolve => setTimeout(resolve, 25)); fs.writeFileSync(output, 'frame ' + frame); ${behavior}};`);
+  write(base, 'node_modules/@remotion/renderer/index.cjs', `const fs = require('fs'); const path = require('path'); const root = path.resolve(__dirname, '../../..'); exports.openBrowser = async () => ({close: async () => {}}); exports.selectComposition = async () => (${JSON.stringify({...project, durationInFrames: project.totalFrames})}); exports.renderStill = async ({output, frame}) => {await new Promise(resolve => setTimeout(resolve, 25)); fs.writeFileSync(output, 'frame ' + frame); ${behavior}};`);
 }
 
 const reviewDeclaration = totalFrames => ({
