@@ -13,7 +13,7 @@ node <skill>/scripts/check_state.mjs <已有工程>
 node <skill>/scripts/init.mjs <工程绝对路径> <slug>
 ```
 
-工程内 `npm install`、`uv sync`、`npx remotion browser ensure`（或指定 `BROWSER_EXECUTABLE`）。保留源码与锁文件，不提交缓存。check_state 的八态由证据计算；`--write` 可同步 project.json，证据缺失会回拨，不用口头进度覆盖它。
+工程内 `npm ci`、`uv sync`、`npx remotion browser ensure`（或指定 `BROWSER_EXECUTABLE`）。保留源码与锁文件，不提交缓存。check_state 按证据算七态，不包含稿件批准；主控另核授权。`--write` 只在无渲染/静帧证据时同步 `project.json.state`，同值不改文件；渲染后变更会被拒绝，改用只读报告以保留源码哈希。缺证据会回拨计算态，不以口头进度覆盖。阶梯以旁白为前置，无旁白/静音工程另逐项核对计划、渲染和 QC，不能据此宣称完整 delivered。
 
 <a id="research"></a>
 ## 1. 调研
@@ -60,7 +60,7 @@ node <skill>/scripts/render.mjs <工程> preview 12
 node <skill>/scripts/render.mjs <工程> video
 ```
 
-所有模式都检查完整计划；输出默认保护，同输出互斥，明确 `--overwrite` 才覆盖。每次 bundle 独立目录并关闭共享 webpack 缓存，性能收益同机实测。历史 shell 接口保留兼容，不覆盖 project.json 规格或另开验收通道。若用 `bloom_grade.py`，像素处理在审片前定稿。
+所有模式都检查完整计划；输出默认保护，同输出互斥，明确 `--overwrite` 才覆盖。每次 bundle 独立目录并关闭共享 webpack 缓存，性能收益同机实测。历史 `template/scripts/new_project.sh`、`preview.sh`、`render.sh` 等 shell helper 已弃作生产入口，仅保留旧工程参考：含旧路径/30fps 假设，无统一证据，不是门禁包装。生产只用 `init.mjs` / `render.mjs`。若用 `bloom_grade.py`，像素处理在审片前定稿。
 
 ## 7. 审核与修复
 
@@ -72,4 +72,4 @@ node <skill>/scripts/render.mjs <工程> video
 
 实际播放整片、听取完整音轨，按契约 [终检](production-contract.md#delivery) 运行 `finalize_delivery.mjs`，按 [最终 QC 数据合同](production-contract.md#final-qc) 写 `qc/final.json` 并跑 `check-qc.mjs`。核对当前媒体/源码/审查/终检报告一致，改动使旧证据失效，不自动沿用 passed。
 
-交付物、评分、弱点与未测能力按契约列齐；发布按其 [画幅与发布](production-contract.md#publication)，不另设平台默认画幅。需要可编辑草稿时用 `export_jianying.py`。经验回写去向见 [context-index.md](context-index.md)，不是再加载整本历史的理由。
+交付物、评分、弱点与未测能力按契约列齐；发布按其 [画幅与发布](production-contract.md#publication)，不另设平台默认画幅。需要实验性可编辑草稿数据时按 [导出说明](../recipes/documentary.md#editor-draft) 使用 `export_jianying.py`。经验回写去向见 [context-index.md](context-index.md)，不是再加载整本历史的理由。

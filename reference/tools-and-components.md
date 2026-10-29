@@ -7,7 +7,7 @@
 - 下表 `scripts/` 链接是 Skill 根目录工具，运行时用 `<skill>/scripts/...`。
 - `template/scripts/` 随初始化复制到工程的 `scripts/`，从工程根运行；不能把工具同名误认为同一目录。
 - Python 环境用 uv；带 PEP 723 内联依赖的 Skill 根脚本用 `uv run <skill>/scripts/<名>.py` 脚本模式。工程内音频命令用 `uv run python scripts/<名>.py`。
-- 旧 shell/调用接口保留兼容；工程规格和最终证据仍走统一 Node 入口。
+- `template/scripts/new_project.sh`、`preview.sh`、`render.sh` 等旧 shell helper 仅留历史参考，已弃作生产入口，不是统一 Node 门禁的兼容包装：有旧路径/30fps/配置解析假设且没有统一 sidecar。新建用 `<skill>/scripts/init.mjs`，静帧、预览和全片用 `<skill>/scripts/render.mjs`；工程规格和最终证据均走统一入口。
 
 ## 工程、状态与渲染
 
@@ -16,10 +16,10 @@
 | 任务 | 入口与边界 |
 |---|---|
 | 初始化、诊断 | [init.mjs](../scripts/init.mjs)、[doctor.mjs](../scripts/doctor.mjs)；包外空目录、能力探测见契约 |
-| 续作进度 | [check_state.mjs](../scripts/check_state.mjs)：intake → scripted → approved → voiced → planned → rendered → reviewed → delivered；按磁盘证据计算，overclaim 退出 1，`--write` 同步状态 |
+| 续作进度 | [check_state.mjs](../scripts/check_state.mjs)：intake → scripted → voiced → planned → rendered → reviewed → delivered；七态以旁白工程为主，稿件授权由主控另核 `approval.json`，没有自动 approved 门。overclaim 退出 1；`--write` 只在渲染前同步，渲染后用只读报告避免使源码哈希失效；reviewed 只核声明结构，完整验收仍跑 check-qc |
 | 计划、静帧、片段、全片 | [check-plan.mjs](../scripts/check-plan.mjs)、[render.mjs](../scripts/render.mjs)；所有模式检查完整计划/素材/类型，Composition 与声明一致 |
-| 最终 QC、原子交付 | [check-qc.mjs](../scripts/check-qc.mjs)、[finalize_delivery.mjs](../scripts/finalize_delivery.mjs)；媒体/源码/范围/审核证据绑定，终检不代替实际看听 |
-| 可编辑工程 | [export_jianying.py](../scripts/export_jianying.py)：剪映/CapCut 视频、旁白、BGM、字幕轨草稿；支持 Mac/Windows 路径，实际应用打开另验 |
+| 最终 QC、交付终检 | [check-qc.mjs](../scripts/check-qc.mjs)、[finalize_delivery.mjs](../scripts/finalize_delivery.mjs)；媒体/源码/范围/审核证据绑定；终检逐文件发布、报告最后，无多文件事务/并发锁，且需可测非静音音轨；不代替实际看听 |
+| 可编辑工程 | [export_jianying.py](../scripts/export_jianying.py)：实验性剪映/CapCut 草稿数据；全片显式 `--video` 或唯一 sidecar 候选，原始音轨静音、文本轨 opt-in，不重建完整混音/干净画面。选择与边界见 [导出说明](../recipes/documentary.md#editor-draft)，桌面导入另验 |
 | 渲后辉光 | [bloom_grade.py](../template/scripts/bloom_grade.py)：opt-in 的 bloom/halation 三档；改像素，所以在审片前定稿后照常跑证据链 |
 
 <a id="audio-tools"></a>
@@ -48,7 +48,7 @@
 | 图生视频停顿分段 | [plan_segments.py](../scripts/plan_segments.py)：真实停顿切分，整数秒只取停顿内，计费秒数/接缝遮罩；见 AI SOP 路线 C |
 | 运动连续性 / 字幕带 | [probe_motion_quality.py](../scripts/probe_motion_quality.py)、[probe_subtitle_band.py](../scripts/probe_subtitle_band.py)；合法静止按分镜/beat sheet，命中看实际帧定性 |
 | 动作关键窗 | [action_review.py](../scripts/action_review.py)、[action-review.md](action-review.md)：接触/交接/跟踪动作，默认 0.2s 条带＋ROI，真实 PTS/哈希，仍 needs_review |
-| 小屏 / 线头闭合 | [probe_readability.mjs](../scripts/probe_readability.mjs)、[readability.md](readability.md)；[probe_line_ends.mjs](../scripts/probe_line_ends.mjs) 适用风格见契约 |
+| 小屏 / 线头闭合 | [probe_readability.mjs](../scripts/probe_readability.mjs)、[readability.md](readability.md)；[probe_line_ends.mjs](../scripts/probe_line_ends.mjs) 只读静态字面量 M/L/Z 路径起止点；非完整 SVG/TSX 几何检查，适用范围与缺口见契约 |
 | 音画 / 媒体 | [probe_av_sync.mjs](../template/scripts/probe_av_sync.mjs)、[probe_delivery.py](../template/scripts/probe_delivery.py)；首句探针不证明全片对位或听感 |
 | 其他工程探针 | [template/scripts](../template/scripts)：blank/liveness/subject/time/frame_cost/material_substance；先声明 ROI/背景/合法静止，不能无条件外推 |
 | 审美与量尺 | [directing-playbook.md](directing-playbook.md)（含逐镜静态审计）、[aesthetic-rules.md](aesthetic-rules.md)、[jury-review.md](jury-review.md)；机器测试不代替实际审查 |

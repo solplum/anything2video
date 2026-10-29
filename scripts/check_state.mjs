@@ -12,8 +12,8 @@
  *   scripted   script/narration.txt 存在且非空
  *   voiced     public/assets/<slug>/audio_narration.wav 可解码（含音频流）且 script/timeline.json 可解析
  *   planned    script/storyboard.json 存在且 check-plan 门禁全过（含素材哈希/覆盖/claims）
- *   rendered   renders/<slug>_v*.mp4（最新一个）可解码且同时含视频+音频流
- *   reviewed   qc/final.json 存在且含 checks 记录（存在性证据；深度验证归 check-qc.mjs）
+ *   rendered   renders/<slug>_<version>.mp4（最新一个；video 模式 sidecar，旧版 _vN 兼容）可解码且含视频+所声明音频流
+ *   reviewed   qc/final.json 审查声明完整且 passed（声明证据；文件/媒体深度验证归 check-qc.mjs）
  *   delivered  delivery/*-delivery-report.json 存在且 status=verified 且 loudness_passed=true（深核，finalize_delivery 产物）
  *
  * 记录态：project.json 可选 `state` 字符串字段（勿手改语义——用 --write 同步）。
@@ -22,7 +22,8 @@
  *
  * 用法：node scripts/check_state.mjs <工程> [--write]
  *   无 --write 只报告；带 --write 把 project.json.state 同步为证据态（证据丢失会把状态回拨）。
- * 退出码：overclaim=1，其余 0。
+ *   已有渲染证据时拒绝变更 state，避免改写源码哈希；相同状态的 --write 保留原文件字节。
+ * 退出码：overclaim/拒绝写入=1，其余 0。
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -31,6 +32,7 @@ import {promisify} from 'node:util';
 import {pathToFileURL} from 'node:url';
 import {isRecord, nonempty} from './runtime-lib.mjs';
 import {checkPlan} from './check-plan.mjs';
+import {validateQcDeclaration} from './check-qc.mjs';
 
 const execFileP = promisify(execFile);
 export const STATES = ['intake', 'scripted', 'voiced', 'planned', 'rendered', 'reviewed', 'delivered'];
@@ -57,6 +59,7 @@ const readJsonFailSoft = (root, rel) => { try { return JSON.parse(fs.readFileSyn
 /** 每态证据函数：返回 {ok, missing}。missing 是给人看的待办清单（下一态的补齐指引）。 */
 export function stateChecks(root, io = {}) {
   const fileExists = io.exists ?? ((rel) => exists(root, rel));
+  const pathExists = io.pathExists ?? (rel => {try {fs.lstatSync(path.join(root, rel)); return true;} catch {return false;}});
   const readText = io.readText ?? ((rel) => readTextFailSoft(root, rel));
   const readJson = io.readJson ?? ((rel) => readJsonFailSoft(root, rel));
   const probe = io.probeMedia ?? probeMedia;
@@ -89,18 +92,28 @@ export function stateChecks(root, io = {}) {
       const slug = isRecord(project) ? project.slug : null;
       if (!nonempty(slug)) return {ok: false, missing: ['project.json 无 slug，无法定位渲染产物']};
       const pattern = new RegExp(`^${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}_v\\d+\\.mp4$`);
-      const renders = listDir('renders').filter(name => pattern.test(name));
-      if (!renders.length) return {ok: false, missing: [`renders/${slug}_v*.mp4 缺失（跑 node scripts/render.mjs <工程> video）`]};
+      const outputPattern = new RegExp(`^${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}_[A-Za-z0-9_-]+\\.mp4$`);
+      const renders = listDir('renders').filter(name => {
+        if (!outputPattern.test(name)) return false;
+        const sidecarPath = path.join('renders', `${name}.delivery.json`);
+        const sidecar = readJson(sidecarPath);
+        // render.mjs permits custom VER names; never promote preview-mode media.
+        if (isRecord(sidecar)) return sidecar.mode === 'video';
+        return !pathExists(sidecarPath) && pattern.test(name); // Only truly absent legacy sidecars may fall back.
+      });
+      if (!renders.length) return {ok: false, missing: [`renders/${slug}_<version>.mp4 缺失（跑 node scripts/render.mjs <工程> video）`]};
       try {
         renders.sort((a, b) => fs.statSync(path.join(root, 'renders', b)).mtimeMs - fs.statSync(path.join(root, 'renders', a)).mtimeMs);
       } catch { renders.sort(); }
       const latest = renders[0];
-      const mediaFail = await probe(path.join(root, 'renders', latest), true, true);
+      const mediaFail = await probe(path.join(root, 'renders', latest), true, project.audio?.mode !== 'silent');
       return mediaFail ? {ok: false, missing: [`${latest} 不可解码：${mediaFail}`]} : {ok: true, missing: []};
     },
     reviewed: async () => {
       const qc = readJson('qc/final.json');
-      if (!isRecord(qc) || !isRecord(qc.checks)) return {ok: false, missing: ['qc/final.json 缺失或无 checks 记录（真实看片听音后按统一契约写，再跑 check-qc 门禁）']};
+      const project = readJson('project.json');
+      const errors = validateQcDeclaration(qc, project?.totalFrames);
+      if (errors.length) return {ok: false, missing: [`qc/final.json 审查声明未齐或未通过（${errors.length} 条；真实看片听音后按统一契约写，再跑 check-qc 门禁）`]};
       return {ok: true, missing: []};
     },
     delivered: async () => {
@@ -161,11 +174,19 @@ async function main() {
   if (write) {
     const project = readJsonFailSoft(root, 'project.json');
     const updated = syncState(project, result.evidenced);
-    fs.writeFileSync(path.join(root, 'project.json'), JSON.stringify(updated, null, 2) + '\n');
-    result.written = result.evidenced;
+    // A no-op status sync must not change source bytes or invalidate render evidence.
+    if (project.state !== result.evidenced) {
+      const hasRenderEvidence = ['renders', 'stills'].some(folder => {
+        try {return fs.readdirSync(path.join(root, folder)).some(name => /\.(?:mp4|delivery\.json)$/.test(name));}
+        catch {return false;}
+      });
+      if (hasRenderEvidence) result.writeBlocked = '渲染后不能改写 project.json.state：会使源码哈希与交付证据失效。请去掉 --write 只读计算当前状态；需改工程时按正常流程重渲。';
+      else fs.writeFileSync(path.join(root, 'project.json'), JSON.stringify(updated, null, 2) + '\n');
+    }
+    if (!result.writeBlocked) result.written = result.evidenced;
   }
   console.log(JSON.stringify(result, null, 2));
-  process.exitCode = result.overclaim ? 1 : 0;
+  process.exitCode = result.overclaim || result.writeBlocked ? 1 : 0;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

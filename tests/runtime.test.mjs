@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {validatePlan, checkPlan} from '../scripts/check-plan.mjs';
-import {computeState, syncState, STATES} from '../scripts/check_state.mjs';
+import {computeState, syncState, stateChecks, STATES} from '../scripts/check_state.mjs';
 import {parseLoudnormReport, loudnessPassed, countEvents} from '../scripts/finalize_delivery.mjs';
 import {renderOptions, assertOutput, renderProject} from '../scripts/render.mjs';
 import {sha256File, snapshotSources} from '../scripts/runtime-lib.mjs';
@@ -38,6 +38,15 @@ function fakeRenderer(base, behavior = '') {
   write(base, 'node_modules/@remotion/renderer/index.cjs', `const fs = require('fs'); const path = require('path'); const root = path.resolve(__dirname, '../../..'); exports.selectComposition = async () => (${JSON.stringify({...project, durationInFrames: project.totalFrames})}); exports.renderStill = async ({output, frame}) => {await new Promise(resolve => setTimeout(resolve, 25)); fs.writeFileSync(output, 'frame ' + frame); ${behavior}};`);
 }
 
+const reviewDeclaration = totalFrames => ({
+  schemaVersion: 1, media: 'renders/film_v1.mp4', mediaSha256: 'a'.repeat(64), blockingDefects: [],
+  checks: ['technical', 'registration', 'sources', 'visual', 'motion', 'teaching', 'audio', 'platform'].map(id => ({
+    id, status: 'passed', reviewer: 'fixture', tool: 'fixture', notes: 'Synthetic declaration; no human review',
+    method: ['motion', 'audio'].includes(id) ? 'playback' : 'inspection', frames: {from: 1, to: totalFrames},
+    evidence: [{path: 'qc/review.txt', sha256: 'b'.repeat(64)}],
+  })),
+});
+
 const asset = {path: 'public/image.png', source: 'user:original', license: 'CC0', usage: 'Explain the input', sha256: 'a'.repeat(64), ai: true, model: 'test', prompt: 'A complete prompt', seed: 'n/a', disclosure: 'AI generated', qc: {semantic: 'passed', artifacts: 'passed', consistency: 'passed'}};
 
 test('inclusive complete storyboard passes', () => assert.deepEqual(validatePlan(project, {shots: [shot]}), []));
@@ -72,9 +81,9 @@ test('evidence ladder computes state, overclaim and missing list', async () => {
   assert.equal(voiced.evidenced, 'voiced');
   assert.equal(voiced.next, 'planned');
   const full = await computeState('root', fake({
-    'project.json': {slug: 'film', status: 'draft'},
+    'project.json': {slug: 'film', status: 'draft', totalFrames: 90},
     'script/narration.txt': 'x', [path.join('public', 'assets', 'film', 'audio_narration.wav')]: 'x', 'script/timeline.json': {},
-    'script/storyboard.json': {}, 'qc/final.json': {checks: {}},
+    'script/storyboard.json': {}, 'qc/final.json': reviewDeclaration(90),
     '§dir:renders': ['film_v2.mp4', 'film_v1.mp4', 'other_v1.mp4'],
     '§dir:delivery': ['film_v2-delivery-report.json'],
     [path.join('delivery', 'film_v2-delivery-report.json')]: {status: 'verified', loudness_passed: true},
@@ -91,6 +100,87 @@ test('evidence ladder computes state, overclaim and missing list', async () => {
   assert.equal(lagging.overclaim, false);
   assert.equal(STATES.length, 7);
   assert.deepEqual(syncState({slug: 'film', state: 'rendered'}, 'voiced'), {slug: 'film', state: 'voiced'});
+});
+test('state review evidence shares the final QC declaration contract', async () => {
+  const check = async qc => (await stateChecks('root', {readJson: relative => relative === 'project.json' ? project : qc}).reviewed()).ok;
+  assert.equal(await check(reviewDeclaration(90)), true);
+  for (const checks of [undefined, null, {}, [], [{id: 'technical'}], 'passed']) {
+    assert.equal(await check({...reviewDeclaration(90), checks}), false);
+  }
+  for (const status of ['failed', 'not_performed', 'pending']) {
+    const qc = reviewDeclaration(90);
+    qc.checks[0].status = status;
+    assert.equal(await check(qc), false);
+  }
+  assert.equal(await check(reviewDeclaration(89)), false);
+});
+test('state recognizes renderer custom versions but never preview sidecars', async () => {
+  const check = async (name, sidecar) => {
+    const probed = [];
+    const gate = stateChecks('root', {
+      readJson: relative => relative === 'project.json' ? {slug: 'film'} : sidecar,
+      listDir: () => [name],
+      probeMedia: async file => {probed.push(file); return null;},
+    });
+    return {result: await gate.rendered(), probed};
+  };
+  for (const name of ['film_release-2.mp4', 'film_preview.mp4']) {
+    assert.equal((await check(name, {mode: 'video'})).result.ok, true);
+  }
+  assert.equal((await check('film_v2.mp4', null)).result.ok, true);
+  for (const [name, sidecar] of [['film_preview.mp4', null], ['film_preview.mp4', {mode: 'preview'}], ['film_v2.mp4', {mode: 'preview'}], ['other_v2.mp4', {mode: 'video'}]]) {
+    const {result, probed} = await check(name, sidecar);
+    assert.equal(result.ok, false);
+    assert.deepEqual(probed, []);
+  }
+});
+test('present malformed or empty render sidecars cannot use the legacy fallback', async () => {
+  const base = fixture();
+  write(base, 'renders/film_v2.mp4', 'synthetic');
+  const gate = stateChecks(base, {probeMedia: async () => null});
+  assert.equal((await gate.rendered()).ok, true);
+  for (const content of ['', '{broken', 'null', 'false', '[]']) {
+    write(base, 'renders/film_v2.mp4.delivery.json', content);
+    assert.equal((await gate.rendered()).ok, false, content);
+  }
+  fs.unlinkSync(path.join(base, 'renders/film_v2.mp4.delivery.json'));
+  fs.symlinkSync(path.join(base, 'missing-sidecar'), path.join(base, 'renders/film_v2.mp4.delivery.json'));
+  assert.equal((await gate.rendered()).ok, false);
+});
+test('no-op state writes preserve project bytes and render source hashes', () => {
+  const base = fixture();
+  const file = write(base, 'project.json', JSON.stringify({...project, state: 'intake'}));
+  const before = fs.readFileSync(file, 'utf8');
+  const sources = snapshotSources(base);
+  const result = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts/check_state.mjs'), base, '--write'], {encoding: 'utf8'}));
+  assert.equal(result.written, 'intake');
+  assert.equal(fs.readFileSync(file, 'utf8'), before);
+  assert.deepEqual(snapshotSources(base), sources);
+});
+test('state writes cannot invalidate already-rendered source evidence', () => {
+  const base = fixture();
+  const file = path.join(base, 'project.json');
+  const before = fs.readFileSync(file, 'utf8');
+  write(base, 'renders/film_v1.mp4', 'synthetic render evidence');
+  const sources = snapshotSources(base);
+  const result = spawnSync(process.execPath, [path.join(root, 'scripts/check_state.mjs'), base, '--write'], {encoding: 'utf8'});
+  assert.equal(result.status, 1);
+  assert.match(JSON.parse(result.stdout).writeBlocked, /--write/);
+  assert.equal(fs.readFileSync(file, 'utf8'), before);
+  assert.deepEqual(snapshotSources(base), sources);
+  assert.equal(spawnSync(process.execPath, [path.join(root, 'scripts/check_state.mjs'), base]).status, 0);
+});
+test('rendered state honors an explicitly silent project without hiding required audio', async () => {
+  for (const silent of [false, true]) {
+    const calls = [];
+    const gate = stateChecks('root', {
+      readJson: relative => relative === 'project.json' ? {...project, ...(silent ? {audio: {mode: 'silent'}} : {})} : null,
+      listDir: () => ['film_v1.mp4'],
+      probeMedia: async (file, video, audio) => {calls.push({video, audio}); return null;},
+    });
+    assert.equal((await gate.rendered()).ok, true);
+    assert.deepEqual(calls, [{video: true, audio: !silent}]);
+  }
 });
 test('finalize loudness helpers parse reports and gate delivery', () => {
   const sample = '[Parsed_loudnorm_0 @ 0x0]\n{\n\t"input_i" : "-14.23",\n\t"input_tp" : "-1.52",\n\t"input_lra" : "8.10",\n\t"input_thresh" : "-24.50",\n\t"output_i" : "0.00",\n\t"offset" : "0.11"\n}';

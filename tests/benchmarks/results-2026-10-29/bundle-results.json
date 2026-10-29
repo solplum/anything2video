@@ -1,0 +1,71 @@
+{
+  "sourceCommit": "c1505c5bf20ab877ee829763d65fcce6c5b4a912",
+  "node": "v24.22.1",
+  "remotion": "4.0.507",
+  "cache": "Private initially empty webpack cache; fresh process and bundle output per run. OS filesystem cache uncontrolled, not disk-cold.",
+  "rows": [
+    {
+      "cacheState": "disabled",
+      "repetition": 0,
+      "enableCaching": false,
+      "ms": 3521.8013069999997,
+      "maxRssKiB": 632364,
+      "files": 51,
+      "bytes": 65909965
+    },
+    {
+      "cacheState": "disabled",
+      "repetition": 1,
+      "enableCaching": false,
+      "ms": 3512.8939649999998,
+      "maxRssKiB": 634732,
+      "files": 51,
+      "bytes": 65909965
+    },
+    {
+      "cacheState": "disabled",
+      "repetition": 2,
+      "enableCaching": false,
+      "ms": 3385.1752549999997,
+      "maxRssKiB": 634788,
+      "files": 51,
+      "bytes": 65909965
+    },
+    {
+      "cacheState": "empty-cache",
+      "repetition": 0,
+      "enableCaching": true,
+      "ms": 3912.6380820000004,
+      "maxRssKiB": 753324,
+      "files": 51,
+      "bytes": 65909965
+    },
+    {
+      "cacheState": "warm-cache",
+      "repetition": 0,
+      "enableCaching": true,
+      "ms": 1108.178433,
+      "maxRssKiB": 448604,
+      "files": 51,
+      "bytes": 65909965
+    },
+    {
+      "cacheState": "warm-cache",
+      "repetition": 1,
+      "enableCaching": true,
+      "ms": 1126.898399,
+      "maxRssKiB": 450424,
+      "files": 51,
+      "bytes": 65909965
+    },
+    {
+      "cacheState": "warm-cache",
+      "repetition": 2,
+      "enableCaching": true,
+      "ms": 1093.417874,
+      "maxRssKiB": 453720,
+      "files": 51,
+      "bytes": 65909965
+    }
+  ]
+}

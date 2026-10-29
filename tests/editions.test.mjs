@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
 import {execFileSync, spawnSync} from 'node:child_process';
@@ -335,4 +336,35 @@ test('core verification rejects undeclared optional media and duplicate omission
   manifest.omittedSampleMediaBytes *= 2;
   fs.writeFileSync(file, JSON.stringify(manifest));
   assert.throws(() => readPackageManifest(target), /Invalid package-manifest/);
+});
+
+
+test('bounded hashing preserves independent digests across empty, exact and partial chunks', t => {
+  const temp = temporary(t), source = fixture(temp);
+  const sizes = [0, 1, 1024 * 1024 - 1, 1024 * 1024, 1024 * 1024 + 1, 2 * 1024 * 1024 + 37];
+  for (const size of sizes) {
+    const bytes = Buffer.alloc(size);
+    for (let i = 0; i < size; i++) bytes[i] = (i * 29 + 17) % 251;
+    write(source, `template/public/hash-${size}.bin`, bytes);
+  }
+  write(source, 'samples/sample.mp4', Buffer.alloc(1024 * 1024 + 19, 173));
+  for (const profile of ['core', 'full']) {
+    const target = buildPackage(path.join(temp, profile), {source, profile});
+    const manifest = readPackageManifest(target);
+    for (const entry of [...manifest.files, ...manifest.omittedSampleMedia]) {
+      const actual = fs.readFileSync(path.join(manifest.files.includes(entry) ? target : source, entry.path));
+      assert.equal(entry.bytes, actual.length, entry.path);
+      assert.equal(entry.sha256, crypto.createHash('sha256').update(actual).digest('hex'), entry.path);
+    }
+    const changed = path.join(target, `template/public/hash-${sizes.at(-1)}.bin`);
+    const original = fs.readFileSync(changed);
+    const altered = Buffer.from(original);
+    altered[1024 * 1024 + 7] ^= 255;
+    fs.writeFileSync(changed, altered);
+    assert.throws(() => verifyPackage(target), /Package file mismatch/, 'same-size edits must invalidate every verification');
+    fs.writeFileSync(changed, original);
+    assert.equal(verifyPackage(target).profile, profile, 'no stale digest from earlier verification');
+    fs.unlinkSync(changed);
+    assert.throws(() => verifyPackage(target), /Package file mismatch/, 'missing inventory files still fail');
+  }
 });

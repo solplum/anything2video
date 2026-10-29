@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import crypto from 'node:crypto';
+import {sha256File as sha256} from './hash-file.mjs';
 import {fileURLToPath} from 'node:url';
 import {PACKAGE_MANIFEST, isOptionalSampleMedia, presentOptionalSamples, readPackageManifest, resolvePackageProfile} from './package-profile.mjs';
 
@@ -14,7 +14,6 @@ const individual = ['LICENSE', 'assets/audio/ATTRIBUTION.md', 'docs/adapters.md'
 const publicExamples = ['examples/engraving', 'examples/line-art-teaching'];
 const excluded = /^(?:\.git|\.venv|node_modules|\.Codex|\.mimosa|\.zcode|__pycache__|\.pytest_cache|audio|renders|stills|fin_frames|out|dist|build.*|tests|examples|cache|\.cache|.*-cache|secrets?|credentials?|\..*stills|\.verify.*|\.probe.*|\.render-bundle.*)$/i;
 const privateFile = /(?:^\.env(?:\..*)?$|^(?:secrets?|credentials?)(?:\..*)?$|^\.(?:npmrc|pypirc|netrc|git-credentials)$|\.(?:log|pyc|pem|key|p12|pfx)$|(?:^|[._-])worker-report(?:[._-]|$))/i;
-const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const exists = file => {try {fs.lstatSync(file); return true;} catch (error) {if (error.code === 'ENOENT') return false; throw error;}};
 const canonical = file => {
   const suffix = [];
@@ -52,8 +51,7 @@ export const versionOf = source => {
   return value;
 };
 
-export function collectCoreFiles(source, options = {}) {
-  const profile = resolvePackageProfile(source, options);
+function collectPackageFiles(source) {
   const root = canonical(source);
   const files = [];
   function walk(relative) {
@@ -65,7 +63,7 @@ export function collectCoreFiles(source, options = {}) {
     if (stat.isDirectory()) {
       for (const child of fs.readdirSync(absolute).sort()) walk(`${relative}/${child}`);
     } else if (stat.isFile()) {
-      if (profile !== 'core' || !isOptionalSampleMedia(relative)) files.push(relative);
+      files.push(relative);
     } else throw new Error(`Unsupported package input: ${relative}`);
   }
   for (const relative of [...directories, ...individual]) {
@@ -77,6 +75,12 @@ export function collectCoreFiles(source, options = {}) {
   }
   if (exists(path.join(root, 'samples'))) walk('samples');
   return files.sort();
+}
+
+export function collectCoreFiles(source, options = {}) {
+  const profile = resolvePackageProfile(source, options);
+  const files = collectPackageFiles(source);
+  return profile === 'core' ? files.filter(file => !isOptionalSampleMedia(file)) : files;
 }
 
 export function validateSkill(source) {
@@ -105,7 +109,9 @@ export function verifyPackage(target) {
   if (manifest) {
     for (const entry of manifest.files) {
       const file = path.join(targetDir, ...entry.path.split('/'));
-      if (!exists(file) || !fs.lstatSync(file).isFile() || !contains(targetDir, fs.realpathSync.native(file)) || fs.statSync(file).size !== entry.bytes || sha256(file) !== entry.sha256) throw new Error(`Package file mismatch: ${entry.path}`);
+      let stat;
+      try {stat = fs.lstatSync(file);} catch (error) {if (error.code !== 'ENOENT') throw error;}
+      if (!stat?.isFile() || !contains(targetDir, fs.realpathSync.native(file)) || stat.size !== entry.bytes || sha256(file) !== entry.sha256) throw new Error(`Package file mismatch: ${entry.path}`);
     }
     for (const entry of manifest.omittedSampleMedia) {
       if (exists(path.join(targetDir, ...entry.path.split('/')))) throw new Error(`Unexpected optional media in core package: ${entry.path}`);
@@ -137,11 +143,15 @@ export function buildPackage(destination, {source = SOURCE_ROOT, overwrite = fal
   const target = assertDisjoint(source, destination);
   const profile = resolvePackageProfile(source, options);
   const skill = validateSkill(source);
-  const files = [...new Set([...collectCoreFiles(source, {profile}), 'SKILL.md', 'README.md', 'LICENSE'])].sort();
+  // Walk and validate the complete input tree once. A core build still records
+  // every omitted sample's size and digest; it only omits copying its bytes.
+  const collected = collectPackageFiles(source);
+  const selected = profile === 'core' ? collected.filter(file => !isOptionalSampleMedia(file)) : collected;
+  const files = [...new Set([...selected, 'SKILL.md', 'README.md', 'LICENSE'])].sort();
   const sourceManifest = readPackageManifest(source);
   const omittedSampleMedia = profile === 'core'
     ? sourceManifest?.profile === 'core' ? sourceManifest.omittedSampleMedia
-      : collectCoreFiles(source).filter(isOptionalSampleMedia).map(relative => ({path: relative, bytes: fs.statSync(path.join(source, relative)).size, sha256: sha256(path.join(source, relative))}))
+      : collected.filter(isOptionalSampleMedia).map(relative => ({path: relative, bytes: fs.statSync(path.join(source, relative)).size, sha256: sha256(path.join(source, relative))}))
     : [];
   // Validate every input before a requested overwrite touches the old output.
   for (const relative of files) {

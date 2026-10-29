@@ -1,0 +1,116 @@
+{
+  "node": "v24.22.1",
+  "platform": "linux",
+  "arch": "x64",
+  "cpus": 9,
+  "source": "/workspace/shared/a2v-performance/source",
+  "variants": {
+    "baseline": "/workspace/shared/a2v-performance/source/scripts/build-editions.mjs",
+    "candidate": "/workspace/shared/anything2video-slim/scripts/build-editions.mjs"
+  },
+  "runs": 1,
+  "identicalManifests": true,
+  "cache": "Every measured task is a fresh Node process; source filesystem cache is uncontrolled, not OS-cold. Fresh build destinations. No process/JIT warmup. Module import and cleanup excluded from elapsed time; peak RSS covers the whole worker.",
+  "results": [
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1935.873484,
+      "maxRssKiB": 220896
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 291.103511,
+      "maxRssKiB": 141788
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 30.381369999999997,
+      "maxRssKiB": 46400,
+      "count": 1534
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1151.712464,
+      "maxRssKiB": 54836
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 202.336481,
+      "maxRssKiB": 49352
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 28.796417999999996,
+      "maxRssKiB": 46396,
+      "count": 1534
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1724.68472,
+      "maxRssKiB": 233304
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 659.191101,
+      "maxRssKiB": 223260
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 30.101255000000002,
+      "maxRssKiB": 46904,
+      "count": 1599
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1833.684534,
+      "maxRssKiB": 55944
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 544.824196,
+      "maxRssKiB": 49404
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 31.65419500000001,
+      "maxRssKiB": 46908,
+      "count": 1599
+    }
+  ]
+}

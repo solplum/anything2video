@@ -14,6 +14,9 @@ const relative = path.relative(repo, out);
 if (!relative || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative))) throw new Error('Choose an output directory outside the repository');
 if (fs.existsSync(out)) throw new Error('Refusing an existing output directory');
 const source = path.join(repo, 'samples/line-art-sample.mp4');
+// Core keeps this example's code and comparison videos, but omits historical
+// sample MP4s. The comparison's re-encoded audio is not an identical substitute.
+if (!fs.existsSync(source)) throw new Error('Historical audio source samples/line-art-sample.mp4 is not installed. This reproduction requires a complete checkout or --profile full package; core still includes the comparison videos for viewing. See docs/package-profiles.md#optional-sample-videos. No output was created.');
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const sourceHash = '925b5becb5d6c4d2171056733de060b6d45257106f91878924cc6bd110883b86';
 if (hash(source) !== sourceHash) throw new Error('Historical audio source changed; review timing before updating this fixture');

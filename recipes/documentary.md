@@ -105,12 +105,19 @@ slug: 'apollo-mission',
 lang: 'zh' as 'zh' | 'en',
 ```
 
-稿件按契约 [文案确认门](../reference/production-contract.md#script-approval) 执行。完成镜头、渲染与实际验收后，用独立导出器生成剪映原生草稿；render.mjs 没有导出开关：
+<a id="editor-draft"></a>
+## 可选剪映 / CapCut 草稿导出（实验性）
+
+稿件按契约 [文案确认门](../reference/production-contract.md#script-approval) 执行。完成镜头、渲染与实际验收后，可生成实验性草稿数据；render.mjs 没有导出开关：
 
 ```sh
 node <skill>/scripts/render.mjs <工程> video
-# 完成实际验收后，按需导出
-uv run <skill>/scripts/export_jianying.py <工程> --out <导出目录>
+# 完成实际验收后；先只读核对，再输出到尚无同名草稿的目录
+uv run <skill>/scripts/export_jianying.py <工程> --video renders/<slug>_v1.mp4 --out <导出目录> --dry-run
+uv run <skill>/scripts/export_jianying.py <工程> --video renders/<slug>_v1.mp4 --out <导出目录>
 ```
 
-草稿在实际剪映/CapCut 桌面端打开前，不声称应用端已经验证。
+- `--video` 必须指向工程内的完整成片。省略时只选择唯一、有效且哈希匹配的全片 sidecar 候选；预览不参与，多个候选须显式选择，无 sidecar 的旧片也须显式指定。独立核对媒体尺寸/fps/帧数/时长及所需音轨，但**不替代源码哈希核对和最终 QC**。
+- 视频保留已有混音；工程 `public/assets/<slug>/` 的原始旁白/BGM 可作为独立轨导出，但默认静音，防止双混。不是清洁视频或完整混音工程：不重建 music_plan、SFX、单词样式、双语布局，也不分离烧录字幕。
+- 文本轨默认不导出。确需可编辑字幕才加 `--include-subtitles`，使用真实 `script/timeline.json` 的 nested subs / sentence `from/to`（1 起含端点）；旧版秒数/帧数格式须通过校验。无可靠 JSON 时拒绝猜时，TS/SRT 不自动导入；成片已有字幕时还须检查重复叠字。
+- `--dry-run` 只读；已有同名草稿拒绝覆盖，可换 `--name` 或 `--out`。Mac/Windows 数据文件均写出仅代表生成格式，不证明当前剪映/CapCut 能导入；本轮未验证原生桌面应用。

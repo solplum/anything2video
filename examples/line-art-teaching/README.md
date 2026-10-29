@@ -21,7 +21,7 @@
 
 ## 复现
 
-需要 Node.js、npm、ffmpeg/ffprobe 和 Remotion 支持的 Chromium。准备脚本拒绝已有目录，且校验历史音轨源 SHA256。
+需要 Node.js、npm、ffmpeg/ffprobe 和 Remotion 支持的 Chromium。**重新生成工程需要完整源码或 `--profile full` 包**：`core` 保留上述对照视频、代码和说明供查看，但省略准备脚本所需的 `samples/line-art-sample.mp4`。缺少该文件时脚本会在写入工程前报出明确提示；请按[可选样片安装说明](../../docs/package-profiles.md#optional-sample-videos)取得完整包，不会自动下载。已编码的对照视频音轨不是历史源音轨的逐字节替代。准备脚本拒绝已有目录，且校验历史音轨源 SHA256。
 
 ```sh
 node examples/line-art-teaching/prepare.mjs /absolute/path/to/new-line-art-projects

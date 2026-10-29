@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * finalize_delivery.mjs — 交付终检与原子发布（v3.10.0）。
+ * finalize_delivery.mjs — 交付终检与报告完成标记（v3.10.0）。
  * 机制借鉴 lanshu-create-ai-presenter-video 的 finalize_delivery.sh（MIT，cclank）——Node/ffmpeg 重写，
  * 许可登记 LICENSE-THIRDPARTY/MIT-lanshu-create-ai-presenter-video.txt。
  *
@@ -12,8 +12,10 @@
  *      （mono 旁白被合成复制成 stereo 会实测高约 3 LU——响度必须在渲染后的文件上验收，不能信混音母带）
  *   5. blackdetect（d=0.10）/ freezedetect（n=-60dB d=0.40）事件计数进报告（每个冻帧事件须对应有意静止，beat sheet 豁免登记对账）
  *   6. 3×3 九帧接触表
- *   7. 原子发布：全部在临时目录构建，逐项通过才 mv 进 delivery/，**交付报告最后一个落位当完成标记**；
- *      任一检查失败 → 什么都不发布、临时目录清掉、退出 1。拒绝覆盖已有交付物（重跑前手动清理，有意设计）。
+ *   7. 暂存后发布：全部在临时目录构建，逐项通过才 mv 进 delivery/，**交付报告最后一个落位当完成标记**；
+ *      发布前检查失败 → 什么都不发布、临时目录清掉、退出 1。拒绝覆盖已有交付物。
+ *      多文件移动不是原子事务：发布阶段 I/O 失败可能留下部分文件；缺完成报告不可交付。
+ *      无并发终检锁；同一交付目标不要并行运行。重跑前检查并保留已有交付物，勿盲目清理。
  * 报告可移植：只写文件名不写绝对路径。
  *
  * 用法：node scripts/finalize_delivery.mjs <工程> <renders/xxx_vN.mp4> [--stem 名称] [--lufs -16]
@@ -25,6 +27,7 @@ import path from 'node:path';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {pathToFileURL} from 'node:url';
+import {isRecord, isWithin, nonempty, projectFile, resolvedPath} from './runtime-lib.mjs';
 
 const execFileP = promisify(execFile);
 const run = async (cmd, args) => {
@@ -59,6 +62,53 @@ export function countEvents(stderr, marker) {
   return stderr.split(/\r?\n/).filter(line => line.includes(marker)).length;
 }
 
+/** Parse only documented flags; a stem is a filename, never a path. */
+export function finalizeOptions(args) {
+  const positional = [];
+  const values = new Map();
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (!arg.startsWith('--')) {positional.push(arg); continue;}
+    if (!['--stem', '--lufs'].includes(arg) || values.has(arg) || i + 1 >= args.length || args[i + 1].startsWith('--')) throw new Error(`Invalid or missing delivery option: ${arg}`);
+    values.set(arg, args[++i]);
+  }
+  const target = Number(values.get('--lufs') ?? '-16');
+  const stem = values.get('--stem') ?? null;
+  if (positional.length !== 2 || !Number.isFinite(target) || target > -5 || target < -40) throw new Error('用法：finalize_delivery.mjs <工程> <工程内渲染文件> [--stem 文件名] [--lufs -16]');
+  if (stem !== null && (!nonempty(stem) || stem !== stem.trim() || /[\\/\0]/.test(stem) || ['.', '..'].includes(stem) || path.isAbsolute(stem) || /^[A-Za-z]:/.test(stem))) throw new Error('--stem must be a filename, not a path');
+  return {rootArg: positional[0], renderArg: positional[1], target, stem};
+}
+
+export function assertDeliveryTargets(root, outDir, targets) {
+  if (!isWithin(root, resolvedPath(outDir))) throw new Error('Delivery directory escapes project');
+  for (const name of targets) {
+    const file = path.join(outDir, name);
+    if (!isWithin(root, resolvedPath(file))) throw new Error(`Delivery output escapes project: ${name}`);
+    // lstat also catches dangling links, which existsSync deliberately ignores.
+    try {
+      fs.lstatSync(file);
+    } catch (error) {
+      if (error.code === 'ENOENT') continue;
+      throw error;
+    }
+    throw new Error(`拒绝覆盖已有交付物：${name}`);
+  }
+}
+
+export function prepareDelivery(rootArg, renderArg, stem = null) {
+  const root = fs.realpathSync(rootArg);
+  const project = JSON.parse(fs.readFileSync(projectFile(root, 'project.json'), 'utf8'));
+  if (!isRecord(project)) throw new Error('project.json must be an object');
+  const render = projectFile(root, path.relative(root, path.resolve(root, renderArg)));
+  const name = stem ?? path.basename(render, '.mp4');
+  // Keep the exported helper safe as well as the CLI parser.
+  finalizeOptions([root, render, '--stem', name]);
+  const outDir = path.join(root, 'delivery');
+  const targets = [`${name}-master.mp4`, `${name}-share.mp4`, `${name}-contact-sheet.png`, `${name}-delivery-report.json`];
+  assertDeliveryTargets(root, outDir, targets);
+  return {root, render, outDir, targets};
+}
+
 async function die(root, tmp, message) {
   console.error(`finalize_delivery: ${message}`);
   try { fs.rmSync(tmp, {recursive: true, force: true}); } catch {}
@@ -67,36 +117,13 @@ async function die(root, tmp, message) {
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-  const flag = (name, fallback) => {
-    const i = args.indexOf(name);
-    if (i < 0) return fallback;
-    const v = args[i + 1];
-    args.splice(i, 2);
-    return v === undefined ? fallback : v;
-  };
-  const target = Number(flag('--lufs', '-16'));
-  const stem = flag('--stem', null);
-  const positional = args.filter(a => !a.startsWith('--'));
-  const [rootArg, renderArg] = positional;
-  if (!rootArg || !renderArg || !Number.isFinite(target) || target > -5 || target < -40) {
-    console.error('用法：node scripts/finalize_delivery.mjs <工程> <renders/xxx_vN.mp4> [--stem 名称] [--lufs -16]');
-    process.exitCode = 1;
-    return;
-  }
-  const root = path.resolve(rootArg);
-  const render = path.resolve(root, renderArg);
-  const project = (() => { try { return JSON.parse(fs.readFileSync(path.join(root, 'project.json'), 'utf8')); } catch { return null; } })();
-  if (!project || !fs.existsSync(render)) {
-    await die(null, null, `工程或渲染文件不存在（${render}）`);
-    return;
-  }
-  const name = stem ?? path.basename(render, '.mp4');
-  const outDir = path.join(root, 'delivery');
-  const targets = [`${name}-master.mp4`, `${name}-share.mp4`, `${name}-contact-sheet.png`, `${name}-delivery-report.json`];
-  const clashes = targets.filter(t => fs.existsSync(path.join(outDir, t)));
-  if (clashes.length) {
-    await die(root, '', `拒绝覆盖已有交付物：${clashes.join(', ')}（重跑前手动清理 delivery/，原子性设计如此）`);
+  let root, render, outDir, targets, target;
+  try {
+    const options = finalizeOptions(process.argv.slice(2));
+    target = options.target;
+    ({root, render, outDir, targets} = prepareDelivery(options.rootArg, options.renderArg, options.stem));
+  } catch (error) {
+    await die(null, null, error.message);
     return;
   }
   const tmp = fs.mkdtempSync(path.join(root, '.finalize-'));
@@ -113,7 +140,7 @@ async function main() {
     const measure = ['-hide_banner', '-i', render, '-af', `loudnorm=I=${target}:TP=-1.5:LRA=9:print_format=json`, '-f', 'null', '-'];
     const pass1 = await run('ffmpeg', measure);
     const measured = parseLoudnormReport(pass1.stderr);
-    if (!measured || !Number.isFinite(measured.input_i)) {
+    if (!pass1.pass || !measured || !Number.isFinite(measured.input_i)) {
       await die(root, tmp, `无法测量源响度（静音/无声轨都会走到这里）：${pass1.stderr.slice(-200)}`);
       return;
     }
@@ -148,7 +175,7 @@ async function main() {
       const remeasure = await run('ffmpeg', ['-hide_banner', '-i', file, '-af', `loudnorm=I=${target}:TP=-1.5:LRA=9:print_format=json`, '-f', 'null', '-']);
       const report = parseLoudnormReport(remeasure.stderr);
       loud[label] = {file: path.basename(file), input_i: report?.input_i ?? null, input_tp: report?.input_tp ?? null};
-      if (!loudnessPassed(loud[label].input_i, loud[label].input_tp, target)) {
+      if (!remeasure.pass || !loudnessPassed(loud[label].input_i, loud[label].input_tp, target)) {
         await die(root, tmp, `${label} 交付响度未过验收：实测 ${loud[label].input_i} LUFS / TP ${loud[label].input_tp}（目标 ${target}±0.5 / TP≤-1.0）——未发布任何文件`);
         return;
       }
@@ -156,6 +183,10 @@ async function main() {
     // 黑帧/冻帧计数（master）
     const black = await run('ffmpeg', ['-hide_banner', '-i', master, '-vf', 'blackdetect=d=0.10:pix_th=0.02', '-an', '-f', 'null', '-']);
     const freeze = await run('ffmpeg', ['-hide_banner', '-i', master, '-vf', 'freezedetect=n=-60dB:d=0.40', '-an', '-f', 'null', '-']);
+    if (!black.pass || !freeze.pass) {
+      await die(root, tmp, `黑帧/冻帧检测失败，不能把未完成检测记为零事件：${(!black.pass ? black.stderr : freeze.stderr).slice(-200)}`);
+      return;
+    }
     const black_events = countEvents(black.stderr, 'black_start:');
     const freeze_events = countEvents(freeze.stderr, 'freeze_start:');
     // 3×3 接触表
@@ -177,8 +208,10 @@ async function main() {
     };
     const reportFile = path.join(tmp, targets[3]);
     fs.writeFileSync(reportFile, JSON.stringify(report, null, 2) + '\n');
-    // 原子发布：逐项 mv，报告最后
+    // Report-last commit marker, not a multi-file atomic transaction or concurrency lock.
+    assertDeliveryTargets(root, outDir, targets);
     fs.mkdirSync(outDir, {recursive: true});
+    assertDeliveryTargets(root, outDir, targets);
     for (const t of [targets[0], targets[1], targets[2]]) fs.renameSync(path.join(tmp, t), path.join(outDir, t));
     fs.renameSync(reportFile, path.join(outDir, targets[3]));
     fs.rmSync(tmp, {recursive: true, force: true});

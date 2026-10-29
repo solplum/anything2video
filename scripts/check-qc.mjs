@@ -54,6 +54,34 @@ function inspectProbe(probe, project, label, errors, requireCount = false) {
   if (project.audio?.mode !== 'silent' && audio.length === 0) errors.push(`${label}: audio stream missing; declare project.audio.mode='silent' only for an intentionally silent film`);
 }
 
+/** Validate declared review shape/results only; does not inspect media or evidence files. */
+export function validateQcDeclaration(qc, totalFrames) {
+  const errors = [];
+  if (!isRecord(qc)) return ['QC must be an object'];
+  if (qc.schemaVersion !== 1) errors.push('QC schemaVersion must be 1');
+  if (!Array.isArray(qc.blockingDefects) || qc.blockingDefects.length !== 0) errors.push('QC blockingDefects must be an empty array');
+  if (!nonempty(qc.media)) errors.push('QC media is required');
+  if (!nonempty(qc.mediaSha256) || !HASH.test(qc.mediaSha256)) errors.push('QC requires a full media SHA256');
+  const seen = new Set();
+  if (!Array.isArray(qc.checks)) errors.push('QC checks must be an array');
+  for (const [index, check] of (Array.isArray(qc.checks) ? qc.checks : []).entries()) {
+    if (!isRecord(check)) {errors.push(`Check ${index + 1} must be an object`); continue;}
+    const label = nonempty(check.id) ? check.id : `#${index + 1}`;
+    if (!nonempty(check.id) || seen.has(check.id)) errors.push(`Missing/duplicate check id: ${label}`);
+    if (nonempty(check.id)) seen.add(check.id);
+    if (check.status !== 'passed') errors.push(`${label}: check must be passed`);
+    if (![check.reviewer, check.tool, check.notes, check.method].every(nonempty)) errors.push(`${label}: reviewer/tool/notes/method are required`);
+    if (['motion', 'audio'].includes(check.id) && check.method !== 'playback') errors.push(`${label}: actual full-media playback declaration is required`);
+    if (!fullRange(check.frames, totalFrames)) errors.push(`${label}: check must cover the entire film`);
+    if (!Array.isArray(check.evidence) || check.evidence.length === 0) errors.push(`${label}: evidence is required`);
+    for (const evidence of Array.isArray(check.evidence) ? check.evidence : []) {
+      if (!isRecord(evidence) || !nonempty(evidence.path) || !nonempty(evidence.sha256) || !HASH.test(evidence.sha256)) errors.push(`${label}: evidence requires a path and full SHA256`);
+    }
+  }
+  for (const id of REQUIRED) if (!seen.has(id)) errors.push(`Missing required check: ${id}`);
+  return errors;
+}
+
 /** Verify declared review evidence and actual media integrity, not artistic merit or reviewer behavior. */
 export async function checkQc(root, qcPath = 'qc/final.json') {
   const errors = [];
@@ -79,10 +107,8 @@ export async function checkQc(root, qcPath = 'qc/final.json') {
   const qc = read(qcPath);
   if (!isRecord(project) || ![project.width, project.height, project.fps, project.totalFrames].every(value => Number.isInteger(value) && value > 0)) errors.push('Invalid project dimensions or timing');
   if (!isRecord(project) || project.status !== 'production') errors.push("Final QC requires project.status='production'");
-  if (!isRecord(qc)) {errors.push('QC must be an object'); return result();}
-  if (qc.schemaVersion !== 1) errors.push('QC schemaVersion must be 1');
-  if (!Array.isArray(qc.blockingDefects) || qc.blockingDefects.length !== 0) errors.push('QC blockingDefects must be an empty array');
-  if (!nonempty(qc.mediaSha256) || !HASH.test(qc.mediaSha256)) errors.push('QC requires a full media SHA256');
+  errors.push(...validateQcDeclaration(qc, project?.totalFrames));
+  if (!isRecord(qc)) return result();
   let media;
   try {
     media = projectFile(root, qc.media);
@@ -103,20 +129,11 @@ export async function checkQc(root, qcPath = 'qc/final.json') {
     } catch (error) {errors.push(`Cannot verify delivery sources: ${error.message}`);}
     if (isRecord(project)) inspectProbe(sidecar.ffprobe, project, 'Sidecar', errors);
   }
-  const seen = new Set();
-  if (!Array.isArray(qc.checks)) errors.push('QC checks must be an array');
-  for (const [index, check] of (Array.isArray(qc.checks) ? qc.checks : []).entries()) {
-    if (!isRecord(check)) {errors.push(`Check ${index + 1} must be an object`); continue;}
-    const label = nonempty(check.id) ? check.id : `#${index + 1}`;
-    if (!nonempty(check.id) || seen.has(check.id)) errors.push(`Missing/duplicate check id: ${label}`);
-    if (nonempty(check.id)) seen.add(check.id);
-    if (check.status !== 'passed') errors.push(`${label}: check must be passed`);
-    if (![check.reviewer, check.tool, check.notes, check.method].every(nonempty)) errors.push(`${label}: reviewer/tool/notes/method are required`);
-    if (['motion', 'audio'].includes(check.id) && check.method !== 'playback') errors.push(`${label}: actual full-media playback declaration is required`);
-    if (!fullRange(check.frames, project?.totalFrames)) errors.push(`${label}: check must cover the entire film`);
-    if (!Array.isArray(check.evidence) || check.evidence.length === 0) errors.push(`${label}: evidence is required`);
+  for (const check of Array.isArray(qc.checks) ? qc.checks : []) {
+    if (!isRecord(check)) continue;
+    const label = nonempty(check.id) ? check.id : '<invalid>';
     for (const evidence of Array.isArray(check.evidence) ? check.evidence : []) {
-      if (!isRecord(evidence) || !nonempty(evidence.sha256) || !HASH.test(evidence.sha256)) {errors.push(`${label}: evidence requires a full SHA256`); continue;}
+      if (!isRecord(evidence) || !nonempty(evidence.sha256) || !HASH.test(evidence.sha256)) continue;
       try {
         const file = projectFile(root, evidence.path);
         reviewedFiles.set(evidence.path, sha256File(file));
@@ -124,7 +141,6 @@ export async function checkQc(root, qcPath = 'qc/final.json') {
       } catch (error) {errors.push(`${label}: missing/outside evidence: ${error.message}`);}
     }
   }
-  for (const id of REQUIRED) if (!seen.has(id)) errors.push(`Missing required check: ${id}`);
   for (const asset of isRecord(plan) && Array.isArray(plan.assets) ? plan.assets : []) {
     if (isRecord(asset) && asset.ai === true && (!isRecord(asset.qc) || !['textFree', 'geometry', 'continuity'].every(key => asset.qc[key] === 'passed'))) errors.push(`AI asset QC must pass textFree/geometry/continuity: ${asset.path ?? '<missing>'}`);
   }

@@ -1,0 +1,509 @@
+{
+  "commit": "c1505c5bf20ab877ee829763d65fcce6c5b4a912",
+  "node": "v24.22.1",
+  "platform": "linux",
+  "arch": "x64",
+  "cache": "Every measured task is a fresh Node process; source filesystem cache is uncontrolled, not OS-cold. Fresh destination for builds. No process/JIT warmup.",
+  "results": [
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1460.577454,
+      "maxRssKiB": 220180
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 271.747123,
+      "maxRssKiB": 128616
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 29.203662,
+      "maxRssKiB": 46888,
+      "count": 1534
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1234.395525,
+      "maxRssKiB": 54972
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 205.905263,
+      "maxRssKiB": 49664
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 30.452454999999993,
+      "maxRssKiB": 46376,
+      "count": 1534
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1292.709527,
+      "maxRssKiB": 54488
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 198.896851,
+      "maxRssKiB": 49712
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 29.927770000000002,
+      "maxRssKiB": 46376,
+      "count": 1534
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1420.611322,
+      "maxRssKiB": 218504
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 262.663635,
+      "maxRssKiB": 141972
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 30.712551999999995,
+      "maxRssKiB": 46628,
+      "count": 1534
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1449.767686,
+      "maxRssKiB": 220536
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 282.550571,
+      "maxRssKiB": 140268
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 32.586706,
+      "maxRssKiB": 46888,
+      "count": 1534
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1247.824163,
+      "maxRssKiB": 54184
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 206.471965,
+      "maxRssKiB": 49428
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 31.749887,
+      "maxRssKiB": 46764,
+      "count": 1534
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1260.042399,
+      "maxRssKiB": 54312
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 205.24113499999999,
+      "maxRssKiB": 49220
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 32.322587,
+      "maxRssKiB": 46760,
+      "count": 1534
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1427.88872,
+      "maxRssKiB": 220100
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 264.766,
+      "maxRssKiB": 129376
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 29.353894000000004,
+      "maxRssKiB": 46760,
+      "count": 1534
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1415.045814,
+      "maxRssKiB": 220048
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 255.853025,
+      "maxRssKiB": 154544
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 27.615396000000004,
+      "maxRssKiB": 46252,
+      "count": 1534
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "mode": "build",
+      "profile": "core",
+      "ms": 1298.068528,
+      "maxRssKiB": 54524
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "mode": "verify",
+      "profile": "core",
+      "ms": 206.7124,
+      "maxRssKiB": 49216
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "mode": "collect",
+      "profile": "core",
+      "ms": 29.30405100000001,
+      "maxRssKiB": 46632,
+      "count": 1534
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1963.492514,
+      "maxRssKiB": 234484
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 652.569204,
+      "maxRssKiB": 220032
+    },
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 31.858209999999993,
+      "maxRssKiB": 46760,
+      "count": 1599
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1679.734564,
+      "maxRssKiB": 55392
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 505.64003099999996,
+      "maxRssKiB": 49908
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 32.275707999999995,
+      "maxRssKiB": 46248,
+      "count": 1599
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1599.761072,
+      "maxRssKiB": 55740
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 523.4450290000001,
+      "maxRssKiB": 49852
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 33.342043,
+      "maxRssKiB": 46760,
+      "count": 1599
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1783.690978,
+      "maxRssKiB": 231924
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 695.777055,
+      "maxRssKiB": 211856
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 27.26314,
+      "maxRssKiB": 46624,
+      "count": 1599
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1831.514815,
+      "maxRssKiB": 219880
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 636.843516,
+      "maxRssKiB": 211844
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 27.440276000000004,
+      "maxRssKiB": 46632,
+      "count": 1599
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1805.930909,
+      "maxRssKiB": 55588
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 517.847108,
+      "maxRssKiB": 49420
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 38.21593299999999,
+      "maxRssKiB": 46760,
+      "count": 1599
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1722.6802989999999,
+      "maxRssKiB": 55296
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 567.562092,
+      "maxRssKiB": 49240
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 28.651074,
+      "maxRssKiB": 46504,
+      "count": 1599
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1901.151623,
+      "maxRssKiB": 233484
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 742.063241,
+      "maxRssKiB": 212292
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 33.14795599999999,
+      "maxRssKiB": 46360,
+      "count": 1599
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1977.6892340000002,
+      "maxRssKiB": 234968
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 688.9695780000001,
+      "maxRssKiB": 222472
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 31.527392999999996,
+      "maxRssKiB": 46632,
+      "count": 1599
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "mode": "build",
+      "profile": "full",
+      "ms": 1954.084824,
+      "maxRssKiB": 55664
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "mode": "verify",
+      "profile": "full",
+      "ms": 568.079084,
+      "maxRssKiB": 49620
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "mode": "collect",
+      "profile": "full",
+      "ms": 33.853905,
+      "maxRssKiB": 46632,
+      "count": 1599
+    }
+  ]
+}

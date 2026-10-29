@@ -68,6 +68,6 @@
 - `registration={x,y,kicks?,drift?}`：镜头内固定套色，特定事件才 kick 或单次 drift；不要求无意义逐帧抖动。所有状态为纯帧函数，支持随机寻帧。
 - 每版的 id 自动加 React 实例作用域，避免多个纸面复用时 mask/pattern 相互串扰；children 自建 SVG id 仍由调用方保证唯一。
 
-新增 [《留一条路》36秒示例](../../examples/riso-story/README.md)：粉色折纸变桥，蓝版在桥面叠印成可通行的深色；两位甲虫持续身份与结尾使用结果体现“材质变化承担叙事”，没有改掉原样片。组件不含故事图形；只换 artwork 与现有 cue sheet 即可用在另一题材。
+源码 checkout 保留 [《留一条路》36秒示例](https://github.com/solplum/anything2video/blob/c1505c5/examples/riso-story/README.md)（未随 core/full 发行包携带；复现前准备对应 checkout 和已授权音源，不把包内缺省媒体当已安装）：粉色折纸变桥，蓝版在桥面叠印成可通行的深色；两位甲虫持续身份与结尾使用结果体现“材质变化承担叙事”，没有改掉原样片。组件不含故事图形；只换 artwork 与现有 cue sheet 即可用在另一题材。
 
 此项吸收 [Lemo-Opuscar](https://lemomo-ai.github.io/lemo-opuscar/) 的分版叙事/事件套准方法，原创故事、原创图形、独立实现，不复制其引擎、配乐或素材。完整影片审阅仍走现有 directing-playbook、action-review 与音频门禁；这里不另建通用规则或宣称草稿已验收。

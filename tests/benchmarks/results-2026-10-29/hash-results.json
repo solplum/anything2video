@@ -1,0 +1,78 @@
+{
+  "sourceCommit": "c1505c5bf20ab877ee829763d65fcce6c5b4a912",
+  "workload": "snapshotSources of an isolated project: frozen template src/public/package files plus minimal fixed storyboard, 140 files, 44639559 bytes; full SHA256 every call",
+  "identicalDigests": true,
+  "cache": "Fresh Node processes, uncontrolled warm filesystem caches.",
+  "rows": [
+    {
+      "variant": "baseline",
+      "repetition": 0,
+      "ms": 83.44555399999999,
+      "maxRssKiB": 87096,
+      "files": 140
+    },
+    {
+      "variant": "candidate",
+      "repetition": 0,
+      "ms": 53.17775400000001,
+      "maxRssKiB": 47928,
+      "files": 140
+    },
+    {
+      "variant": "candidate",
+      "repetition": 1,
+      "ms": 51.434322,
+      "maxRssKiB": 47636,
+      "files": 140
+    },
+    {
+      "variant": "baseline",
+      "repetition": 1,
+      "ms": 67.406278,
+      "maxRssKiB": 86712,
+      "files": 140
+    },
+    {
+      "variant": "baseline",
+      "repetition": 2,
+      "ms": 75.139228,
+      "maxRssKiB": 87224,
+      "files": 140
+    },
+    {
+      "variant": "candidate",
+      "repetition": 2,
+      "ms": 54.505691000000006,
+      "maxRssKiB": 47672,
+      "files": 140
+    },
+    {
+      "variant": "candidate",
+      "repetition": 3,
+      "ms": 55.484178,
+      "maxRssKiB": 47800,
+      "files": 140
+    },
+    {
+      "variant": "baseline",
+      "repetition": 3,
+      "ms": 85.547692,
+      "maxRssKiB": 86740,
+      "files": 140
+    },
+    {
+      "variant": "baseline",
+      "repetition": 4,
+      "ms": 69.27179,
+      "maxRssKiB": 86712,
+      "files": 140
+    },
+    {
+      "variant": "candidate",
+      "repetition": 4,
+      "ms": 50.800968,
+      "maxRssKiB": 47672,
+      "files": 140
+    }
+  ]
+}

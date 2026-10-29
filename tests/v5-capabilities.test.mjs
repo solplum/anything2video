@@ -88,94 +88,59 @@ test('probe_readability.mjs correctly audits mobile scale and subtitle safezone'
   assert.ok(res3.unreadables[0].scaledFontSize < 12);
 });
 
-test('export_jianying.py successfully exports multi-track native draft structure', () => {
+test('export_jianying.py exports validated experimental draft data without asserting desktop compatibility', async () => {
+  const {createHash} = await import('node:crypto');
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'a2v-jianying-test-'));
   const projectDir = path.join(tmpDir, 'mock-project');
   const outDir = path.join(tmpDir, 'jianying-draft-out');
-  fs.mkdirSync(projectDir, { recursive: true });
-  fs.mkdirSync(path.join(projectDir, 'script'), { recursive: true });
-  fs.mkdirSync(path.join(projectDir, 'audio'), { recursive: true });
-  fs.mkdirSync(path.join(projectDir, 'renders'), { recursive: true });
-
-  // 1. Mock project.json
-  fs.writeFileSync(
-    path.join(projectDir, 'project.json'),
-    JSON.stringify({
-      slug: 'mock-doc',
-      width: 1920,
-      height: 1080,
-      fps: 30,
-      totalFrames: 180,
-      recipe: 'documentary',
-    }, null, 2)
-  );
-
-  // 2. Mock script/storyboard.json
-  fs.writeFileSync(
-    path.join(projectDir, 'script', 'storyboard.json'),
-    JSON.stringify({
-      shots: [
-        { id: 'S01', from: 1, to: 90, purpose: '档案陈列', action: '古籍翻拍扫描' },
-        { id: 'S02', from: 91, to: 180, purpose: '印鉴特写', action: '朱砂印盖下' },
-      ],
-      claims: [],
-      assets: [],
-    }, null, 2)
-  );
-
-  // 3. Mock script/narration.txt
-  fs.writeFileSync(
-    path.join(projectDir, 'script', 'narration.txt'),
-    '这是一段珍贵的历史原声纪录。\n见证了文明的演变与岁月的沉淀。'
-  );
-
-  // 4. Mock script/timeline.json
-  fs.writeFileSync(
-    path.join(projectDir, 'script', 'timeline.json'),
-    JSON.stringify({
-      sentences: [
-        { text: '这是一段珍贵的历史原声纪录。', start: 0.5, end: 3.0 },
-        { text: '见证了文明的演变与岁月的沉淀。', start: 3.2, end: 5.8 },
-      ],
-    }, null, 2)
-  );
-
-  // 5. Mock a tiny wav/mp4 file to act as renders
-  const dummyFile = Buffer.from('RIFF....WAVEfmt ....data....');
-  fs.writeFileSync(path.join(projectDir, 'renders', 'mock-doc_final.mp4'), dummyFile);
-  fs.writeFileSync(path.join(projectDir, 'audio', 'audio_narration.wav'), dummyFile);
-
-  // 6. Run export_jianying.py
-  const scriptPath = path.join(root, 'scripts', 'export_jianying.py');
-  const pyOutput = execFileSync('python3', [scriptPath, projectDir, '--out', outDir], {
-    encoding: 'utf8',
-  });
-
-  assert.ok(pyOutput.includes('剪映原生草稿工程成功导出至') || pyOutput.includes('Jianying draft') || fs.existsSync(outDir));
-
-  // 7. Verify exported draft directory contents
-  assert.ok(fs.existsSync(outDir), 'Output directory must exist');
-  const draftDir = fs.existsSync(path.join(outDir, 'draft_info.json'))
-    ? outDir
-    : path.join(outDir, 'mock-project');
-  const draftInfoPath = path.join(draftDir, 'draft_info.json');
-  const draftContentPath = path.join(draftDir, 'draft_content.json');
-  assert.ok(fs.existsSync(draftInfoPath) || fs.existsSync(draftContentPath), 'Must generate draft json');
-
-  const draftData = JSON.parse(fs.readFileSync(fs.existsSync(draftInfoPath) ? draftInfoPath : draftContentPath, 'utf8'));
-  assert.ok(Array.isArray(draftData.tracks), 'Draft must contain tracks array');
-  
-  // Verify track types
-  const trackTypes = draftData.tracks.map(t => t.type);
-  assert.ok(trackTypes.includes('video'), 'Must contain video track');
-  assert.ok(trackTypes.includes('audio'), 'Must contain audio track');
-  assert.ok(trackTypes.includes('text'), 'Must contain text subtitle track');
-
-  // Verify texts exist
-  assert.ok(draftData.materials.texts.length >= 2, 'Must export text subtitle materials');
-
-  // Clean up tmp dir
-  fs.rmSync(tmpDir, { recursive: true, force: true });
+  try {
+    const audioDir = path.join(projectDir, 'public/assets/mock-doc');
+    for (const dir of ['script', 'renders', 'public/assets/mock-doc']) {
+      fs.mkdirSync(path.join(projectDir, dir), {recursive: true});
+    }
+    fs.writeFileSync(path.join(projectDir, 'project.json'), JSON.stringify({
+      slug: 'mock-doc', width: 64, height: 64, fps: 30, totalFrames: 60,
+    }));
+    fs.writeFileSync(path.join(projectDir, 'script/timeline.json'), JSON.stringify({
+      fps: 30, total_frames: 60,
+      sentences: [{from: 1, to: 60, text: '完整句子', subs: [
+        {from: 1, to: 30, text: '首块字幕'}, {from: 31, to: 60, text: '尾块字幕'},
+      ]}],
+    }));
+    // Real media, not magic RIFF bytes renamed .mp4. Proves producer-side FFprobe checks only.
+    const movie = path.join(projectDir, 'renders/mock-doc_v1.mp4');
+    execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'color=c=black:s=64x64:r=30:d=2',
+      '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo', '-t', '2', '-c:v', 'libx264',
+      '-preset', 'ultrafast', '-threads', '1', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', movie]);
+    execFileSync('ffmpeg', ['-v', 'error', '-i', movie, '-vn', '-c:a', 'pcm_s16le',
+      path.join(audioDir, 'audio_narration.wav')]);
+    fs.writeFileSync(movie + '.delivery.json', JSON.stringify({
+      schemaVersion: 1, mode: 'video', frames: {from: 1, to: 60},
+      mediaSha256: createHash('sha256').update(fs.readFileSync(movie)).digest('hex'),
+    }));
+    // The alphabetically earlier preview must never replace the full-render candidate.
+    const preview = path.join(projectDir, 'renders/mock-doc_preview.mp4');
+    fs.copyFileSync(movie, preview);
+    fs.writeFileSync(preview + '.delivery.json', JSON.stringify({schemaVersion: 1, mode: 'preview'}));
+    const scriptPath = path.join(root, 'scripts/export_jianying.py');
+    execFileSync('python3', [scriptPath, projectDir, '--out', outDir, '--dry-run', '--include-subtitles']);
+    assert.ok(!fs.existsSync(outDir), 'dry-run must not create output or copy media');
+    const pyOutput = execFileSync('python3', [scriptPath, projectDir, '--out', outDir, '--include-subtitles'], {encoding: 'utf8'});
+    assert.ok(pyOutput.includes('实验性 Jianying draft'));
+    const draftDir = path.join(outDir, 'mock-project');
+    const data = JSON.parse(fs.readFileSync(path.join(draftDir, 'draft_info.json'), 'utf8'));
+    assert.deepEqual(data.tracks.map(t => t.type), ['video', 'audio', 'text']);
+    assert.ok(data.materials.videos[0].path.endsWith('mock-doc_v1.mp4'));
+    assert.ok(data.materials.audios[0].path.endsWith('audio_narration.wav'));
+    assert.equal(data.tracks[0].segments[0].volume, 1, 'Rendered master audio remains authoritative');
+    assert.equal(data.tracks[1].segments[0].volume, 0, 'Editable raw stem must not double the mix');
+    assert.deepEqual(data.tracks[2].segments.map(s => s.target_timerange), [
+      {start: 0, duration: 1000000}, {start: 1000000, duration: 1000000},
+    ]);
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(draftDir, 'draft_content.json'), 'utf8')), data);
+  } finally {
+    fs.rmSync(tmpDir, {recursive: true, force: true});
+  }
 });
 
 test('directing playbook and production contract incorporate v5.0.0 rules', () => {

@@ -56,7 +56,7 @@
 
 ### 1.6 ⑥ 上下文现实与磁盘纪律 (Context & Memory Discipline)
 - **大上下文（512k/1M）的正确用法**：大上下文用于保持统一合同、配方 SPEC、风格台账常驻；但**大 JSON、分镜表、TSX 源码必须落盘传路径**，严禁在 Prompt 中来回往返冗长文本。
-- **小步提交与高频验证**：对于推理一致性偏弱或易截断的模型，严格缩小自由度——照 `gallery/cards/` 抽卡对标，每组镜头完成即执行 `npm run typecheck` 与局部渲染，每阶段跑 `node <skill>/scripts/check_state.mjs <工程>` 确认八态证据。
+- **小步提交与高频验证**：对于推理一致性偏弱或易截断的模型，严格缩小自由度——照 `gallery/cards/` 抽卡对标，每组镜头完成即执行 `npm run typecheck` 与局部渲染，每阶段跑 `node <skill>/scripts/check_state.mjs <工程>` 核对七态证据（稿件授权另按生产契约人工检查；无旁白路线不能只凭此阶梯判断进度）。
 
 ---
 

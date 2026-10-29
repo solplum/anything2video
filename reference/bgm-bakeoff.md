@@ -64,6 +64,8 @@
 
 ## 录音优先反查（2026-10-19）
 
+以下默认命令从**带曲库的源码 checkout 根目录**运行。core/full 发行包都不含录音与 profiles；在安装包中使用时，需先准备已授权曲库，并给 `bgm_query.py` 显式传 `--profiles <档案目录> --root <档案音源相对路径的根>`。档案存在不等于音频可播放，详见 [曲库安装范围](bgm-library.md)。
+
 默认：
 ```sh
 python scripts/bgm_query.py --theme 商业品牌 --func hero --top 3

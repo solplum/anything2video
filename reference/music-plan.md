@@ -10,11 +10,11 @@
 分镜定稿（beat sheet 出炉）后、贴片混音前：
 
 1. **反查提名**：按片子的题材（1–2 个）+ 每个落位的功能（钩子/垫底/hero/收尾）跑 `bgm_query.py`；
-   用户曲库（`by=user`）命中必占首选，曲池曲/程序编曲作补充位，无命中不硬凑。
+   用户曲库（profile 顶层 `owner=user`）合格命中优先，曲池曲/程序编曲作补充位，无命中不硬凑。
 2. **出编排表**：主控按 beat sheet 把命中段落填成 `music_plan.json`（schema 见下）——切点尽量落在
    曲内段落边界（档案 `segments`）与 bar 边界（`script/beat_grid.json` 的 downbeats），切点提前 2 帧
    （≈0.067s@30fps）落拍感知更紧（mvd 实证规则）。
-3. **过用户拍板**：编排表随贴片候选一起给用户（每段一句话 rationale），可改可换曲；拍板后落盘。
+3. **记录音乐决定**：编排表随贴片候选呈现（每段一句话 rationale），按 [生产契约的既有授权](production-contract.md#capabilities) 由实际决策者确定；已有明确选曲/编排授权时由主控执行并记录，不重复确认。
 4. **混音**：`uv run python scripts/mix_audio.py` 自动检测编排表优先消费；校验 fail fast。
 
 ## Schema（v1）
@@ -41,7 +41,7 @@
 
 | 字段 | 必填 | 说明 |
 |---|---|---|
-| `track` | ✓ | 音轨文件名。解析顺序：工程 `public/assets/<slug>/` → skill 曲库 `assets/audio/bgm/` → 绝对路径 |
+| `track` | ✓ | 音轨文件名。解析顺序：工程 `public/assets/<slug>/` → 工程 `assets/audio/bgm/` → 所给路径（相对当前工作目录或绝对路径）。不会自动找到 Skill 安装目录；优先将已授权音轨与来源记录落入工程 |
 | `track_in` / `track_out` | ✓ | 曲内入/出点（秒）。**时长必须与落位一致**（容差 0.05s）；出点不得超曲长 |
 | `timeline_start` | ✓ | 视频落位起点（秒） |
 | `timeline_end` |  | 落位终点；缺省自动 = start + (track_out − track_in) |
@@ -61,7 +61,7 @@
 
 ## 纪律
 
-- **用户拍板不可跳过**：编排表是创作决策（同 bakeoff 圈选地位），只改数字不算改曲，换曲/换段必须用户确认。
+- **授权记录不可跳过**：编排表与换曲/换段都需可追溯决定，遵循 [生产契约](production-contract.md#audio)；已明确授权主控选曲/编排时不重复等用户拍板，超出授权范围才补问。数字调整仍需重新试听、对账下游证据。
 - **程序编曲单文件也可进编排表**：`bgm_generate.py` 产物（wav）落工程内，作为 cue 的 track——
   编排表天然统一两通道；程序编曲的段切点以 beat sheet 为合同（轴 B 定案），曲库曲以 beat_grid 实测为真值。
 - **换轨证据链**：编排表改动会改变成片与 mix.json（`music_plan_sha256`/`music_tracks` 登记），

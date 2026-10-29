@@ -14,6 +14,9 @@ ROUTING_DOCS = ENTRY_PATH + (
     "reference/reference-breakdown.md", "reference/visual-direction.md",
     "recipes/explainer.md", "recipes/_schema.md", "recipes/documentary.md",
     "recipes/promo.md", "recipes/epic.md", "recipes/custom.md",
+    "reference/desktop-hosts.md", "reference/bgm-library.md",
+    "reference/bgm-bakeoff.md", "reference/music-plan.md", "reference/sound-design.md",
+    "docs/adapters.md", "styles/riso-print/SPEC.md",
 )
 
 
@@ -89,6 +92,17 @@ class DocumentationRoutingTests(unittest.TestCase):
         # Do not duplicate mutable gallery counts outside the gallery itself.
         for doc in ENTRY_PATH:
             self.assertIsNone(re.search(r"\d+\s*张(?:\*\*)?[^。\n]{0,8}配方卡", (ROOT / doc).read_text()), doc)
+
+    def test_documented_machine_states_match_runtime_without_an_invented_approval_gate(self):
+        runtime = (ROOT / "scripts/check_state.mjs").read_text()
+        states = re.findall(r"'([^']+)'", re.search(r"export const STATES = \[([^\]]+)\]", runtime).group(1))
+        index = (ROOT / "reference/tools-and-components.md").read_text()
+        sequence = re.search(r"intake(?: → [a-z]+)+", index).group(0).split(" → ")
+        self.assertEqual(sequence, states)
+        self.assertNotIn("approved", states)
+        contract = (ROOT / "reference/production-contract.md").read_text()
+        self.assertIn("不读取或校验 `script/approval.json`", contract)
+        self.assertIn("人工授权门", contract)
 
     def test_documentary_example_uses_an_existing_runtime_recipe(self):
         document = (ROOT / "recipes/documentary.md").read_text()

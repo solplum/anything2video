@@ -27,7 +27,7 @@ core 若未安装可选视频，选择页的 poster 只是静态参考，不写�
 
 工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、fps、totalFrames、composition（默认 Video）、recipe（模板运行时枚举为 promo / explainer / epic；documentary 是制作路线，不是自动注册的皮肤/覆盖层开关，按其文档实现镜头）。默认横屏 1280×720；原生竖屏 1080×1920。故意无声时额外声明 `audio: {mode: "silent"}`，有旁白作品不能用此字段掩盖丢失音轨。
 
-初始化支持 `<slug>` 单参：数据根优先 `A2V_DATA_ROOT`，再读持久化文件；未知或相对根直接拒绝，不退回当前目录。也支持 `<工程绝对路径> <slug>`。工程顶层 renders/stills/fin_frames/qc/delivery/versions 与依赖、音频缓存为保留产物位置（delivery/ 为 finalize_delivery 原子发布产物、versions/ 为 jury 修复轮版本留存，两者均在源快照排除清单内），不放导入源码；源码与素材应放入被记录的项目位置。`src/build`、自定义 components 及普通 build/out/dist 目录仍是输入。
+初始化支持 `<slug>` 单参：数据根优先 `A2V_DATA_ROOT`，再读持久化文件；未知或相对根直接拒绝，不退回当前目录。也支持 `<工程绝对路径> <slug>`。工程顶层 renders/stills/fin_frames/qc/delivery/versions 与依赖、音频缓存为保留产物位置（delivery/ 为 finalize_delivery 终检发布产物、versions/ 为 jury 修复轮版本留存，两者均在源快照排除清单内），不放导入源码；源码与素材应放入被记录的项目位置。`src/build`、自定义 components 及普通 build/out/dist 目录仍是输入。
 
 所有渲染模式都检查完整分镜、文件、素材哈希和 TypeScript。未完成全片时使用独立 draft 样片工程，准确声明该样片范围；正式工程保留完整计划和未完成项。初始化默认 draft，不是最终片。status 改为 production 后须重渲全片，状态变化也会改变源码哈希。
 
@@ -57,7 +57,7 @@ core 若未安装可选视频，选择页的 poster 只是静态参考，不写�
 <a id="script-approval"></a>
 ## 文案确认门（v4.1.0）
 
-稿件是唯一默认必须过实际用户的创作决策，两段式，机器门在 check_state 阶梯的 `approved` 态（`scripted` 与 `voiced` 之间）。
+稿件是唯一默认必须过实际用户的创作决策，两段式。**这是主控必须执行的人工授权门，不是 `check_state` 的机器状态**：当前工具只有七态，没有 `approved` 态，也不读取或校验 `script/approval.json`。进入配音前、改稿后与续作时，主控须按下述记录核对实际用户授权和当前稿件哈希；状态检查通过不能代替批准。
 
 - **方向候选**：调研后出 2–3 个候选，各带角度名、一句话卖点、叙事结构（钩子→展开→高潮→结尾）、开头 2–3 句试写、预计时长与节奏、与所选卡的适配理由；在对话中呈现，用户可选、可混、可否，迭代到锁定为止。候选与选定记入 `research/script-direction.md`。不许只给一个“假选择”。
 - **全文定稿**：按选定方向出全文，一句一行、`|` 切字幕块，在对话中逐段呈现；修订轮数不限，直到用户明确确认。确认前 `script/narration.txt` 不落盘（过程稿进 `research/`，不得提前制造 scripted 证据）。
@@ -65,12 +65,12 @@ core 若未安装可选视频，选择页的 poster 只是静态参考，不写�
 - **自带文案**：`source="user_provided"`，免方向候选，仍须复述全文并提示风险点（事实口径/时长/腔调）请用户确认。
 - **豁免**：仅用户明示的稿件级授权可写 `exempt:{reason,grantedAt}`，本次制作不再等确认；泛化授权（“不计成本”“自行决策”）不自动豁免，intake 同轮一句话问清。豁免同样落盘，审计可见。
 - **无旁白片**：画面文字（字幕、标题卡、金句）视为文案走同一道门，写进 `script/narration.txt`。
-- **续作**：跨会话续作时证据在且哈希对上不重复问；证据缺失或哈希不符按门拦下，补确认而不是补声明。
+- **续作**：跨会话续作时证据在且哈希对上不重复问；证据缺失或哈希不符由主控停止依赖稿件的后续制作，补确认而不是补声明；不得声称工具已自动拦截。
 
 <a id="portrait"></a>
 ## 竖屏
 
-1080×1920 片建议关键信息 x80–900、y180–1500，字幕 y1400–1570；底部约350px和右侧约160px不放必要信息。这是保守制作区，**不是抖音官方固定UI尺寸**，发布前依实际预览复核。中文正文建议至少42px，字幕48–56px，每行约12–16字；命令分段显示，不能缩到不可读。封面需独立测试方形裁切。**字幕带门禁**：渲染后、烧字幕前，对无字幕版成片跑 `uv run scripts/probe_subtitle_band.py <成片> --band-ratio 0.73`——命中时间码逐条看帧定性（浅底风格主路；纹理底/深底粒子层会误报，定性纪律同探针总则），设计内元素（结尾卡、进度条）登记豁免；能挪的先挪内容，字幕让位参数（safe 区）在分镜阶段就声明。**移动端 480px 可读性探针**：运行 `node <skill>/scripts/probe_readability.mjs <成片.mp4> --elements <图元清单.json> --mobile-width 480 --sample-rate 2 --out <工程>/qc/readability --json`。真实元数据抽帧＋显式清单的字号/字幕带/越界检查；不做 OCR，不自动发现全部图元。未传清单标 not_performed，成功抽帧仍 needs_review，工具失败或已知违规为 failed；禁止把缩略图生成当作 passed。清单 schema、--safe-bottom 源像素口径和退出码见 [readability.md](readability.md)，最终仍需 480px 看帧及真实运动审查。
+1080×1920 片建议关键信息 x80–900、y180–1500，字幕 y1400–1570；底部约350px和右侧约160px不放必要信息。这是保守制作区，**不是抖音官方固定UI尺寸**，发布前依实际预览复核。中文正文建议至少42px，字幕48–56px，每行约12–16字；命令分段显示，不能缩到不可读。封面需独立测试方形裁切。**字幕带门禁**：渲染后、烧字幕前，对无字幕版成片跑 `uv run <skill>/scripts/probe_subtitle_band.py <成片> --band-ratio 0.73 --out <工程>/qc/subtitle-band`——命中时间码逐条看帧定性（浅底风格主路；纹理底/深底粒子层会误报，定性纪律同探针总则），设计内元素（结尾卡、进度条）登记豁免；能挪的先挪内容，字幕让位参数（safe 区）在分镜阶段就声明。**移动端 480px 可读性探针**：运行 `node <skill>/scripts/probe_readability.mjs <成片.mp4> --elements <图元清单.json> --mobile-width 480 --sample-rate 2 --out <工程>/qc/readability --json`。真实元数据抽帧＋显式清单的字号/字幕带/越界检查；不做 OCR，不自动发现全部图元。未传清单标 not_performed，成功抽帧仍 needs_review，工具失败或已知违规为 failed；禁止把缩略图生成当作 passed。清单 schema、--safe-bottom 源像素口径和退出码见 [readability.md](readability.md)，最终仍需 480px 看帧及真实运动审查。
 
 <a id="assets"></a>
 ## 素材与参考片
@@ -99,7 +99,7 @@ TTS/mix 从 project.json 读取 slug/fps；config slug 不一致须迁移后重�
 <a id="review"></a>
 ## 三轮证据
 
-1. 工程轮：类型检查、全镜头覆盖、素材存在、音画、输出规格、解码错误。空组与空句不能假通过。运动连续性用 `scripts/probe_motion_quality.py` 采样成片（运动面积/静止帧对/孤立跳变/最长静止，附跳变证据拼图）——首尾差不能替代连续运动检查；数字是线索，定性按 directing-playbook「运动量按配方语义读」执行，合法静止以分镜与 beat sheet 豁免登记为准。**矢量/精密工程类风格门禁（v4.2.0）**：`isometric-anatomy`、`blueprint`、`line-art` 等图纸/机械类风格加跑线头闭合度探针 `node scripts/probe_line_ends.mjs <图元文件> --tolerance 2.0`（浮空线数必须清零，严禁未闭合装饰线）；艺术手绘风格（水墨/水彩/粉笔）自动豁免。
+1. 工程轮：类型检查、全镜头覆盖、素材存在、音画、输出规格、解码错误。空组与空句不能假通过。运动连续性用 `scripts/probe_motion_quality.py` 采样成片（运动面积/静止帧对/孤立跳变/最长静止，附跳变证据拼图）——首尾差不能替代连续运动检查；数字是线索，定性按 directing-playbook「运动量按配方语义读」执行，合法静止以分镜与 beat sheet 豁免登记为准。**矢量/精密工程类风格门禁（v4.2.0）**：`isometric-anatomy`、`blueprint`、`line-art` 等图纸/机械类风格加跑线头闭合度探针 `node <skill>/scripts/probe_line_ends.mjs <静态SVG或HTML> --tolerance 2.0`。当前工具只读字面量 `<path d="…">` 的 M/L/Z 起止点近邻，不解析 TSX 动态路径、曲线/H/V/弧线、变换或其他 SVG 图元，也不证明端点落在轮廓中段。只对支持且确实检查到的路径判读浮空线；零计数不能证明未支持图元通过，须另外实查并记录覆盖缺口。艺术手绘风格（水墨/水彩/粉笔）不套用精密机械的闭合要求。
 
 2. 导演轮：开场、中段复杂演示、结尾真实运动片段；字幕遮挡、文字清晰、画面是否承载解释、转场是否符合已选语法与语义、素材伪影、声音自然度。
 3. 反向轮：先挑最弱镜头，检查数字/出处/承诺/发布标签；复验修复过的场景，防止修一处坏另一处。
@@ -143,7 +143,7 @@ render.mjs 为每个媒体写 `.delivery.json`：schemaVersion=1、mediaSha256�
 <a id="delivery"></a>
 ## 对外交付终检
 
-执行 `node <skill>/scripts/finalize_delivery.mjs <工程> <渲染文件>`：临时目录全建全验，两遍 loudnorm 到目标响度，master/share 双编码各做全解码，对最终编码重测响度（±0.5 LU 且 TP≤-1.0）、黑帧/冻帧事件计数和九帧接触表。全过才原子发布到 `delivery/`，交付报告最后落位作为完成标记；任一失败不发布任何文件。冻帧事件与 beat sheet 豁免登记对账。它不替代上面的实际审片、完整听取和 check-qc；数字取真实文件，不手填规格。
+执行 `node <skill>/scripts/finalize_delivery.mjs <工程> <渲染文件>`：临时目录全建全验，两遍 loudnorm 到目标响度，master/share 双编码各做全解码，对最终编码重测响度（±0.5 LU 且 TP≤-1.0）、黑帧/冻帧事件计数和九帧接触表。预发布检查通过后逐文件移入 `delivery/`，报告最后落位才表示完整交付；检查失败不发布。**非多文件事务、无并发锁**：移动失败可能留部分文件；同一目标不并发终检，恢复前核对残留。冻帧仅机器计数，主控与 beat sheet 豁免对账。工具要求可测非静音音轨：无音轨/全静音片不能通过响度终检或声称 delivered；虽可按 `audio.mode="silent"` 渲染和 QC，audio 仍需真实完整 playback 记录，当前无无声终检或 `not_applicable` 状态，不伪报响度通过。它不替代上面的实际审片、完整听取和 check-qc；数字取真实文件，不手填规格。
 
 <a id="publication"></a>
 ## 画幅与发布
@@ -154,4 +154,4 @@ render.mjs 为每个媒体写 `.delivery.json`：schemaVersion=1、mediaSha256�
 
 抖音的合成配音/生成画面声明依当期发布界面启用适用选项并保留标识，片内小字不能代替平台按钮。X 长文/线程按账号实际权限，不假设能发 Articles。GitHub 只发授权仓库，保留许可证与上游署名，不上传密钥、参考片、隐私日志或缓存。不给账户交易、地域绕行或过审保证；模型替代声明限定为本制作任务，不写全面能力等价。
 
-**剪映 / CapCut 原生工程草稿导出**：渲染与验收后可运行 `uv run python scripts/export_jianying.py <工程> --out <导出目录>`，读取 storyboard、narration、timeline 与混音台账，拆成视频、旁白、BGM、字幕轨。Mac 使用 `draft_info.json`＋Resources，Windows 使用 `draft_content.json`；在实际桌面端打开验证前，不把草稿生成说成宿主端完整验证。
+**剪映 / CapCut 草稿（实验性）**：验收后按 [导出说明](../recipes/documentary.md#editor-draft) 运行 `export_jianying.py`。保留成片音轨，原始旁白/BGM 轨默认静音；文本轨仅显式 `--include-subtitles`。不重建混音/SFX 或分离烧录字幕，不验证最终 QC/桌面兼容；不能把草稿数据生成称为原生应用验证。

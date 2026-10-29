@@ -2,6 +2,9 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
 import {TEACHING, teachingOpacity} from '../styles/line-art/teaching-timing.mjs';
 import {auditReadability} from '../scripts/probe_readability.mjs';
 
@@ -44,4 +47,21 @@ test('declared teaching sizes and reference layout fit the mobile/readability bu
 test('opt-in addition preserves the original line-art kit byte-for-byte', () => {
   const bytes = fs.readFileSync(new URL('../styles/line-art/kit.tsx', import.meta.url));
   assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), '9b5537ddd4cd753ecdc7b7d5ee402e730bd2bcfc50e4e8b9c418c348063e543d');
+});
+
+
+test('core example reproduction explains the full-source prerequisite before writing outputs', t => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'a2v-line-art-core-'));
+  t.after(() => fs.rmSync(temp, {recursive: true, force: true}));
+  const source = path.join(temp, 'core');
+  const script = path.join(source, 'examples/line-art-teaching/prepare.mjs');
+  fs.mkdirSync(path.dirname(script), {recursive: true});
+  fs.copyFileSync(new URL('../examples/line-art-teaching/prepare.mjs', import.meta.url), script);
+  const out = path.join(temp, 'projects');
+  const run = spawnSync(process.execPath, [script, out], {encoding: 'utf8'});
+  assert.notEqual(run.status, 0);
+  assert.match(run.stderr, /samples\/line-art-sample\.mp4 is not installed/);
+  assert.match(run.stderr, /--profile full/);
+  assert.match(run.stderr, /No output was created/);
+  assert.equal(fs.existsSync(out), false);
 });

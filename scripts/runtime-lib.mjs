@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {createHash} from 'node:crypto';
+import {sha256File} from './hash-file.mjs';
+export {sha256File} from './hash-file.mjs';
 
 export const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 export const nonempty = value => typeof value === 'string' && value.trim().length > 0;
-export const sha256File = file => createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 
 export function isWithin(root, target) {
   const relative = path.relative(root, target);

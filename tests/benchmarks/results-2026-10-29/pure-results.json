@@ -1,0 +1,127 @@
+{
+  "sourceCommit": "c1505c5bf20ab877ee829763d65fcce6c5b4a912",
+  "node": "v24.22.1",
+  "warmup": "One full workload batch per case; 5 repeated batches in same Node process. Filesystem state uncontrolled; these are baseline CPU/SSR measurements, not browser frame rendering.",
+  "rows": [
+    {
+      "workload": "catalog",
+      "repetition": 0,
+      "calls": 100,
+      "ms": 110.749863,
+      "perCallMs": 1.10749863,
+      "checksum": 14919900
+    },
+    {
+      "workload": "catalog",
+      "repetition": 1,
+      "calls": 100,
+      "ms": 103.72632499999997,
+      "perCallMs": 1.0372632499999996,
+      "checksum": 14919900
+    },
+    {
+      "workload": "catalog",
+      "repetition": 2,
+      "calls": 100,
+      "ms": 101.7935389999999,
+      "perCallMs": 1.017935389999999,
+      "checksum": 14919900
+    },
+    {
+      "workload": "catalog",
+      "repetition": 3,
+      "calls": 100,
+      "ms": 101.97862899999984,
+      "perCallMs": 1.0197862899999983,
+      "checksum": 14919900
+    },
+    {
+      "workload": "catalog",
+      "repetition": 4,
+      "calls": 100,
+      "ms": 95.05089599999997,
+      "perCallMs": 0.9505089599999996,
+      "checksum": 14919900
+    },
+    {
+      "workload": "stars",
+      "repetition": 0,
+      "calls": 3600,
+      "ms": 59.02539900000011,
+      "perCallMs": 0.016395944166666697,
+      "checksum": 249950
+    },
+    {
+      "workload": "stars",
+      "repetition": 1,
+      "calls": 3600,
+      "ms": 56.96025400000008,
+      "perCallMs": 0.0158222927777778,
+      "checksum": 249950
+    },
+    {
+      "workload": "stars",
+      "repetition": 2,
+      "calls": 3600,
+      "ms": 56.95745899999997,
+      "perCallMs": 0.01582151638888888,
+      "checksum": 249950
+    },
+    {
+      "workload": "stars",
+      "repetition": 3,
+      "calls": 3600,
+      "ms": 56.47935800000005,
+      "perCallMs": 0.01568871055555557,
+      "checksum": 249950
+    },
+    {
+      "workload": "stars",
+      "repetition": 4,
+      "calls": 3600,
+      "ms": 56.81870099999992,
+      "perCallMs": 0.015782972499999978,
+      "checksum": 249950
+    },
+    {
+      "workload": "risoStaticMarkup",
+      "repetition": 0,
+      "calls": 600,
+      "ms": 45.97787299999982,
+      "perCallMs": 0.07662978833333303,
+      "checksum": 1006125
+    },
+    {
+      "workload": "risoStaticMarkup",
+      "repetition": 1,
+      "calls": 600,
+      "ms": 47.30349299999989,
+      "perCallMs": 0.07883915499999981,
+      "checksum": 1006125
+    },
+    {
+      "workload": "risoStaticMarkup",
+      "repetition": 2,
+      "calls": 600,
+      "ms": 47.67513299999996,
+      "perCallMs": 0.07945855499999993,
+      "checksum": 1006125
+    },
+    {
+      "workload": "risoStaticMarkup",
+      "repetition": 3,
+      "calls": 600,
+      "ms": 45.010313,
+      "perCallMs": 0.07501718833333333,
+      "checksum": 1006125
+    },
+    {
+      "workload": "risoStaticMarkup",
+      "repetition": 4,
+      "calls": 600,
+      "ms": 45.77046900000005,
+      "perCallMs": 0.07628411500000008,
+      "checksum": 1006125
+    }
+  ]
+}
