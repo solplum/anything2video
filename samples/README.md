@@ -8,7 +8,7 @@
 
 另保留 3 段历史配方样片（`recipe-*.mp4`，6 秒无音轨），不计入风格 ID。
 
-打开 [index.html](index.html) 可离线播放，先选家族再切换变体，支持类型 × 气质双筛选；[all.html](all.html) 可查看全部 ID。manifest.json 登记媒体 SHA-256、原输入指纹、来源工程、素材模式、音频披露和实测规格；生成器只同步选型元数据，不代替媒体探测。
+full 包打开 [index.html](index.html) 可离线播放；core 包保留全部 poster、筛选和来源目录，并明确标注可选视频未安装（[获取完整样片](../docs/package-profiles.md#optional-sample-videos)），先选家族再切换变体，支持类型 × 气质双筛选；[all.html](all.html) 可查看全部 ID。manifest.json 登记媒体 SHA-256、原输入指纹、来源工程、素材模式、音频披露和实测规格；生成器只同步选型元数据，不代替媒体探测。
 
 历史样片的 posters 在 2026-10-13 统一从正片 35%/55%/75% 时长处选择信息量较高的实测帧。新雕刻 poster 已从同版本实际渲染中提取；缩略图不使用上游素材，也不替代视频。
 

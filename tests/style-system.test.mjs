@@ -7,6 +7,7 @@ import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 import {catalog, selectionGroups, generate, generatedFiles} from '../scripts/style-catalog.mjs';
 import {tsLoader} from './helpers/load-ts.mjs';
+import {presentOptionalSamples} from '../scripts/package-profile.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const legacy = JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/style-compat.json'),'utf8'));
 const load = tsLoader();
@@ -86,12 +87,13 @@ test('four legacy stroke imports preserve every export and seeded canvas command
 // Run the generated inline script, with only its required DOM surface stubbed.
 // This regression suite stays dependency-free; actual Chromium layout/playback
 // checks are separate from these deterministic interaction tests.
-function catalogUi({flat=false,hash=''}={}) {
-  const html=generatedFiles().get(flat?'samples/all.html':'samples/index.html');
+function catalogUi({flat=false,hash='',profile='full'}={}) {
+  const filename=flat?'samples/all.html':'samples/index.html';
+  const html=presentOptionalSamples(filename,generatedFiles().get(filename),profile);
   const decode=s=>s.replace(/&(amp|lt|gt|quot|#39);/g,(_,entity)=>({amp:'&',lt:'<',gt:'>',quot:'"','#39':"'"}[entity]));
   const variants=[...html.matchAll(/<div class="variant" id="([^"]+)" data-type="([^"]+)" data-vibe="([^"]*)" data-search="([^"]*)">/g)].map(([,id,type,vibe,search])=>({
     id,dataset:{type,vibe,search:decode(search)},hidden:false,scrolled:0,
-    video:catalog.styles.find(s=>s.id===id).preview.status==='available'?{pauses:0,pause(){this.pauses++}}:null,
+    video:profile==='full'&&catalog.styles.find(s=>s.id===id).preview.status==='available'?{pauses:0,pause(){this.pauses++}}:null,
     classList:{contains:name=>name==='variant'},
     querySelector(selector){assert.equal(selector,'video');return this.video},
     closest(selector){assert.equal(selector,'.family');return families.find(f=>f.variants.includes(this))},
@@ -224,4 +226,31 @@ test('public README shows every style, genuine preview and family variant inline
   }
   assert.match(block, /hanazi-916-sample\.jpg" width="101"/);
   generate({check: true});
+});
+
+
+test('core gallery keeps every style, search, family tabs and deep links without missing video players', () => {
+  for (const flat of [false, true]) {
+    const ui = catalogUi({flat, profile: 'core', hash: '#lily-pond'});
+    assert.equal(ui.variants.length, 63);
+    assert.ok(ui.variants.every(variant => variant.video === null));
+    assert.doesNotMatch(ui.html, /<video|(?:src|href)="[^"\n]+\.mp4"/);
+    assert.equal([...ui.html.matchAll(/class="optional-preview"/g)].length, flat ? 65 : 62);
+    assert.match(ui.html, /可选视频未安装/);
+    assert.match(ui.html, /暂无渲染样片/);
+    assert.equal(ui.variants.find(variant => variant.id === 'lily-pond').hidden, false);
+    ui.filter('search', 'no-such-style');
+    assert.equal(ui.controls.empty.hidden, false);
+    ui.navigate('#mg%2Dpurple', 'popstate');
+    assert.equal(ui.controls.search.value, '');
+    assert.equal(ui.variants.find(variant => variant.id === 'mg-purple').hidden, false);
+    ui.filter('search', 'isometric-anatomy');
+    assert.equal(ui.controls.status.textContent, `当前显示 1 个${flat ? '变体' : '选择入口'}`);
+    ui.filter('search', '');
+    assert.equal(ui.controls.status.textContent, `当前显示 ${flat ? 63 : 59} 个${flat ? '变体' : '选择入口'}`);
+    if (!flat) {
+      ui.click('mg-purple'); ui.click('deep-space');
+      assert.equal(ui.families.find(family => family.id === 'dark-editorial').dataset.selected, 'deep-space');
+    }
+  }
 });

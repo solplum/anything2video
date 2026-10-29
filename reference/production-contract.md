@@ -1,18 +1,31 @@
 # 统一生产契约 v3
 
-本文件与 production-workflow.md 覆盖历史配方和 explainer 快照中的宿主绑定、硬编码路径、画幅、效果配额、授权与验收规则；配方保留叙事和风格知识。冲突时按此契约，不让模型在矛盾指令间猜选。
+本文件是共享授权、工程和验收规则的唯一权威；[生产流程](production-workflow.md) 只给执行顺序，配方和专题参考给本任务的叙事/实现细节。入口、派单、历史判例和上游快照不得另设或覆盖本契约的授权、画幅、效果配额与验收要求。历史资料按 [上下文索引](context-index.md) 按需查，不是开工必读。
 
+原创叙事、构图与运动；精确信息（文字、数字、图表、流程、字幕、标识）由代码负责。事实须能追溯到官方页面、用户资料或可复测本地证据。品牌色只用于明确重点；未给品牌体系时用中性底和明确强调色，不编造官方资产。不承诺零成本、必过审、全面模型替代或官方关系；素材、依赖、字体和声音分别核许可。
+
+<a id="capabilities"></a>
 ## 能力与授权
 
 Skill 是制作流程，不是模型权重。宿主至少需读写文件、运行 Node/uv/ffmpeg、安装依赖并查看图像；子代理、云端语音、图像模型是可选能力。先实测，不根据产品名字猜。ZCode workflow 的 `agent()`/`log()` 注入接口仅在该接口实际存在时使用，普通 CLI 无须伪造它。
 
-用户指定“自行决策”“不计成本”“发布到某仓库”已提供对应授权，样式、音乐、打样等内部审定记录即可，不重复等待。**稿件不在此列（v4.1.0 文案确认门，用户拍板 2026-10-08）**：文案默认两段式过实际用户——方向候选探讨选定 + 全文定稿确认，规则见「文案确认门」节；仅用户明示的稿件级授权（“文案你定”“稿子不用我看”）可豁免并落盘记录，泛化授权（不计成本/自行决策）不自动豁免，intake 同轮一句话问清是否含稿件。发布社交平台仍需相应授权。费用许可仅指本任务，不复制密钥到工程或 GitHub。
+用户已有授权持续有效：样式、音乐、打样与指定仓库发布在对应范围内推进并记录，不重复等待。**稿件只按 [文案确认门](#script-approval) 的稿件级授权处理，泛化自主或预算授权不自动覆盖稿件。** 发布社交平台仍需相应授权。费用许可仅指本任务，不复制密钥到工程或 GitHub。
 
-工作目录、图像通道、音乐与风格是持久决策：根目录未知先询问并保存绝对路径到 `~/.anything2video/workdir`；明确给过路径则沿用。图像通道在**首次使用时与根目录同轮询问一次**：是否提供生图 API key（MiniMax 或任意 OpenAI 兼容生图接口）。询问时如实说明：用途是 AI 材质/世界底生图（主要 epic 配方），**只影响约 5%–10% 的画面效果，不填不影响渲染、配音、音乐与交付主链路**。用户愿意提供时，把 `A2V_IMAGE_API_BASE / A2V_IMAGE_API_KEY / A2V_IMAGE_MODEL` 写入用户级环境变量（MiniMax 另设 `A2V_IMAGE_PROVIDER=minimax`），密钥只从环境变量读取，不写入任何文件、不回显；决定本身（provider 名或 `none`）记入 `~/.anything2video/image-channel`，此后沿用不再重复询问。用户拒绝就记 `none` 按无通道路线走（分镜禁排依赖生成的 AI 镜头）；之后想启用，设好环境变量并把该文件改成 provider 名即可。音乐默认按 bgm-bakeoff.md 试听圈选，用户明说无音乐或授权自行选曲时记录决定；泛泛预算许可不自动替代选曲许可。需要音乐时在分镜与建组前定曲。风格拿不准先放映随包 `samples/` 的真实片段；用户指定风格或已授权主控定方向时记录依据，不重复询问。
+<a id="selection"></a>
+### 选型与持久决策
 
+开工前单问套餐定盘（用户拍板 2026-10-06/09）：先查 [style-ledger.md](style-ledger.md) 的口味锚与判例，打开 [家族选择页](../samples/index.html)，先选家族、再选变体；有本地样片才实际播放，变体的 recipe 为类型默认值，元数据以 [catalog](../styles/catalog.json) 为准。卡赢为默认；卡类型或卡上 ⚠ 判例注与用户显式需求冲突时，开工前一句话确认，不得静默越过。
+
+选卡交互用 AskUserQuestion（或宿主等效选项）：恰好四项＝前三项按题材/台账推荐的卡＋第四项固定「其他（完整风格库）」；展示选项的同一轮就在浏览器打开选择页。选「其他」后由用户从完整库挑卡并回报卡名，不得挤掉这个出口。把卡名＋机器 ID 记入 `research/creative-brief.md`；同系列沿用记“沿用”，已有明确风格或授权主控定方向时不重复问。自由组合先查 catalog 的 `runtimeSkin`，只有 true 可填 `config.style`，其余按对应 SPEC 手动接 kit；皮肤只浅合并 palette/chrome，不自动重画主体。
+
+core 若未安装可选视频，选择页的 poster 只是静态参考，不写“已看片”；需要比较运动时，按 [资源配置说明](../docs/package-profiles.md#optional-sample-videos) 在已有授权内准备同版本完整样片，授权不足才补问。缺预览不阻塞已明确选定风格的制作，但本工程打样与实际审片要求不变。
+
+工作目录、图像通道、音乐与风格是持久决策：根目录未知先询问并保存绝对路径到 `~/.anything2video/workdir`；明确给过路径则沿用。图像通道在**首次使用时与根目录同轮询问一次**：是否提供生图 API key（MiniMax 或任意 OpenAI 兼容生图接口）。询问时如实说明：用途是 AI 材质/世界底生图（主要 epic 配方），**只影响约 5%–10% 的画面效果，不填不影响渲染、配音、音乐与交付主链路**。用户愿意提供时，把 `A2V_IMAGE_API_BASE / A2V_IMAGE_API_KEY / A2V_IMAGE_MODEL` 写入用户级环境变量（MiniMax 另设 `A2V_IMAGE_PROVIDER=minimax`），密钥只从环境变量读取，不写入任何文件、不回显；决定本身（provider 名或 `none`）记入 `~/.anything2video/image-channel`，此后沿用不再重复询问。用户拒绝就记 `none` 按无通道路线走（分镜禁排依赖生成的 AI 镜头）；之后想启用，设好环境变量并把该文件改成 provider 名即可。音乐默认按 bgm-bakeoff.md 试听圈选，用户明说无音乐或授权自行选曲时记录决定；泛泛预算许可不自动替代选曲许可。需要音乐时在分镜与建组前定曲。风格拿不准先看选择页，有样片则放映真实片段；用户指定风格或已授权主控定方向时记录依据，不重复询问。
+
+<a id="project-contract"></a>
 ## 工程合同
 
-工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、fps、totalFrames、composition（默认 Video）、recipe（支持 promo / explainer / epic / documentary）。默认横屏 1280×720；原生竖屏 1080×1920。故意无声时额外声明 `audio: {mode: "silent"}`，有旁白作品不能用此字段掩盖丢失音轨。
+工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、fps、totalFrames、composition（默认 Video）、recipe（模板运行时枚举为 promo / explainer / epic；documentary 是制作路线，不是自动注册的皮肤/覆盖层开关，按其文档实现镜头）。默认横屏 1280×720；原生竖屏 1080×1920。故意无声时额外声明 `audio: {mode: "silent"}`，有旁白作品不能用此字段掩盖丢失音轨。
 
 初始化支持 `<slug>` 单参：数据根优先 `A2V_DATA_ROOT`，再读持久化文件；未知或相对根直接拒绝，不退回当前目录。也支持 `<工程绝对路径> <slug>`。工程顶层 renders/stills/fin_frames/qc/delivery/versions 与依赖、音频缓存为保留产物位置（delivery/ 为 finalize_delivery 原子发布产物、versions/ 为 jury 修复轮版本留存，两者均在源快照排除清单内），不放导入源码；源码与素材应放入被记录的项目位置。`src/build`、自定义 components 及普通 build/out/dist 目录仍是输入。
 
@@ -31,7 +44,7 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 }
 ```
 
-镜头表 1 起含端点，覆盖每帧，无洞无重叠。Remotion frame 0 起；`Sequence from = shot.from - 1`，duration = to-from+1，本地帧加 shot.from 转全局 N。清单存在不证明镜头真的挂载：必须核对注册表并实渲染。
+动画必须从帧号与固定 seed 推导，禁止 Date.now、未 seed 随机和不可重放副作用。镜头表 1 起含端点，覆盖每帧，无洞无重叠。Remotion frame 0 起；`Sequence from = shot.from - 1`，duration = to-from+1，本地帧加 shot.from 转全局 N。清单存在不证明镜头真的挂载：必须核对注册表并实渲染。
 
 **facts 绑定（v3.9.0，反幻觉白名单的机器可读层）**：镜头可选 `facts: number[]`——指向 `claims` 数组下标，声明"本镜头画面演绎的事实以这几条登记为准"。check-plan 校验索引必须落在 claims 范围内（越界/负数/非整数即红）；空数组合法（纯装饰/过渡镜头显式声明无事实）。绑定把"画面只演登记过的事实"从 C 轮散文审查升级为分镜层结构化声明：C 轮反审逐镜头读 facts 绑定核对画面内容，**机器只验"绑没绑对"，内容是否越界仍靠人审**（代码画面的文字/数字可 grep 对账，AI 素材镜头按素材三查）。讲解配方建议事实镜头全绑定（见 recipes/explainer.md）。
 
@@ -41,6 +54,7 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 
 分镜定稿时产出 `research/beat-sheet.json` 节拍表（每拍：t、事件、画面动作、声音落点）——创作侧意图正本，音画同读（2026-10-06 轴 B）。**事件锚到「词/拍」，不锚裸秒**（huashu-art-motion 片段契约经验，MIT）：cue 写「哪个词、第几次出现、提前/推后多少」，渲染前再由脚本按词级时间戳换算成帧——秒数是从词表抄的二手数，抄一次错一次；词是导演真正的意图（某个数字念到时标注弹出）。口播改稿后按裸秒写的 cue 全部错位、按词锚的 cue 自动重排，换算脚本对「词不存在/时窗越界」拒收而不是悄悄错位。落点真值按通道分立：程序编曲（`scripts/bgm_generate.py`）以 beat sheet 为合同；曲库曲以实测 beat_grid 为真值，beat sheet 不得越权指挥外部曲目，卡点校验对两者偏差显式对账。按秒节拍合同：钩子必须在 0.5s 内出现（禁 0.3s 以上空场/黑场开场）；hero moment 通常在全片 60–75%，因叙事调整时写明理由；结尾定帧以 0.8–1.2s 为起点，按实际阅读延长，可静止。对标参考片时用 `scripts/reference_breakdown.py` 量出它的转场节奏与段落结构（`reference/reference-breakdown.md`），beat sheet 的落位写明对标依据。分镜与 beat sheet 的时间码互相引用，改一处同步另一处。
 
+<a id="script-approval"></a>
 ## 文案确认门（v4.1.0）
 
 稿件是唯一默认必须过实际用户的创作决策，两段式，机器门在 check_state 阶梯的 `approved` 态（`scripted` 与 `voiced` 之间）。
@@ -53,10 +67,12 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 - **无旁白片**：画面文字（字幕、标题卡、金句）视为文案走同一道门，写进 `script/narration.txt`。
 - **续作**：跨会话续作时证据在且哈希对上不重复问；证据缺失或哈希不符按门拦下，补确认而不是补声明。
 
+<a id="portrait"></a>
 ## 竖屏
 
 1080×1920 片建议关键信息 x80–900、y180–1500，字幕 y1400–1570；底部约350px和右侧约160px不放必要信息。这是保守制作区，**不是抖音官方固定UI尺寸**，发布前依实际预览复核。中文正文建议至少42px，字幕48–56px，每行约12–16字；命令分段显示，不能缩到不可读。封面需独立测试方形裁切。**字幕带门禁**：渲染后、烧字幕前，对无字幕版成片跑 `uv run scripts/probe_subtitle_band.py <成片> --band-ratio 0.73`——命中时间码逐条看帧定性（浅底风格主路；纹理底/深底粒子层会误报，定性纪律同探针总则），设计内元素（结尾卡、进度条）登记豁免；能挪的先挪内容，字幕让位参数（safe 区）在分镜阶段就声明。**移动端 480px 可读性探针**：运行 `node <skill>/scripts/probe_readability.mjs <成片.mp4> --elements <图元清单.json> --mobile-width 480 --sample-rate 2 --out <工程>/qc/readability --json`。真实元数据抽帧＋显式清单的字号/字幕带/越界检查；不做 OCR，不自动发现全部图元。未传清单标 not_performed，成功抽帧仍 needs_review，工具失败或已知违规为 failed；禁止把缩略图生成当作 passed。清单 schema、--safe-bottom 源像素口径和退出码见 [readability.md](readability.md)，最终仍需 480px 看帧及真实运动审查。
 
+<a id="assets"></a>
 ## 素材与参考片
 
 各配方都可按镜头使用混合素材：代码做精确信息，已审过的生成图像做材质或场景。需要叙事理由，不能用历史器物填满软件教程。每条登记文件/sha256/来源/许可/用途；AI追加模型、完整提示词、seed或n/a、披露与三查结论。普通 API 使用条款不等于素材独占著作权，不写“免版权”。
@@ -67,9 +83,12 @@ Skill 是制作流程，不是模型权重。宿主至少需读写文件、运�
 
 参考片只借结构、材质、运动与首尾呼应，不拿抽帧拼片。观察到“像AI”只能写推测，不声明其官方制作技术或比例。案例库候选总量不等于已核实原创模型作品数。
 
+<a id="audio"></a>
 ## 音频
 
-TTS 先产出清洁 `audio_narration.wav`，再派生 `audio.wav`；只在显式旁白更新时换正本。混音不能靠修改时间猜来源。相同输入重混应该字节一致，正本哈希不变。背景音乐按「能力与授权」的持久决策执行：有音乐时先试听圈选；用户明说无音乐或授权自行选曲时登记决定，不重复等待。铺沙/扫掠等风格音效必须显式选择；语音段压低音乐，结尾淡出。钉帧音效走 `scripts/mix_sfx.py` 两段式第三步（cues 表 + `audio/sfx/sfx-mix.json` 台账，工具防双混），台账与 `audio.wav.mix.json` 共同构成混音证据链。检查 peak、静音、总时长、听感；响度目标须实测而不是“RMS=某值所以已经达标”。
+音色在分镜前按 [voice-bakeoff.md](voice-bakeoff.md) 的同三句代表台词 A/B 样本页试听，由实际决策者选择并记录；沿用已有明确授权与持久偏好。音色是时间轴合同，换音色须全链重锚，不能用语速硬凑时长。需要音乐时按 [bgm-bakeoff.md](bgm-bakeoff.md) 的选曲交互（四选项＋同轮试听页）定曲；录音曲优先，程序编曲仅显式选择；多段接力用 [music-plan.md](music-plan.md)。
+
+TTS 先产出清洁 `audio_narration.wav`，再派生 `audio.wav`；只在显式旁白更新时换正本；文本变更先按文案确认门重新对账，声音变更后分镜、字幕、覆盖层、节拍和 Composition 全链重锚。混音不能靠修改时间猜来源。相同输入重混应该字节一致，正本哈希不变。背景音乐按「能力与授权」的持久决策执行：有音乐时先试听圈选；用户明说无音乐或授权自行选曲时登记决定，不重复等待。铺沙/扫掠等风格音效必须显式选择；语音段压低音乐，结尾淡出。钉帧音效走 `scripts/mix_sfx.py` 两段式第三步（cues 表 + `audio/sfx/sfx-mix.json` 台账，工具防双混），台账与 `audio.wav.mix.json` 共同构成混音证据链。检查 peak、静音、总时长、听感；响度目标须实测而不是“RMS=某值所以已经达标”。
 
 TTS/mix 从 project.json 读取 slug/fps；config slug 不一致须迁移后重跑。TTS 同步 totalFrames，已存在旁白正本仅 --force 可更新。缺项目文件的旧工程仅显式 --legacy-config --fps <整数> 可迁移；所有输入、缓存、输出经过工程内真实路径检查，不能用穿越 slug、junction 或单文件链接写出工程。
 
@@ -77,9 +96,10 @@ TTS/mix 从 project.json 读取 slug/fps；config slug 不一致须迁移后重�
 
 强节奏片需要「画面骑音乐」的连续微动时（相机微漂/辉光呼吸/密度涨落），跑 `uv run python scripts/audio_features.py <bgm>` 产 `analysis/music_features.json`，卡片经 `common/music.ts` 的 createMusic 消费（env/envPeak/hit/beatAt，接口与纪律见 music-beat-sync §7）。三条硬约束：包络只驱动平滑连续运动；冲击事件仍走 hit 候选池并受 aesthetic-rules R4 全画面冲击硬上限；无数据文件的工程不骑音乐，禁止手写正弦假装骑拍。有包络数据的工程以 music_features.json 的 grid 字段为卡点真值（与 beat_grid.json 同源同口径，单一事实源二选一）。
 
+<a id="review"></a>
 ## 三轮证据
 
-1. 工程轮：类型检查、全镜头覆盖、素材存在、音画、输出规格、解码错误。空组与空句不能假通过。运动连续性用 `scripts/probe_motion_quality.py` 采样成片（运动面积/静止帧对/孤立跳变/最长静止，附跳变证据拼图）——只看首尾差会漏卡顿（huashu 实测：一段 33% 变化但 14/48 帧对静止的镜头首尾检查全绿）；数字是线索，定性按 directing-playbook「运动量按配方语义读」执行，合法静止以分镜与 beat sheet 豁免登记为准。**矢量/精密工程类风格门禁（v4.2.0）**：`isometric-anatomy`、`blueprint`、`line-art` 等图纸/机械类风格加跑线头闭合度探针 `node scripts/probe_line_ends.mjs <图元文件> --tolerance 2.0`（浮空线数必须清零，严禁未闭合装饰线）；艺术手绘风格（水墨/水彩/粉笔）自动豁免。
+1. 工程轮：类型检查、全镜头覆盖、素材存在、音画、输出规格、解码错误。空组与空句不能假通过。运动连续性用 `scripts/probe_motion_quality.py` 采样成片（运动面积/静止帧对/孤立跳变/最长静止，附跳变证据拼图）——首尾差不能替代连续运动检查；数字是线索，定性按 directing-playbook「运动量按配方语义读」执行，合法静止以分镜与 beat sheet 豁免登记为准。**矢量/精密工程类风格门禁（v4.2.0）**：`isometric-anatomy`、`blueprint`、`line-art` 等图纸/机械类风格加跑线头闭合度探针 `node scripts/probe_line_ends.mjs <图元文件> --tolerance 2.0`（浮空线数必须清零，严禁未闭合装饰线）；艺术手绘风格（水墨/水彩/粉笔）自动豁免。
 
 2. 导演轮：开场、中段复杂演示、结尾真实运动片段；字幕遮挡、文字清晰、画面是否承载解释、转场是否符合已选语法与语义、素材伪影、声音自然度。
 3. 反向轮：先挑最弱镜头，检查数字/出处/承诺/发布标签；复验修复过的场景，防止修一处坏另一处。
@@ -88,8 +108,9 @@ TTS/mix 从 project.json 读取 slug/fps；config slug 不一致须迁移后重�
 
 三轮通过后进入 D 轮独立评分评审（审美攀登，2026-10-06 轴 A，机制与提示词见 `reference/jury-review.md`）：独立会话评委按 7 维锚点评分并给按影响力排序的修复清单，产出 `qc/jury.json` 进交付证据链。任一维度 <7 为阻塞，修复后复审该维度；≥8 不设硬门，修复轮上限 3 轮。交付说明必须附 jury 评分与 gate 状态；媒体或源码变化后旧 jury 证据作废。
 
-阻塞缺陷未清零，不交付最终版。**验收工具也要被验收**（huashu-art-motion 正面经验 25，MIT）：每个门禁/探针/检查项上线时，故意制造一次它要抓的失败（删一个镜头、写错一个转场、把字推进字幕带），确认它真的会红——huashu 实测 qa 全绿却根本没执行转场代码、一个崩溃转场整帧白屏也没报；本 skill 的同族实录是探针假读数（stderr 读取错误恒判错位）与门 1 假 PASS。新探针首片必须带一次已知坏例的正反对照记录，之后换管线/换版本时重验一次。交付包含视频、可复现源码、配音与字幕、封面、素材及来源清单、QC和ffprobe原始数据。交付报告另附七维自评（维度对齐 `reference/jury-review.md`）与“再给三天最想改什么”三条弱点——这是诚实交付的一部分，不因分数低而省略。单独记录未测试的宿主适配能力，不笼统写“全平台已验证”。
+阻塞缺陷未清零，不交付最终版。**验收工具也要被验收**（huashu-art-motion 正面经验 25，MIT）：每个门禁/探针/检查项上线时，故意制造一次它要抓的失败（删一个镜头、写错一个转场、把字推进字幕带），确认它真的会红；历史失败例见 [lessons.md](lessons.md)。新探针首片必须带一次已知坏例的正反对照记录，之后换管线/换版本时重验一次。交付包含视频、可复现源码、配音与字幕、封面、素材及来源清单、QC和ffprobe原始数据。交付报告另附七维自评（维度对齐 `reference/jury-review.md`）与“再给三天最想改什么”三条弱点——这是诚实交付的一部分，不因分数低而省略。单独记录未测试的宿主适配能力，不笼统写“全平台已验证”。
 
+<a id="final-qc"></a>
 ## 最终 QC 数据合同
 
 render.mjs 为每个媒体写 `.delivery.json`：schemaVersion=1、mediaSha256、sourceHashes、mode、1起含端点的 frames、renderedAt、原始 ffprobe，visualReview/audioReview 默认 not_performed。不编辑此记录来掩盖旧渲染。sourceHashes 扫描项目真实输入，含 src/script/scripts/public、自定义源码根、配置与锁文件；只排除保留产物和缓存。已注册镜头若位于排除位置会拒绝；变动就须重新渲染。
@@ -119,10 +140,18 @@ render.mjs 为每个媒体写 `.delivery.json`：schemaVersion=1、mediaSha256�
 
 `node <skill>/scripts/check-qc.mjs <工程> qc/final.json` 独立运行 ffprobe 计帧、ffmpeg 全片解码，核对完整视频模式、规格、媒体、源码、审核状态与证据哈希，拒绝草稿、片段、旧证据和未审素材。通过仅表示技术和审查声明完整，不能证明人真的看过、听过或艺术质量优秀。不得自动把声明填成 passed。证据记录必须包含实际观察范围与问题。
 
-## 发布
+<a id="delivery"></a>
+## 对外交付终检
 
-抖音：实际含AI生成画面/合成配音时，按当期发布界面启用适用AI声明并保留相关标识。视频内小字说明不能代替平台按钮。不提供账户交易、地域绕行或过审保证。标题写“替代Opus做视频的流程”，避免未经测试的全面模型等价。
+执行 `node <skill>/scripts/finalize_delivery.mjs <工程> <渲染文件>`：临时目录全建全验，两遍 loudnorm 到目标响度，master/share 双编码各做全解码，对最终编码重测响度（±0.5 LU 且 TP≤-1.0）、黑帧/冻帧事件计数和九帧接触表。全过才原子发布到 `delivery/`，交付报告最后落位作为完成标记；任一失败不发布任何文件。冻帧事件与 beat sheet 豁免登记对账。它不替代上面的实际审片、完整听取和 check-qc；数字取真实文件，不手填规格。
 
-X：提供长文与可拆线程，不假设所有账号都能发Articles；以账号界面权限为准。GitHub：只发授权仓库，保留许可证和上游署名；不得上传密钥、参考片、带隐私的日志或运行缓存。
+<a id="publication"></a>
+## 画幅与发布
 
-**剪映 / CapCut 原生工程草稿导出（v5.0.0，借鉴 dashi-animationstyle）**：完成渲染与验收后，可执行 `uv run python scripts/export_jianying.py <工程> --out <导出目录>`。脚本自动读取 storyboard、narration、timeline 与 mix_audio 台账，将全片分层拆解为视频主轨、解说旁白轨、背景音乐轨、逐句字幕轨，生成原生草稿工程目录（Mac 写入 `draft_info.json` 并隔离媒体至 Resources 规避沙盒权限阻断，Windows 写入 `draft_content.json`），用户可直接在剪映/CapCut 桌面端打开草稿进行可视化二次剪辑与微调。
+尊重用户已选画幅与账号策略；横屏模板 1280×720@30、原生竖屏目标 1080×1920@30，实际规格以 project.json 为准。需要竖屏时重新布局/Composition，不能横屏放大宣称完成；输出分辨率不提升素材原始细节。竖屏安全区与字幕预算见 [竖屏](#portrait)。
+
+**抖音历史证据（记录日期 2026-10-11，本次整理未重新核验）**：当时创作者中心上传页文案对超过 40 秒的视频建议横屏，16:9 在建议宽高比列表。该记录不是当前政策保证，也不是自动改画幅的授权；正片 >40s 且已按横屏构图时不为抖音默认重排竖屏。发布前看当期账号上传界面和实际设备预览；变化的限制据实记录、涉及已选方案时让用户决定，不能以旧记录宣称当前官方要求。
+
+抖音的合成配音/生成画面声明依当期发布界面启用适用选项并保留标识，片内小字不能代替平台按钮。X 长文/线程按账号实际权限，不假设能发 Articles。GitHub 只发授权仓库，保留许可证与上游署名，不上传密钥、参考片、隐私日志或缓存。不给账户交易、地域绕行或过审保证；模型替代声明限定为本制作任务，不写全面能力等价。
+
+**剪映 / CapCut 原生工程草稿导出**：渲染与验收后可运行 `uv run python scripts/export_jianying.py <工程> --out <导出目录>`，读取 storyboard、narration、timeline 与混音台账，拆成视频、旁白、BGM、字幕轨。Mac 使用 `draft_info.json`＋Resources，Windows 使用 `draft_content.json`；在实际桌面端打开验证前，不把草稿生成说成宿主端完整验证。

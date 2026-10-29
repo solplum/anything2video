@@ -141,6 +141,7 @@
 需要一个能执行制作任务的 AI 助手，以及视频制作环境。你可以把[上手指南](docs/getting-started.md)交给助手，请它先检查条件，再按你的授权配置；也可以照着文档自己操作。
 
 - [第一次使用：下载、安装、创建视频工程](docs/getting-started.md)
+- [轻量 core / 完整 full 安装配置](docs/package-profiles.md)：core 保留全部风格与缩略图，仅省略样片 MP4；旧命令默认仍为 full
 - [不同助手的安装位置与使用说明](docs/adapters.md)
 - [先试跑一段不需要 API key 的铜版雕刻样片](examples/engraving/README.md)
 

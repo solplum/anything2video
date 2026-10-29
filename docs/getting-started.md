@@ -23,6 +23,8 @@ node scripts/install.mjs --workbuddy   # WorkBuddy
 node scripts/install.mjs --minimax     # MiniMax Code
 ```
 
+不需要离线播放全部样片时，在命令末尾加 `--profile core`：保留全部风格、缩略图、搜索画廊和制作资产，只不复制 `samples/*.mp4`。`--profile full` 明确带齐样片；仓库中旧的无参数命令仍为 full。已有安装不自动瘦身，详见[安装配置与升级](package-profiles.md)。
+
 重新加载助手后，确认实际读到了 `anything2video/SKILL.md`。更完整的宿主路径、手动导入和更新说明见 [宿主适配](adapters.md)。
 
 ## 环境与依赖
@@ -138,7 +140,9 @@ node scripts/check-qc.mjs ../my-video qc/final.json
 
 ## 浏览风格样片
 
-克隆或解压完整包后，用本地浏览器打开 `samples/index.html`：先选家族，再切换变体，支持名称/ID 搜索和类型/气质筛选。`samples/all.html` 保留全部变体及历史配方参考。
+克隆或解压包后，用本地浏览器打开 `samples/index.html`：先选家族，再切换变体，支持名称/ID 搜索和类型/气质筛选。`samples/all.html` 保留全部变体及历史配方参考。
+
+full 包可离线播放样片；core 包保留同一画廊与真实 poster，并明确显示“可选视频未安装”。需要视频时按[完整样片安装说明](package-profiles.md#optional-sample-videos)从完整源重新构建 full。
 
 GitHub 仓库中的 HTML 链接显示源文件，不是在线演示站。不要只另存一个 HTML 文件，否则相邻 MP4、poster 和源码链接会缺失。
 

@@ -16,98 +16,37 @@ metadata:
 
 # anything2video
 
-把任意主题变成原创、可修复、可验收的视频工程。Skill提供导演和工程约束，模型仍负责理解、编码与判断；不能承诺一个Skill让任意模型等同于Opus，也不能承诺一次提示稳定出精品。
+把主题、文章或产品做成原创、可复现、可验收的视频工程：教学、科普、宣传、品牌片与档案纪录片。主要画面由代码动画或代码合成构建，可逐镜加入有来源、经过审核的素材。复制现有片子或以实拍采访/真人口播剪辑为主不是本 Skill 主场；Skill 也不承诺模型等价或一次提示稳定出精品。
 
-## 何时用
+## 入口与权威
 
-用户要教学、科普、文章改视频、产品宣传、风格动画或品牌片。主要画面由代码动画或代码合成构建，可按镜头加入有来源、经过审核的生成场景素材。以实拍采访为主、复制现有片子、真人口播剪辑不是本Skill主场。
+1. 制作或续作先完整读 [统一生产契约](reference/production-contract.md) 与短版 [生产流程](reference/production-workflow.md)。**只有契约定义共享授权、工程与验收规则**；本入口是提醒和路由，流程只安排顺序。既有明确授权持续有效，按契约记录，不重复等待。
+2. 按所选套餐读一个配方：[宣传](recipes/promo.md)、[讲解](recipes/explainer.md)、[史诗](recipes/epic.md)、[纪录片](recipes/documentary.md)。用户点名风格＋类型自由组合时再读 [custom 路由](recipes/custom.md)。完整风格库与旧 ID 均保留，不用精简入口代替风格选择；core 安装可能只有静态 poster，样片按 [资源配置说明](docs/package-profiles.md#optional-sample-videos) 按需取用，不能称已播放。
+3. 分镜前读 [导演手册](reference/directing-playbook.md)；其余资料按下表在对应步骤加载，**不默认全读历史、上游源码或工具目录**。
 
-## 先读什么
+## 不可略过的提醒
 
-1. 完整读 `reference/production-contract.md` 和 `reference/production-workflow.md`：它们是跨宿主的工程与验收权威。
-2. 套餐卡定配方：宣传卡读 `recipes/promo.md`，讲解卡读 `recipes/explainer.md`，史诗卡读 `recipes/epic.md`，纪录片卡读 `recipes/documentary.md`；点名风格+类型自由组合时按需读 `recipes/custom.md`。先完整读所选配方。
-3. 文化/历史/文学/诗词/神话/科普等题材：调研阶段读 `reference/corpus-sources.md` 语料源注册表，按两阶段取用（候选前轻摸底、定稿前重核对）；软件教程/产品等现代题材不触发。
-4. 分镜前读 `reference/directing-playbook.md`。需要动作设计时读 `reference/motion-language.md`；动作需跟随旁白/实录音乐或修改停留时，读 `reference/cue-choreography.md`，用命名事件对准到达/揭示并顺延下游；并到 `gallery/` 按镜头抽配方卡（157 张，用法见 `gallery/README.md`，卡的参数表与判例优先于直觉）；连续做片时读 `reference/style-ledger.md`。历史 `reference/explainer/` 是特定黑底MG风格的上游快照，固定画幅、效果配额、确认点和宿主指令不覆盖共享契约。
-5. 用AI世界底读 `reference/ai-frame-sop.md`；用已有风格读 `styles/README.md` 和对应SPEC。只加载本任务相关参考，避免全量文档压垮执行。
-6. 环境适配与能力面读 `reference/environment-capabilities.md` 与 `docs/adapters.md`。全平台统一采用单一 `anything2video` 入口，支持 Antigravity、Claude Code、Codex、Cursor、WorkBuddy、MiniMax Code、豆包工作、ZCode 等所有现代 Agent 环境。先检测真实执行与多模态能力，再选择并行或顺序。
+- 文案默认先讨论方向、再由实际用户确认全文；**泛化“自行决策/不计成本”不是稿件授权**。已明确的稿件级授权、用户自带稿、续作哈希与变更处理，都按 [文案确认门](reference/production-contract.md#script-approval) 执行；不擅改已批准旁白。
+- 精确文字、数字、图解由代码承载；事实与资产均须可追溯。参考片只借方法，不拿其帧或片段拼成原创片。生成素材须登记和实查，不能把混合合成称为纯代码或免版权。
+- 动画由帧号与固定 seed 决定；镜头合同 1 起含端点、Remotion 0 起，只转换一次。清单、类型检查都不证明镜头真实挂载。
+- `audio_narration.wav` 是清洁正本，`audio.wav` 是派生混音；不得用 mtime 猜来源、把混音回灌正本或未经授权更新旁白。
+- 探针只证明所测项。真实运动片段、整片播放与完整听取不能由截图、测试或日志代替；未做就是 `not_performed`，阻塞未清零不交最终版。
+- 尊重用户已选画幅、风格、许可和发布范围。平台会变化，格式与发布口径只查契约的 [画幅与发布](reference/production-contract.md#publication)，不把历史平台记录当当期政策，也不顺带发布。
 
-## 硬性原则
+## 按任务加载
 
-- 原创叙事、构图和运动。参考片仅分析结构，不拿其帧或片段作成片素材。
-- 精确信息由代码负责：文字、数字、图表、流程、字幕、标识。AI可提供有需要的材质/场景底；各配方按镜头声明模型、完整提示词、许可、来源、哈希与披露。不把混合合成写成纯代码或免版权。
-- 事实可追溯到官方页面、用户资料或可复测本地证据。参考片生成方式的视觉推测不能称官方已确认事实。
-- 品牌色只用于明确重点；用户未给品牌体系时用中性底和明确的强调色，不能编造品牌资产。
-- 音频正本 `audio_narration.wav` 不可变；`audio.wav`是派生混音。禁止mtime猜正本，禁止将混音再当旁白。
-- 动画 seeded、逐帧可复现；镜头合同1起含端点，Remotion frame/Sequence 0起，一次且仅一次转换。
-- 探针只证明所测项。审美和教学需要查看真实运动片段与整片，截图集或日志不能替代。
-- 不承诺零成本、必过审、全面模型替代或官方关系。素材、依赖、字体、声音的许可分别核对。
+| 当前需要 | 读取入口 |
+|---|---|
+| 首次安装、宿主或执行能力不明 | [环境能力](reference/environment-capabilities.md)、[适配与安装](docs/adapters.md)；实测后选择并行或顺序，不凭宿主名假定能力 |
+| 选套餐/沿用风格 | 契约 [选型与持久决策](reference/production-contract.md#selection)、[风格台账](reference/style-ledger.md)、[完整选择页](samples/index.html)；元数据唯一来源 [catalog](styles/catalog.json)，接线读 [styles](styles/README.md) 与所选 SPEC |
+| 文化、历史、文学、诗词、神话或科普事实调研 | [语料注册表](reference/corpus-sources.md)：候选前轻摸底、定稿前重核对；现代产品/软件教程走官方资料 |
+| 有对标片/需材质或生成画面 | [参考片拆解](reference/reference-breakdown.md)、[材质](reference/materials.md)、[AI 一帧先行 SOP](reference/ai-frame-sop.md)；排 AI 镜头前核实通道 |
+| 动作、词/拍落点、停留或切换 | [运动语言](reference/motion-language.md)、[事件编排](reference/cue-choreography.md)、[gallery 配方卡](gallery/README.md)；按镜头选卡并读参数/判例，数量以实际目录和 gallery 索引为准 |
+| 音色、选曲、声音制作 | [音色试听](reference/voice-bakeoff.md)、[选曲试听](reference/bgm-bakeoff.md)、[音乐编排](reference/music-plan.md)、[音乐卡点](reference/music-beat-sync.md)、[声音设计](reference/sound-design.md)；只读当前通道 |
+| 打样、派单、专项验收 | [视觉方向](reference/visual-direction.md)、[派单协议](reference/workflow-orchestration.md)、[动作复核](reference/action-review.md)、[小屏可读性](reference/readability.md)、[独立评分](reference/jury-review.md) |
+| 找命令、组件、兼容接口或导出路线 | [工具与组件索引](reference/tools-and-components.md)；不需要时不读 |
+| 查历史返工、上游实现或回写经验 | [上下文资料索引](reference/context-index.md)；历史是解释与复验线索，不是第二套生产规则 |
 
-## 确认与授权
+## 从这里继续
 
-开工前**单问套餐定盘**（套餐制 v3.4.0，用户拍板 2026-10-06）：放映 `samples/index.html` 家族选择页——先选家族，再选变体，选定变体的 recipe 作为类型默认值；当前元数据以 styles/catalog.json 为准。**卡赢为默认**；卡类型或卡上 ⚠ 判例注与用户显式需求冲突时，开工前一句话确认，不得静默越过。用户点名风格+类型自由组合时，先查 catalog 的 runtimeSkin：true 才可填 config.style，其余按 SPEC 手动接入 kit。选卡结果（卡名+机器 ID）记入工程 `research/creative-brief.md` 成持久决策，同系列沿用时记"沿用"不再问。**选型先查 `reference/style-ledger.md`**：口味锚与既有判例优先于主题隐喻推理。**选卡交互规范（2026-10-09 用户拍板）**：AskUserQuestion 恰出 4 个选项 = 前 3 个按题材/台账判例出的推荐卡 + 第 4 个固定「**其他（完整风格库）**」；**展示选项的同一轮就在浏览器打开 `samples/index.html`** 供对照，用户选「其他」即从放映页挑卡并回报卡名（不得四个全放推荐挤掉「其他」出口——《命》首判翻车）。
-
-**文案确认门（v4.1.0，用户拍板 2026-10-08）**：稿件是唯一默认必须过实际用户的创作决策，两段式——调研后出 2–3 个方向候选（角度/叙事结构/开头试写/时长节奏）探讨选定，再按选定方向出全文逐段定稿，用户明确确认后才落盘 `script/narration.txt` 与 `script/approval.json`（用户原话+稿子哈希）；check_state 在 `scripted` 与 `voiced` 之间设 `approved` 机器门，改稿按哈希对账自动复位。确认前 narration.txt 不落盘（过程稿进 `research/`）。仅用户明示的稿件级授权（"文案你定/稿子不用我看"）可豁免并记 exempt；泛化授权（不计成本/自行决策）不自动豁免，intake 同轮一句话问清是否含稿件。自带文案只复述+风险点确认（source=user_provided）；跨会话续作哈希对上不重复问。细则见统一合同「文案确认门」。
-
-资料未明确时，一次收集受众、平台、语言、时长、学习目标、事实材料、预算与品牌约束。音色、音乐是关键决策点（稿件走上方文案确认门，风格已由套餐选卡覆盖）；遵循已有授权和持久偏好，由实际决策者审定并记录，不重复等待。**音色按 voice-bakeoff.md 的 A/B 试听规范出候选**（同 3 句代表台词×多音色样本页，用户耳朵投票；映射表+下架登记+语速口径在该文档——叙事/史诗题材默认原速+纪录片腔，勿用播报腔+加速；音色是时间轴合同，必须在分镜前定死，换音色=全链重锚）。音乐按 bgm-bakeoff.md 的**选曲交互规范**出四选项（推荐录音曲/opus气质参考/用户曲库或上传/其他试听页，同轮开试听 HTML），明确无音乐或授权自行选曲时记录。发布仅在已有授权范围执行，不顺带发布社交平台。
-
-## 流程
-
-### 0 建工程
-
-根目录未知先问用户片子放哪，把绝对路径保存到 `~/.anything2video/workdir`；已指定就沿用。跨会话续作先跑 `node <skill>/scripts/check_state.mjs <工程>`——从磁盘证据计算进度（intake→scripted→approved→voiced→planned→rendered→reviewed→delivered 八态阶梯，v4.1.0 增文案确认门 approved 态）、给出下一态的精确待办；记录态超前于证据（overclaim）退出 1，`--write` 把 state 同步回 project.json（证据丢失会回拨）。首次使用同一轮加问图像生成通道（可选，持久决策，口径见统一合同「能力与授权」）：有没有生图 API key（MiniMax 或任意 OpenAI 兼容接口）——用途是 AI 材质/世界底生图，**只影响约 5%–10% 的画面效果，不填不影响出片**；决定记入 `~/.anything2video/image-channel`（provider 名或 `none`），key 本身只进环境变量不落盘。`node scripts/doctor.mjs` 检查本地命令与图像通道状态；`node scripts/init.mjs <slug>` 沿 `A2V_DATA_ROOT` 或持久目录建工程，也可显式 `<工程绝对路径> <slug>`。未知根不退回当前目录。目标非空拒绝，不覆盖、不自动git add/commit；工程位于skill之外。进入工程 `npm install`、`uv sync`；渲染浏览器 `npx remotion browser ensure` 或 `BROWSER_EXECUTABLE`。锁文件与源码版本管理，缓存不入库。
-
-### 1 调研
-
-写事实表、出处、观众问题与一个结论。选3–5个有证据参考案例；案例库缺失则标明。**抽象技术/算法/架构题材先选解释方式**：按 `directing-playbook.md`，比较物理机械隐喻、数据流、真实 UI 或简洁图解何者最能说明机制。选用 isometric-anatomy 等机械路线时在 `research/creative-brief.md` 写概念与仪器的映射及隐喻边界，与阶段 2 文案候选联动；不能以复杂零件或空洞方框替代解释。**有对标参考片先跑拆解**：`uv run scripts/reference_breakdown.py --video 参考.mp4 --out <工程>/research/reference-breakdown/`（接触表/转场节奏网格/运动热图/参考帧一条命令出齐，读法与证据边界见 `reference/reference-breakdown.md`）——转场节奏进 beat sheet 对标，运动热图决定每镜「什么在动」，参考帧只当生成构图输入。借结构、材质、节奏和首尾呼应，不抄素材；候选视频总量不能声称全是已验证模型作品。
-
-
-### 2 稿件、配音与节拍
-
-稿件两段式过用户（文案确认门 v4.1.0）：先出 2–3 个方向候选探讨选定，再按选定方向出全文逐段定稿，用户确认后才落盘 `script/narration.txt` 与 `script/approval.json`；细则见统一合同「文案确认门」。稿件先服务学习目标，旁白一行一句，用 `|` 切短字幕。定稿后逐句合成或导入清洁配音，真实音频建立时间轴。优先可用且合格的云端TTS；不可用时明确回退。需要音乐时先按 `reference/bgm-bakeoff.md` 定曲（v4.2.0 主题反查：按视频题材×落位功能跑 `scripts/bgm_query.py`读曲库逐段档案提名，音源可用且许可已登记的用户自加曲命中优先，缺失或未确权用户曲置顶作参考；录音曲优先，程序编曲仅显式选择；多段接力出音乐编排表 `music_plan.json`，schema/纪律见 `reference/music-plan.md`），再进分镜与建组；登记无音乐决定或曲名/来源/许可。TTS `uv run python scripts/tts_build.py`（v3.9.0 起同步产出逐字符时间戳 `SubEntry.chars` 到 subs.ts，edge 为实测词边界）；用户自带成品配音不走 TTS 时，`uv run python scripts/align_narration.py <配音.wav>` 自动对齐（能量停顿 DP 对齐到句、块内线性铺开，±~0.15s 诚实标注），产同一套正本/timeline/subs 产物，不再手填时间轴；混音 `uv run python scripts/mix_audio.py --bed 0.055`，沙音仅显式 `--sfx sand`；钉帧音效在混音之后第三步 `uv run python scripts/mix_sfx.py`（cues 表 + `audio/sfx/sfx-mix.json` 台账，通用 SFX 通道，工具防双混；判例见 `reference/sound-design.md` §4）。音效从 `assets/audio/sfx/` 16 类里选（149 个，Mixkit 免费商用，逐文件 URL 见 `assets/audio/ATTRIBUTION.md`；类别索引、钉帧与防机枪感判例见 `reference/sound-design.md`，风格绑定拟音与 in-key SFX 走 `audio-engine/mgaudio`）。强节奏配乐的卡点编排按 `reference/music-beat-sync.md`；需要「画面骑音乐」的连续微动时跑 `uv run python scripts/audio_features.py`（100fps 归一化包络×5 通道+分类 onset+网格 → `analysis/music_features.json`，卡片经 `common/music.ts` 消费；三条纪律见统一合同「音频」与 music-beat-sync §7）。分镜定稿同时产出 `research/beat-sheet.json` 节拍表：钩子 0.5s 内出现、hero moment 通常放在 60–75%，因叙事调整时写明理由、结尾定帧按实际阅读需要安排（0.8–1.2s 起，可静止）；程序编曲以它为合同、曲库曲以实测 beat_grid 为真值，分工见统一合同。不用语速硬凑时长。
-
-### 3 结构化分镜
-
-`project.json` 声明 width/height/fps/totalFrames/composition/recipe。`script/storyboard.json` 列全部镜头 `{id,from,to,group,component,purpose,action,facts?}`、claims、assets，格式见统一合同；讲解配方的"事实镜头"建议 facts 绑定 claims 白名单（画面只演登记过的事实，check-plan 校验索引越界即红，C 轮反审按绑定逐镜头核对）。覆盖每帧、无洞重叠。每个有动效的镜头从 `gallery/cards/` 对应类别抽卡对标，卡名记入镜头；分镜只定"用哪张卡、何时、讲什么"，参数实现阶段照卡执行。清单存在不证明镜头挂载，必须核对注册表与实渲染。排布 AI 生成素材前先确认图像通道（doctor `imageChannel`；无通道禁排依赖生成的 AI 镜头，见统一合同）。
-
-每个镜头有明确的观众所得、唯一焦点、动作与结果；在分镜 direction 记录 continuous / montage / hybrid 运动语法、词/拍落点及停留/切换理由（见 directing-playbook）。贯穿对象参与解释；阅读、比较与情绪落点可以有意静止，硬切按语义发生，不强制每45帧乱动。复杂有机材质与精确图解分别分工，不能以装饰替代教学演示。
-
-初始化工程默认为 `status: draft`。尚未建完全片时，在包外独立草稿工程声明完整样片帧数和镜头，再跑同样门禁；不能删掉主工程未完成镜头来伪装全片完成。正式渲染前将主工程改为 `production`，状态变化也要求重渲。
-
-### 4 图纸与打样
-
-沿现有套餐和文案确认结果打样，不重开一轮风格问卷。方向未定时，同文案实渲染两套在构图、字体层级、色彩和运动语法上真正不同的方向；开场、复杂中段、结尾各出关键帧，并看真实运动片段。已定 SKU 可走沿用＋回归样张。按 `reference/visual-direction.md` 记录选择与媒体哈希，在 project.json 声明 visualDirection；生产态由既有 check-plan 验证证据，审美仍归原有 visual / motion 审核，不新增状态机确认门。随后固定图元库，检查字号、字幕遮挡、实际音色、节奏、素材三查。5秒开场通过不等于全片合格。
-
-### 5 建镜头
-
-并行仅用于独立文件所有权明确的组。派单包含全部分镜、共享API、全局/本地帧号规则、边界、验证命令、各镜头所抽配方卡路径（`gallery/cards/…`，参数表/调节手感/判例照卡执行，参考源码在 `gallery/demos-ref/`）。每组交镜头ID、源码、测试与未完成项。没有子代理就顺序做，质量不降级。主控整合，不把整个复杂任务转给执行代理。
-
-### 6 渲染
-
-`npm run typecheck`；`node <skill>/scripts/check-plan.mjs <工程>`；`node <skill>/scripts/render.mjs <工程> stills 1,90,...`、`preview 12`、`video`。统一Node渲染入口检查Composition与声明一致，并记录ffprobe。保留旧脚本作兼容工具，不用旧render.sh固定画幅口径覆盖project.json。
-
-### 7 三轮验收与修复
-
-A 工程真实性：覆盖/时间窗/素材/音画/规格/解码；运动连续性加采 `uv run scripts/probe_motion_quality.py <成片>`（运动面积/静止帧对/孤立跳变/最长静止＋跳变证据拼图；数字是线索，合法静止按 beat sheet 豁免登记定性，判读口径见 `directing-playbook.md`）；矢量/机械类工程加跑 `node <skill>/scripts/probe_line_ends.mjs <图元>` 查悬空线头闭合度（浮空数必须清零）。关键接触/交接/跟踪动作可加 `uv run <skill>/scripts/action_review.py <成片> --window <起秒,止秒> --out <新目录>`（默认 0.2s，按需 ROI 放大，真实 PTS 与哈希，始终 needs_review；见 `reference/action-review.md`）。B 视觉与教学：真实片段、因果、可读性、动作落点、素材伪影、听感；480px 缩略图与显式图元检查按 `reference/readability.md` 运行，failed / not_performed / needs_review 不作通过；C 反向审查：最弱镜头、中后段、结尾、事实与发布说明（数字口径三条判例见 directing-playbook）。每轮记录发现、修改、重渲证据、保留项；阻塞缺陷未清零不交最终版。新门禁/探针上线时故意制造一次它要抓的失败确认会红（统一合同「验收工具也要被验收」）。
-
-
-性能同机热渲比较；主体/活性/空场探针需声明ROI、背景掩码、合法静止。不能默默跳过失败，也不能把无检查能力当通过。音画探针默认检查纯旁白首句，最终媒体时长另查，还需中段/末段对位。
-
-三轮通过后加 D 轮独立评分评审（`reference/jury-review.md`，2026-10-06 轴 A）：独立会话评委按 7 维锚点评分（风格保真/概念惊艳/动效工艺/设计版式/质感收尾/声音同步/技术），任一维度 <7 阻塞、修复后复审，≥8 不设硬门，修复轮上限 3 轮；产出 `qc/jury.json` 进交付证据链，`check-qc` 门禁照旧。
-
-### 8 交付与回写
-
-成片、源码、配音、字幕、封面、事实来源、MANIFEST、QC、ffprobe规格。所有数字取真实文件，不手填1080p。**对外交付终检**（v3.10.0）：`node <skill>/scripts/finalize_delivery.mjs <工程> <渲染文件>`——临时目录全建全验（两遍 loudnorm 到目标响度、master/share 双编码各做全解码、**对最终编码重测响度** ±0.5 LU 且 TP≤-1.0、黑帧/冻帧事件计数、九帧接触表），全过才原子发布到 `delivery/`（交付报告最后落位当完成标记；任一失败不发布任何文件）；冻帧事件须与 beat sheet 豁免登记对账。运行产物留工程内；skill只放长期资产。**回写双轨**（v3.6.0）：坑当天回写 `reference/lessons.md` 历史表（现象→根因→判据/修法）；做对了的事回写 lessons「正面经验」节（做法＋证据＋为什么＋何时用，含跨栈借用的复验转正）；归宿表在 lessons 头部——风格/卡特有问题改对应 SPEC 或 gallery 卡、导演方法进 directing-playbook、可量化判据进探针与门禁、流程缺口进编排协议。实际与文档不符时以实际为准，然后把文档改对。未测试的宿主应用明确标注，不能用打包成功代替应用端完整执行成功。
-
-render 写媒体 SHA256、源码哈希清单与实际帧范围的 `.delivery.json`，其中视觉/音频默认 not_performed。实际整片播放与听取后，按统一契约写 `qc/final.json` 并运行 `node <skill>/scripts/check-qc.mjs <工程> qc/final.json`。它拒绝草稿、片段、待审AI素材、缺项和旧证据；通过只证明技术与声明完整，不证明审美（审美维度由 D 轮 jury 评分承担）。交付报告附七维自评与自陈三弱点。媒体或源码变化使旧证据失效，不能自动填 passed。
-
-## 画幅与发布
-
-横屏传统模板1280×720@30，竖屏目标1080×1920@30。竖屏必须新布局/Composition，不能横屏放大宣称完成；输出分辨率不提升素材原始细节。**抖音画幅口径（2026-10-11 创作者中心上传页官方文案实证）：超过 40 秒的视频平台自己「建议上传横屏」，16:9 在建议宽高比列表——正片 >40s 且已按横屏构图时直接发横屏，不为抖音默认做竖屏重排**（竖屏重排是观感优选非合规要求，按账号策略拍板）。抖音保守安全区和字幕预算见统一合同；**烧字幕前对无字幕版成片跑 `uv run scripts/probe_subtitle_band.py <成片> --band-ratio 0.73` 查画面内容侵入字幕带**（命中看帧定性，设计内元素登记豁免），发布预览按实际设备复核。含合成配音/生成画面按当前发布界面启用适用AI声明；片内小字不能替代平台按钮。
-
-## 资产与工具
-
-风格选型以 `styles/catalog.json` 为唯一元数据源：63 个兼容 ID 整理成 59 个选择入口（4 个双成员家族 + 55 个单成员入口），保留全部旧 ID、导入路径、seed 与 recipe 关联；新增铜版雕刻 `engraving`。先看 `samples/index.html` 选家族和变体，`samples/all.html` 可查全部旧 ID。当前只有 12 个 ID 真正注册为 `config.style` 皮肤；其余 51 个需手动接入对应 kit。`config.style` 只浅合并配方 palette/chrome，不能自动重画主体；是否支持以 catalog 的 `runtimeSkin` 和实际 `STYLE_SKINS` 为准。`isometric-anatomy` 保留实验图元入口，明确没有随包预览。样片证明已展示的视觉，不是当前宿主端到端或整片认证；雕刻是 12 秒无声材质研究。家族归类理由、兼容测试与覆盖边界见 `docs/style-system-round1.md`；旧版本入库记录见 `styles/README.md` 与 `samples/README.md`。新复制 `light-dabs/lily-pond/swirl-oil/scream-warp` 时须同时带上共享兄弟目录 `styles/shared/paint/strokes.ts`，目录布局见 `styles/shared/README.md`。雕刻来源/许可见 `styles/engraving/UPSTREAM.md`，复现见 `examples/engraving/README.md`。
-
-动效词汇：`gallery/` 180 张配方卡 + demo 参考源码（移植自 video-shotcraft，Apache-2.0，见 `gallery/README.md`；v4.4.0 增八张 pdoom 方法论卡——escalating-hook-slam 递进砸入 / world-roll-on-word 词上翻转 / time-remap-stutter 节拍口吃 / token-probability-bars 候选分布 / pressure-condense-slab 版面压力 / letterform-shockwave 字形冲击环 / in-world-counter-staged 数值化身 / fuse-burn-reveal 引信揭幕，方法论吸收 mexicat/pdoom-video MIT，无本仓 demo 按卡参数表实现）；可编组件 `template/src/common/kit/`（PageCam 2.5D 运镜、DigitRoll 数字滚、FlashCut 闪切、VerticalTicker 滚动墙、lagged/dampedSettle/mulberry32；v3.9.0 演绎四件套 WordLitCaption 词级点亮字幕 / ChapterBadge 章节角标 / GoldenQuote 结尾金句 / RecapFrame 一帧复习——底料是 tts_build 同步产出的逐字符时间戳 `SubEntry.chars`，机制借鉴 lanshu MIT，接线见 recipes/explainer.md，纪律见 directing-playbook 演绎三铁律；v4.0.0 共享运动数学层 `template/src/common/motion/`（hermite/monotone/quantize/smear，CAMPAIGN-4 改默认升级与油画/逐帧族共用）+ 底图语法包 `common/kit/PhotoStage.tsx`（Ken Burns 钳制 / snap push / freeze-to-card）；v4.3.0 可变字体轴动画 `common/kit/VarText.tsx`（varSettings/breatheWght，方法论吸收 mexicat/pdoom-video MIT，模板 Noto Sans SC 实测可变 wght 100-900）与音乐反应层 `common/music.ts`（createMusic：env/envPeak/hit/beatAt，数据来自 audio_features，纪律见 music-beat-sync §7）；v4.4.0 单笔画字体库 `common/kit/StrokeText.tsx`（逐字移植 pdoom stroke.ts MIT：光学 kern / writtenLength 词同步逐字手写 / 笔头坐标，字体 Hershey 公有领域 + EMS OFL 已 vendor 到 public/fonts/stroke/ 392KB，仅拉丁——中文手写走 draw-svg-trace）；v4.6.0 仪器解剖几何引擎 `common/kit/iso/`（math/primitives/lathe/tube/sorter/IsoMachine））。审美判例 `reference/aesthetic-rules.md`。风格拿不准先放映随包 `samples/` 真实片段，来源和披露见 samples/README.md；样片不是当前宿主端到端认证。材质与混合镜头：materials、ai-frame-sop（一帧先行四路线与首尾同帧图生视频见其 §2.5）；参考片拆解：reference-breakdown + `scripts/reference_breakdown.py`；史诗方法论：epic-brand-film（🔥 市面爆款风向，热门向优先）。关键脚本：init、doctor、check-plan、render、check_state（v3.10.0 证据驱动状态机，跨会话续作一条命令算进度；v4.1.0 增 approved 文案确认门态，approval.json 哈希对账改稿即复位）、tts_build、align_narration（v3.10.0 自带配音自动对齐）、mix_audio、mix_sfx、finalize_delivery（v3.10.0 交付终检与原子发布）、probe_av_sync、probe_delivery、plan_segments（v3.10.0 路线 C 图生视频的停顿分段规划：真实停顿切分/整数秒只取停顿内/计费秒数与接缝遮罩一次算好）、bgm_generate（程序编曲，底层 `audio-engine/mgaudio`，MIT+CC0 vendor 自 mg-styles-15，溯源与依赖见 `audio-engine/VENDOR.md`）、bgm_analyze（v4.2.0 曲库逐曲客观层分析：能量/分段/入出点候选/BPM，档案落 `assets/audio/bgm/profiles/`）、bgm_query（v4.2.0 主题反查：题材×功能读档案提名，用户曲库优先权重）、bgm_review（v4.5.0 标注轮试听页+对话提问清单：试听在页、标注在对话内以候选点选——题材必须给候选禁词表空填、禁 HTML 表单代问，2026-10-12 用户定调）、audio_features（v4.3.0 连续音乐反应层数据：100fps 归一化包络×5 通道+分类 onset+网格 → analysis/music_features.json；beat_grid v4.3.0 同步硬化——kick 相位精修/鼓件三分类/小节相位证据，方法论吸收 pdoom-video MIT）、bloom_grade（v4.4.0 渲后辉光 grade：ffmpeg 伪 bloom+halation 三档位 opt-in，渲后 finalize 前跑——grade 改像素故须在三轮验收前定稿，跑完 probe/finalize 证据链照旧）、reference_breakdown / probe_motion_quality / probe_subtitle_band（v3.6.0 移植自 huashu-art-motion，MIT，许可见 `LICENSE-THIRDPARTY/MIT-huashu-art-motion.txt`；Python 脚本均 PEP 723 内联依赖，用 `uv run scripts/<名>.py` 脚本模式运行）、probe_line_ends（v4.6.0 矢量/机械线头闭合度门禁，移植自 Anatomy，MIT，用 `node scripts/probe_line_ends.mjs` 运行）；v5.0.0 纪录片第四大主配方 `recipes/documentary.md`（真实公有领域/CC 档案影视，版权出处表 `research/archival-rights.json`，多源溯源与时间线对齐，吸收自 archival-doc）+ 翻拍微距舞台 `common/kit/RostrumStage.tsx`（仿真古籍/图纸/照片翻拍微距、Ken Burns 运镜、朱砂印鉴、光晕暗角、纸纹抖动）+ 剪映/CapCut 原生工程草稿导出器 `scripts/export_jianying.py`（多轨草稿生成、视频/配音/BGM/字幕全轨拆分、跨平台 Mac 沙盒与 Windows 路径支持）+ 小屏可读性与字幕安全区探针 `scripts/probe_readability.mjs`（480px 缩略图＋显式图元清单的字号/字幕带检查，未看片不判通过）+ 动效四段律与独有介质动作法则（进场-主动作-停留-出场，吸收自 mg-styles-15 / xilo-opus-video / huashu-art-motion / dashi-animationstyle）+ 时长最大值闭合定理（Timing Max Theorem）；Python用uv。程序编曲与曲库双通道圈选见 `reference/bgm-bakeoff.md` 程序编曲通道节；风格绑定 SFX 见 `reference/sound-design.md` §3.5；D 轮评审见 `reference/jury-review.md`。`reference/workflow-orchestration.md` 保存历史派单与构建协议，跨宿主冲突以本入口和统一合同为准。沙画环境微动四件套 DustDrift/PetalFall/SandStream/PaperBreath 见 `styles/sand/sand-ambient.tsx`（2026-10-11 黄巢片提升：continuous 世界镜头可选微动，阅读与情绪停留可静止；narration 变化后重新锚定动作与切点）；旁白音色圈选见 `reference/voice-bakeoff.md`（音色=主观听觉决策走试听页用户投票，映射表+下架登记+语速口径）；「中段空白」量尺=逐镜静态审计（2fps 帧差按镜头区间聚合，freezedetect/probe_motion 均值型检测对小面积粒子运动不敏感），inline 命令与判读见 directing-playbook 运动量节（2026-10-11 黄巢片实证）。
-
-安装、环境适配与能力边界见 `docs/adapters.md` 与 `reference/environment-capabilities.md`。Skill需要执行环境，不能在纯聊天窗口凭空渲染MP4。
+续作先运行 `node <skill>/scripts/check_state.mjs <工程>`，以磁盘证据找下一步，不重建已有工程。新工程按流程第 0 步确定包外目录并运行 `doctor` / `init`。运行产物留工程内，长期验证过的资产与经验才回写 Skill。只有打包/发现成功时，不能声称该宿主已端到端作片；纯聊天环境不能凭空渲染 MP4。

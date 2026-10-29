@@ -2,7 +2,7 @@
 
 > **架构收束说明**：自 v5.0.0 起，项目全面放弃旧版的“六端独立发行包分立构建（`hosts/` + `edition.json`）”模式，收束为**全平台统一的单包架构**。所有宿主环境统一发现并运行名为 `anything2video` 的规范 Skill。
 
-同一包提供完整的 `SKILL.md`、`recipes`、`reference`、`styles`、`template`、`scripts`、`gallery`、`audio-engine` 与 `samples`。公共制作核心（事实、素材、音频、分镜、动效卡与 QC 交付合同）完全一致；宿主差异仅体现在加载路径与运行时能力（CLI/Shell 权限、多模态看片、生图通道与子代理分工），详见 [`reference/environment-capabilities.md`](../reference/environment-capabilities.md)。
+同一包提供完整的 `SKILL.md`、`recipes`、`reference`、`styles`、`template`、`scripts`、`gallery`、`audio-engine` 与样片目录。可选 `--profile core` 仅不复制样片 MP4，完整画廊/缩略图/来源记录仍在；`--profile full` 保留样片媒体，仓库旧命令默认仍为 full，详见[安装配置](package-profiles.md)。公共制作核心（事实、素材、音频、分镜、动效卡与 QC 交付合同）完全一致；宿主差异仅体现在加载路径与运行时能力（CLI/Shell 权限、多模态看片、生图通道与子代理分工），详见 [`reference/environment-capabilities.md`](../reference/environment-capabilities.md)。
 
 ---
 
@@ -35,7 +35,7 @@ node scripts/install.mjs --symlink
 node scripts/install.mjs --symlink --claude
 ```
 
-安装器自动校验并复制完整资产，排除 `.git`、`.venv`、`node_modules`、测试缓存与私有凭据；若目标目录已存在，安装器会主动拦截以保护现有文件。
+安装器按选定配置校验并复制资产，排除 `.git`、`.venv`、`node_modules`、测试缓存与私有凭据；若目标目录已存在，安装器会主动拦截以保护现有文件。
 
 ---
 

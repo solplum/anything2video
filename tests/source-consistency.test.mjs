@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {collectCoreFiles} from '../scripts/build-editions.mjs';
+import {isOptionalSampleMedia, presentOptionalSamples} from '../scripts/package-profile.mjs';
 
 // 真实源一致性门禁：校验统一 SKILL.md 超集元数据、核心文件清单与缓存防污染
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -100,6 +101,24 @@ test('README and getting-started links resolve in both checkout and distribution
         ? [...packaged].some(file => file.startsWith(`${resolved}/`))
         : packaged.has(resolved);
       assert.ok(included, `${doc}: target missing from distribution: ${target}`);
+    }
+  }
+});
+
+
+test('real core profile retains every non-MP4 asset and resolves catalog/readme links locally', () => {
+  const full = collectCoreFiles(root, {profile: 'full'});
+  const core = collectCoreFiles(root, {profile: 'core'});
+  assert.deepEqual(core, full.filter(file => !isOptionalSampleMedia(file)));
+  const packaged = new Set([...core, 'README.md', 'SKILL.md', 'LICENSE']);
+  for (const doc of ['README.md', 'docs/getting-started.md', 'docs/package-profiles.md', 'samples/index.html', 'samples/all.html']) {
+    const content = presentOptionalSamples(doc, read(doc), 'core');
+    for (const [, target] of [...content.matchAll(/\]\(([^)]+)\)/g), ...content.matchAll(/(?:src|href)="([^"]+)"/g)]) {
+      if (/^(?:[a-z][a-z\d+.-]*:|#)/i.test(target)) continue;
+      const relative = decodeURIComponent(target.split('#')[0]);
+      if (!relative) continue;
+      const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(doc), relative));
+      assert.ok(packaged.has(resolved) || [...packaged].some(file => file.startsWith(`${resolved}/`)), `${doc}: core link missing ${target}`);
     }
   }
 });

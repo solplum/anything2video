@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {assertDisjoint, collectCoreFiles, verifyPackage} from './build-editions.mjs';
+import {assertDisjoint, buildPackage, verifyPackage} from './build-editions.mjs';
+import {resolvePackageProfile} from './package-profile.mjs';
 
 const source = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const aliases = {
@@ -38,6 +39,7 @@ Platforms:
   --codebuddy / codebuddy [project-root]   : .codebuddy/skills/anything2video
   --export-dir <dir>                       : <dir>/anything2video (for Doubao Work manual import)
 Options:
+  --profile core|full                     : core omits sample MP4; full includes them (default: source profile)
   --symlink                                : Create symbolic link instead of copying
   --data-dir <dir>                         : Custom MiniMax Code app data directory
   --export-dir <dir>                       : Export directory for manual host import
@@ -49,6 +51,7 @@ let project = null;
 let dataDir = null;
 let exportDir = null;
 let useSymlink = false;
+let profile;
 
 const args = [];
 for (const arg of rawArgs) {
@@ -67,7 +70,10 @@ if (args.length > 0 && aliases[args[0]]) {
 
 while (args.length > 0) {
   const value = args.shift();
-  if (value === '--data-dir') {
+  if (value === '--profile') {
+    if (profile || !args[0] || args[0].startsWith('--')) throw new Error(usage);
+    profile = args.shift();
+  } else if (value === '--data-dir') {
     if (dataDir || !args[0] || args[0].startsWith('--')) throw new Error(usage);
     dataDir = path.resolve(args.shift());
   } else if (value === '--export-dir') {
@@ -87,6 +93,9 @@ if (host === 'doubao-work' && !exportDir) {
 }
 if (exportDir && (dataDir || project)) throw new Error('Choose either --export-dir or project-root/--data-dir, not both');
 
+profile = resolvePackageProfile(source, {profile});
+if (useSymlink && profile !== resolvePackageProfile(source)) throw new Error('--symlink cannot filter resources; use a copy install for a different profile.');
+
 const skillName = 'anything2video';
 const dest = exportDir
   ? assertDisjoint(source, path.join(exportDir, skillName))
@@ -103,25 +112,17 @@ try {
 }
 
 if (useSymlink) {
+  verifyPackage(source);
   fs.mkdirSync(path.dirname(dest), {recursive: true});
   fs.symlinkSync(source, dest, process.platform === 'win32' ? 'junction' : 'dir');
   console.log(`Linked unified anything2video package at ${dest} -> ${source}`);
 } else {
-  fs.mkdirSync(dest, {recursive: true});
-  const files = [...collectCoreFiles(source), 'SKILL.md', 'README.md', 'LICENSE'];
-  for (const relative of files) {
-    const input = path.join(source, ...relative.split('/'));
-    if (!fs.existsSync(input)) continue;
-    if (fs.lstatSync(input).isSymbolicLink()) throw new Error(`Refusing linked package input: ${relative}`);
-    const output = path.join(dest, ...relative.split('/'));
-    fs.mkdirSync(path.dirname(output), {recursive: true});
-    fs.copyFileSync(input, output);
-  }
-  verifyPackage(dest);
+  buildPackage(dest, {source, profile});
+  const label = profile === 'full' ? 'complete' : 'core';
   if (exportDir) {
-    console.log(`Exported complete unified package at ${dest}. Import or authorize this directory explicitly in your host application.`);
+    console.log(`Exported ${label} unified package at ${dest} (profile: ${profile}). Import or authorize this directory explicitly in your host application.`);
   } else {
-    console.log(`Installed complete unified package at ${dest}. Restart or reload your host, then verify the loaded skill.`);
+    console.log(`Installed ${label} unified package at ${dest} (profile: ${profile}). Restart or reload your host, then verify the loaded skill.`);
   }
 }
 

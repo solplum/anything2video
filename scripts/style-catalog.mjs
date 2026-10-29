@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
+import {presentOptionalSamples, readPackageManifest} from './package-profile.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = p => fs.readFileSync(path.join(root, p), 'utf8');
 export const catalog = JSON.parse(read('styles/catalog.json'));
@@ -96,7 +97,8 @@ export function generatedFiles() {
     const entry = catalog.styles.find(x => x.preview.path === s.path);
     if (entry) Object.assign(s, {styleId:entry.id, familyId:entry.family, runtimeSkin:entry.runtimeSkin});
   }
-  return new Map([['samples/index.html',page()], ['samples/all.html',page(true)], ['README.md',readme], ['samples/manifest.json',JSON.stringify(manifest,null,2)+'\n']]);
+  const profile = readPackageManifest(root)?.profile ?? 'full';
+  return new Map([['samples/index.html',page()], ['samples/all.html',page(true)], ['README.md',readme], ['samples/manifest.json',JSON.stringify(manifest,null,2)+'\n']].map(([name, content]) => [name, presentOptionalSamples(name, content, profile)]));
 }
 export function generate({check = false} = {}) {
   const stale = [];

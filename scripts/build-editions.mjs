@@ -3,11 +3,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {PACKAGE_MANIFEST, isOptionalSampleMedia, presentOptionalSamples, readPackageManifest, resolvePackageProfile} from './package-profile.mjs';
 
 export const SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const HOSTS = Object.freeze(['universal', 'claude-code', 'codex', 'workbuddy', 'minimax-code', 'zcode', 'doubao-work']);
 const directories = ['recipes', 'reference', 'styles', 'template', 'scripts', 'gallery', 'audio-engine', 'LICENSE-THIRDPARTY'];
-const individual = ['LICENSE', 'assets/audio/ATTRIBUTION.md', 'docs/adapters.md', 'docs/getting-started.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md', 'docs/style-system-round1.md'];
+const individual = ['LICENSE', 'assets/audio/ATTRIBUTION.md', 'docs/adapters.md', 'docs/getting-started.md', 'docs/package-profiles.md', 'docs/optimization-v3.md', 'docs/optimization-v3.1.md', 'docs/optimization-v3.6.md', 'docs/optimization-v3.7.md', 'docs/style-system-round1.md'];
 // Only reviewed, redistributable examples are included. Arbitrary working
 // projects under examples/ remain excluded, as do their render/cache folders.
 const publicExamples = ['examples/engraving', 'examples/line-art-teaching'];
@@ -51,7 +52,8 @@ export const versionOf = source => {
   return value;
 };
 
-export function collectCoreFiles(source, {includeSamples = true} = {}) {
+export function collectCoreFiles(source, options = {}) {
+  const profile = resolvePackageProfile(source, options);
   const root = canonical(source);
   const files = [];
   function walk(relative) {
@@ -62,8 +64,9 @@ export function collectCoreFiles(source, {includeSamples = true} = {}) {
     if (!contains(root, fs.realpathSync.native(absolute))) throw new Error(`Package input escapes source: ${relative}`);
     if (stat.isDirectory()) {
       for (const child of fs.readdirSync(absolute).sort()) walk(`${relative}/${child}`);
-    } else if (stat.isFile()) files.push(relative);
-    else throw new Error(`Unsupported package input: ${relative}`);
+    } else if (stat.isFile()) {
+      if (profile !== 'core' || !isOptionalSampleMedia(relative)) files.push(relative);
+    } else throw new Error(`Unsupported package input: ${relative}`);
   }
   for (const relative of [...directories, ...individual]) {
     if (!exists(path.join(root, ...relative.split('/')))) throw new Error(`Missing shared package input: ${relative}`);
@@ -72,7 +75,7 @@ export function collectCoreFiles(source, {includeSamples = true} = {}) {
   for (const relative of publicExamples) {
     if (exists(path.join(root, ...relative.split('/')))) walk(relative);
   }
-  if (includeSamples && exists(path.join(root, 'samples'))) walk('samples');
+  if (exists(path.join(root, 'samples'))) walk('samples');
   return files.sort();
 }
 
@@ -98,50 +101,104 @@ export function verifyPackage(target) {
     const full = path.join(targetDir, ...required.split('/'));
     if (!exists(full)) throw new Error(`Package incomplete, missing: ${required}`);
   }
-  return {name: 'anything2video', version: skill.version};
+  const manifest = readPackageManifest(targetDir);
+  if (manifest) {
+    for (const entry of manifest.files) {
+      const file = path.join(targetDir, ...entry.path.split('/'));
+      if (!exists(file) || !fs.lstatSync(file).isFile() || !contains(targetDir, fs.realpathSync.native(file)) || fs.statSync(file).size !== entry.bytes || sha256(file) !== entry.sha256) throw new Error(`Package file mismatch: ${entry.path}`);
+    }
+    for (const entry of manifest.omittedSampleMedia) {
+      if (exists(path.join(targetDir, ...entry.path.split('/')))) throw new Error(`Unexpected optional media in core package: ${entry.path}`);
+    }
+  }
+  if (manifest?.profile === 'core') {
+    function checkSamples(relative = 'samples') {
+      const directory = path.join(targetDir, ...relative.split('/'));
+      if (!exists(directory)) return;
+      for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
+        const child = `${relative}/${entry.name}`;
+        if (entry.isSymbolicLink()) throw new Error(`Linked sample package input: ${child}`);
+        if (isOptionalSampleMedia(child)) throw new Error(`Unexpected optional media in core package: ${child}`);
+        if (entry.isDirectory()) checkSamples(child);
+      }
+    }
+    checkSamples();
+  }
+  const samplesManifest = path.join(targetDir, 'samples/manifest.json');
+  if ((manifest?.profile ?? 'full') === 'full' && exists(samplesManifest)) {
+    for (const sample of JSON.parse(fs.readFileSync(samplesManifest, 'utf8')).samples) {
+      if (!exists(path.join(targetDir, 'samples', sample.path))) throw new Error(`Full package missing sample media: ${sample.path}`);
+    }
+  }
+  return {name: 'anything2video', version: skill.version, profile: manifest?.profile ?? 'full'};
 }
 
-export function buildPackage(destination, {source = SOURCE_ROOT, overwrite = false, includeSamples = true} = {}) {
+export function buildPackage(destination, {source = SOURCE_ROOT, overwrite = false, ...options} = {}) {
   const target = assertDisjoint(source, destination);
+  const profile = resolvePackageProfile(source, options);
+  const skill = validateSkill(source);
+  const files = [...new Set([...collectCoreFiles(source, {profile}), 'SKILL.md', 'README.md', 'LICENSE'])].sort();
+  const sourceManifest = readPackageManifest(source);
+  const omittedSampleMedia = profile === 'core'
+    ? sourceManifest?.profile === 'core' ? sourceManifest.omittedSampleMedia
+      : collectCoreFiles(source).filter(isOptionalSampleMedia).map(relative => ({path: relative, bytes: fs.statSync(path.join(source, relative)).size, sha256: sha256(path.join(source, relative))}))
+    : [];
+  // Validate every input before a requested overwrite touches the old output.
+  for (const relative of files) {
+    if (fs.lstatSync(path.join(source, ...relative.split('/'))).isSymbolicLink()) throw new Error(`Refusing linked package input: ${relative}`);
+  }
+  if (profile === 'full' && exists(path.join(source, 'samples/manifest.json'))) {
+    for (const sample of JSON.parse(fs.readFileSync(path.join(source, 'samples/manifest.json'), 'utf8')).samples) {
+      if (!exists(path.join(source, 'samples', sample.path))) throw new Error(`Full package missing sample media: ${sample.path}`);
+    }
+  }
   if (exists(target)) {
     if (!fs.statSync(target).isDirectory()) throw new Error('Target must be a directory');
     if (!overwrite && fs.readdirSync(target).length > 0) throw new Error(`Target directory is not empty: ${target}. Use overwrite: true to replace.`);
     if (overwrite) fs.rmSync(target, {recursive: true});
   }
   fs.mkdirSync(target, {recursive: true});
-  const skill = validateSkill(source);
-  const files = collectCoreFiles(source, {includeSamples});
   for (const relative of files) {
     const from = path.join(source, ...relative.split('/'));
     const to = path.join(target, ...relative.split('/'));
     fs.mkdirSync(path.dirname(to), {recursive: true});
-    fs.copyFileSync(from, to);
+    if (fs.lstatSync(from).isSymbolicLink()) throw new Error(`Refusing linked package input: ${relative}`);
+    if (/\.(md|html)$/.test(relative)) fs.writeFileSync(to, presentOptionalSamples(relative, fs.readFileSync(from, 'utf8'), profile));
+    else fs.copyFileSync(from, to);
   }
-  for (const extra of ['SKILL.md', 'README.md', 'LICENSE']) {
-    const from = path.join(source, extra);
-    if (exists(from)) {
-      const to = path.join(target, extra);
-      fs.copyFileSync(from, to);
-    }
-  }
+  const inventory = files.map(relative => ({path: relative, bytes: fs.statSync(path.join(target, relative)).size, sha256: sha256(path.join(target, relative))}));
+  fs.writeFileSync(path.join(target, PACKAGE_MANIFEST), JSON.stringify({
+    schemaVersion: 1, name: 'anything2video', version: skill.version, profile,
+    sampleMedia: profile === 'core' ? 'omitted' : 'included',
+    payloadBytes: inventory.reduce((sum, entry) => sum + entry.bytes, 0),
+    omittedSampleMediaBytes: omittedSampleMedia.reduce((sum, entry) => sum + entry.bytes, 0),
+    files: inventory, omittedSampleMedia,
+  }, null, 2) + '\n');
   verifyPackage(target);
   return target;
 }
 
 // Backward compatibility helper
-export function buildEditions(output, {source = SOURCE_ROOT, overwrite = false} = {}) {
+export function buildEditions(output, {source = SOURCE_ROOT, overwrite = false, ...options} = {}) {
   const destination = assertDisjoint(source, output);
   if (exists(destination) && !fs.statSync(destination).isDirectory()) throw new Error('Output must be a directory');
   const target = path.join(destination, 'anything2video');
-  buildPackage(target, {source, overwrite, includeSamples: true});
+  buildPackage(target, {source, overwrite, ...options});
   return [target];
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  const overwrite = args.includes('--overwrite');
-  const positional = args.filter(arg => !arg.startsWith('--'));
-  const output = positional[0] ?? path.join(path.dirname(SOURCE_ROOT), 'anything2video-dist');
-  const result = buildPackage(path.join(output, 'anything2video'), {overwrite});
-  console.log(`Built unified anything2video package at ${result}`);
+  let overwrite = false, profile, output;
+  while (args.length) {
+    const arg = args.shift();
+    if (arg === '--overwrite') overwrite = true;
+    else if (arg === '--profile' && !profile && args[0] && !args[0].startsWith('--')) profile = args.shift();
+    else if (!arg.startsWith('--') && !output) output = arg;
+    else throw new Error('Usage: node scripts/build-editions.mjs [output] [--profile core|full] [--overwrite]');
+  }
+  output ??= path.join(path.dirname(SOURCE_ROOT), 'anything2video-dist');
+  const result = buildPackage(path.join(output, 'anything2video'), {overwrite, profile});
+  const manifest = readPackageManifest(result);
+  console.log(`Built ${manifest.profile} anything2video package at ${result} (${manifest.payloadBytes} payload bytes; ${manifest.omittedSampleMediaBytes} optional media bytes omitted)`);
 }

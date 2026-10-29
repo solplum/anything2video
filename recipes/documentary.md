@@ -1,6 +1,6 @@
 # 配方：documentary（真实影像历史档案纪录片）
 
-面向历史事件、科学发现史、人物传记、工程复盘与文化档案制作有文献真实性、文献存证与历史厚度的纪录片。**核心原则：以公有领域与合规授权的一手历史档案、原稿、古籍、老照片和真实胶片为主干，代码承担移轴扫描（Rostrum Camera）、时间线地图、版式排印与存证标注**。画幅、宿主、授权与音频规则以本包 `SKILL.md` 和 `reference/production-contract.md` 为准。
+面向历史事件、科学发现史、人物传记、工程复盘与文化档案制作有文献真实性、文献存证与历史厚度的纪录片。**核心原则：以公有领域与合规授权的一手历史档案、原稿、古籍、老照片和真实胶片为主干，代码承担移轴扫描（Rostrum Camera）、时间线地图、版式排印与存证标注**。画幅、宿主、授权与音频规则只以本包 [生产契约](../reference/production-contract.md) 为准。
 
 ## 适用场景
 
@@ -51,7 +51,7 @@
 }
 ```
 
-未登记来源与许可的图片/视频素材，`check-plan.mjs` 门禁将予以拦截。交付时 `finalize_delivery.mjs` 将自动据此生成 `delivery/CREDITS.md` 来源与致谢名单。
+台账是人工来源/权属复核证据；实际使用素材还须登记到 `storyboard.assets`，由 `check-plan.mjs` 检查来源字段、许可字段和哈希。当前工具不自动核验 `archival-rights.json` 的法律结论，`finalize_delivery.mjs` 也不自动生成 CREDITS.md；交付时据实整理来源与致谢，不把台账存在当作许可已确认。
 
 ---
 
@@ -84,23 +84,33 @@
 
 ## 工程模板接线
 
-在工程 `project.json` 中声明：
+`documentary` 是本页的制作路线，不是已注册的运行时 recipe。将路线记在 `research/creative-brief.md`；下面采用现有 `epic` 覆盖层作基础，镜头显式接入 RostrumStage/档案素材。其他基础配方适合时可按实际内容选择，但 project.json 与 config 必须一致。
+
+以下样例沿用当前模板的 1280×720@30 默认值；用户选择其他规格时需同步布局与实际 Composition，不能只改 project.json。
+
+在工程 `project.json` 中更新相应字段：
 ```json
 {
-  "recipe": "documentary",
+  "recipe": "epic",
   "fps": 30,
-  "width": 1920,
-  "height": 1080
+  "width": 1280,
+  "height": 720
 }
 ```
 
-在 `src/config.ts` 中配置：
+在 `src/config.ts` 既有 `VIDEO` 对象中更新以下字段，保留其他配置（不是用此片段替换整个对象）：
 ```ts
-export const VIDEO = {
-  recipe: 'documentary',
-  slug: 'apollo-mission',
-  lang: 'zh'
-};
+recipe: 'epic' as 'explainer' | 'promo' | 'epic',
+slug: 'apollo-mission',
+lang: 'zh' as 'zh' | 'en',
 ```
 
-渲染时调用主包统一流水线 `node scripts/render.mjs`，并可通过 `--export-jianying` 直接生成剪映原生工程，方便创作者在时间线上进行精细调色与声音微调。
+稿件按契约 [文案确认门](../reference/production-contract.md#script-approval) 执行。完成镜头、渲染与实际验收后，用独立导出器生成剪映原生草稿；render.mjs 没有导出开关：
+
+```sh
+node <skill>/scripts/render.mjs <工程> video
+# 完成实际验收后，按需导出
+uv run <skill>/scripts/export_jianying.py <工程> --out <导出目录>
+```
+
+草稿在实际剪映/CapCut 桌面端打开前，不声称应用端已经验证。

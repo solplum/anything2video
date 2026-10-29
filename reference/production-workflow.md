@@ -1,67 +1,75 @@
-# 生产流程 v3
+# 生产流程
 
-本流程跨宿主共用。配方负责叙事与风格，工程和最终验收遵循 production-contract.md。用户已授权自主决策时，由主控完成稿件、音色与小样审定并记录理由。
+这里只安排顺序、产物与命令；共享规则唯一来源是 [production-contract.md](production-contract.md)。稿件授权只走其 [文案确认门](production-contract.md#script-approval)，不得把主控内部审定写成用户确认。专题文档在用到时再读。
 
-## 1. 能力与工程
+## 0. 能力与工程
 
-记录实际入口路径、Node/npm/uv/ffmpeg/ffprobe/Chromium 是否可用，以及图像、视频播放、音频听取、TTS、图像生成、子代理各自是否实测。可读图片不等于可读 MP4，可读视频不等于能听音频。缺项只影响对应操作，不能写成 passed。
+首次制作按契约 [能力与授权](production-contract.md#capabilities) 确定包外根目录、选型与持久决定，实测文件/命令、看图、视频播放、音频听取、TTS、生图和子代理能力。未知根目录先问；续作直接以磁盘工程为准：
 
-沿既有视频数据根，在 skill 外初始化空工程：`node <skill>/scripts/init.mjs <slug>`，或显式 `<工程> <slug>`。数据根优先 A2V_DATA_ROOT，再读 ~/.anything2video/workdir；未知先问并持久化，不散落当前目录。进入工程安装依赖：`npm install`、`uv sync`、`npx remotion browser ensure`。初始化默认 status=draft；模板不是完整片子。
+```sh
+node <skill>/scripts/doctor.mjs
+node <skill>/scripts/check_state.mjs <已有工程>
+# 仅新工程：根目录已明确后初始化，不覆盖已有工程
+node <skill>/scripts/init.mjs <工程绝对路径> <slug>
+```
 
-## 2. 调研与导演决定
+工程内 `npm install`、`uv sync`、`npx remotion browser ensure`（或指定 `BROWSER_EXECUTABLE`）。保留源码与锁文件，不提交缓存。check_state 的八态由证据计算；`--write` 可同步 project.json，证据缺失会回拨，不用口头进度覆盖它。
 
-写 research/creative-brief.md：受众、一个学习目标、看完能做的操作、平台、画幅、语言、时长范围、可信事实、贯穿示例、主角和首尾关系。事实表保留 URL/用户材料/本地可复测证据和访问日期。
+<a id="research"></a>
+## 1. 调研
 
-**语料路由（2026-10-09《命》判例固化）**：文化/历史/文学/诗词/神话/宗教/成语/科普事实/美食/地理等题材，先查 `reference/corpus-sources.md` 语料源注册表——**两阶段取用**：方向候选前做分钟级「清单摸底」（grep 文件清单确认有什么可引，候选基于真材料出）；方向选定后做「全文提取+引文逐条 grep 核对」喂定稿。引文以库内原文为准，版本异文按库本引用并在事实表登记；大仓取文件走 blob:none 克隆+blob SHA cat-file（勿用 sparse-checkout）。软件教程/产品等现代题材不触发本表，走常规 WebSearch/官方站降级路线。
+写 `research/creative-brief.md`：受众、目标/结论、平台与画幅、语言、时长、事实/品牌/预算约束、贯穿示例和首尾关系。事实表记来源、访问日期与待核项；选 3–5 个有证据的参考案例，缺案例库就注明。
 
-参考片记录实际查看的时间段、可借的方法和证据等级；不以帖子标题或视觉猜测证明制作模型。参考资料缺失时可继续，但明确未对标原片。读 directing-playbook.md，把稿件转换为原因、动作和结果。
+文化/历史/文学/科普等题材按 [corpus-sources.md](corpus-sources.md) 候选前清单摸底、定稿前全文提取与引文核对；现代产品/软件教程走官方资料。有对标片时按 [reference-breakdown.md](reference-breakdown.md) 量结构/转场/运动，记实际观看窗与证据等级。抽象技术先按 [directing-playbook.md](directing-playbook.md) 比较机械隐喻、数据流、真实 UI 与简洁图解；采用隐喻则写映射与边界。
 
-风格拿不准先放映 samples/ 的真实片段。视觉方向在第 4 步用同内容实渲染比较，证据与选择格式见 visual-direction.md；已有风格走沿用与回归，不重复已有套餐/授权。风格决定后固定共享图元和接口，避免每组重新设计。
+<a id="script-and-audio"></a>
+## 2. 稿件、声音与真实时间轴
 
-## 3. 稿件两段式确认与真实时间轴
+按契约 [文案确认门](production-contract.md#script-approval) 完成方向与全文；获确认或已有明确稿件级豁免后才写正本/批准证据。教学稿交代前提、步骤、结果和失败修复，不能只念标题。
 
-**文案确认门（v4.1.0，契约「文案确认门」节为权威）**：调研后先出 2–3 个方向候选（角度/叙事结构/钩子试写/时长节奏），在对话中探讨到用户选定；再按选定方向出全文逐段定稿，用户明确确认后才落盘 `script/narration.txt` 与 `script/approval.json`（`narrationSha256` 对账，改稿门复位）。确认前过程稿只进 `research/`。自带文案走复述+风险点确认；豁免仅限用户明示的稿件级授权。
+分镜前定音色；有音乐则定曲，按 [音频契约](production-contract.md#audio) 走对应试听。工程内生成/导入清洁配音，再用真实音频建立时间轴：`uv run python scripts/tts_build.py`；自带成品配音用 `scripts/align_narration.py`，无旁白用 `scripts/chapter_timeline.py`。详细入口见 [工具索引](tools-and-components.md#audio-tools)。
 
-教学稿包含前提、步骤、结果和失败修复。每句旁白一行，用 `|` 切字幕；不能只念屏幕标题。确认定稿后生成或导入清洁配音，再从真实音频建立句子时间轴。
+随后 `uv run python scripts/mix_audio.py`；选了钉帧 SFX 才第三步跑 `scripts/mix_sfx.py`，重混后也要重跑这一步。核对头尾/中段对位与完整听感。旁白或音色变更先走原授权边界，再重建时间轴并重锚所有下游，不用旧槽位硬塞。
 
-工程内运行 `uv run python scripts/tts_build.py`；TTS 不可用则导入已授权音频，不能假设凭宿主名就有语音通道。无旁白影片用 `chapter_timeline.py`，从 project.json 的 fps 建章表，保留 material 等元数据。音乐可无；需要音乐先按 bgm-bakeoff.md 试听定曲，再进分镜与建组。明确无音乐或已有选曲授权时记录决定。核对许可，清晰拍点可辅助动作，不能反过来压缩理解时间。
+## 3. 结构化分镜
 
-`audio_narration.wav` 是正本，`audio.wav` 是混音派生物。运行 `uv run python scripts/mix_audio.py`，风格音效仅显式选择。钉帧音效在混音后第三步 `uv run python scripts/mix_sfx.py`（cues 表 + `audio/sfx/sfx-mix.json` 台账；重跑混音后必须重跑本步，工具防双混）。检查头尾、中段对位、削波、响度、音色和背景遮挡，首句 onset probe 只证明首句。
+按契约 [工程合同](production-contract.md#project-contract) 写 `project.json`、`script/storyboard.json` 与 `research/beat-sheet.json`，先核实生成通道再排 AI 依赖镜头。按镜头到 [gallery](../gallery/README.md) 选卡，记录卡名；分镜定“用什么、何时、讲什么”，实现时读卡参数。
 
-音频脚本以 project.json 的 slug/fps 为准，config slug 不一致先同步真实资产引用；已有正本只在授权更新时用 tts_build.py --force。正本更新等于改稿：文案确认门按哈希对账自动复位，须重新确认并更新 `script/approval.json`，再重建音频。TTS 会更新 totalFrames；重建音频后分镜、字幕、覆盖层和实际 Composition 同步核对，再运行 TypeScript 和真实渲染。
+依据导演手册记录动作语法、观众所得、焦点、词/拍锚点、停留/切换理由；事实镜头按配方绑定 claims。声明完整帧窗并核对真实 Sequence，而不只核对清单。
 
-## 4. 分镜与多点打样
+<a id="proofing"></a>
+## 4. 图纸与多点打样
 
-声明 project.json 与 script/storyboard.json，完整结构见 production-contract.md。每镜头目的、动作、结果、素材与局部/全局帧号明确；覆盖全片，核对真实 Sequence 挂载。
+沿既有套餐和稿件决定，按 [visual-direction.md](visual-direction.md) 比较实渲方向，或沿用已验证 SKU 并做回归；不重开风格问卷。开场、复杂中段、结尾都看，含真实配音、字幕与运动片段。
 
-按 visual-direction.md 渲开场、复杂中段、结尾关键帧和真实运动小样，使用目标画幅、实际配音与字幕；方向未定比较不同构图/字体/色彩/运动处理，不能只交文字形容词。尚未实现全片时，在工程外的独立 draft 样片工程内声明准确的样片帧数和完整镜头表；不删除主工程未完成镜头来假装全片完成，也不绕过 check-plan 或 TypeScript。
+未建完全片时用包外独立 draft 样片工程，不删主工程未完成镜头伪装完成。中后段预览：`node <skill>/scripts/render.mjs <工程> preview <秒数> <1起开始帧>`。多个范围默认同名 preview，改 VER 不会改其文件名；独立工程或成对归档媒体/sidecar 后再明确 `--overwrite`。
 
-中段/末段命令：`node <skill>/scripts/render.mjs <工程> preview <秒数> <1起开始帧>`。不同范围默认同名 preview，比较多个小样时给不同 VER 不会改 preview 文件名；用独立样片工程或把前次产物及 sidecar 成对归档后再明确 --overwrite。
+## 5. 建镜头与集成
 
-## 5. 建镜头与整合
+先固定共享图元/API，再按 [workflow-orchestration.md](workflow-orchestration.md) 分配独立文件；无子代理就同合同顺序做。主控检查镜头注册、共享状态、字幕/音轨、组界和覆盖层。占位/null 通过类型检查不等于显示或解释成立。
 
-先定共享 API，再按独立文件所有权派单。任务书含分镜、资产、图元接口、1起含端点到 Remotion 0起的转换、禁改边界和验收命令。进度、结果和缺陷写磁盘；不要在 prompt 中来回搬运大段 JSON。
+## 6. 渲染
 
-没有子代理就顺序做。主控核对镜头注册、章间边界、共享状态、字幕和音频。占位或 null 组件虽然可能通过类型检查，不能通过 registration、visual 或 teaching 审核。
+工程内先 `npm run typecheck`，再用统一入口：
 
-## 6. 渲染与三种检查
+```sh
+node <skill>/scripts/check-plan.mjs <工程>
+node <skill>/scripts/render.mjs <工程> stills 1,90
+node <skill>/scripts/render.mjs <工程> preview 12
+# 正式全片先设 status=production；此变更也要求重渲
+node <skill>/scripts/render.mjs <工程> video
+```
 
-所有模式先 check-plan 和工程本地 TypeScript。输出默认保护，明确 --overwrite 才覆盖；同输出互斥，不同 bundle 可并行。正式全片渲染前把 status 改为 production，再运行 video。
+所有模式都检查完整计划；输出默认保护，同输出互斥，明确 `--overwrite` 才覆盖。每次 bundle 独立目录并关闭共享 webpack 缓存，性能收益同机实测。历史 shell 接口保留兼容，不覆盖 project.json 规格或另开验收通道。若用 `bloom_grade.py`，像素处理在审片前定稿。
 
-每次 bundle 使用独立目录并关闭共享 webpack 缓存，避免并行 pack 文件 rename 竞争。此选择可能增加打包时间，渲染吞吐仍需同机实测；不用假定缓存性能收益。
+## 7. 审核与修复
 
-渲染 sidecar 记录实际媒体 SHA256、源码清单哈希、模式、帧范围和 ffprobe；默认 visualReview/audioReview=not_performed。它是技术记录，不是成片合格证。
+按契约 [三轮证据](production-contract.md#review) 做 A 工程、B 导演、C 反向审查，再按 [jury-review.md](jury-review.md) 做 D 独立评分。`qc/round-N.md` 逐项记现象、原因、改动、重渲哈希、检查范围与保留项，修复后回归受影响镜头和边界。
 
-关键接触/交接/跟踪动作可按 [action-review.md](action-review.md) 对成片显式选窗，运行 `scripts/action_review.py` 生成默认 0.2 秒间隔的全画面与 ROI 放大条带。它保持 needs_review，只补充人工复核证据，不替代原速播放，也不把刻意静止判坏。
+需要时读取 [可读性](readability.md)、[动作复核](action-review.md)、运动/线头等探针说明；工具产物不取代看片和试听。无播放/听取能力时保留 `not_performed`，可交待审稿与工程，不标最终通过。
 
-三轮分别看：工程真实性；视觉、动作、教学和听感；反向挑最弱镜头、事实和发布说明。每轮写 qc/round-N.md：缺陷、原因、改动文件、重渲哈希、检查范围与保留项。轮数不替代结果，阻塞项未清零就继续修根因，必要时重做稿件或整章。
+## 8. 终检、交付与回写
 
-## 7. 最终证据与交付
+实际播放整片、听取完整音轨，按契约 [终检](production-contract.md#delivery) 运行 `finalize_delivery.mjs`，按 [最终 QC 数据合同](production-contract.md#final-qc) 写 `qc/final.json` 并跑 `check-qc.mjs`。核对当前媒体/源码/审查/终检报告一致，改动使旧证据失效，不自动沿用 passed。
 
-看完整实际媒体、听完整音轨，记录工具、审查者和全片范围。无播放/听取能力的项目保留 not_performed，可交待审稿和工程，不标最终通过。
-
-按 production-contract.md 写 qc/final.json，执行 `node <skill>/scripts/check-qc.mjs <工程> qc/final.json`。该工具核对声明、媒体、源码、范围、证据文件和解码；它不能证明审查者真的观看，也不能自动打审美分。
-
-源码、素材、字幕、音频或配置任何变化都让旧渲染证据失效。重新渲染，重新检查受影响片段和边界，再做全片播放与听取。最终交付 MP4、可复现工程与锁文件、字幕、封面、事实与素材清单、原始规格和 QC。保留未测试的宿主能力及待审项。
-
-抖音做原生竖屏与实际发布预览，适用时启用 AI 声明；X 长文/线程按账号权限；GitHub 只发授权仓库，排除密钥、缓存、他人视频和隐私日志。模型替代声明限定为本制作任务，不写全面能力等价或过审保证。
+交付物、评分、弱点与未测能力按契约列齐；发布按其 [画幅与发布](production-contract.md#publication)，不另设平台默认画幅。需要可编辑草稿时用 `export_jianying.py`。经验回写去向见 [context-index.md](context-index.md)，不是再加载整本历史的理由。
