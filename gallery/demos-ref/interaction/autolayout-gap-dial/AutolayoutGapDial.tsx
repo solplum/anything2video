@@ -1,10 +1,12 @@
 // autolayout-gap-dial —— framer-ai 4.5–5.5s
 // 一排导航链接块带框选描边 + 间距标注徽章，徽章数字逐格跳动，
 // 链接块被参数实时推开（flex gap 插值），标注线跟随。
-// demo 放大做：间距从紧(16)拉到松(64)，再弹簧回弹归位。
+// demo 放大做：间距从紧(12)拉到松(110)，再弹簧回弹归位。
+// Modified 2026-10-30: compress spring overshoot before all geometry; see ../../MODIFICATIONS.md.
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig, Easing } from 'remotion';
 import { G } from '../../_fixtures/Fixtures';
+import { boundedSpringGap } from '../../_fixtures/ReferenceGeometry.mjs';
 
 const BLOCK_WIDTHS = [230, 190, 265, 210, 245];
 const BLOCK_H = 100;
@@ -30,7 +32,7 @@ export const AutolayoutGapDial: React.FC = () => {
     });
   } else {
     const s = spring({ frame: frame - HOLD_END, fps, config: { damping: 9, stiffness: 80, mass: 1.1 } });
-    gap = G_MAX + (G_MIN - G_MAX) * s; // damping 9 → 过冲到 G_MIN 以下再回稳
+    gap = boundedSpringGap(s, G_MIN, G_MAX); // 只压缩过冲：最紧约 4px，仍低于 12px 再回稳
   }
   const gapShown = Math.round(gap / 2) * 2; // 徽章逐格跳数（步进 2）
 

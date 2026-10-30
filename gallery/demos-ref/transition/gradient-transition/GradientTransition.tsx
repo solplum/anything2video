@@ -2,10 +2,13 @@
 // 背景在三类 CSS 渐变之间平滑过渡：linear 段插值角度+色标，radial 段插值中心+半径，
 // conic 段旋转彩虹；等价"解析 gradient 字符串逐参数插值"的配方，中央 pill 标注当前段。
 // 设计坐标 480×270（DesignStage 等比放大），参数表数值以此坐标系标定。
+// Modified 2026-10-30: valid design-space circle radius; see ../../MODIFICATIONS.md.
 import React from 'react';
 import { DesignStage, E, lerp, seg, useT } from '../../_fixtures/Motion';
+import { circleRadiusPx } from '../../_fixtures/ReferenceGeometry.mjs';
 
 export const GRADIENT_TRANSITION_DURATION = 180; // 6000ms @30fps
+const DESIGN_WIDTH = 480;
 
 const hsl = (h: number, s: number, l: number) => `hsl(${h},${s}%,${l}%)`;
 type H3 = [number, number, number];
@@ -29,12 +32,13 @@ export const GradientTransition: React.FC = () => {
   const l1c2 = mixH([265, 80, 52], [205, 92, 58], p1);
   const bg1 = `linear-gradient(${ang}deg, ${hsl(...l1c1)}, ${hsl(...l1c2)})`;
 
-  // Phase 2: radial —— 中心 (28%,66%)→(72%,32%)，半径 45%→85%
+  // Phase 2: radial —— 中心 (28%,66%)→(72%,32%)，半径为设计宽度的 45%→85%
   const p2 = seg(t, 0.33, 0.7, E.inOutQuad);
   const cx = lerp(p2, 28, 72), cy = lerp(p2, 66, 32), rr = lerp(p2, 45, 85);
   const l2c1 = mixH([45, 95, 62], [285, 85, 58], p2);
   const l2c2 = mixH([220, 60, 14], [230, 55, 10], p2);
-  const bg2 = `radial-gradient(circle ${rr}% at ${cx}% ${cy}%, ${hsl(...l2c1)}, ${hsl(...l2c2)})`;
+  const rpx = circleRadiusPx(rr, DESIGN_WIDTH); // circle 仅接受长度；216→408 设计像素
+  const bg2 = `radial-gradient(circle ${rpx}px at ${cx}% ${cy}%, ${hsl(...l2c1)}, ${hsl(...l2c2)})`;
 
   // Phase 3: conic —— from 角度旋转的彩虹环（首尾同色可无缝循环）
   const p3 = seg(t, 0.66, 1, E.inOutQuad);
@@ -44,7 +48,7 @@ export const GradientTransition: React.FC = () => {
     hsl(240,85%,62%), hsl(300,85%,60%), hsl(0,85%,60%))`;
 
   return (
-    <DesignStage bg="#0a0b10">
+    <DesignStage w={DESIGN_WIDTH} bg="#0a0b10">
       {/* 三层渐变依次交叉淡入淡出 */}
       <div style={layerStyle(bg1, 1 - seg(t, 0.3, 0.38))} />
       <div style={layerStyle(bg2, seg(t, 0.3, 0.38) - seg(t, 0.63, 0.71))} />

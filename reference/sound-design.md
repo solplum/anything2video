@@ -1,5 +1,7 @@
 # sound-design — 声音设计
 
+可选按动作找新音源见 [SFX 来源适配器](sfx-sourcing.md)；默认不联网、不下载，不替代 mgaudio、用户音源及下文混音流程。
+
 > **a2v 适配说明**：本文移植自 video-shotcraft（Apache-2.0，`references/sound-design.md`）。
 > 源 checkout 保留其精选 SFX 库 `assets/audio/sfx/<类别>/`，逐文件 URL 与许可见 `assets/audio/ATTRIBUTION.md`；**core/full 发行包都不携带该原始 SFX 目录**。先确认实际可读音源与本次用途许可，再采用钉帧表做法；不把许可记录当作素材已安装。
 > 下文“模板片”、`template/src/aifl/Main.tsx`、`references/...` 与固定音量/双版本要求是上游案例，不是本模板现成接口或额外交付门。当前音频路径与授权只按 [生产契约](production-contract.md#audio)，工具见 [索引](tools-and-components.md#audio-tools)。

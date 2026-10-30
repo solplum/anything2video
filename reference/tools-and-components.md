@@ -26,6 +26,8 @@
 <a id="audio-tools"></a>
 ## 配音、音乐与音效
 
+需要按动作寻找新音效时，可选用 [SFX 来源适配器](sfx-sourcing.md)：显式搜索与获取预览，登记到 `storyboard.assets`，不替代既有 cues / mix 台账。
+
 | 任务 | 实现 / 详细说明 |
 |---|---|
 | 音色 A/B | [voice_bakeoff.py](../scripts/voice_bakeoff.py)、[voice-bakeoff.md](voice-bakeoff.md)：同三句代表台词，实际可用端点与试听决定 |
