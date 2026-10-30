@@ -307,6 +307,33 @@ test('original example prepares two native timing studies consumed by the mounte
   }
 });
 
+test('example low-fps boundaries adapt the real trajectory without widening match tolerances', t => {
+  const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'a2v-relay-low-fps-'));
+  t.after(() => fs.rmSync(parent, {recursive: true, force: true}));
+  for (const [fps, bpm, phase] of [[1, 30, 0], [1, 240, 2], [2, 96, 0.18], [3, 137, 0], [120, 30, 2]]) {
+    const root = path.join(parent, `study-${fps}-${bpm}`);
+    const result = spawnSync(process.execPath, [path.join(repo, 'examples/match-cut-beat-relay/prepare.mjs'), root, '--fps', String(fps), '--bpm', String(bpm), '--phase', String(phase)], {encoding: 'utf8'});
+    assert.equal(result.status, 0, result.stderr);
+    const checked = checkPlan(root);
+    assert.equal(checked.pass, true, `fps=${fps}, bpm=${bpm}, phase=${phase}: ${checked.errors.join('; ')}`);
+    const plan = JSON.parse(fs.readFileSync(path.join(root, 'script/storyboard.json')));
+    const motion = JSON.parse(fs.readFileSync(path.join(root, 'script/study-motion.json')));
+    const outgoing = plan.shots[0].matchCut.exit;
+    const incoming = plan.shots[1].matchCut.entry;
+    const tolerance = plan.matchCut.relays[0].tolerance.anchor;
+    assert.equal(tolerance, 0.02, 'the original match budget must not be relaxed');
+    // Scene.tsx uses this same speed for the seed and the incoming sun.
+    const actualLastX = 0.5 - motion.scale * motion.speed / fps;
+    assert.equal(outgoing.anchor[0], actualLastX);
+    assert.equal(incoming.anchor[0], 0.5);
+    assert.equal(outgoing.speed, motion.speed);
+    assert.equal(incoming.speed, motion.speed);
+    assert.ok(motion.speed > 0 && motion.speed <= 0.25);
+    assert.ok(Math.abs(incoming.anchor[0] - actualLastX) <= tolerance + 1e-12);
+    assert.equal(checked.editingMode.status, 'needs_review', 'a valid low-fps plan does not prove smooth playback');
+  }
+});
+
 test('review request carries whole-action windows and both cut frames into existing hash-bound review planner', async t => {
   const {root, project, plan} = fixture(t);
   const checked = checkEditingMode(root, project, plan);

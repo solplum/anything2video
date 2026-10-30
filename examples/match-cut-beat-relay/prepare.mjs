@@ -32,9 +32,12 @@ const cut2 = beatToFrame(completeGrid, beatsPerShot * 2, fps);
 const totalFrames = beatToFrame(completeGrid, beatsPerShot * 3, fps) - 1;
 const scale = 0.28;
 const speed = 0.25;
+const movingAnchorTolerance = 0.02;
 const firstDuration = (cut1 - 1) / fps;
-// Keep the first seed on canvas, even in slow-tempo/high-phase studies.
-const actualSpeed = Math.min(speed, 0.27 / (firstDuration * scale));
+// Keep the seed on canvas and its last-to-first displacement within the same
+// match budget at every admitted fps. Change the actual mounted trajectory at
+// very low fps, not the declared endpoints or the validator's tolerances.
+const actualSpeed = Math.min(speed, 0.27 / (firstDuration * scale), movingAnchorTolerance * fps / scale);
 const settleSeconds = 0.5;
 const settleX = 0.5 + scale * actualSpeed * settleSeconds / 2;
 const endpoint = (x, direction = 'none', velocity = 0) => ({anchor: [x, 0.48], scale, direction, speed: velocity});
@@ -88,7 +91,7 @@ write('script/storyboard.json', {
     schemaVersion: 1, meaning: 'Small beginning → repeated day → deliberate care routine. The circular match supports that idea; it is not a chain of unrelated round things.', heroShotId: 'S03',
     music: {kind: 'composed', path: 'script/beat_grid.json', sha256: sha256File(path.join(out, 'script/beat_grid.json')), outputOffsetSeconds: 0},
     relays: [
-      {fromShot: 'S01', toShot: 'S02', cut: 'movement', beat: beatsPerShot, reason: 'Carry the beginning into the repeated day without changing the horizontal motion direction', soundBridge: 'The same original click pulse continues across the change of symbol', tolerance: {anchor: 0.02, scale: 0.01, speed: 0.01}},
+      {fromShot: 'S01', toShot: 'S02', cut: 'movement', beat: beatsPerShot, reason: 'Carry the beginning into the repeated day without changing the horizontal motion direction', soundBridge: 'The same original click pulse continues across the change of symbol', tolerance: {anchor: movingAnchorTolerance, scale: 0.01, speed: 0.01}},
       {fromShot: 'S02', toShot: 'S03', cut: 'rest', beat: beatsPerShot * 2, reason: 'Settle the translation before changing from a sun to a dial and starting a new clockwise action', soundBridge: 'An accented click identifies the care-time arrival; no artificial foley is claimed', tolerance: {anchor: 0.01, scale: 0.01, speed: 0}},
     ],
   },
