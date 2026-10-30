@@ -29,6 +29,8 @@ core 若未安装可选视频，选择页的 poster 只是静态参考，不写�
 
 初始化支持 `<slug>` 单参：数据根优先 `A2V_DATA_ROOT`，再读持久化文件；未知或相对根直接拒绝，不退回当前目录。也支持 `<工程绝对路径> <slug>`。工程顶层 renders/stills/fin_frames/qc/delivery/versions 与依赖、音频缓存为保留产物位置（delivery/ 为 finalize_delivery 终检发布产物、versions/ 为 jury 修复轮版本留存，两者均在源快照排除清单内），不放导入源码；源码与素材应放入被记录的项目位置。`src/build`、自定义 components 及普通 build/out/dist 目录仍是输入。
 
+**可选剪辑模式**：`project.editingMode` 缺省或 `standard` 沿用原流程；`match-cut-beat-relay` 启用[匹配剪辑＋节拍接力](match-cut-beat-relay.md)合同，仅检查分镜声明的相邻接力切点。它独立于 `recipe` / `config.style`，不替换风格、不强制全片卡拍、不新增授权门；旁白、阅读停留、费用与最终 QC 仍按本契约。
+
 所有渲染模式都检查完整分镜、文件、素材哈希和 TypeScript。未完成全片时使用独立 draft 样片工程，准确声明该样片范围；正式工程保留完整计划和未完成项。初始化默认 draft，不是最终片。status 改为 production 后须重渲全片，状态变化也会改变源码哈希。
 
 `script/storyboard.json` 示例：

@@ -12,6 +12,7 @@ ROUTING_DOCS = ENTRY_PATH + (
     "reference/workflow-orchestration.md", "reference/tools-and-components.md",
     "reference/context-index.md", "reference/explainer/README.md",
     "reference/reference-breakdown.md", "reference/visual-direction.md",
+    "reference/match-cut-beat-relay.md",
     "recipes/explainer.md", "recipes/_schema.md", "recipes/documentary.md",
     "recipes/promo.md", "recipes/epic.md", "recipes/custom.md",
     "reference/desktop-hosts.md", "reference/bgm-library.md",

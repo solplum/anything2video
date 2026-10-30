@@ -18,6 +18,7 @@
 | 初始化、诊断 | [init.mjs](../scripts/init.mjs)、[doctor.mjs](../scripts/doctor.mjs)；包外空目录、能力探测见契约 |
 | 续作进度 | [check_state.mjs](../scripts/check_state.mjs)：intake → scripted → voiced → planned → rendered → reviewed → delivered；七态以旁白工程为主，稿件授权由主控另核 `approval.json`，没有自动 approved 门。overclaim 退出 1；`--write` 只在渲染前同步，渲染后用只读报告避免使源码哈希失效；reviewed 只核声明结构，完整验收仍跑 check-qc |
 | 计划、静帧、片段、全片 | [check-plan.mjs](../scripts/check-plan.mjs)、[render.mjs](../scripts/render.mjs)；所有模式检查完整计划/素材/类型，Composition 与声明一致 |
+| 可选匹配剪辑计划 | [match-cut-plan.mjs](../scripts/match-cut-plan.mjs)、[模式合同](match-cut-beat-relay.md)：原生 fps/实测或显式编写网格，核对相邻切点；`--review-request` 输出既有 review-pack 请求，不自动渲染/审片 |
 | 最终 QC、交付终检 | [check-qc.mjs](../scripts/check-qc.mjs)、[finalize_delivery.mjs](../scripts/finalize_delivery.mjs)；媒体/源码/范围/审核证据绑定；终检逐文件发布、报告最后，无多文件事务/并发锁，且需可测非静音音轨；不代替实际看听 |
 | 可编辑工程 | [export_jianying.py](../scripts/export_jianying.py)：实验性剪映/CapCut 草稿数据；全片显式 `--video` 或唯一 sidecar 候选，原始音轨静音、文本轨 opt-in，不重建完整混音/干净画面。选择与边界见 [导出说明](../recipes/documentary.md#editor-draft)，桌面导入另验 |
 | 渲后辉光 | [bloom_grade.py](../template/scripts/bloom_grade.py)：opt-in 的 bloom/halation 三档；改像素，所以在审片前定稿后照常跑证据链 |

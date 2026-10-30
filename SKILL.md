@@ -16,13 +16,13 @@ metadata:
 
 # anything2video
 
-把主题、文章或产品做成原创、可复现、可验收的视频工程：教学、科普、宣传、品牌片与档案纪录片。主要画面由代码动画或代码合成构建，可逐镜加入有来源、经过审核的素材。复制现有片子或以实拍采访/真人口播剪辑为主不是本 Skill 主场；Skill 也不承诺模型等价或一次提示稳定出精品。
+把主题、文章或产品做成可复现、可验收的原创视频：教学、科普、宣传、品牌与档案纪录片。以代码动画/合成为主，可加入可追溯、经审核的素材；不主攻复制影片、实拍采访或真人口播剪辑，不承诺模型等价或一次成精品。
 
 ## 入口与权威
 
-1. 制作或续作先完整读 [统一生产契约](reference/production-contract.md) 与短版 [生产流程](reference/production-workflow.md)。**只有契约定义共享授权、工程与验收规则**；本入口是提醒和路由，流程只安排顺序。既有明确授权持续有效，按契约记录，不重复等待。
-2. 按所选套餐读一个配方：[宣传](recipes/promo.md)、[讲解](recipes/explainer.md)、[史诗](recipes/epic.md)、[纪录片](recipes/documentary.md)。用户点名风格＋类型自由组合时再读 [custom 路由](recipes/custom.md)。完整风格库与旧 ID 均保留，不用精简入口代替风格选择；core 安装可能只有静态 poster，样片按 [资源配置说明](docs/package-profiles.md#optional-sample-videos) 按需取用，不能称已播放。
-3. 分镜前读 [导演手册](reference/directing-playbook.md)；其余资料按下表在对应步骤加载，**不默认全读历史、上游源码或工具目录**。
+1. 制作/续作先完整读 [统一生产契约](reference/production-contract.md) 与 [生产流程](reference/production-workflow.md)。**共享授权、工程与验收只由契约定义**；入口负责路由、流程安排顺序。既有明确授权按契约记录，不重复等待。
+2. 按套餐读一个配方：[宣传](recipes/promo.md)、[讲解](recipes/explainer.md)、[史诗](recipes/epic.md)、[纪录片](recipes/documentary.md)；自由组合读 [custom](recipes/custom.md)。完整风格库与旧 ID 保留。core 可能只有静态 poster；运动比较按 [资源配置](docs/package-profiles.md#optional-sample-videos) 取样片，不能把看图称为播放。
+3. 分镜前读 [导演手册](reference/directing-playbook.md)；其余按需加载，不默认全读历史/上游。
 
 ## 不可略过的提醒
 
@@ -41,7 +41,8 @@ metadata:
 | 选套餐/沿用风格 | 契约 [选型与持久决策](reference/production-contract.md#selection)、[风格台账](reference/style-ledger.md)、[完整选择页](samples/index.html)；元数据唯一来源 [catalog](styles/catalog.json)，接线读 [styles](styles/README.md) 与所选 SPEC |
 | 文化、历史、文学、诗词、神话或科普事实调研 | [语料注册表](reference/corpus-sources.md)：候选前轻摸底、定稿前重核对；现代产品/软件教程走官方资料 |
 | 有对标片/需材质或生成画面 | [参考片拆解](reference/reference-breakdown.md)、[材质](reference/materials.md)、[AI 一帧先行 SOP](reference/ai-frame-sop.md)；排 AI 镜头前核实通道 |
-| 动作、词/拍落点、停留或切换 | [运动语言](reference/motion-language.md)、[事件编排](reference/cue-choreography.md)、[gallery 配方卡](gallery/README.md)；按镜头选卡并读参数/判例，数量以实际目录和 gallery 索引为准 |
+| 动作、词/拍落点、停留或切换 | [运动语言](reference/motion-language.md)、[事件编排](reference/cue-choreography.md)、[gallery](gallery/README.md)；选卡后读参数/判例 |
+| 可选匹配剪辑＋节拍接力 | [剪辑模式](reference/match-cut-beat-relay.md)；独立于画风/配方，仅作用于声明的接力切点 |
 | 音色、选曲、声音制作 | [音色试听](reference/voice-bakeoff.md)、[选曲试听](reference/bgm-bakeoff.md)、[音乐编排](reference/music-plan.md)、[音乐卡点](reference/music-beat-sync.md)、[声音设计](reference/sound-design.md)；只读当前通道 |
 | 打样、派单、专项验收 | [视觉方向](reference/visual-direction.md)、[派单协议](reference/workflow-orchestration.md)、[动作复核](reference/action-review.md)、[小屏可读性](reference/readability.md)、[独立评分](reference/jury-review.md) |
 | 找命令、组件、兼容接口或导出路线 | [工具与组件索引](reference/tools-and-components.md)；不需要时不读 |
@@ -49,4 +50,4 @@ metadata:
 
 ## 从这里继续
 
-续作先运行 `node <skill>/scripts/check_state.mjs <工程>`，以磁盘证据找下一步，不重建已有工程。新工程按流程第 0 步确定包外目录并运行 `doctor` / `init`。运行产物留工程内，长期验证过的资产与经验才回写 Skill。只有打包/发现成功时，不能声称该宿主已端到端作片；纯聊天环境不能凭空渲染 MP4。
+续作运行 `node <skill>/scripts/check_state.mjs <工程>`，据磁盘证据继续，不重建。新工程按流程第 0 步确定包外目录并运行 `doctor` / `init`。产物留工程内，验证过的资产/经验才回写 Skill。打包/发现成功不等于宿主端到端作片；纯聊天不能凭空渲染 MP4。

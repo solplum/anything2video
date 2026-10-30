@@ -4,6 +4,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {isRecord, nonempty, projectFile, sha256File} from './runtime-lib.mjs';
 import {checkVisualDirection} from './visual-direction-lib.mjs';
+import {validateEditingMode, checkEditingMode} from './editing-mode-lib.mjs';
 
 export function validatePlan(project, plan) {
   const errors = [];
@@ -54,6 +55,7 @@ export function validatePlan(project, plan) {
       if (![asset.model, asset.prompt, asset.disclosure].every(nonempty) || !seed || !qc) errors.push(`Missing AI provenance/disclosure/seed/QC: ${label}`);
     }
   }
+  errors.push(...validateEditingMode(project, plan));
   return errors;
 }
 
@@ -82,7 +84,9 @@ export function checkPlan(root) {
   }
   const visualDirection = checkVisualDirection(root, project);
   errors.push(...visualDirection.errors);
-  return {pass: errors.length === 0, errors, visualDirection, note: 'Coverage checks are not visual acceptance. Review moving sequences and final media separately.'};
+  const editingMode = checkEditingMode(root, project, plan);
+  errors.push(...editingMode.errors.filter(error => !errors.includes(error)));
+  return {pass: errors.length === 0, errors, visualDirection, editingMode, note: 'Coverage and declared match-cut geometry/timing checks are not visual acceptance. Review moving sequences and final media separately.'};
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

@@ -13,7 +13,7 @@ node <skill>/scripts/check_state.mjs <已有工程>
 node <skill>/scripts/init.mjs <工程绝对路径> <slug>
 ```
 
-工程内 `npm ci`、`uv sync`、`npx remotion browser ensure`（或指定 `BROWSER_EXECUTABLE`）。保留源码与锁文件，不提交缓存。check_state 按证据算七态，不包含稿件批准；主控另核授权。`--write` 只在无渲染/静帧证据时同步 `project.json.state`，同值不改文件；渲染后变更会被拒绝，改用只读报告以保留源码哈希。缺证据会回拨计算态，不以口头进度覆盖。阶梯以旁白为前置，无旁白/静音工程另逐项核对计划、渲染和 QC，不能据此宣称完整 delivered。
+工程内 `npm ci`、`uv sync`、`npx remotion browser ensure`（或设 `BROWSER_EXECUTABLE`）；保留源码/锁文件，不提交缓存。check_state 七态不含稿件批准，主控另核授权；缺证据会回拨。`--write` 仅在无渲染/静帧证据时同步 `project.json.state`，同值不改；渲染后用只读报告保留源码哈希。无旁白/静音工程另核计划、渲染与 QC，不能据此宣称 delivered。
 
 <a id="research"></a>
 ## 1. 调研
@@ -35,7 +35,7 @@ node <skill>/scripts/init.mjs <工程绝对路径> <slug>
 
 按契约 [工程合同](production-contract.md#project-contract) 写 `project.json`、`script/storyboard.json` 与 `research/beat-sheet.json`，先核实生成通道再排 AI 依赖镜头。按镜头到 [gallery](../gallery/README.md) 选卡，记录卡名；分镜定“用什么、何时、讲什么”，实现时读卡参数。
 
-依据导演手册记录动作语法、观众所得、焦点、词/拍锚点、停留/切换理由；事实镜头按配方绑定 claims。声明完整帧窗并核对真实 Sequence，而不只核对清单。
+依据导演手册记录动作语法、观众所得、焦点、词/拍锚点、停留/切换理由；事实镜头按配方绑定 claims，完整帧窗须核对真实 Sequence。选了[匹配剪辑模式](match-cut-beat-relay.md)时，先定意义与音乐网格，写接力合同；先用便宜 animatic 审动作/切点，再投入生成视频。
 
 <a id="proofing"></a>
 ## 4. 图纸与多点打样
@@ -60,7 +60,7 @@ node <skill>/scripts/render.mjs <工程> preview 12
 node <skill>/scripts/render.mjs <工程> video
 ```
 
-所有模式都检查完整计划；输出默认保护，同输出互斥，明确 `--overwrite` 才覆盖。每次 bundle 独立目录并关闭共享 webpack 缓存，性能收益同机实测。历史 `template/scripts/new_project.sh`、`preview.sh`、`render.sh` 等 shell helper 已弃作生产入口，仅保留旧工程参考：含旧路径/30fps 假设，无统一证据，不是门禁包装。生产只用 `init.mjs` / `render.mjs`。若用 `bloom_grade.py`，像素处理在审片前定稿。
+所有模式检查完整计划；同输出互斥，显式 `--overwrite` 才覆盖。bundle 用独立目录、关闭共享 webpack 缓存，性能同机实测。生产只用 `init.mjs` / `render.mjs`；旧 shell helper 含路径/30fps 假设、无统一证据，见[工具索引](tools-and-components.md)。`bloom_grade.py` 像素处理须在审片前定稿。
 
 ## 7. 审核与修复
 
@@ -72,4 +72,4 @@ node <skill>/scripts/render.mjs <工程> video
 
 实际播放整片、听取完整音轨，按契约 [终检](production-contract.md#delivery) 运行 `finalize_delivery.mjs`，按 [最终 QC 数据合同](production-contract.md#final-qc) 写 `qc/final.json` 并跑 `check-qc.mjs`。核对当前媒体/源码/审查/终检报告一致，改动使旧证据失效，不自动沿用 passed。
 
-交付物、评分、弱点与未测能力按契约列齐；发布按其 [画幅与发布](production-contract.md#publication)，不另设平台默认画幅。需要实验性可编辑草稿数据时按 [导出说明](../recipes/documentary.md#editor-draft) 使用 `export_jianying.py`。经验回写去向见 [context-index.md](context-index.md)，不是再加载整本历史的理由。
+交付物、评分、弱点与未测能力按契约列齐；遵守 [画幅与发布](production-contract.md#publication)。实验性剪映草稿见[导出说明](../recipes/documentary.md#editor-draft)，经验回写见[上下文索引](context-index.md)。
