@@ -41,6 +41,22 @@
       "expected_output": "project.json 声明 recipe 为 documentary。生成真实的 research/archival-rights.json 台账记录 Public Domain 馆藏凭证。使用 RostrumStage 呈现老照片 Ken Burns 慢推、光学暗角与文献存证题头。通过 export_jianying.py 成功导出多轨草稿目录。",
       "target_recipe": "recipes/documentary.md",
       "target_style": "styles/sand"
+    },
+    {
+      "id": 6,
+      "name": "character_action_causality_without_captions",
+      "prompt": "制作8秒无声无字幕的原创合成动作练习：同一小角色发现花盆在阴影，走近接触并推动，花盆进入光区后花展开。沿用现有剪纸/版画风格，不换引擎。提供story角色/道具ID与五阶段动作合同，实渲并遮字幕让独立观察者解释因果。再仅把接触时间推后0.5秒，验证其他镜头、音频声明、风格和背景不被改写。",
+      "expected_output": "可运行Remotion工程、完整storyboard、原版和局部改版短片；check-plan与story-action自动审片窗验证；手接触前道具不移动、释放后稳定的实际帧证据；未做的独立观看标not_performed而非伪造通过；不拿新增字段或像素差代替好故事。",
+      "target_recipe": "recipes/custom.md",
+      "target_style": "styles/grain-flat"
+    },
+    {
+      "id": 7,
+      "name": "sourced_character_story_adaptation",
+      "prompt": "以用户指定的真实人物和所给来源制作改编分镜，先核对来源，区分已证事件、争议、未知和象征演绎。没有指定人物或来源时先询问，不自动选用候选人物。不虚构对白、心理和救人细节。沿用现有Remotion样式，使用claims/facts及story.kind=adaptation，先最难动作样片再扩片。",
+      "expected_output": "事实卡与来源、factualBoundary、documented/dramatized镜头说明和合法facts绑定；未知保留；角色身份、行动后果、接触窗可检验。结构通过不等于史实/许可证/画面自动通过，仍走既有稿件授权和真实审片。",
+      "target_recipe": "recipes/custom.md",
+      "target_style": "styles/grain-flat"
     }
   ]
 }

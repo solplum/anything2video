@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "frameConvention": "1-based-inclusive",
+  "fps": 30,
+  "totalFrames": 240,
+  "variants": {
+    "baseline": {
+      "contactSec": 3,
+      "phases": {
+        "anticipation": [
+          76,
+          90
+        ],
+        "contact": [
+          91,
+          96
+        ],
+        "support": [
+          97,
+          150
+        ],
+        "release": [
+          151,
+          165
+        ],
+        "settle": [
+          166,
+          210
+        ]
+      }
+    },
+    "lateContact": {
+      "contactSec": 3.5,
+      "phases": {
+        "anticipation": [
+          91,
+          105
+        ],
+        "contact": [
+          106,
+          111
+        ],
+        "support": [
+          112,
+          165
+        ],
+        "release": [
+          166,
+          180
+        ],
+        "settle": [
+          181,
+          225
+        ]
+      }
+    }
+  }
+}

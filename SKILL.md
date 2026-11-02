@@ -41,6 +41,7 @@ metadata:
 | 选套餐/沿用风格 | 契约 [选型与持久决策](reference/production-contract.md#selection)、[风格台账](reference/style-ledger.md)、[完整选择页](samples/index.html)；元数据唯一来源 [catalog](styles/catalog.json)，接线读 [styles](styles/README.md) 与所选 SPEC |
 | 文化、历史、文学、诗词、神话或科普事实调研 | [语料注册表](reference/corpus-sources.md)：候选前轻摸底、定稿前重核对；现代产品/软件教程走官方资料 |
 | 有对标片/需材质或生成画面 | [参考片拆解](reference/reference-breakdown.md)、[材质](reference/materials.md)、[AI 一帧先行 SOP](reference/ai-frame-sop.md)；排 AI 镜头前核实通道 |
+| 角色故事/真实改编 | [故事合同](reference/character-story.md) |
 | 动作、词/拍落点、停留或切换 | [运动语言](reference/motion-language.md)、[事件编排](reference/cue-choreography.md)、[gallery](gallery/README.md)；选卡后读参数/判例 |
 | 可选匹配剪辑＋节拍接力 | [剪辑模式](reference/match-cut-beat-relay.md)；独立于画风/配方，仅作用于声明的接力切点 |
 | 音色、选曲、声音制作 | [音色试听](reference/voice-bakeoff.md)、[选曲试听](reference/bgm-bakeoff.md)、[音乐编排](reference/music-plan.md)、[音乐卡点](reference/music-beat-sync.md)、[声音设计](reference/sound-design.md)；只读当前通道 |

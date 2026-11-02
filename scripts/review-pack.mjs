@@ -6,6 +6,7 @@ import {pathToFileURL, fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {validatePlan, checkPlan} from './check-plan.mjs';
 import {isRecord, isWithin, projectFile, resolvedPath, snapshotSources, sha256File} from './runtime-lib.mjs';
+import {storyReviewWindows} from './story-contract-lib.mjs';
 import {renderBatch} from './render.mjs';
 
 const ID = /^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/;
@@ -42,12 +43,12 @@ export function planReview(cfg, storyboard, request) {
   if (errors.length) throw new Error(`Invalid storyboard: ${errors.join('; ')}`);
   keys(request, ['schemaVersion', 'id', 'automatic', 'windows', 'cues', 'stills', 'reviewer', 'focus', 'preserve', 'actionReview'], 'review request');
   if (request.schemaVersion !== 1 || typeof request.id !== 'string' || !ID.test(request.id)) throw new Error('Review request needs schemaVersion 1 and a safe id');
-  const defaults = {opening: true, middle: true, ending: true, cuts: true, endpointStills: true, windowSeconds: 3, cutContextSeconds: 0.5};
+  const defaults = {storyActions: true, opening: true, middle: true, ending: true, cuts: true, endpointStills: true, windowSeconds: 3, cutContextSeconds: 0.5};
   const automatic = request.automatic === false
-    ? {...defaults, opening: false, middle: false, ending: false, cuts: false, endpointStills: false}
+    ? {...defaults, storyActions: false, opening: false, middle: false, ending: false, cuts: false, endpointStills: false}
     : {...defaults, ...(request.automatic ?? {})};
   if (request.automatic !== undefined && request.automatic !== false) keys(request.automatic, Object.keys(defaults), 'automatic');
-  for (const field of ['opening', 'middle', 'ending', 'cuts', 'endpointStills']) if (typeof automatic[field] !== 'boolean') throw new Error(`automatic.${field} must be boolean`);
+  for (const field of ['storyActions', 'opening', 'middle', 'ending', 'cuts', 'endpointStills']) if (typeof automatic[field] !== 'boolean') throw new Error(`automatic.${field} must be boolean`);
   number(automatic.windowSeconds, 'automatic.windowSeconds', 0.001, 30);
   number(automatic.cutContextSeconds, 'automatic.cutContextSeconds', 0.001, 15);
   const actionReview = {enabled: true, ...(request.actionReview ?? {})};
@@ -93,6 +94,10 @@ export function planReview(cfg, storyboard, request) {
   const context = Math.max(1, Math.round(automatic.cutContextSeconds * cfg.fps));
   if (automatic.cuts) for (const [index, shot] of shots.entries()) {
     if (index > 0) auto(`cut-${index}`, Math.max(1, shot.from - context), Math.min(cfg.totalFrames, shot.from + context - 1), {cutAtFrame: shot.from, shotIds: [shots[index - 1].id, shot.id]});
+  }
+  if (automatic.storyActions) for (const action of storyReviewWindows(storyboard, context)) {
+    addWindow(action.from, action.to, action.selection);
+    for (const frame of action.selection.phaseFrames) addStill(frame, action.selection);
   }
   for (const kind of ['windows', 'cues', 'stills']) {
     const items = request[kind] === undefined ? [] : request[kind];
@@ -141,16 +146,26 @@ export function planReview(cfg, storyboard, request) {
     dimensions: {width: cfg.width, height: cfg.height, fps: cfg.fps, totalFrames: cfg.totalFrames},
     requestSha256: hashJson(request), automatic, actionReview, reviewerChoices: choices,
     summary: {windows: selectedWindows.length, stills: selectedStills.length, totalPreviewFrames: selectedWindows.reduce((sum, item) => sum + item.to - item.from + 1, 0), totalPreviewSeconds: rounded(selectedWindows.reduce((sum, item) => sum + item.to - item.from + 1, 0) / cfg.fps), overlappingWindows: selectedWindows.some((item, index) => selectedWindows.slice(0, index).some(other => other.to >= item.from)), note: 'Duration counts overlapping windows separately; exact duplicates share media and retain all selections.'},
-    items, shots: shots.map(({id, from, to, purpose, action}) => ({id, from, to, purpose, action})),
+    items, ...(storyboard.story === undefined ? {} : {story: structuredClone(storyboard.story)}),
+    shots: shots.map(({id, from, to, purpose, action, story, facts}) => ({id, from, to, purpose, action, ...(story === undefined ? {} : {story: structuredClone(story), ...(facts === undefined ? {} : {facts: structuredClone(facts)})})})),
+    ...(storyboard.story?.kind === 'adaptation' ? {claims: structuredClone(storyboard.claims ?? [])} : {}),
     renderRequest: {schemaVersion: 1, id: request.id, allowOverlap: true, windows: selectedWindows.map(({id, from, to}) => ({id, from, to})), stills: selectedStills.map(({id, frame}) => ({id, frame}))},
   };
 }
 
 export function reviewDocuments(packet) {
   const choiceLines = Object.entries(packet.reviewerChoices).flatMap(([name, value]) => (Array.isArray(value) ? value : [value]).map(note => `- ${name}: ${escape(note)}`));
-  const header = [`# Review packet: ${escape(packet.id)}`, '', `**needs_review — ${packet.mediaState === 'not_rendered' ? 'PLAN ONLY: no media rendered or reviewed' : 'preview evidence generated, not reviewed'}**`, '', `Specification: ${packet.dimensions.width}×${packet.dimensions.height} @ ${packet.dimensions.fps} fps (unchanged).`, `Windows: ${packet.summary.windows}; stills: ${packet.summary.stills}; summed preview duration: ${packet.summary.totalPreviewSeconds}s (overlap counted).`, `Source snapshot SHA256: \`${packet.sourceSnapshotSha256}\``, `Request SHA256: \`${packet.requestSha256}\``, '', 'Frame labels are full-film, 1-based inclusive. Source seconds and preview-local seconds start at their own first frame. A preview decoded index i maps to source frame from+i; its last frame is at (to-from)/fps, not the encoded duration.', '', 'Opening / timeline-middle / ending / cut windows are deterministic coverage samples, not detection of complex actions. Explicit actions/cues come from caller-authored timing. Still images and numerical checks do not establish motion or sound quality.', '', ...choiceLines, ''];
+  const header = [`# Review packet: ${escape(packet.id)}`, '', `**needs_review — ${packet.mediaState === 'not_rendered' ? 'PLAN ONLY: no media rendered or reviewed' : 'preview evidence generated, not reviewed'}**`, '', `Specification: ${packet.dimensions.width}×${packet.dimensions.height} @ ${packet.dimensions.fps} fps (unchanged).`, `Windows: ${packet.summary.windows}; stills: ${packet.summary.stills}; summed preview duration: ${packet.summary.totalPreviewSeconds}s (overlap counted).`, `Source snapshot SHA256: \`${packet.sourceSnapshotSha256}\``, `Request SHA256: \`${packet.requestSha256}\``, '', 'Frame labels are full-film, 1-based inclusive. Source seconds and preview-local seconds start at their own first frame. A preview decoded index i maps to source frame from+i; its last frame is at (to-from)/fps, not the encoded duration.', '', 'Opening / timeline-middle / ending / cut windows are deterministic coverage samples, not detection of complex actions. Explicit actions/cues and story-action phases come from caller-authored timing, not visual inference. Still images and numerical checks do not establish motion or sound quality.', '', ...choiceLines, ''];
   const table = ['| Item / source start → end | Shots | Selection | Media |', '|---|---|---|---|'];
   const check = [...header, '## Review checklist (unchecked; no automatic pass)', '', '- [ ] Play every selected preview at original speed with its available audio; log actual observations, defects, intentional holds, reviewer and tool.', '- [ ] Inspect boundary and endpoint stills for readability, contact/occlusion and continuity; stills alone cannot establish movement.', '- [ ] Preserve intentional static reading/emotional holds and the caller’s preserve choices; no minimum-motion quota.', '- [ ] Recheck source and media hashes after edits. New evidence does not inherit old passed/reviewed judgments.', '- [ ] Separately watch the complete current film and listen to its entire soundtrack, then use the existing final QC contract. This packet is neither final delivery nor full-film acceptance.', ''];
+  if (packet.items.some(item => item.selections.some(s => s.kind === 'story-action'))) check.push('- [ ] Hide captions and ask an independent reviewer: who wants what, what obstructs them, what action causes which visible outcome? Record their answer, not the intended script.', '- [ ] Check stable character/prop identity, ownership, foot support, hand contact, release and settling; then inspect neighboring frames after local edits.', '');
+  if (packet.story) {
+    check.push('## Declared story intent (not observed facts)', '', 'Record the blind interpretation before reading these declarations. Compare them afterward; metadata is not visual or historical verification.');
+    for (const kind of ['characters', 'props']) for (const item of packet.story[kind]) check.push(`- ${escape(kind)} ${escape(item.id)} identity: ${escape(item.identity)}`);
+    if (packet.story.factualBoundary) check.push(`- Factual boundary: ${escape(packet.story.factualBoundary)}`);
+    for (const [index, claim] of (packet.claims ?? []).entries()) check.push(`- Claim ${index}: ${escape(claim.text)}; source: ${escape(claim.source)}`);
+    check.push('');
+  }
   for (const item of packet.items) {
     const selection = item.selections.map(why => why.label ?? why.id).join('; ');
     const media = item.media ? `[${item.mode === 'preview' ? 'Preview' : 'Still'} ${escape(item.id)}](${encodeURI(item.media)})` : `not_rendered (planned ${escape(item.plannedMedia)})`;
@@ -158,6 +173,12 @@ export function reviewDocuments(packet) {
     check.push(`### ${escape(item.id)} — ${escape(item.frameLabel)}`, '', `- Status: needs_review; playback: not_performed; ${media}`, `- Shots: ${item.shotIds.map(escape).join(', ')}. Selection: ${escape(selection)}.`);
     for (const why of item.selections) if (why.note) check.push(`- Caller note: ${escape(why.note)}`);
     for (const shot of packet.shots.filter(shot => item.shotIds.includes(shot.id))) check.push(`- ${escape(shot.id)} purpose: ${escape(shot.purpose)}; action: ${escape(shot.action)}; component SHA256: \`${shot.componentSha256}\`.`);
+    for (const shot of packet.shots.filter(shot => item.shotIds.includes(shot.id) && shot.story)) {
+      const beat = shot.story;
+      check.push(`- Declared story: actor ${escape(beat.actor)}; goal ${escape(beat.goal)}; obstacle ${escape(beat.obstacle)}; attempt ${escape(beat.attempt)}; outcome ${escape(beat.outcome)}.`);
+      if (beat.evidence) check.push(`- Evidence label: ${escape(beat.evidence.kind)}; ${escape(beat.evidence.note)}; claim indices: ${(shot.facts ?? []).join(', ')}.`);
+      for (const action of beat.actions) if (action.prop) check.push(`- Declared ownership ${escape(action.prop)}: ${escape(action.ownerBefore)} → ${escape(action.ownerAfter)} (${escape(action.id)}).`);
+    }
     if (item.mode === 'preview') {
       check.push(`- Preview-local first/last frame: 0s → ${item.time.previewLocalEndSeconds}s. Source frame = ${item.frames.from} + decoded index.`);
       if (item.frames.from === item.frames.to) check.push('- Action strip: not_performed; one frame cannot meet the two-distinct-frame minimum. Choose a longer window for motion review.');
@@ -193,7 +214,7 @@ function actionDependencies(env) {
 export function postprocessReviewActions(directory, packet, env = process.env) {
   directory = fs.realpathSync(directory);
   const settings = packet.actionReview;
-  const selected = packet.items.filter(item => item.mode === 'preview' && item.selections.some(selection => ['window', 'cue'].includes(selection.kind)));
+  const selected = packet.items.filter(item => item.mode === 'preview' && item.selections.some(selection => ['window', 'cue', 'story-action'].includes(selection.kind)));
   for (const item of selected) {
     if (typeof item.id !== 'string' || !ID.test(item.id)) throw new Error('Unsafe action item id');
     const skip = reason => {item.actionReview = {generation: 'not_performed', status: 'needs_review', reason};};
@@ -317,7 +338,7 @@ export async function createReviewPack(root, request, options = {}, env = proces
   options.onPlan?.(plan.summary);
   verifyRequest();
   if (mode === 'render') {
-    if (plan.actionReview.enabled && plan.items.some(item => item.mode === 'preview' && item.frames.to > item.frames.from && item.selections.some(selection => ['window', 'cue'].includes(selection.kind)))) actionDependencies(env);
+    if (plan.actionReview.enabled && plan.items.some(item => item.mode === 'preview' && item.frames.to > item.frames.from && item.selections.some(selection => ['window', 'cue', 'story-action'].includes(selection.kind)))) actionDependencies(env);
     verifyRequest();
     let verifyPacket = () => {};
     const result = await renderBatch(root, plan.renderRequest, env, {verifyInputs: () => {verifyRequest(); verifyPacket();}, finalize: async ({directory, manifest}) => {

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "proofKind": "component-frame-proof",
+  "notClaimed": "Native Remotion/Chromium render or cross-renderer pixel parity",
+  "pipeline": "Same CharacterActionFrame React component \u2192 ReactDOMServer SVG \u2192 installed system librsvg/cairo \u2192 ffmpeg libx264, 1 thread",
+  "nativeRemotion": {
+    "status": "blocked",
+    "reason": "Chromium local socket EPERM; escalation fails before command with bwrap denied-path mount infrastructure error",
+    "log": "/workspace/scratch/10337929cf9d/character-action-render/render.log"
+  },
+  "videoMetadata": {
+    "baseline": {
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "frames": 240,
+      "seconds": 8.0,
+      "audioStreams": 0
+    },
+    "late-contact": {
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "fps": "30/1",
+      "frames": 240,
+      "seconds": 8.0,
+      "audioStreams": 0
+    }
+  },
+  "checks": {
+    "pureFrameStates": 480,
+    "worldLockedStanceFeet": "passed",
+    "contactPointEquality": "passed",
+    "storyboardPhaseClockEquality": "passed",
+    "storyboardTimingOnlyEditGuard": "passed",
+    "preActionPixelIdenticalFrames": 75,
+    "actionPixelIdenticalAtPlus15Frames": 120,
+    "finalHoldPixelIdenticalFrames": 15,
+    "unchangedUpperWallPixelChecks": 16,
+    "unchangedUpperWallRegion": [
+      0,
+      0,
+      1280,
+      270
+    ],
+    "sound": "both videos have zero audio streams",
+    "externalTypecheck": "passed final copied TSX, JSON entry, and imports",
+    "externalWorkspaceGuards": "both reject repository workspace"
+  },
+  "visualInspection": {
+    "reviewer": "assistant actual image inspection, not human jury",
+    "frames1Based": [
+      61,
+      83,
+      91,
+      113,
+      150,
+      158,
+      180,
+      210,
+      240
+    ],
+    "findings": [
+      "Recognizable consistent gardener and pot; unclipped composition.",
+      "Visible reach, sustained hand-to-pot contact, wheel translation, release, and flowering consequence.",
+      "Initial review found prematurely open flower; corrected petals to folded bud before final renders.",
+      "Independent code review found stance sliding; replaced with explicit world-locked stance windows before final renders.",
+      "Encoded close-up exposed inverted smile curve; corrected and rerendered both full proofs from final source."
+    ],
+    "limits": [
+      "Simple stylized walk, not full biomechanics.",
+      "Native browser output remains unverified."
+    ]
+  },
+  "sourceSha256": {
+    "template/src/shots/character-action/timing.ts": "c3d2740d8f00c4373898c339f0d8ab30f3a3a1ff530385fa1bdd1fa4dc25a05f",
+    "template/src/shots/character-action/Demo.tsx": "8d12264bb72d73ba2d9df2f160c2269f726a2e38d9ae58b017cfaaa7fce6c648",
+    "template/src/common/riso/index.ts": "81b7fd3fd11d5d1da7f6b91353bbe4b38fd62e1971c18218b029a77486e5764e",
+    "template/src/common/riso/timing.ts": "823e0445652d5ec8ee37842a35c9fb24e508ed531c5e95561f018c5d38073037",
+    "template/src/common/riso/Plates.tsx": "ba6e422007f0a105376a87dc25fcad95ef77fd81d7f956e467ef66b764ea590a",
+    "examples/character-action-contract/storyboard.json": "4f8e24e891dde3899904d6b21abd900ea16b6b9fcd93681724b313bb67dd9fa2",
+    "examples/character-action-contract/storyboard.late-contact.json": "724806c70e2fe127253c25b6659c9f673610f8e8b6be41dca9cc72055d38dea9",
+    "examples/character-action-contract/render-entry.tsx": "314e962cba2c5d1660ed815e25660609da1645df34ba48794eea1ab23b031cf2",
+    "examples/character-action-contract/render-component-proof.mjs": "43871c1cb31611d0163693ec49fae29eef2db6513dfe8c66ce176dfeaf1ac6c1",
+    "examples/character-action-contract/rasterize-svg.py": "4cbca829626e75097119298f6dd2f138f247e589a9a8185022883d1f191b7fa6"
+  },
+  "artifacts": {
+    "/workspace/scratch/10337929cf9d/character-action-render/component-proof/baseline.mp4": {
+      "bytes": 177004,
+      "sha256": "3a6748cfdcd4b83b5b37dd1baa0609583089d1c60c694cde9c81b3fbbe6a9ce4"
+    },
+    "/workspace/scratch/10337929cf9d/character-action-render/component-proof/late-contact.mp4": {
+      "bytes": 176664,
+      "sha256": "027997811ad5c8f5c96fe1827c9693b4a3fe50a47573f8a8625f09af40ae603e"
+    },
+    "/workspace/scratch/10337929cf9d/character-action-render/component-proof/contact-sheet.png": {
+      "bytes": 116883,
+      "sha256": "30df04dfcbd0ec03c2e78bbf1bb362e59876ff5f6129336b7a7bf51f12b1c6ad"
+    },
+    "/workspace/scratch/10337929cf9d/character-action-render/component-proof/encoded-01.png": {
+      "bytes": 97122,
+      "sha256": "9dafde0c77daba989b08b70e5a0ebbd71ee817212bc494dc2ffcc64aa63f44a0"
+    },
+    "/workspace/scratch/10337929cf9d/character-action-render/component-proof/encoded-02.png": {
+      "bytes": 101702,
+      "sha256": "c72f8fdf367fe6e95941b62018e5106b21c128193176068d9e2e85de367b6185"
+    },
+    "/workspace/scratch/10337929cf9d/character-action-render/component-proof/encoded-03.png": {
+      "bytes": 104341,
+      "sha256": "b6e20fce6e99fb011e553185bdbfc8d1b8c57a607539b299cfb13a085161c64b"
+    }
+  }
+}

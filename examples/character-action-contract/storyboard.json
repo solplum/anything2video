@@ -1,0 +1,71 @@
+{
+  "story": {
+    "schemaVersion": 1,
+    "kind": "fiction",
+    "characters": [
+      {
+        "id": "gardener",
+        "identity": "Coral face, broad golden sun hat, teal smock, dark trousers; stable silhouette throughout."
+      }
+    ],
+    "props": [
+      {
+        "id": "flowerpot",
+        "identity": "Coral cylindrical pot on two dark wheels; teal stem and gold flower."
+      }
+    ]
+  },
+  "shots": [
+    {
+      "id": "garden-push",
+      "from": 1,
+      "to": 240,
+      "group": "character-action",
+      "component": "template/src/shots/character-action/Demo.tsx",
+      "action": "Gardener approaches and pushes a shaded potted bud into the window sunlight, releases it, and smiles as it opens.",
+      "purpose": "Synthetic regression fixture for visible agency, sustained contact, prop causality, and local retiming. Not a user film or factual adaptation.",
+      "story": {
+        "actor": "gardener",
+        "goal": "Move the shaded bud into sunlight.",
+        "obstacle": "The heavy pot sits outside the sun patch.",
+        "attempt": "Approach, reach, plant a palm against the pot, and push its wheeled base.",
+        "outcome": "The pot arrives in sunlight; the flower opens and the gardener relaxes.",
+        "before": "Pot centered x=610 outside the sun patch; compact flower.",
+        "after": "Pot centered x=830 in the sun patch; flower fully open; hand released.",
+        "actions": [
+          {
+            "id": "push",
+            "actor": "gardener",
+            "prop": "flowerpot",
+            "ownerBefore": "world",
+            "ownerAfter": "world",
+            "phases": {
+              "anticipation": [
+                76,
+                90
+              ],
+              "contact": [
+                91,
+                96
+              ],
+              "support": [
+                97,
+                150
+              ],
+              "release": [
+                151,
+                165
+              ],
+              "settle": [
+                166,
+                210
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "claims": [],
+  "assets": []
+}

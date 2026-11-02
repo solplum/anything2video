@@ -4,6 +4,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {isRecord, nonempty, projectFile, sha256File} from './runtime-lib.mjs';
 import {checkVisualDirection} from './visual-direction-lib.mjs';
+import {validateStory} from './story-contract-lib.mjs';
 import {validateEditingMode, checkEditingMode} from './editing-mode-lib.mjs';
 
 export function validatePlan(project, plan) {
@@ -55,6 +56,7 @@ export function validatePlan(project, plan) {
       if (![asset.model, asset.prompt, asset.disclosure].every(nonempty) || !seed || !qc) errors.push(`Missing AI provenance/disclosure/seed/QC: ${label}`);
     }
   }
+  errors.push(...validateStory(plan));
   errors.push(...validateEditingMode(project, plan));
   return errors;
 }
