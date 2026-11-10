@@ -112,15 +112,15 @@ export const AnatomyCarriage: React.FC<AnatomyProps & {
   );
 };
 
-/** 千分表/压力表盘与活动指针 */
+/** 千分表/压力表盘与活动指针。展示组件：angleDeg/valueText 须由调用方从同一模型推导，组件不自动校准或耦合。 */
 export const AnatomyDial: React.FC<AnatomyProps & {
   cx: number;
   cy: number;
   r: number;
   z: number;
   height?: number;
-  angleDeg?: number; // 指针角度
-  valueText?: string;
+  angleDeg?: number; // 指针角度（展示输入，不是物理状态）
+  valueText?: string; // 独立文本输入；不能据此推断与 angleDeg 的数值一致性
 }> = ({ projection, theme = 'dark', cx, cy, r, z, height = 10, angleDeg = 0, valueText }) => {
   const t = ISO_THEMES[theme];
   const bezel = cylinder(cx, cy, r, z, height, projection, 32);

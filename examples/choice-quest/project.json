@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "slug": "choice-quest",
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "totalFrames": 540,
+  "composition": "ChoiceQuest",
+  "recipe": "explainer",
+  "audio": {
+    "mode": "silent"
+  },
+  "classification": "original synthetic style prototype; no user-film or final-QC approval claimed"
+}

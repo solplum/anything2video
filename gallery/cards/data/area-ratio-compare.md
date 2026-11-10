@@ -5,7 +5,7 @@ name: area-ratio-compare
 时长: 收缩 24f + 计数 18f 同步落定 + hold ≥18f（@30fps，全程约 2s）
 能量: 低（证明型）
 标签: data
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

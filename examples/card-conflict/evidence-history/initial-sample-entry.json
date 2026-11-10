@@ -1,0 +1,18 @@
+{
+  "path": "card-conflict-sample.mp4",
+  "sha256": "bb1d10fef68e4c403e982642bfef4c37f6d01d710ef6b9052aa1d5a3cd486636",
+  "inputSha256": "4b54a97a2191878b0f9b36fd77f9bea1c91edf10446dfb01cec1a027c4fc9220",
+  "origin": "examples/card-conflict; independent original card rule narrative",
+  "mode": "code",
+  "disclosure": "Original 16-second silent shared-SVG-core prototype. Offline render via librsvg/cairo and ffmpeg; native browser/Remotion results are tracked separately. No copied upstream artwork, footage or audio. The same engine drives playable preview and Remotion adapter.",
+  "audio": "none",
+  "width": 1280,
+  "height": 720,
+  "fps": "30/1",
+  "frames": 480,
+  "durationSeconds": 16,
+  "poolType": "explainer",
+  "styleId": "card-conflict",
+  "familyId": "card-conflict",
+  "runtimeSkin": false
+}

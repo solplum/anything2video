@@ -1,0 +1,1 @@
+{"id":"card-conflict","name":"卡牌对抗","family":"游戏叙事","status":"original-local-prototype","runtimeSkin":false,"kit":"styles/card-conflict/kit.tsx","productionMethod":["定义目标和初始资源","定义手牌代价及作用","确定对手及接触时点","用规则计算结果","原创绘制目标和卡面","验证无文字因果和反事实"],"doNotEquateWith":["产品卡片入场","像素街机皮肤","只有数字变化的排行榜"],"limits":["只支持16:9","无声","数值为演示规则而非实测"]}

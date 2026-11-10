@@ -1,0 +1,18 @@
+{
+  "path": "choice-quest-sample.mp4",
+  "sha256": "549e8f10dee8cb27b0582f3e93907827d0b3a9a03fb420fb63b608c51b4e6288",
+  "inputSha256": "2ae010e72aba1bb64817fb25d867dbf56858d34f63a8ee614032b4b935d40722",
+  "origin": "examples/choice-quest; original independent choice-story prototype",
+  "mode": "code",
+  "disclosure": "Original 18-second silent shared-SVG-core prototype, rendered through system librsvg/cairo and ffmpeg. Same core has a Remotion adapter, but native Remotion, whole-film playback and final QC were not performed. No upstream artwork, code, media, fonts or audio copied.",
+  "audio": "none",
+  "width": 1280,
+  "height": 720,
+  "fps": "30/1",
+  "frames": 540,
+  "durationSeconds": 18,
+  "poolType": "explainer",
+  "styleId": "choice-quest",
+  "familyId": "choice-quest",
+  "runtimeSkin": false
+}

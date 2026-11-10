@@ -1,0 +1,15 @@
+{
+  "sourceSha256": "9f6ca8aa4de11ec2fa1be85788a5cc9e6f874123a8ed9c755c44fc4f55075821",
+  "referenceSourceSha256": "fbfd1cd65fabb93e38915c0bfeece1fa114691f1166e6946d1615b091ee818bd",
+  "comparedFrames": 840,
+  "layouts": [
+    "landscape",
+    "portrait"
+  ],
+  "normalization": "Only the wet/feather filter opening tags are normalized. All other markup remains hash-identical for every frame.",
+  "finalFramePngByteIdentity": {
+    "landscape": true,
+    "portrait": true
+  },
+  "fixture": "tests/fixtures/porcelain-reveal-pre-fix-surface.json"
+}

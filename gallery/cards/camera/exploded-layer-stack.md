@@ -2,10 +2,10 @@
 name: exploded-layer-stack
 一句话: 爆炸图层堆——界面组件 3/4 视角转过去后沿 Z 轴分层拆开（表层/内容/控件/活跃件各占一层带投影），一层现场演示，再合拢拍平归位
 适用: 科普"它是怎么搭起来的"段：讲清一个界面由哪几层能力堆成；产品结构/数据→逻辑→界面的抽象层级讲解
-时长: 转身 18f + 拆开 12f + hold ≤24f + 合拢 8f + 拍平 15f（@30fps，全程约 2.6s）
+时长: 转身 18f + 拆开 12f（总错峰另计 6f）+ hold ≤24f + 合拢 8f + 拍平 15f（@30fps，全程约 2.6s）
 能量: 中
 标签: camera
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图
@@ -22,7 +22,7 @@ name: exploded-layer-stack
 - 转身：yaw −28° + pitch 14°，perspective 2200px，走 18f 相机缓动；
   roll 独立于 tilt 之外（防文字斜切变形伪斜体）
 - 拆开：各层 translateZ = i×90px（80–120px/层），12f ease-out，
-  层间 stagger 6f；每层在下层上投影（alpha 0.18、blur 20px、偏移
+  全部层的启动时间分布在总计 6f 的 stagger span 内（不是每层 6f）；每层在下层上投影（alpha 0.18、blur 20px、偏移
   随间距增大）
 - hold：yaw 以 0.1°/f 缓漂 ≤24f，期间挑一层让它自己出状态动画
   （这是本卡的"讲点"）
@@ -38,7 +38,7 @@ name: exploded-layer-stack
 | 视角 | yaw −28° / pitch 14° | pitch >20° 文字发虚；yaw 绝对值 <20° 层深读不出 |
 | perspective | 2200px | 约屏宽 1.15 倍；太小夸张变形，太大没纵深 |
 | 层距 | 80–120px/层 | <60px 投影黏层；>150px 拆得散装 |
-| 拆开 stagger | 6f/层 | 0=齐拆读作机关；>10f 拖沓 |
+| 拆开 stagger | 总 span 6f @30fps | n 层偏移为 i×6/(n−1)；单层为 0，若只用整帧需记录舍入 |
 | hold 漂移 | 0.1°/f | 静止超过 24f 死拍，超了就漂 |
 | 合拢 punch | +1.5% 一帧 | 合拢是"咔哒"上锁，无 punch 读作软塌回弹 |
 
@@ -49,7 +49,19 @@ name: exploded-layer-stack
 - 层内文字按"镜头尺寸排版+zoom"管线走，斜面文字糊字是头号翻车点
 - 与 svg-shape-morph / morph-from-primitive 分工：那些是形状变形，
   本卡是空间拆装；讲"组成"用本卡，讲"变成"用那些
-- 参数为 cinetic 出厂推荐值（60fps 折算 30fps），首次实战须回验
+- 上游 `stagger(i,n,12)` 的 12f 是 @60fps 的总 span；折为 @30fps 是总计 6f，不能乘以层数。其余数值为草稿起点，首次实战须回验
+
+## 时序算例（未接入渲染）
+
+<!-- audit-example:stagger -->
+```js
+const staggerStart = (i, count, spanFrames = 6) => {
+  if (!Number.isInteger(count) || count < 1 || !Number.isInteger(i) || i < 0 || i >= count || !Number.isFinite(spanFrames) || spanFrames < 0) throw new RangeError("invalid stagger");
+  return count === 1 ? 0 : i * spanFrames / (count - 1);
+};
+```
+
+五层偏移为 0/1.5/3/4.5/6f；在连续帧时间下精确保留 0.2s 总错峰。整数帧实现可以舍入各起点，但不能改成每层 6f。
 
 ## 参考实现
 暂无（草稿卡）｜源手法：cinetic assets/library/techniques.json `d3-exploded-layer-stack`

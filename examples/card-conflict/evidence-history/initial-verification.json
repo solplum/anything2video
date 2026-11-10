@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "status": "local-prototype-delivered",
+  "sourceFrozen": true,
+  "sourceHashes": {
+    "styles/card-conflict/scene.mjs": "4b54a97a2191878b0f9b36fd77f9bea1c91edf10446dfb01cec1a027c4fc9220",
+    "styles/card-conflict/engine.mjs": "390dca26be37eaac735e41279f5048a9463fefde442c6d6c0f32405faa85ec08",
+    "styles/card-conflict/scenarios.mjs": "60f7bf7da75e1906dbdc55531a7aa29665dcc769a417e202501c906173c8e8a4",
+    "styles/card-conflict/kit.tsx": "14396ca46e7a5b1822a980ef4a95b5351966e2467757347ea12aaf4ae8391078",
+    "examples/card-conflict/Root.tsx": "dba84f3d7c307c899bb4873837f5848bc613ad966eec751a9857f1c8a407501b",
+    "examples/card-conflict/preview.html": "f6668092450854d11673684a73571ca1456eb3d5d25667736f668c2b75c98542"
+  },
+  "checks": {
+    "nodeTests": {
+      "status": "passed",
+      "tests": 26,
+      "log": "tests.log"
+    },
+    "typescript": {
+      "status": "passed",
+      "method": "isolated prepare output using existing locked Remotion 4.0.507 / TS 5.9.3 dependencies",
+      "log": "typecheck.log"
+    },
+    "additivePatch": {
+      "status": "passed",
+      "target": "fresh copy of v4 package",
+      "applyCheck": true,
+      "postApplyTests": 26,
+      "log": "patch-applied-tests.log"
+    },
+    "svgVisualInspection": {
+      "status": "performed",
+      "observed": "selected threat, protection, illuminated vs cracked/unlit lighthouse, greenhouse/sprout composition"
+    },
+    "nativeBrowser": {
+      "status": "independent report pending"
+    },
+    "nativeRemotion": {
+      "status": "independent report pending"
+    },
+    "completeContinuousHumanPlayback": {
+      "status": "not performed"
+    },
+    "audioReview": {
+      "status": "not applicable, deliberately silent"
+    },
+    "portrait": {
+      "status": "unsupported, rejected explicitly"
+    }
+  },
+  "artifacts": {
+    "patch": {
+      "path": "card-conflict-additive.patch",
+      "sha256": "8ccdc66e9d5dd7e7ba38774ec1eb94a04c1120cc08952fa0c876f656e716aecc"
+    },
+    "source": {
+      "path": "card-conflict-source.zip",
+      "sha256": "c33e3aebfe2306e25e2b57e8e5248b6ea77d6beea4148439880e2236a00cf94c"
+    }
+  },
+  "scope": {
+    "modifiedExistingV4": false,
+    "pushed": false,
+    "published": false,
+    "runtimeSkin": false,
+    "upstreamAssetsCopied": false,
+    "scenarioValues": "invented game mechanics, not factual measured claims"
+  }
+}

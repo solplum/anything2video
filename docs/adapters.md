@@ -54,7 +54,7 @@ node scripts/install.mjs --symlink --claude
 ### WorkBuddy (桌面版)
 - **路径**：`~/.workbuddy/skills/anything2video/`。
 - **发现方式**：本机实证的桌面版本地技能发现目录（依据见 `reference/desktop-hosts.md`），安装后重启应用在技能列表呈现。
-- **注意**：当前 `SKILL.md` 使用统一的 `description`、`version`、`author` 与 `metadata.descriptions.zh-Hans`，没有顶层 `description_zh`；应在实际版本核对发现与显示，不以历史字段说明宣称已适配。开工前执行 `node --version` 验证真实执行力。
+- **注意**：当前 `SKILL.md` 使用标准顶层 `name`、`description`，版本与作者存于 `metadata.version`、`metadata.author`，中文描述存于 `metadata.descriptions.zh-Hans`，没有顶层 `description_zh`；应在实际版本核对发现与显示，不以历史字段说明宣称已适配。开工前执行 `node --version` 验证真实执行力。
 
 ### MiniMax Code (桌面版)
 - **路径**：`{{DATA_DIR}}/skills/anything2video/`（默认 `~/.minimax/skills/anything2video/`）。
@@ -73,7 +73,7 @@ node scripts/install.mjs --symlink --claude
 
 ## 3. 验证等级
 
-1. **包完整性检查**：入口 YAML frontmatter、通用超集元数据、配方、样片 manifest 与许可完整无缺。
+1. **包完整性检查**：入口 YAML frontmatter、标准字段与扩展 metadata、配方、样片 manifest 与许可完整无缺。构建器优先读 `metadata.version`，仍接受历史包的顶层 `version`；标准源不再重复顶层版本/作者。Codex skill-creator 的静态校验与安装器目录测试不等于实际宿主发现或端到端制片。
 2. **工程环境检查**：`node scripts/doctor.mjs` 检查 Node/uv/ffmpeg/ffprobe 与生图通道状态。
 3. **宿主发现验证**：应用确认实际加载的入口路径与版本号，不等于独立出片。
 4. **端到端制片实测**：该应用实际加载 Skill 并独立完成一条视频工程渲染、三轮验收与交付。

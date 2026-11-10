@@ -1,0 +1,99 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>青花显影 · 原创材质研究</title><style>body{margin:0;background:#e5e6df;color:#153567;font-family:system-ui,sans-serif}main{max-width:1200px;margin:24px auto;padding:0 20px}h1{font-size:22px}p{font-size:13px}#view{display:flex;justify-content:center;min-height:100px}#view svg{max-width:100%;height:auto;max-height:75vh}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:20px 0}button,select{padding:9px 15px;color:#153567;background:#f9faf5;border:1px solid #9daec4;border-radius:6px}input[type=range]{width:min(450px,55vw)}small{color:#596475}</style><main><h1>青花显影</h1><p>原创莲塘双鱼：落色、渗化、积色、定色。横竖屏分开构图。</p><div id="view"></div><div class="controls"><button id="play">播放</button><button id="reset">重来</button><label>画幅 <select id="layout"><option value="landscape">横屏 16:9</option><option value="portrait">竖屏 9:16</option></select></label><label><input id="text" type="checkbox" checked>文字</label><input id="frame" aria-label="视频帧" type="range" min="0" max="419" value="0"><output id="time">0.00s</output></div><small>14 秒无声程序研究。此页是共享 SVG 核心的交互预览，不是成片或 Remotion CLI 验收。不会加载远程图片、字体或音频。</small></main><script type="module">/** Original cobalt-under-glaze study. Pure frame rendering; no reference art or assets. */
+const PORCELAIN = Object.freeze({fps:30,seconds:14,frames:420,width:1280,height:720});
+const COLORS = Object.freeze({glaze:'#f3f2e9',cream:'#fcfbf5',cobalt:'#19498e',deep:'#12356f',pale:'#8aa6c5'});
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
+const n=x=>Number(x.toFixed(3));
+const esc=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[x]));
+function seeded(seed=17){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}};
+function materialState(frame=0,fps=30,{speed=1}={}){
+ if(!Number.isFinite(frame)||!Number.isFinite(fps)||fps<=0||!Number.isFinite(speed)||speed<=0)throw Error('frame, positive fps and positive speed must be finite');
+ const t=Math.max(0,frame/fps)*speed;
+ return {t,wet:smooth((t-.25)/.45)*(1-smooth((t-8.2)/2.5)),settled:smooth((t-8.2)/2.5),title:smooth((t-9.2)/1.3),border:smooth((t-6)/4),complete:t>=10.7};
+}
+function bloomRadius(t,start,radius=420,duration=7){return radius*Math.sqrt(smooth((t-start)/duration))}
+/** Positive radial contour, fixed seed at every frame. Radius never recedes. */
+function bloomPath(cx,cy,r,seed=1,aspect=1){
+ let p='';const rand=seeded(seed),a=rand()*6.28,b=rand()*6.28,c=rand()*6.28;
+ for(let i=0;i<=128;i++){const q=i/128*Math.PI*2,f=1+.09*Math.sin(q*5+a)+.052*Math.sin(q*11+b)+.025*Math.sin(q*23+c);p+=(i?'L':'M')+n(cx+Math.cos(q)*r*f)+' '+n(cy+Math.sin(q)*r*f*aspect)+' ';}
+ return p+'Z';
+}
+function brush(d,w=4,opacity=1){return `<path d="${d}" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}"/>`}
+function lotus(x,y,s,rotation=0){
+ let z='';for(let layer=0;layer<2;layer++)for(let i=0;i<7;i++){const a=(i-3)*(layer?22:28),length=layer?78:113,w=layer?25:31;z+=`<g transform="rotate(${a})"><path d="M0 12 C${-w} ${-length*.3} ${-w*.74} ${-length*.8} 0 ${-length} C${w*.74} ${-length*.8} ${w} ${-length*.3} 0 12" fill="url(#IDwash)" stroke="currentColor" stroke-width="2.1"/>${brush(`M0 0 Q-7 ${-length*.45} 0 ${-length*.87}`,1,.55)}</g>`;}
+ z+=`<ellipse cx="0" cy="2" rx="25" ry="9" fill="currentColor"/>`;
+ for(let i=-2;i<=2;i++)z+=`<circle cx="${i*8}" cy="-1" r="2" fill="#eff1e8"/>`;
+ return `<g transform="translate(${x} ${y}) rotate(${rotation}) scale(${s})">${z}</g>`;
+}
+function leaf(x,y,s,rotation=0){
+ let z=`<path d="M0 0 L-22 -91 C-117 -134 -151 -39 -135 10 C-105 78 -15 95 63 60 C150 25 106 -94 17 -97Z" fill="url(#IDleaf)" stroke="currentColor" stroke-width="2"/>`;
+ for(let i=0;i<14;i++){const a=(i*22-130)*Math.PI/180,ex=Math.cos(a)*115,ey=Math.sin(a)*78;z+=brush(`M0 0 Q${n(ex*.55-8)} ${n(ey*.5+4)} ${n(ex)} ${n(ey)}`,1.3,.65)}
+ return `<g transform="translate(${x} ${y}) rotate(${rotation}) scale(${s})">${z}</g>`;
+}
+function koi(x,y,s,rotation=0){
+ let z=`<path d="M-94 5 C-46 -61 84 -59 113 -5 C80 48 -39 58 -94 5Z" fill="#f3f2e9"/><path d="M-94 5 C-46 -61 84 -59 113 -5 C80 48 -39 58 -94 5Z" fill="url(#IDfish)" stroke="currentColor" stroke-width="2.8"/>`;
+ z+=`<path d="M-78 4 C-115 -11 -133 -57 -163 -60 Q-141 -3 -168 47 C-121 41 -114 17 -78 4Z" fill="url(#IDwash)" stroke="currentColor" stroke-width="2.4"/>`;
+ z+=`<path d="M2 -37 Q-28 -87 -69 -73 L-40 -28 M-4 36 Q-26 79 -56 70 L-29 30" fill="url(#IDwash)" stroke="currentColor" stroke-width="2"/>`;
+ for(let i=0;i<7;i++)z+=brush(`M-86 5 Q${-116-i*4} ${-11+i*5} ${-151+i*2} ${-44+i*14}`,1,.6);
+ for(let row=-2;row<=2;row++)for(let col=0;col<7;col++){const xx=-59+col*20+(row%2)*9,yy=row*11;if(Math.abs(xx)<64)z+=brush(`M${xx} ${yy-6} q-11 6 0 12`,1.1,.58)}
+ z+=brush('M72 -29 Q46 -2 77 24 M93 -17 Q107 -24 115 -14 M102 10 Q123 24 132 13',2,.9);
+ z+=`<circle cx="91" cy="-10" r="5" fill="#f0f0e5" stroke="currentColor" stroke-width="2"/><circle cx="92" cy="-10" r="2.8" fill="currentColor"/>`;
+ return `<g transform="translate(${x} ${y}) rotate(${rotation}) scale(${s})">${z}</g>`;
+}
+function water(x,y,w){return brush(`M${x-w} ${y} C${x-w*.7} ${y-13} ${x-w*.25} ${y-13} ${x-12} ${y-2} M${x+8} ${y+2} C${x+w*.45} ${y+14} ${x+w*.72} ${y+12} ${x+w} ${y}`,1.8,.58)}
+function art(portrait){
+ if(portrait){
+  let z=brush('M344 1100 C270 817 487 613 480 390 M358 1081 C308 913 341 823 331 708 M378 1100 C424 900 578 789 565 603 M304 1080 C245 873 175 723 190 550',4,.8);
+  z+=leaf(331,708,1.02,-17)+leaf(565,603,.74,24)+leaf(155,783,.66,-18)+leaf(504,855,.56,4);
+  z+=lotus(480,390,.93,10)+lotus(190,550,.66,-12)+lotus(596,906,.38,18);
+  z+=koi(388,923,.91,-19)+koi(204,1036,.67,164);
+  for(const [x,y,w] of [[162,439,73],[357,590,46],[582,1101,73],[407,1065,133],[98,899,49],[390,1136,119],[568,748,67]])z+=water(x,y,w);
+  return `<g data-layout="portrait-native">${z}</g>`;
+ }
+ let z='';
+ // Rooted stems remain in the same porcelain coordinates throughout diffusion.
+ z+=brush('M740 650 C670 476 828 339 831 201 M707 638 C688 451 617 421 580 367 M777 641 C827 488 995 401 989 297 M678 641 C640 494 430 448 434 308',4,.8);
+ z+=leaf(583,365,.95,-13)+leaf(989,325,.78,21)+leaf(438,340,.64,-16)+leaf(816,470,.53,6);
+ z+=lotus(830,223,.96,10)+lotus(441,263,.64,-12)+lotus(1013,470,.4,25);
+ z+=koi(704,520,.82,-18)+koi(1040,565,.62,165);
+ for(const [x,y,w] of [[600,589,113],[952,617,143],[1110,431,80],[608,476,60],[1090,200,72],[391,581,68],[845,682,160],[512,638,100]])z+=water(x,y,w);
+ // Deliberate small decorative sprigs, not copied motifs.
+ for(let i=0;i<6;i++){const x=1134+i*8,y=280+i*23;z+=brush(`M1134 424 Q1179 364 1134 266`,1.8,.7);z+=`<path d="M${x-4} ${y+18} Q${x-43} ${y-1} ${x-28} ${y-14} Q${x} ${y-6} ${x-4} ${y+18}" fill="url(#IDwash)" stroke="currentColor" stroke-width="1.4"/>`;}
+ return z;
+}
+function ceramicGrain(seed){let z='',r=seeded(seed);for(let i=0;i<220;i++)z+=`<ellipse cx="${n(r()*1280)}" cy="${n(r()*720)}" rx="${n(.3+r()*.7)}" ry="${n(.4+r()*.8)}" fill="${r()>.35?'#b3af9c':'#fff'}" opacity="${n(.08+r()*.12)}"/>`;return z;}
+/** Returns only owned original artwork; it can also be reused inside a custom SVG scene. */
+function originalArtwork({portrait=false,idPrefix='porcelain'}={}){return art(portrait).replaceAll('ID',idPrefix+'-')}
+function renderPorcelain({frame=0,fps=30,width=1280,height=720,seed=41,speed=1,showText=true,title='青花显影',subtitle='一滴钴蓝，慢慢成为一池清欢。',idPrefix='porcelain',artworkSvg,bloomSources}={}){
+ if(!Number.isFinite(width)||!Number.isFinite(height)||width<=0||height<=0)throw Error('positive finite dimensions required');
+ if(!Number.isInteger(seed))throw Error('integer seed required');
+ if(!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(idPrefix))throw Error('idPrefix must be a safe SVG identifier');
+ const P=idPrefix+'-',st=materialState(frame,fps,{speed}),portrait=height>width,vw=portrait?720:1280,vh=portrait?1280:720;
+ const sources=bloomSources??(portrait?[[480,390,.7,500,1.2],[370,875,2.9,510,.85],[185,1025,4.5,430,1]]:[[830,223,.7,530,.83],[704,520,2.9,560,.68],[1050,570,4.5,430,1.1]]);
+ if(!Array.isArray(sources)||sources.length<1||sources.some(s=>!Array.isArray(s)||s.length!==5||s.some(v=>!Number.isFinite(v))||s[3]<=0||s[4]<=0))throw Error('bloomSources must contain finite [x,y,startSeconds,radius,aspect] tuples');
+ const blooms=sources.map(([x,y,start,r,a],i)=>({x,y,r:bloomRadius(st.t,start,r,6.4),a,seed:seed+i*31}));
+ const shapes=blooms.filter(b=>b.r>.1).map(b=>`<path d="${bloomPath(b.x,b.y,b.r,b.seed,b.a)}"/>`).join('');
+ const plate=portrait?'M36 38 H684 V1242 H36Z':'M34 32 H1246 V688 H34Z';
+ let deco='';for(let i=0;i<(portrait?15:27);i++){const x=55+i*44;deco+=brush(`M${x} 52 q11 -16 22 0 q11 16 22 0 M${x} ${vh-52} q11 16 22 0 q11 -16 22 0`,1.15,.55)}
+ const artwork=artworkSvg??originalArtwork({portrait,idPrefix});
+ let wet='';if(st.wet>0)for(const b of blooms){if(b.r<=.1)continue;wet+=`<path d="${bloomPath(b.x,b.y,b.r,b.seed,b.a)}" fill="none" stroke="#275b9c" stroke-width="20" opacity="${n(st.wet*.44)}" filter="url(#${P}wet)"/>`;}
+ const text=showText?`<g opacity="${n(st.title)}" fill="${COLORS.deep}">${portrait?`<text x="74" y="169" font-size="64" letter-spacing="12">${esc(title)}</text><text x="78" y="216" font-size="18" letter-spacing="2">${esc(subtitle)}</text><text x="78" y="1148" font-family="Noto Sans CJK SC,sans-serif" font-size="11" letter-spacing="4">COBALT · UNDER THE GLAZE</text>`:`<text x="89" y="239" font-size="57" letter-spacing="7">${esc(title)}</text><text x="92" y="288" font-size="17" letter-spacing="1">${esc(subtitle)}</text><path d="M94 329H285" stroke="currentColor" stroke-width="1" opacity=".4"/><text x="94" y="367" font-family="Noto Sans CJK SC,sans-serif" font-size="10" letter-spacing="3">COBALT / PORCELAIN</text><text x="94" y="618" font-size="13" letter-spacing="3">莲塘 · 双鱼</text>`}</g>`:'';
+ return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${vw} ${vh}" role="img" aria-label="${esc(title)}，原创钴蓝釉下显影研究" style="color:${COLORS.cobalt};font-family:'Noto Serif CJK SC',serif"><defs>
+ <radialGradient id="${P}glaze" cx="39%" cy="34%" r="78%"><stop offset="0" stop-color="#fffef8"/><stop offset=".66" stop-color="#f4f3e9"/><stop offset="1" stop-color="#d9ddd5"/></radialGradient>
+ <linearGradient id="${P}wash" x1="0" x2=".4" y2="1"><stop stop-color="#346fa9" stop-opacity=".14"/><stop offset=".65" stop-color="#28629b" stop-opacity=".44"/><stop offset="1" stop-color="#103775" stop-opacity=".9"/></linearGradient>
+ <radialGradient id="${P}leaf" cx="44%" cy="65%"><stop stop-color="#133d7f" stop-opacity=".88"/><stop offset=".56" stop-color="#3774aa" stop-opacity=".6"/><stop offset="1" stop-color="#2a5f9b" stop-opacity=".32"/></radialGradient>
+ <linearGradient id="${P}fish" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#28548c" stop-opacity=".77"/><stop offset=".43" stop-color="#7597b4" stop-opacity=".23"/><stop offset="1" stop-color="#e2e8e4" stop-opacity=".15"/></linearGradient>
+ <filter id="${P}feather" filterUnits="userSpaceOnUse" x="-32" y="-32" width="${vw+64}" height="${vh+64}"><feGaussianBlur stdDeviation="8"/></filter>
+ <filter id="${P}wet" filterUnits="userSpaceOnUse" x="-32" y="-32" width="${vw+64}" height="${vh+64}"><feGaussianBlur stdDeviation="4.5"/></filter>
+ <filter id="${P}pigment" x="-4%" y="-4%" width="108%" height="108%"><feTurbulence type="fractalNoise" baseFrequency=".018 .038" numOctaves="3" seed="${Math.abs(seed)%1000}" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.08 0 0 0 0 0.24 0 0 0 0 0.48 0 0 0 1 0" result="ink"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" xChannelSelector="R" yChannelSelector="G" result="edge"/><feComposite in="ink" in2="edge" operator="in" result="pigment"/><feBlend in="edge" in2="pigment" mode="multiply"/></filter>
+ <mask id="${P}reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${vw}" height="${vh}" style="mask-type:luminance"><g fill="white" filter="url(#${P}feather)">${shapes}</g></mask>
+ <mask id="${P}inkshape" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${vw}" height="${vh}"><use xlink:href="#${P}art"/></mask><clipPath id="${P}plate"><path d="${plate}"/></clipPath><g id="${P}art">${artwork}</g>
+ </defs><rect width="${vw}" height="${vh}" fill="#dadbd2"/><rect x="10" y="9" width="${vw-20}" height="${vh-18}" rx="20" fill="url(#${P}glaze)"/><rect x="17" y="16" width="${vw-34}" height="${vh-32}" rx="15" fill="none" stroke="#fff" stroke-width="2" opacity=".75"/>
+ <g clip-path="url(#${P}plate)"><g opacity=".75" transform="scale(${vw/1280} ${vh/720})">${ceramicGrain(seed)}</g>
+ <g mask="url(#${P}reveal)"><use xlink:href="#${P}art" opacity="${n(.72+st.settled*.28)}" filter="url(#${P}pigment)"/><use xlink:href="#${P}art" opacity="${n(st.wet*.24)}" filter="url(#${P}wet)"/></g><g mask="url(#${P}inkshape)">${wet}</g>
+ <g opacity="${n(st.border)}" color="#326297"><path d="${plate}" fill="none" stroke="currentColor" stroke-width="2"/><rect x="43" y="42" width="${vw-86}" height="${vh-84}" fill="none" stroke="currentColor" stroke-width=".6"/>${deco}</g>
+ <path d="M22 ${vh*.14} Q${vw*.55} ${-vh*.1} ${vw-22} ${vh*.18}" fill="none" stroke="#fff" stroke-width="25" opacity=".13"/>
+ ${text}</g></svg>`;
+}
+
+let playing=false,last=0,position=0;const el=id=>document.getElementById(id);function draw(){const f=Math.min(419,Math.floor(position)),p=el('layout').value==='portrait';el('view').innerHTML=renderPorcelain({frame:f,width:p?720:1280,height:p?1280:720,showText:el('text').checked,idPrefix:'preview'});el('frame').value=f;el('time').textContent=(f/30).toFixed(2)+'s';}function stop(){playing=false;el('play').textContent='播放';}el('play').onclick=()=>{playing=!playing;if(position>=419)position=0;last=performance.now();el('play').textContent=playing?'暂停':'播放';};el('reset').onclick=()=>{stop();position=0;draw();};el('frame').oninput=()=>{stop();position=Number(el('frame').value);draw();};el('layout').onchange=draw;el('text').onchange=draw;function loop(now){if(playing){position=Math.min(419,position+(now-last)*.03);draw();if(position>=419)stop();}last=now;requestAnimationFrame(loop);}draw();requestAnimationFrame(loop);</script></html>

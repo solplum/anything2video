@@ -1,0 +1,8 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>档案灯台 · 无声视觉小样</title>
+<style>html,body{margin:0;background:#101b25}#stage{width:100vw;height:100vh}svg{display:block;width:100%;height:100%;object-fit:contain}</style>
+<div id="stage"></div><script type="module">
+import {renderLighttable} from '../../styles/lighttable/scene.mjs';
+const args=new URLSearchParams(location.search), portrait=args.has('portrait');
+window.renderFrame=(frame)=>{document.querySelector('#stage').innerHTML=renderLighttable({frame,fps:30,width:portrait?720:1280,height:portrait?1280:720});};
+window.renderFrame(Number(args.get('frame')??300));window.previewReady=true;
+</script></html>

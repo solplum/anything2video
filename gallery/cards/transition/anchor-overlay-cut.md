@@ -5,7 +5,7 @@ name: anchor-overlay-cut
 时长: n/a（技法卡；单次换底 0.3–0.7s/张，蒙太奇连换 2–3 张）
 能量: 中
 标签: transition
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

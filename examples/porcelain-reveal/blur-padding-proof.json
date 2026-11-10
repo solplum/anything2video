@@ -1,0 +1,119 @@
+{
+  "sourceSha256": "9f6ca8aa4de11ec2fa1be85788a5cc9e6f874123a8ed9c755c44fc4f55075821",
+  "filterPadding": 32,
+  "overscanPadding": 128,
+  "proofs": [
+    {
+      "variant": "landscape",
+      "frame": 22,
+      "defaultPngSha256": "e8a1c5fd44bd15400cdb386d96f62e9f72022d99dca82a83cabc67c95a4dcdce",
+      "overscanPngSha256": "e8a1c5fd44bd15400cdb386d96f62e9f72022d99dca82a83cabc67c95a4dcdce",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 24,
+      "defaultPngSha256": "7cb27b8a44be77695adddafd03bb750dd5b3a9f877a89876229afbbdd605c34b",
+      "overscanPngSha256": "7cb27b8a44be77695adddafd03bb750dd5b3a9f877a89876229afbbdd605c34b",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 87,
+      "defaultPngSha256": "98b72cbdf5778578d1cba12c1c3a5110dd44b28afcc7f6f386192f4e47f8caf6",
+      "overscanPngSha256": "98b72cbdf5778578d1cba12c1c3a5110dd44b28afcc7f6f386192f4e47f8caf6",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 90,
+      "defaultPngSha256": "9811abbd1cacc2cc98ba4dc396d36d6408d45a260f2aff620b908172b8fb3516",
+      "overscanPngSha256": "9811abbd1cacc2cc98ba4dc396d36d6408d45a260f2aff620b908172b8fb3516",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 93,
+      "defaultPngSha256": "c7247c454b1ff37907e71db8effd568e354f762bf00bb42c2b825d77618da75b",
+      "overscanPngSha256": "c7247c454b1ff37907e71db8effd568e354f762bf00bb42c2b825d77618da75b",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 138,
+      "defaultPngSha256": "eedfcf0f5078dc6993f05c0f3612021118a3435e25701550fa728ef6ec0d9a82",
+      "overscanPngSha256": "eedfcf0f5078dc6993f05c0f3612021118a3435e25701550fa728ef6ec0d9a82",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 240,
+      "defaultPngSha256": "a62d2786ee97dd35ae70c0e95b86dcc7736168353776aaaffc9ffe770829470c",
+      "overscanPngSha256": "a62d2786ee97dd35ae70c0e95b86dcc7736168353776aaaffc9ffe770829470c",
+      "equal": true
+    },
+    {
+      "variant": "landscape",
+      "frame": 419,
+      "defaultPngSha256": "e2290ee02d60cca0ef3482113585d98ebc5ddcf6cd56cef182603de6d9d01564",
+      "overscanPngSha256": "e2290ee02d60cca0ef3482113585d98ebc5ddcf6cd56cef182603de6d9d01564",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 22,
+      "defaultPngSha256": "a5631b920bdcd4086987cc32a8df22cc98ebab15b781ae5102a196b013b0a875",
+      "overscanPngSha256": "a5631b920bdcd4086987cc32a8df22cc98ebab15b781ae5102a196b013b0a875",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 24,
+      "defaultPngSha256": "2ed8a87f907105adad519a3521208eeb5e462d4d151b58a1b37660d1eb35e9ed",
+      "overscanPngSha256": "2ed8a87f907105adad519a3521208eeb5e462d4d151b58a1b37660d1eb35e9ed",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 87,
+      "defaultPngSha256": "7550ea23fa9ba428f8bc6df1d3e4387dad152fada0922b8a8ad12fa311867484",
+      "overscanPngSha256": "7550ea23fa9ba428f8bc6df1d3e4387dad152fada0922b8a8ad12fa311867484",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 90,
+      "defaultPngSha256": "4906f333508f827809b5b4de9271c305030c8f2878579b207f3ba8a24811ad14",
+      "overscanPngSha256": "4906f333508f827809b5b4de9271c305030c8f2878579b207f3ba8a24811ad14",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 93,
+      "defaultPngSha256": "88695d15b7526654db02168e495cf959322b0c39e77e66453c4abdb45079ac22",
+      "overscanPngSha256": "88695d15b7526654db02168e495cf959322b0c39e77e66453c4abdb45079ac22",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 138,
+      "defaultPngSha256": "768e0570e061d7a3a58af1c38b44708f382e14b63b075966b64688f18539ea72",
+      "overscanPngSha256": "768e0570e061d7a3a58af1c38b44708f382e14b63b075966b64688f18539ea72",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 240,
+      "defaultPngSha256": "2d18e9a6c89b61acbe9041da9b657e19515bdfc332640e2fe30bfdd3f1af797d",
+      "overscanPngSha256": "2d18e9a6c89b61acbe9041da9b657e19515bdfc332640e2fe30bfdd3f1af797d",
+      "equal": true
+    },
+    {
+      "variant": "portrait",
+      "frame": 419,
+      "defaultPngSha256": "000beccdc1178395adcc21f7ebab3b9af3c8780ab960318ee84e7278cadb6366",
+      "overscanPngSha256": "000beccdc1178395adcc21f7ebab3b9af3c8780ab960318ee84e7278cadb6366",
+      "equal": true
+    }
+  ]
+}

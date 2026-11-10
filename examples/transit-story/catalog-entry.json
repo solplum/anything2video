@@ -1,0 +1,22 @@
+{
+  "id": "transit-story",
+  "name": "线路叙事",
+  "description": "事件驱动线路叙事：并行推进、先到等待、条件齐备再换乘；含延迟与阻塞变体。",
+  "notes": "18秒无声原型；共享SVG核心实渲，标准Remotion CLI未执行；手动接入kit，不是config.style皮肤。",
+  "recipe": "explainer",
+  "vibes": [
+    "warm"
+  ],
+  "runtimeSkin": false,
+  "family": "transit-story",
+  "source": "styles/transit-story",
+  "preview": {
+    "status": "available",
+    "path": "transit-story-sample.mp4",
+    "poster": "posters/transit-story-sample.jpg"
+  },
+  "showcase": {
+    "section": "clear-explainers",
+    "summary": "一条线先到站，另一条仍在路上；等到会合，道岔才打开"
+  }
+}

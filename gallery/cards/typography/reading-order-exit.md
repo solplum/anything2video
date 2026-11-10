@@ -5,7 +5,7 @@ name: reading-order-exit
 时长: 5 词句约 13f 清完（@30fps）；松散变体每词 10f、间隔 3f，共 16–22f
 能量: 低中
 标签: typography
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

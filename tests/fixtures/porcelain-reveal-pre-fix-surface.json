@@ -1,0 +1,8 @@
+{
+  "sourceSha256": "fbfd1cd65fabb93e38915c0bfeece1fa114691f1166e6946d1615b091ee818bd",
+  "description": "SHA256 across 420 frame SVG strings per variant, normalizing only wet/feather filter opening-tag region attributes. All geometry, timing, pigments, mask contours, typography and layout remain covered.",
+  "hashes": {
+    "landscape": "6d5d96982ef1fbb70c3c7e3f741463d580ce595e6302a87711dbaed531a64518",
+    "portrait": "8b29f43e8313280884b5dec744c266e5a1f91842d8b743a2d242711d6d2eab8e"
+  }
+}

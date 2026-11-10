@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "status": "completed-original-local-prototype",
+  "sourceFrozen": true,
+  "checks": {
+    "nodeTests": {
+      "status": "passed",
+      "tests": 29,
+      "log": "tests.log"
+    },
+    "typescript": {
+      "status": "passed",
+      "method": "isolated prepare output using existing locked Remotion 4.0.507 / TS 5.9.3 dependencies",
+      "log": "typecheck.log"
+    },
+    "additivePatch": {
+      "status": "passed",
+      "target": "fresh copy of v4 package",
+      "applyCheck": true,
+      "postApplyTests": 29,
+      "log": "patch-applied-tests.log"
+    },
+    "svgVisualInspection": {
+      "status": "performed",
+      "observed": "selected threat, protection, illuminated vs cracked/unlit lighthouse, greenhouse/sprout composition; decoded frames revealed and verified the contact geometry correction"
+    },
+    "nativeBrowser": {
+      "status": "passed",
+      "report": "INDEPENDENT-QA.md",
+      "coverage": "real controls, all four choice boundaries, final delivered preview, 390x844 responsive layout; no native portrait or physical-mobile claim",
+      "backgroundTabPause": "mock DOM passed; real CDP tab remained visible and is not claimed verified"
+    },
+    "nativeRemotion": {
+      "status": "passed web-render only",
+      "compositions": 3,
+      "framesEach": 480,
+      "report": "INDEPENDENT-QA.md",
+      "nativeCli": "not performed",
+      "renderedSceneHash": "8e74f5df182f455f1171abb00749241b8f7eab1dabab85232970fc16d12d6d4c",
+      "deliveredSceneHash": "36afaf0774e1b71685f399dfdd948226062d25e6c258c6de48c4e76a216bb203",
+      "equivalenceFrames": 3840
+    },
+    "completeContinuousHumanPlayback": {
+      "status": "not performed"
+    },
+    "audioReview": {
+      "status": "not applicable, deliberately silent"
+    },
+    "portrait": {
+      "status": "unsupported, rejected explicitly"
+    },
+    "sourceZip": {
+      "status": "passed",
+      "tests": 29,
+      "log": "zip-extracted-tests.log"
+    },
+    "media": {
+      "status": "passed",
+      "offlineVideos": 4,
+      "framesEach": 480,
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "durationSeconds": 16,
+      "audioStreams": 0,
+      "report": "render-evidence.json"
+    },
+    "independentPlayback": {
+      "status": "passed",
+      "method": "three Remotion web outputs each played at 1x to ended=true, 480 total frames, zero dropped frames, no media errors",
+      "notEquivalentTo": "continuous human aesthetic review"
+    },
+    "independentSourceEquivalence": {
+      "status": "passed",
+      "frames": 3840,
+      "method": "separate rendered and delivered source snapshots, byte-identical SVG, no normalization"
+    }
+  },
+  "artifacts": {
+    "card-conflict-source.zip": {
+      "sha256": "2ff7f053121ff8e570fe75086e84e25e449f184e64ccf0bcbc777088cf98c38a",
+      "bytes": 165520
+    },
+    "card-conflict-additive.patch": {
+      "sha256": "3388ccab51c13c8f3b13e8c5045f6b708f05a458c0e6dff4fbd3d17798ea7a35",
+      "bytes": 262345
+    },
+    "card-conflict-counterfactual.mp4": {
+      "sha256": "952a17b077fdcf4ec915d6a4900587d562b17076d32f39a732b348c4dbdd0747",
+      "bytes": 662473
+    },
+    "card-conflict-greenhouse.mp4": {
+      "sha256": "d916e12f4d74d862cac1d498fed6b874b1b5d1a2dd56bfa5a3b4cf2b8a2b8c4c",
+      "bytes": 651579
+    },
+    "card-conflict-lighthouse.mp4": {
+      "sha256": "85d5d873acc2cd8bc60ab64fee2223b9c1473d1dfbc1becd293abe0721955f55",
+      "bytes": 680593
+    },
+    "card-conflict-labels-hidden.mp4": {
+      "sha256": "6425b8055f7e87d8f7a080c9f75955665db8611bc894c525afd2ba89e0d2cfbb",
+      "bytes": 490258
+    },
+    "card-conflict-poster.jpg": {
+      "sha256": "11c35c8ef7decbb847c6ac99d9ed752699a56dbbbce581a80e8cbb512849b1a0",
+      "bytes": 126128
+    },
+    "preview.html": {
+      "sha256": "aeb95e80b9ed847600bab68cbfbe8623390007d361c23cd9cfed58db910ab831",
+      "bytes": 26752
+    }
+  },
+  "scope": {
+    "modifiedExistingV4": false,
+    "pushed": false,
+    "published": false,
+    "runtimeSkin": false,
+    "upstreamAssetsCopied": false,
+    "scenarioValues": "invented game mechanics, not factual measured claims"
+  },
+  "renderedSourceHashes": {
+    "scene.mjs": "8e74f5df182f455f1171abb00749241b8f7eab1dabab85232970fc16d12d6d4c",
+    "engine.mjs": "390dca26be37eaac735e41279f5048a9463fefde442c6d6c0f32405faa85ec08",
+    "scenarios.mjs": "60f7bf7da75e1906dbdc55531a7aa29665dcc769a417e202501c906173c8e8a4"
+  },
+  "deliveredSourceHashes": {
+    "styles/card-conflict/scene.mjs": "36afaf0774e1b71685f399dfdd948226062d25e6c258c6de48c4e76a216bb203",
+    "styles/card-conflict/engine.mjs": "390dca26be37eaac735e41279f5048a9463fefde442c6d6c0f32405faa85ec08",
+    "styles/card-conflict/scenarios.mjs": "60f7bf7da75e1906dbdc55531a7aa29665dcc769a417e202501c906173c8e8a4",
+    "styles/card-conflict/kit.tsx": "14396ca46e7a5b1822a980ef4a95b5351966e2467757347ea12aaf4ae8391078",
+    "examples/card-conflict/Root.tsx": "dba84f3d7c307c899bb4873837f5848bc613ad966eec751a9857f1c8a407501b",
+    "examples/card-conflict/preview.html": "aeb95e80b9ed847600bab68cbfbe8623390007d361c23cd9cfed58db910ab831"
+  },
+  "equivalence": {
+    "status": "passed",
+    "frames": 3840,
+    "report": "builtin-equivalence.json",
+    "reproducibleTest": "tests/card-conflict-equivalence.test.mjs",
+    "fixture": "tests/fixtures/card-conflict-rendered-source.json",
+    "reason": "only custom excess-guard visual branch changed; built-in frames byte-identical"
+  }
+}

@@ -5,7 +5,7 @@ name: detail-first-pullback
 时长: 特写 hold 12–26f + 回拉 26f（@30fps，全程约 1.3–1.7s）
 能量: 中（稳态运镜，靠"先给答案"的叙事力）
 标签: camera
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

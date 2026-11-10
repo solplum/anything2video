@@ -1,0 +1,19 @@
+{
+  "id": "cobalt-reveal",
+  "name": "青花显影",
+  "family": "绘画显影",
+  "route": "painted-animation",
+  "status": "prototype",
+  "implementation": "prototype",
+  "implementedStyleId": "porcelain-reveal",
+  "evidence": "offline_shared_svg_and_sampled_frames",
+  "guide": "styles/porcelain-reveal/SPEC.md",
+  "verificationPath": "examples/porcelain-reveal/verification.json",
+  "verification": {
+    "nativeRemotion": "not_performed",
+    "fullMotionPlayback": "not_performed",
+    "audioReview": "not_performed",
+    "finalFilmQC": "not_performed"
+  },
+  "anchor": "cobalt-reveal"
+}

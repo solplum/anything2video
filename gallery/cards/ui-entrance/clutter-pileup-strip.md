@@ -5,7 +5,7 @@ name: clutter-pileup-strip
 时长: 堆积 30f + 清场约 25–35f + 幸存者 hold 9f（@30fps，全程约 2.2–2.5s）
 能量: 高（先乱后静的强对比）
 标签: ui-entrance
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

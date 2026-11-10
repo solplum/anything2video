@@ -11,6 +11,7 @@
 | 外部案例、模型自述与视觉推测 | [opus55-cases.md](opus55-cases.md)：区分 author_claim、verified_project、visual_inference；历史链接使用时重新核验，不凭帖子数或标题推导已验证作品数 |
 | 上游动效实现 | [gallery](../gallery/README.md)：当前卡片给动作参数，demos-ref/lib-ref 是参考源码，按本片移植并复验；授权与验收仍归统一契约 |
 | 旧版迭代 / 兼容边界 | [docs](../docs) 中的 optimization 报告，以及 [style-system-round1](../docs/style-system-round1.md)；描述各自版本，不是当期运行说明 |
+| 历史配方/来源适配错误 | [2026-11-04 更正记录](reference-corrections-2026-11-04.md)：cinetic 错峰/fps、概率教学、事件引信和遗漏来源；数值算例测试不等于渲染/许可认证 |
 | 许可与溯源 | [LICENSE-THIRDPARTY](../LICENSE-THIRDPARTY)、[audio-engine/VENDOR](../audio-engine/VENDOR.md)、各风格 UPSTREAM/ATTRIBUTION；逐项读取实际采用的来源 |
 
 风格选型仍按当前 [style-ledger.md](style-ledger.md)、catalog 和 SPEC，不把真实用户的持久选择仅因有历史日期而忽略。可复用方法已提炼到导演手册/专题；查历史不是另走一次开工门。

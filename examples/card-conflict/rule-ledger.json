@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "frameClock": "zero-based",
+  "fps": 30,
+  "scenarios": {
+    "lighthouse": {
+      "initial": {
+        "energy": 2,
+        "integrity": 3
+      },
+      "choices": {
+        "brace": {
+          "events": [
+            {
+              "id": "choice",
+              "frame": 120,
+              "kind": "decision",
+              "card": "brace"
+            },
+            {
+              "id": "commit",
+              "frame": 180,
+              "kind": "payment-and-effect",
+              "energyDelta": -2,
+              "guardDelta": 3,
+              "rewardDelta": 0
+            },
+            {
+              "id": "impact",
+              "frame": 300,
+              "kind": "opposition-resolution",
+              "threat": 3,
+              "blocked": 3,
+              "damage": 0,
+              "integrityDelta": 0
+            }
+          ],
+          "finalState": {
+            "frame": 479,
+            "fps": 30,
+            "t": 15.966666666666667,
+            "time": {
+              "select": 120,
+              "commit": 180,
+              "attack": 270,
+              "impact": 300,
+              "settle": 360,
+              "end": 479
+            },
+            "phase": "result",
+            "chosen": true,
+            "committed": true,
+            "impacted": true,
+            "choice": "brace",
+            "energy": 0,
+            "guard": 0,
+            "integrity": 3,
+            "reward": 0,
+            "blocked": 3,
+            "damage": 0,
+            "success": true,
+            "cardProgress": 1,
+            "attackProgress": 1,
+            "resolveProgress": 1
+          }
+        },
+        "rush": {
+          "events": [
+            {
+              "id": "choice",
+              "frame": 120,
+              "kind": "decision",
+              "card": "rush"
+            },
+            {
+              "id": "commit",
+              "frame": 180,
+              "kind": "payment-and-effect",
+              "energyDelta": -1,
+              "guardDelta": 0,
+              "rewardDelta": 1
+            },
+            {
+              "id": "impact",
+              "frame": 300,
+              "kind": "opposition-resolution",
+              "threat": 3,
+              "blocked": 0,
+              "damage": 3,
+              "integrityDelta": -3
+            }
+          ],
+          "finalState": {
+            "frame": 479,
+            "fps": 30,
+            "t": 15.966666666666667,
+            "time": {
+              "select": 120,
+              "commit": 180,
+              "attack": 270,
+              "impact": 300,
+              "settle": 360,
+              "end": 479
+            },
+            "phase": "result",
+            "chosen": true,
+            "committed": true,
+            "impacted": true,
+            "choice": "rush",
+            "energy": 1,
+            "guard": 0,
+            "integrity": 0,
+            "reward": 1,
+            "blocked": 0,
+            "damage": 3,
+            "success": false,
+            "cardProgress": 1,
+            "attackProgress": 1,
+            "resolveProgress": 1
+          }
+        }
+      }
+    },
+    "greenhouse": {
+      "initial": {
+        "energy": 3,
+        "integrity": 2
+      },
+      "choices": {
+        "warm": {
+          "events": [
+            {
+              "id": "choice",
+              "frame": 120,
+              "kind": "decision",
+              "card": "warm"
+            },
+            {
+              "id": "commit",
+              "frame": 180,
+              "kind": "payment-and-effect",
+              "energyDelta": -2,
+              "guardDelta": 2,
+              "rewardDelta": 0
+            },
+            {
+              "id": "impact",
+              "frame": 300,
+              "kind": "opposition-resolution",
+              "threat": 2,
+              "blocked": 2,
+              "damage": 0,
+              "integrityDelta": 0
+            }
+          ],
+          "finalState": {
+            "frame": 479,
+            "fps": 30,
+            "t": 15.966666666666667,
+            "time": {
+              "select": 120,
+              "commit": 180,
+              "attack": 270,
+              "impact": 300,
+              "settle": 360,
+              "end": 479
+            },
+            "phase": "result",
+            "chosen": true,
+            "committed": true,
+            "impacted": true,
+            "choice": "warm",
+            "energy": 1,
+            "guard": 0,
+            "integrity": 2,
+            "reward": 0,
+            "blocked": 2,
+            "damage": 0,
+            "success": true,
+            "cardProgress": 1,
+            "attackProgress": 1,
+            "resolveProgress": 1
+          }
+        },
+        "harvest": {
+          "events": [
+            {
+              "id": "choice",
+              "frame": 120,
+              "kind": "decision",
+              "card": "harvest"
+            },
+            {
+              "id": "commit",
+              "frame": 180,
+              "kind": "payment-and-effect",
+              "energyDelta": -1,
+              "guardDelta": 0,
+              "rewardDelta": 1
+            },
+            {
+              "id": "impact",
+              "frame": 300,
+              "kind": "opposition-resolution",
+              "threat": 2,
+              "blocked": 0,
+              "damage": 2,
+              "integrityDelta": -2
+            }
+          ],
+          "finalState": {
+            "frame": 479,
+            "fps": 30,
+            "t": 15.966666666666667,
+            "time": {
+              "select": 120,
+              "commit": 180,
+              "attack": 270,
+              "impact": 300,
+              "settle": 360,
+              "end": 479
+            },
+            "phase": "result",
+            "chosen": true,
+            "committed": true,
+            "impacted": true,
+            "choice": "harvest",
+            "energy": 2,
+            "guard": 0,
+            "integrity": 0,
+            "reward": 1,
+            "blocked": 0,
+            "damage": 2,
+            "success": false,
+            "cardProgress": 1,
+            "attackProgress": 1,
+            "resolveProgress": 1
+          }
+        }
+      }
+    }
+  }
+}

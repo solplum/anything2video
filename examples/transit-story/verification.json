@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "classification": "original silent transit-story prototype; not final film",
+  "date": "2026-11-03",
+  "sourceSha256": "390a262c40beaece83b9f0e4003ac71c8bc1851de04ea23ad3e2fdb32accb4ef",
+  "coreAndPreviewTests": {
+    "status": "passed",
+    "count": 18,
+    "command": "node --test tests/transit-story*.test.mjs"
+  },
+  "previewControls": {
+    "status": "passed_dom_stub_only",
+    "covered": [
+      "play",
+      "pause",
+      "seek",
+      "variant change",
+      "aspect change",
+      "replay after end"
+    ]
+  },
+  "media": {
+    "status": "passed",
+    "variants": 5,
+    "perVariant": {
+      "seconds": 18,
+      "frames": 540,
+      "fps": 30,
+      "audioStreams": 0
+    },
+    "dimensions": [
+      "1280x720",
+      "720x1280"
+    ],
+    "renderer": "System librsvg/cairo + ffmpeg; same source as React wrapper",
+    "fullDecode": "passed"
+  },
+  "visualInspection": {
+    "status": "sampled_frames_only",
+    "decodedMainFrames": [
+      180,
+      275,
+      276,
+      285,
+      296,
+      309,
+      335,
+      450
+    ],
+    "decodedPortraitFrames": [
+      240,
+      450
+    ],
+    "additionalRasterFrames": [
+      0,
+      90,
+      180,
+      240,
+      276,
+      290,
+      309,
+      335,
+      370,
+      450,
+      539
+    ],
+    "fixes": [
+      "Moved portrait source labels away from vertical lines",
+      "Moved portrait interchange label away from switch blade",
+      "Prevented zero-progress SVG dash round-caps from leaking a future endpoint dot"
+    ]
+  },
+  "notPerformed": [
+    "Native React/Remotion dependency install and TypeScript typecheck",
+    "Native Chromium/Remotion render",
+    "Actual browser control interaction",
+    "Continuous original-speed playback",
+    "Cross-renderer pixel equality",
+    "Full repository regression",
+    "Final-film audio/loudness/delivery QC"
+  ],
+  "audio": "Deliberately absent, no auditory review claimed",
+  "upstreamEvidence": "Read actual vibe metro STYLE, Lemo transit-map STYLE and vibe NOTICE on 2026-11-03. No upstream MP4 playback in this task. Parent research had inspected a metro still.",
+  "licenseBoundary": "Original artwork, narrative and implementation; no upstream code/media/assets/fonts/audio copied; existing project template and MIT license retained",
+  "publication": "No push or remote change"
+}

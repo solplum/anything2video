@@ -5,7 +5,7 @@ name: unit-grid-tally
 时长: 对角波 15f + hold ≥18f（@30fps，全程约 1.1–1.5s）
 能量: 低中（证明型，靠同步感与最后一格的落点）
 标签: data
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

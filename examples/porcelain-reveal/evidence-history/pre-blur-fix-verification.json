@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-03",
+  "status": "isolated_original_prototype",
+  "tests": {
+    "focusedUnitAndPreviewStub": {
+      "passed": 15,
+      "failed": 0
+    },
+    "preparedProjectTypeScript": "passed",
+    "previewRegeneration": "passed",
+    "sourceAndFinalFrameCoverage": "passed; zero pixel differences from full-mask final frame in landscape and portrait",
+    "sourceEquivalence": "321 unique landscape SVG frames byte-match final source after independent portrait composition revision",
+    "mp4": "both variants: ffmpeg decode check passed; H.264, 30 fps, 420 frames, 14 seconds, no audio",
+    "proposedRegistrationSchema": "passed against cloned route/style catalogs; no shared catalog was written",
+    "addOnlyPatchApplicability": "passed against isolated integrated-v3 and full-testbed copies"
+  },
+  "review": {
+    "sampledFrameInspection": "Landscape frames 0,45,90,150,240,419 and portrait frames 90,240,419 inspected. This is sampling, not continuous playback.",
+    "continuousPlayback": "not_performed",
+    "audioReview": "not_applicable; intentional silence",
+    "actualBrowserControls": "not_performed; DOM-stub control test only",
+    "nativeRemotionCLI": {
+      "result": "blocked",
+      "stage": "browser_launch_before_render",
+      "reason": "Chromium SIGABRT; socket() operation not permitted and read-only profile",
+      "successfulRender": false
+    },
+    "fullIntegration": "not_performed; proposed catalog and treatment data only",
+    "fullRepositoryRegression": {
+      "baseline": "Independent copy of existing integrated-v3 full testbed; originals untouched",
+      "unmodified": {
+        "tests": 297,
+        "passed": 292,
+        "failed": 5
+      },
+      "withAddOnlyPrototype": {
+        "tests": 312,
+        "passed": 306,
+        "failed": 6
+      },
+      "existingFailures": [
+        "Missing NotoSerifSC[wght].ttf (two engraving checks)",
+        "Missing legacy sample media (manifest and capability checks)",
+        "README link to missing chalk-sample.mp4"
+      ],
+      "newFailure": "One expected catalog-directory consistency assertion: porcelain-reveal directory exists, but no catalog registration has been performed. Resolve during deliberate integration, not by weakening the check.",
+      "integrationConclusion": "NOT FULLY INTEGRATED; add-only applicability and 15 focused tests passed, full-suite green not claimed."
+    },
+    "externalBrowserSupplement": "Separate verification worker pending; not part of this evidence snapshot"
+  },
+  "limits": [
+    "Stylized original vector illustration, not equivalent richness to generated full-frame artwork in reference.",
+    "Procedural absorption metaphor, not fluid or ceramic-manufacturing simulation.",
+    "Only 16:9 and 9:16 verified.",
+    "Long text and replacement artwork need layout and reveal coverage review.",
+    "artworkSvg accepts trusted authored SVG only; not an untrusted-upload interface."
+  ]
+}

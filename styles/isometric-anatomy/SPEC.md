@@ -26,7 +26,7 @@
 
 4. **动态与节拍契约**：
    - 动作遵循机械阻尼弹簧（`dampedSettle`）或真实刚体冲程（`stroke` 限制），禁止突兀无缓冲匀速移动。
-   - 读数表盘（Dial Gauge）与数字滚轮（DigitRoll）实时反映物理位移数值，表盘指针晃动与弹簧阻尼完全同源同频。
+   - 目标合同：读数表盘（Dial Gauge）与数字滚轮（DigitRoll）应反映同一模型的物理位移。现有 `AnatomyDial` 是展示组件，`angleDeg` 与 `valueText` 为独立参数，并不自动保证同源同频；调用方必须从同一状态推导。当前未发现已验证的调用错配，也没有完整机械因果实渲样例。
    - 爆炸装配动画（Exploded View）必须使用层级错相（Staggered Spring），按装配反序由外向内或由内向外展开，深度动态重排序，杜绝穿模。
 
 ## 适用场景与配方映射
@@ -37,3 +37,17 @@
 ## 样张基准
 
 - 样片帧标准：重型底座带脚垫螺栓、双轨滑台、弹簧减震活塞、进出气管路带管套、带数字刻度与活动指针的千分表，1x 整体宏大，4x 放大每一个螺丝和接头依然精美无可挑剔。
+
+## 单一状态的调用算例（未接入渲染）
+
+下例是原创线性标尺示意，不是传感器校准或上游物理模型：0–10mm 对应 −120° 至 +120°。传入同一次计算的 `angleDeg` 和 `valueText`；若还画滑台或 HUD，也用 `displacementMm`，不要另开视觉动画时钟。超量程显式报错，不能静默裁掉真实读数。
+
+<!-- audit-example:dial -->
+```js
+const dialStateFromDisplacement = (displacementMm) => {
+  if (!Number.isFinite(displacementMm) || displacementMm < 0 || displacementMm > 10) throw new RangeError("displacement out of range");
+  return {displacementMm, angleDeg: -120 + 240 * displacementMm / 10, valueText: `${displacementMm.toFixed(2)} mm`};
+};
+```
+
+算例测试只检查数值关联与确定性，不代表传动、阻尼、遮挡、管线穿模或动态画面已经验收；现有组件接口与行为保持不变。

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "8626d3bd91d779e56ea63a48e55ce827c7df13f8",
+  "classification": "original silent visual style prototype",
+  "styleId": "choice-quest",
+  "runtimeSkin": false,
+  "noPush": true,
+  "checks": {
+    "focusedTests": {
+      "status": "passed",
+      "count": 19,
+      "command": "node --test tests/choice-quest*.test.mjs"
+    },
+    "technical": {
+      "status": "passed",
+      "files": 4,
+      "size": "1280x720",
+      "fps": 30,
+      "frames": 540,
+      "seconds": 18,
+      "audioStreams": 0,
+      "method": "ffprobe counted frames and ffmpeg whole-file decode"
+    },
+    "stills": {
+      "status": "passed",
+      "method": "Inspected source raster stills 130,300,480 plus actual encoded frames 120,190,270,300,390,539 and 480px final frame",
+      "notes": "Readable scene, choices, battery decrement, bridge extension and final beacon. Small metadata remains secondary at 480px."
+    },
+    "independentReview": {
+      "status": "passed_with_fixes",
+      "method": "Separate agent viewed three stills before code, then reviewed state API and ran tests",
+      "finding": "Resource tradeoff and spatial consequence recognized. Nested initial-state and sub-1fps bugs fixed; regression tests added. Selected finished final frame 539 for poster."
+    },
+    "nativeRemotion": {
+      "status": "not_performed",
+      "reason": "Chromium socket() Operation not permitted; no native browser render or pixel parity claim"
+    },
+    "nativeTypecheck": {
+      "status": "not_performed",
+      "reason": "No installed TypeScript/React/Remotion dependency tree; prepared exact repository lockfile project but did not install dependencies"
+    },
+    "browserUI": {
+      "status": "partial",
+      "notes": "VM/DOM-stub tests cover pause, restart, end replay, seek, branch, captions, retime, hidden-tab pause. Actual browser layout/playback blocked."
+    },
+    "fullMotionPlayback": {
+      "status": "not_performed"
+    },
+    "audioReview": {
+      "status": "not_performed",
+      "notes": "Intentional silent stream; no audio track exists."
+    },
+    "fullRepoSuite": {
+      "status": "not_performed",
+      "reason": "Isolated partial baseline snapshot and no global catalog edits; not claimed."
+    },
+    "finalFilmQC": {
+      "status": "not_performed",
+      "notes": "This is an original style fixture, not a user-approved narrative or final-film deliverable. Existing silent-loudness limitation remains."
+    }
+  },
+  "sources": [
+    {
+      "url": "https://github.com/andyhuo520/vibe-knowledge/blob/main/skills/vibe-knowledge/styles/rpg/STYLE.md",
+      "use": "choice/dialogue/state-change method only; independently implemented"
+    },
+    {
+      "url": "https://github.com/andyhuo520/vibe-knowledge/blob/main/NOTICE.md",
+      "use": "checked no transfer of demonstration artwork/video/audio"
+    }
+  ]
+}

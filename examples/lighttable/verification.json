@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-03",
+  "status": "experimental-visual-study",
+  "sourceBase": {
+    "repository": "https://github.com/solplum/anything2video",
+    "commit": "8626d3bd91d779e56ea63a48e55ce827c7df13f8",
+    "materialization": "23 required source files, exact Git blob hashes verified; partial working copy"
+  },
+  "reference": {
+    "url": "https://github.com/andyhuo520/vibe-knowledge/blob/main/skills/vibe-knowledge/styles/lighttable/STYLE.md",
+    "blob": "1f6c86bdc1f7f8e13beb578eef56c83082bb50f9",
+    "use": "Visual-method reference only",
+    "copiedCode": false,
+    "copiedArtwork": false,
+    "copiedAudio": false
+  },
+  "renderer": {
+    "actual": "Inkscape SVG rasterization + ffmpeg H.264 encoding",
+    "targetIntegration": "Remotion wrapper supplied, not executed",
+    "inkscape": "1.4",
+    "fps": 30,
+    "frames": 360,
+    "durationSeconds": 12,
+    "audio": "none",
+    "ffmpeg": "7.1.5"
+  },
+  "checks": {
+    "focusedTests": {
+      "status": "passed",
+      "command": "node --test tests/lighttable.test.mjs",
+      "tests": 7
+    },
+    "catalogGeneration": {
+      "status": "passed",
+      "command": "node scripts/style-catalog.mjs --check"
+    },
+    "priorCatalogParity": {
+      "status": "passed",
+      "originalEntriesUnchanged": 63,
+      "familiesUnchanged": 4,
+      "runtimeSkinsUnchanged": 12
+    },
+    "sourceBaseline": {
+      "status": "passed",
+      "exactGitBlobHashes": 23
+    },
+    "repeatRaster": {
+      "status": "passed",
+      "frame": 240,
+      "variant": "landscape",
+      "result": "Pixel-identical fresh rasterization"
+    },
+    "landscapeStaticReview": {
+      "status": "passed",
+      "frames": [
+        60,
+        105,
+        165,
+        240,
+        315,
+        359
+      ],
+      "scope": "Composition, glyphs, source IDs, lens clipping, visible red draw and final retained marks"
+    },
+    "portraitStaticReview": {
+      "status": "passed",
+      "frames": [
+        60,
+        105,
+        165,
+        240,
+        315,
+        359
+      ],
+      "scope": "Portrait reflow, glyphs, source-ID magnification, visible annotation, paper surfaces, final retained marks"
+    },
+    "fullMotionPlayback": {
+      "status": "not_performed",
+      "reason": "No continuous audiovisual playback review in this environment"
+    },
+    "audioReview": {
+      "status": "not_performed",
+      "reason": "Intentional silent visual study; no audio stream"
+    },
+    "chromiumCapture": {
+      "status": "failed",
+      "reason": "Browser process could not create its singleton socket: Operation not permitted, including the approved elevated attempt"
+    },
+    "dependencyInstall": {
+      "status": "failed",
+      "reason": "npm ci --ignore-scripts --offline failed ENOTCACHED for zod-4.4.3.tgz; no complete dependency install"
+    },
+    "typecheck": {
+      "status": "not_performed",
+      "reason": "TypeScript dependency absent"
+    },
+    "remotionRender": {
+      "status": "not_performed",
+      "reason": "Complete dependencies and an operable Chromium were unavailable"
+    },
+    "fullStyleRegression": {
+      "status": "not_performed",
+      "command": "node --test tests/style-system.test.mjs",
+      "reason": "Test bootstrap failed: Cannot find module typescript. Sparse snapshot also lacks unrelated style assets"
+    },
+    "productionCertification": {
+      "status": "not_performed",
+      "reason": "This is a new experimental manual kit, not a complete narrated production"
+    },
+    "mediaDecode": {
+      "status": "passed",
+      "command": "ffprobe metadata and ffmpeg full decode for each variant",
+      "result": "12.000 seconds, 360 frames, 30 fps, H.264, no audio stream, decode exit 0"
+    },
+    "patchApply": {
+      "status": "passed",
+      "scope": "git apply --check and apply against an exact-hash sparse 8626d3b baseline; then 7 focused tests and catalog consistency passed"
+    }
+  },
+  "media": [
+    {
+      "path": "samples/lighttable-sample.mp4",
+      "bytes": 630385,
+      "sha256": "c68951bdc1035976d0f1c70b3bebaff881cc742ad1258daaaae40d19e5f2ac0d"
+    },
+    {
+      "path": "examples/lighttable/portrait.mp4",
+      "bytes": 594731,
+      "sha256": "0c3d4a534a4d08d30c86b448c053238ae3eb89bae92f3bd1e74a0b35ee935415"
+    },
+    {
+      "path": "samples/posters/lighttable-sample.jpg",
+      "bytes": 103707,
+      "sha256": "d97bc8777bff62703e03c93e5d5b7c1334b5298e50d3b1307154ca0bb7a2fc08"
+    },
+    {
+      "path": "styles/lighttable/sample.jpg",
+      "bytes": 103707,
+      "sha256": "d97bc8777bff62703e03c93e5d5b7c1334b5298e50d3b1307154ca0bb7a2fc08"
+    }
+  ],
+  "sourceSha256": {
+    "styles/lighttable/scene.mjs": "ed0e08f608692d323192231941015b960340bfddf8422ce5421600a8454984b2",
+    "styles/lighttable/kit.tsx": "575a4b5c80f6362e2e15056bc9e1899dab2cae2ee4a476e7456080ab7a20ac67",
+    "styles/lighttable/scene.d.mts": "c60e97a5dfa46169642dfd4fe0bf0a94bbdb93426eabe591ee6657d814543040",
+    "examples/lighttable/Root.tsx": "f13da067bb73dcac8a997f48d604288073475c372efd9b79a1e7927cd321282f",
+    "examples/lighttable/Scene.tsx": "d559fd192c627e8de088c89003ad2a1a86e018dbe38cbfd7f8751186a4759907",
+    "examples/lighttable/render-svg-study.mjs": "ee0ab48cadece30ba5fe7dd7f9e028a57d30b98e6883cf44c572b6127b124ed7"
+  },
+  "fonts": {
+    "families": [
+      "Noto Serif CJK SC",
+      "Noto Sans CJK SC"
+    ],
+    "source": "System-installed fonts, not newly redistributed by this example",
+    "fontEmbedding": false
+  },
+  "knownLimitations": [
+    "The example uses a fixed fictional leaf archive; other evidence needs a new archive layout and lens targets.",
+    "The lens is a 2D geometric clone, not physical refraction.",
+    "Extreme aspect ratios, long documents and small-screen teaching readability need new review.",
+    "The existing 63 styles were preserved structurally, not re-rendered."
+  ]
+}

@@ -7,23 +7,24 @@ import {fileURLToPath} from 'node:url';
 import {collectCoreFiles} from '../scripts/build-editions.mjs';
 import {isOptionalSampleMedia, presentOptionalSamples} from '../scripts/package-profile.mjs';
 
-// 真实源一致性门禁：校验统一 SKILL.md 超集元数据、核心文件清单与缓存防污染
+// 真实源一致性门禁：校验统一 SKILL.md 标准字段与扩展元数据、核心文件清单与缓存防污染
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const read = file => fs.readFileSync(path.join(root, ...file.split('/')), 'utf8');
 const frontmatter = text => text.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+const metadataBlock = text => frontmatter(text).match(/^metadata:\s*\r?\n((?:[ \t]+[^\r\n]*(?:\r?\n|$))*)/m)?.[1] ?? '';
 const declaredVersion = text => {
-  const block = frontmatter(text).match(/^metadata:\s*\r?\n((?:[ \t]+[^\r\n]*(?:\r?\n|$))*)/m)?.[1] ?? '';
+  const block = metadataBlock(text);
   const nested = block.match(/^  version:\s*["']?([0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?)["']?\s*$/m)?.[1];
   return nested ?? frontmatter(text).match(/^version:\s*["']?([0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?)["']?\s*$/m)?.[1];
 };
 
-test('unified skill entry declares superset metadata and correct identity', () => {
+test('unified skill entry declares portable metadata and correct identity', () => {
   const skill = read('SKILL.md');
   const version = declaredVersion(skill);
   assert.match(version, /^\d+\.\d+\.\d+$/, 'SKILL.md must declare a semver version');
   assert.match(frontmatter(skill), /^name:\s*anything2video\s*$/m);
-  assert.match(frontmatter(skill), /^author:\s*\S+/m);
+  assert.match(metadataBlock(skill), /^  author:\s*\S+/m);
   assert.match(frontmatter(skill), /zh-Hans:/);
   assert.match(frontmatter(skill), /displayNames:/);
   assert.equal(fs.existsSync(path.join(root, 'hosts')), false, 'legacy hosts directory must be removed in unified architecture');

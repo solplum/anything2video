@@ -1,0 +1,23 @@
+{
+  "id": "card-conflict",
+  "name": "卡牌对抗",
+  "description": "选择支付补给，建立防护或收获，对手接触后结算并改变目标物件；含两个原创场景和反事实分支。",
+  "notes": "16秒无声原型；共享确定性SVG核心；手动接入kit，不是config.style皮肤。验证状态见交付报告。",
+  "recipe": "explainer",
+  "vibes": [
+    "retro",
+    "warm"
+  ],
+  "runtimeSkin": false,
+  "family": "card-conflict",
+  "source": "styles/card-conflict",
+  "preview": {
+    "status": "available",
+    "path": "card-conflict-sample.mp4",
+    "poster": "posters/card-conflict-sample.jpg"
+  },
+  "showcase": {
+    "section": "shapes-and-dreams",
+    "summary": "出牌付出资源，风暴碰上防护，灯塔因此守住或失守"
+  }
+}

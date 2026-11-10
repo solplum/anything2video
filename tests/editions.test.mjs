@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {execFileSync, spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {assertDisjoint, buildPackage, collectCoreFiles, verifyPackage} from '../scripts/build-editions.mjs';
+import {assertDisjoint, buildPackage, collectCoreFiles, verifyPackage, validateSkill, frontmatterOf} from '../scripts/build-editions.mjs';
 import {isOptionalSampleMedia, presentOptionalSamples, readPackageManifest} from '../scripts/package-profile.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -35,10 +35,9 @@ function fixture(temp) {
     `---
 name: anything2video
 description: A shared video skill.
-version: "5.0.0"
-author: "solplum"
 metadata:
   version: "5.0.0"
+  author: "solplum"
   descriptions:
     zh-Hans: "测试描述"
   displayNames:
@@ -58,6 +57,7 @@ metadata:
   write(source, 'docs/optimization-v3.6.md', 'huashu absorption record\n');
   write(source, 'docs/optimization-v3.7.md', 'release contract repair record\n');
   write(source, 'docs/style-system-round1.md', 'Style catalog and reuse contract\n');
+  write(source, 'docs/style-browsing.md', 'Interactive style browsing and compatibility\n');
   write(source, 'gallery/README.md', 'Motion card gallery\n');
   write(source, 'audio-engine/README.md', 'Programmatic score vendor\n');
   write(source, 'recipes/explainer.md', 'A complete recipe\n');
@@ -92,6 +92,32 @@ metadata:
 const invoke = (source, ...args) => execFileSync(process.execPath, [path.join(source, 'scripts/install.mjs'), ...args], {encoding: 'utf8'});
 const failed = (script, ...args) => spawnSync(process.execPath, [script, ...args], {encoding: 'utf8'});
 
+test('canonical skill keeps host extensions under metadata and builds with nested version', t => {
+  const frontmatter = frontmatterOf(fs.readFileSync(path.join(root, 'SKILL.md'), 'utf8'));
+  const allowed = new Set(['name', 'description', 'license', 'allowed-tools', 'metadata']);
+  const keys = [...frontmatter.matchAll(/^([A-Za-z][A-Za-z0-9_-]*):/gm)].map(match => match[1]);
+  assert.ok(keys.every(key => allowed.has(key)), `Nonportable top-level keys: ${keys.filter(key => !allowed.has(key))}`);
+  assert.match(frontmatter, /^  author: "solplum"$/m);
+  assert.equal(validateSkill(root).version, '5.0.0');
+  const source = fixture(temporary(t));
+  for (const profile of ['core', 'full']) {
+    const target = buildPackage(path.join(path.dirname(source), profile), {source, profile});
+    assert.equal(verifyPackage(target).version, '5.0.0');
+    assert.equal(verifyPackage(target).profile, profile);
+  }
+});
+
+test('legacy top-level version remains readable while metadata version is authoritative', t => {
+  const source = fixture(temporary(t));
+  const file = path.join(source, 'SKILL.md');
+  const canonical = fs.readFileSync(file, 'utf8');
+  fs.writeFileSync(file, canonical.replace('metadata:', 'version: "4.9.0"\nauthor: "solplum"\nmetadata:'));
+  assert.equal(validateSkill(source).version, '5.0.0');
+  fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace('  version: "5.0.0"\n', ''));
+  const target = buildPackage(path.join(path.dirname(source), 'legacy'), {source});
+  assert.equal(verifyPackage(target).version, '4.9.0');
+});
+
 test('unified package builds cleanly and excludes caches and private files', t => {
   const temp = temporary(t), source = fixture(temp), output = path.join(temp, 'dist', 'anything2video');
   const target = buildPackage(output, {source});
@@ -118,6 +144,7 @@ test('unified package builds cleanly and excludes caches and private files', t =
   assert.ok(fs.existsSync(path.join(target, 'LICENSE-THIRDPARTY/MIT-fixture.txt')));
   assert.ok(fs.existsSync(path.join(target, 'examples/engraving/README.md')));
   assert.ok(fs.existsSync(path.join(target, 'docs/style-system-round1.md')));
+  assert.ok(fs.existsSync(path.join(target, 'docs/style-browsing.md')));
   assert.ok(fs.existsSync(path.join(target, 'docs/getting-started.md')));
   assert.ok(fs.existsSync(path.join(target, 'assets/audio/ATTRIBUTION.md')));
   assert.equal(fs.readFileSync(path.join(target, 'samples/sample.mp4'), 'utf8'), 'Fixture media');

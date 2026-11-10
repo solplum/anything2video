@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "renderer": "librsvg/cairo + ffmpeg from shared original SVG core",
+  "sourceSha256": "9f6ca8aa4de11ec2fa1be85788a5cc9e6f874123a8ed9c755c44fc4f55075821",
+  "proofs": [
+    {
+      "name": "porcelain-reveal",
+      "options": {},
+      "path": "porcelain-reveal.mp4",
+      "sha256": "ed9913f5f0ea2d523fd6e6bae2b81f583885d623ac052588b3102164ea34e964",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 31,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 215040,
+            "duration": "14.000000",
+            "bit_rate": "431684",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "420",
+            "nb_read_frames": "420",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/shared/porcelain-reveal-fix/render/porcelain-reveal.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "14.000000",
+          "size": "761109",
+          "bit_rate": "434919",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "repositoryPath": "samples/porcelain-reveal-sample.mp4"
+    },
+    {
+      "name": "porcelain-reveal-portrait",
+      "options": {
+        "width": 720,
+        "height": 1280
+      },
+      "path": "porcelain-reveal-portrait.mp4",
+      "sha256": "8b9198fa07334510f9d6da48bc1a9d1899e87a50afaac97732bad0b0207c035b",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 720,
+            "height": 1280,
+            "coded_width": 720,
+            "coded_height": 1280,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 31,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 215040,
+            "duration": "14.000000",
+            "bit_rate": "388424",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "420",
+            "nb_read_frames": "420",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc61.19.101 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/shared/porcelain-reveal-fix/render/porcelain-reveal-portrait.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "14.000000",
+          "size": "685540",
+          "bit_rate": "391737",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "repositoryPath": "examples/porcelain-reveal/portrait.mp4"
+    }
+  ],
+  "limits": {
+    "nativeRemotionCLI": "Not rerun for this filter correction; earlier Chromium launch failed with socket/read-only-profile restrictions",
+    "continuousPlayback": "not performed",
+    "audio": "intentionally absent",
+    "fullIntegration": "not performed; isolated additive prototype"
+  },
+  "correction": "Absolute scene-space blur regions remove early-bloom rectangular clipping; geometry and timing unchanged",
+  "previousSourceSha256": "fbfd1cd65fabb93e38915c0bfeece1fa114691f1166e6946d1615b091ee818bd"
+}

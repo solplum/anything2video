@@ -5,7 +5,7 @@ name: accent-on-newest
 时长: 字符衰减 6–8f；词波 8–10f/词、间隔 4–6f；物体褪色 10–20f（@30fps）
 能量: 低（持续低亮度的引导，非单点爆发）
 标签: effects
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

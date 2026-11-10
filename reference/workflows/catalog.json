@@ -1,0 +1,785 @@
+{
+  "schemaVersion": 1,
+  "purpose": "整片制作路线索引；画风、运行时配方、剪辑模式与逐镜素材方法保持独立。推荐不构成兼容白名单或新审批门。",
+  "selectionFile": "research/production-route.json",
+  "sourceSnapshot": {
+    "repository": "solplum/anything2video",
+    "commit": "8626d3bd91d779e56ea63a48e55ce827c7df13f8",
+    "scope": "核对既有路径和文档；不代表当前渲染或审片认证。"
+  },
+  "runtimeRecipes": [
+    "promo",
+    "explainer",
+    "epic"
+  ],
+  "editingModes": [
+    "standard",
+    "match-cut-beat-relay"
+  ],
+  "materialMethods": [
+    {
+      "id": "code",
+      "name": "代码绘制",
+      "reference": "reference/ai-frame-sop.md"
+    },
+    {
+      "id": "layered-assets",
+      "name": "分层素材",
+      "reference": "reference/ai-frame-sop.md"
+    },
+    {
+      "id": "generated-motion",
+      "name": "生成动态",
+      "reference": "reference/ai-frame-sop.md"
+    },
+    {
+      "id": "hybrid",
+      "name": "混合合成",
+      "reference": "reference/ai-frame-sop.md"
+    }
+  ],
+  "routes": [
+    {
+      "id": "diagram-explainer",
+      "name": "图解讲解",
+      "summary": "用图形、文字和可观察的过程，把一个知识点讲明白。",
+      "workflow": "reference/workflows/diagram-explainer.md",
+      "suggestedRecipe": "explainer",
+      "recommendedStyles": [
+        "mg-purple",
+        "chalk",
+        "blueprint",
+        "paperclip-sticker",
+        "hanazi-916",
+        "line-art",
+        "pop-dot",
+        "target-lock",
+        "whiteboard",
+        "kinetic-type",
+        "math-lab"
+      ],
+      "inputs": [
+        "要解释的问题、受众与前置知识",
+        "可核实的事实、数据和贯穿示例"
+      ],
+      "stages": [
+        {
+          "id": "model",
+          "name": "确定解释模型",
+          "output": "把每句关键结论对应到可见状态变化"
+        },
+        {
+          "id": "proof",
+          "name": "先做难点演示",
+          "output": "带真实旁白的因果动作短样片"
+        },
+        {
+          "id": "build",
+          "name": "串起整段解释",
+          "output": "前提→操作→结果→边界的分镜与实现"
+        }
+      ],
+      "checks": [
+        "遮掉字幕仍能看出输入、变化和输出",
+        "公式、数字、指示线与旁白指向同一对象",
+        "阅读时间足够，不能把卡片入场当作全部解释"
+      ],
+      "resources": [
+        "anything2explainer",
+        "shotcraft",
+        "mg-styles"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": [
+        "transit-story"
+      ]
+    },
+    {
+      "id": "product-demo",
+      "name": "产品演示",
+      "summary": "先展示真实任务怎样完成，再组织产品卖点。",
+      "workflow": "reference/workflows/product-demo.md",
+      "suggestedRecipe": "promo",
+      "recommendedStyles": [
+        "deep-space",
+        "neon",
+        "swiss-print",
+        "crt-terminal",
+        "pixel-arcade",
+        "aurora-glass",
+        "pop-comic",
+        "vhs-outrun"
+      ],
+      "inputs": [
+        "真实产品界面、可复测步骤或经授权素材",
+        "卖点对应的行为证据、品牌资产与行动号召"
+      ],
+      "stages": [
+        {
+          "id": "capture",
+          "name": "验证产品任务",
+          "output": "输入→操作→真实结果的证据与素材"
+        },
+        {
+          "id": "assemble",
+          "name": "打样核心演示",
+          "output": "一个完整操作与结果，装配卡仅组织信息"
+        },
+        {
+          "id": "sequence",
+          "name": "编排卖点顺序",
+          "output": "问题→使用→证明→收束的完整分镜"
+        }
+      ],
+      "checks": [
+        "演示状态与实际产品一致，不生成假 UI 或伪指标",
+        "镜头切换保留操作因果，结束时结果可读",
+        "装配与翻卡不遮住产品的关键行为"
+      ],
+      "resources": [
+        "shotcraft",
+        "product-card",
+        "card-flock",
+        "lanshu"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": []
+    },
+    {
+      "id": "mechanism-breakdown",
+      "name": "原理拆解",
+      "summary": "把部件、连接与变化画出来，说明系统为何这样运转。",
+      "workflow": "reference/workflows/mechanism-breakdown.md",
+      "suggestedRecipe": "explainer",
+      "recommendedStyles": [
+        "blueprint",
+        "isometric-city",
+        "clay-town",
+        "math-lab",
+        "isometric-anatomy"
+      ],
+      "inputs": [
+        "部件清单、连接关系、状态或物理模型",
+        "隐喻与真实机制的逐项对应及边界"
+      ],
+      "stages": [
+        {
+          "id": "map",
+          "name": "画清结构",
+          "output": "部件→功能→连接→观测量的映射"
+        },
+        {
+          "id": "couple",
+          "name": "打样因果闭环",
+          "output": "输入改变→内部传递→读数变化的完整动作"
+        },
+        {
+          "id": "assemble",
+          "name": "组织拆装与运行",
+          "output": "总览→拆解→运行→故障或边界的分镜"
+        }
+      ],
+      "checks": [
+        "读数与可见位移同源，不分别手填假同步",
+        "管路/线头正确连接，拆装顺序无穿插",
+        "隐喻不能暗示不存在的物理机制或证据"
+      ],
+      "resources": [
+        "anatomy",
+        "shotcraft",
+        "word-relay",
+        "lanshu"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": []
+    },
+    {
+      "id": "archive-narrative",
+      "name": "档案叙事",
+      "summary": "围绕原件、照片和地图推进故事，让证据出现在画面中。",
+      "workflow": "reference/workflows/archive-narrative.md",
+      "suggestedRecipe": "epic",
+      "recommendedStyles": [
+        "paper-collage",
+        "epic-paper",
+        "guofeng-scroll",
+        "engraving"
+      ],
+      "inputs": [
+        "可追溯的原件、历史照片、地图与许可",
+        "事件时间线、证据强度和未知事项"
+      ],
+      "stages": [
+        {
+          "id": "rights",
+          "name": "整理档案证据",
+          "output": "research/archival-rights.json 与 claims/assets 绑定"
+        },
+        {
+          "id": "read",
+          "name": "打样原件阅读",
+          "output": "原件全貌→局部证据→上下文的可读镜头"
+        },
+        {
+          "id": "narrate",
+          "name": "串联证据叙事",
+          "output": "事件与证据交替，不以生成图冒充档案"
+        }
+      ],
+      "checks": [
+        "放大的是同一原件，局部仍保留上下文",
+        "年份、引文与图像身份逐项核对",
+        "足够停留看原件，生成重现须明确标为示意"
+      ],
+      "resources": [
+        "documentary",
+        "archive-history",
+        "engraving"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": [
+        "lighttable"
+      ],
+      "recommendationNote": "lighttable 仅在所用版本已包含该试验画风时出现；本次不随目录新增或发布它。"
+    },
+    {
+      "id": "painted-animation",
+      "name": "绘画动画",
+      "summary": "先确定绘画语言，再设计笔触、材质和画内运动。",
+      "workflow": "reference/workflows/painted-animation.md",
+      "suggestedRecipe": "explainer",
+      "recommendedStyles": [
+        "sand",
+        "ink-tea",
+        "swirl-oil",
+        "cave-wall",
+        "tomb-wall",
+        "amphora",
+        "mosaic",
+        "gold-leaf",
+        "whiplash-line",
+        "grain-flat",
+        "gold-robe",
+        "dot-infinity",
+        "hard-light",
+        "sfumato",
+        "light-dabs",
+        "facets",
+        "chrome-ball",
+        "scream-warp",
+        "soft-clock",
+        "watercolor-cel",
+        "lily-pond",
+        "optical-dots",
+        "candle-light",
+        "cumulus-light",
+        "blue-period",
+        "riso-print",
+        "engraving"
+      ],
+      "inputs": [
+        "画风参考与可用图元或分层素材",
+        "画面要表达的情绪、信息和具体动作"
+      ],
+      "stages": [
+        {
+          "id": "frame",
+          "name": "确定一帧",
+          "output": "定稿构图、主体、材质和信息区"
+        },
+        {
+          "id": "layers",
+          "name": "拆层与运动",
+          "output": "每层选择代码/分层素材/生成视频的实际方法"
+        },
+        {
+          "id": "continuity",
+          "name": "验证连续画面",
+          "output": "最难动作、材质稳定性及前后镜头的短样片"
+        }
+      ],
+      "checks": [
+        "笔触随形塑造对象，不用纹理覆盖替代画面设计",
+        "材质稳定，动作与叙事有关而非全屏无意义微动",
+        "生成素材逐项审查，精确文字和事实仍由代码负责"
+      ],
+      "resources": [
+        "huashu",
+        "mg-styles",
+        "engraving"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": [
+        "porcelain-reveal"
+      ]
+    },
+    {
+      "id": "character-animation",
+      "name": "角色动画",
+      "summary": "用目标、阻碍和动作带来变化，让角色真正完成一件事。",
+      "workflow": "reference/workflows/character-animation.md",
+      "suggestedRecipe": "explainer",
+      "recommendedStyles": [
+        "grain-flat",
+        "rubberhose",
+        "shadow-play",
+        "watercolor-cel",
+        "clay-town",
+        "dance-line",
+        "ink-boil",
+        "popup-book"
+      ],
+      "inputs": [
+        "角色目标、障碍、尝试和可见结果",
+        "稳定身份与道具；改编故事另备事实边界"
+      ],
+      "stages": [
+        {
+          "id": "causal",
+          "name": "建立因果节拍",
+          "output": "身份设定和可见的前后状态"
+        },
+        {
+          "id": "action",
+          "name": "先做最难动作",
+          "output": "接触→承重/推动→释放→落定的实渲短片"
+        },
+        {
+          "id": "story",
+          "name": "接回整片",
+          "output": "story 与 shot.story 按既有合同绑定镜头"
+        }
+      ],
+      "checks": [
+        "遮字幕能说明谁想做什么、动作改变了什么",
+        "手脚接触、重心、遮挡和道具归属连贯",
+        "真实改编区分已证事实与演绎，不能补写未知对白"
+      ],
+      "resources": [
+        "character-contract",
+        "vibe-knowledge-film",
+        "huashu",
+        "lanshu"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": [
+        "choice-quest",
+        "card-conflict"
+      ],
+      "recommendationNote": "choice-quest 与 card-conflict 在本整合版已注册为实验图元；基础版本未包含时仍作为可选推荐，不自动导入或变成 runtime skin。"
+    },
+    {
+      "id": "spatial-longtake",
+      "name": "空间长镜",
+      "summary": "沿空间关系移动镜头，在连续观看中交代结构与变化。",
+      "workflow": "reference/workflows/spatial-longtake.md",
+      "suggestedRecipe": "epic",
+      "recommendedStyles": [
+        "studio-oneshot",
+        "isometric-city",
+        "clay-town",
+        "soft-jelly",
+        "chrome-ball",
+        "popup-book"
+      ],
+      "inputs": [
+        "空间布局、主体尺寸和观察节点",
+        "投影类型、相机路径与可用渲染依赖"
+      ],
+      "stages": [
+        {
+          "id": "block",
+          "name": "搭空间灰模",
+          "output": "主体与观察节点的空间关系"
+        },
+        {
+          "id": "camera",
+          "name": "先走完整镜头",
+          "output": "低成本完整机位预演与遮挡检查"
+        },
+        {
+          "id": "light",
+          "name": "加入材质与信息",
+          "output": "实测帧成本后增加光照、标注与细节"
+        }
+      ],
+      "checks": [
+        "运动中焦点仍可跟随，重要物体无遮挡",
+        "2.5D 与真正 3D 的实现方式明确，不凭名称假定",
+        "按实际宽高比重排镜头，标签可读且无穿模"
+      ],
+      "resources": [
+        "lanshu",
+        "shotcraft",
+        "spatial-kit"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": []
+    },
+    {
+      "id": "rhythmic-short",
+      "name": "节奏短片",
+      "summary": "围绕关键语句与能量起伏组织短片，而不是不断随机转场。",
+      "workflow": "reference/workflows/rhythmic-short.md",
+      "suggestedRecipe": "promo",
+      "recommendedStyles": [
+        "swiss-print",
+        "kinetic-type",
+        "hanazi-916",
+        "morph",
+        "liquid-flow",
+        "pop-dot",
+        "pop-comic",
+        "ink-plate",
+        "dance-line",
+        "hypnotic",
+        "pixel-arcade",
+        "neon"
+      ],
+      "inputs": [
+        "少量核心信息与可读的短文案",
+        "已选择的音乐/节拍合同；也可明确无音乐"
+      ],
+      "stages": [
+        {
+          "id": "arc",
+          "name": "定信息与能量曲线",
+          "output": "核心词、证明拍与结尾回收"
+        },
+        {
+          "id": "animatic",
+          "name": "先做节奏预演",
+          "output": "字词、动作和切点的低成本完整样片"
+        },
+        {
+          "id": "finish",
+          "name": "细化视觉与声音",
+          "output": "阅读停留、动效词汇和音画落点的统一时间轴"
+        }
+      ],
+      "checks": [
+        "不是每一拍都塞新信息，关键句保留阅读时间",
+        "词与动作有意义联系，字形不妨碍理解",
+        "只有明确选用接力剪辑时才启用其合同，不强制全片卡拍"
+      ],
+      "resources": [
+        "pdoom",
+        "shotcraft",
+        "word-relay",
+        "match-cut"
+      ],
+      "readiness": {
+        "workflow": "documented",
+        "wholeFilm": "not_validated_by_catalog"
+      },
+      "optionalRecommendedStyles": []
+    }
+  ],
+  "resources": [
+    {
+      "id": "anything2explainer",
+      "name": "anything2explainer",
+      "kind": "existing-reference",
+      "paths": [
+        "reference/explainer/README.md",
+        "reference/explainer/sample-rag/README.md"
+      ],
+      "note": "已收录历史文档和 RAG 镜头源码；按 wrapper 路径映射读取，不继承旧确认点或固定画幅。"
+    },
+    {
+      "id": "shotcraft",
+      "name": "video-shotcraft",
+      "kind": "existing-implementation",
+      "paths": [
+        "gallery/README.md",
+        "gallery/cards/ATTRIBUTION.md",
+        "template/src/common/kit/ATTRIBUTION.md"
+      ],
+      "note": "已收录卡片、参考实现和公共组件；不是本次新增动画。"
+    },
+    {
+      "id": "product-card",
+      "name": "产品卡逐层装配",
+      "kind": "existing-implementation",
+      "paths": [
+        "gallery/cards/ui-entrance/product-card-progressive-assemble.md",
+        "gallery/demos-ref/ui-entrance/product-card-progressive-assemble/ProductCardProgressiveAssemble.tsx"
+      ],
+      "note": "单镜头参考；需改写成真实产品任务与全片证明链。"
+    },
+    {
+      "id": "card-flock",
+      "name": "卡群翻转",
+      "kind": "existing-implementation",
+      "paths": [
+        "gallery/cards/transition/card-flock-tumble.md",
+        "gallery/demos-ref/transition/card-flock-tumble/CardFlockTumble.tsx"
+      ],
+      "note": "已存在转场；不能把翻卡当作新的整片风格。"
+    },
+    {
+      "id": "word-relay",
+      "name": "文字几何接力",
+      "kind": "existing-implementation",
+      "paths": [
+        "gallery/cards/typography/word-relay-geometry.md",
+        "gallery/demos-ref/typography/word-relay-geometry/WordRelayGeometry.tsx"
+      ],
+      "note": "已存在字形接力；用于表达关系，不自动证明技术机制。"
+    },
+    {
+      "id": "mg-styles",
+      "name": "mg-styles-15",
+      "kind": "existing-reference",
+      "paths": [
+        "styles/README.md",
+        "LICENSE-THIRDPARTY/MIT-mg-styles-15.txt"
+      ],
+      "note": "既有视觉语法借鉴与重写，以各风格 SPEC 的实现和证据为准。"
+    },
+    {
+      "id": "huashu",
+      "name": "huashu-art-motion",
+      "kind": "existing-reference",
+      "paths": [
+        "reference/ai-frame-sop.md",
+        "LICENSE-THIRDPARTY/MIT-huashu-art-motion.txt"
+      ],
+      "note": "已吸收一帧先行与 A/B/C/D 素材方法；按镜头选择，不新增整片渲染器。"
+    },
+    {
+      "id": "lanshu",
+      "name": "lanshu-create-ai-presenter-video",
+      "kind": "existing-reference",
+      "paths": [
+        "styles/README.md",
+        "LICENSE-THIRDPARTY/MIT-lanshu-create-ai-presenter-video.txt"
+      ],
+      "note": "已有波普、立体书、黏土和空间长镜的 Remotion 重写，不等同于真人口播管线。"
+    },
+    {
+      "id": "anatomy",
+      "name": "Anatomy",
+      "kind": "existing-implementation",
+      "paths": [
+        "styles/isometric-anatomy/SPEC.md",
+        "styles/isometric-anatomy/anatomy.tsx",
+        "LICENSE-THIRDPARTY/MIT-anatomy.txt"
+      ],
+      "note": "已有等距机械组件，但 catalog 标记样片缺失；不得描述为已验证整片。"
+    },
+    {
+      "id": "documentary",
+      "name": "档案制作与翻拍",
+      "kind": "existing-implementation",
+      "paths": [
+        "recipes/documentary.md",
+        "template/src/common/kit/RostrumStage.tsx"
+      ],
+      "note": "documentary 是制作路线；运行时仍选 promo/explainer/epic 中的基础配方。"
+    },
+    {
+      "id": "archive-history",
+      "name": "历史作品台账",
+      "kind": "historical-record",
+      "paths": [
+        "reference/style-ledger.md",
+        "samples/manifest.json"
+      ],
+      "note": "记录《命》、自宣传及历次样片的历史范围，不代表当前版本整片复验。"
+    },
+    {
+      "id": "engraving",
+      "name": "铜版雕刻",
+      "kind": "existing-implementation",
+      "paths": [
+        "styles/engraving/SPEC.md",
+        "styles/engraving/UPSTREAM.md",
+        "examples/engraving/README.md"
+      ],
+      "note": "已有排线组件与 12 秒无声材质研究，不把研究片写成完整叙事成片。"
+    },
+    {
+      "id": "character-contract",
+      "name": "角色动作合同",
+      "kind": "existing-implementation",
+      "paths": [
+        "reference/character-story.md",
+        "examples/character-action-contract/README.md"
+      ],
+      "note": "已存在可选 story 合同和动作验证用例；不等于通用角色引擎。"
+    },
+    {
+      "id": "vibe-knowledge-film",
+      "name": "vibe-knowledge-film",
+      "kind": "method-reference",
+      "paths": [
+        "reference/character-story.md"
+      ],
+      "note": "仅沿用现有专题中独立提炼的因果动作与最难镜头先试方法；不复制参考片、人物、素材。"
+    },
+    {
+      "id": "spatial-kit",
+      "name": "空间组件",
+      "kind": "existing-implementation",
+      "paths": [
+        "styles/studio-oneshot/SPEC.md",
+        "styles/isometric-city/SPEC.md",
+        "template/src/common/kit/PageCam.tsx"
+      ],
+      "note": "three.js、CSS 等轴与 PageCam 各有不同依赖；不自动互换 renderer。"
+    },
+    {
+      "id": "pdoom",
+      "name": "pdoom-video",
+      "kind": "existing-reference",
+      "paths": [
+        "gallery/README.md",
+        "LICENSE-THIRDPARTY/MIT-pdoom-video.txt"
+      ],
+      "note": "既有 8 张参数化镜头卡；只是镜头语法，不是完整影片模板。"
+    },
+    {
+      "id": "match-cut",
+      "name": "匹配剪辑与节拍接力",
+      "kind": "existing-implementation",
+      "paths": [
+        "reference/match-cut-beat-relay.md",
+        "LICENSE-THIRDPARTY/MIT-match-cut.txt"
+      ],
+      "note": "跨路线的可选 editingMode；不把整条节奏短片路线与它画等号。"
+    }
+  ],
+  "treatments": [
+    {
+      "id": "choice-adventure",
+      "name": "选项冒险",
+      "family": "游戏叙事",
+      "route": "character-animation",
+      "status": "prototype",
+      "implementation": "prototype",
+      "evidence": "offline_shared_svg_and_sampled_frames",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "choice-adventure",
+      "implementedStyleId": "choice-quest",
+      "verificationPath": "examples/choice-quest/verification.json",
+      "verification": {
+        "nativeRemotion": "not_performed",
+        "fullMotionPlayback": "not_performed",
+        "audioReview": "not_performed",
+        "finalFilmQC": "not_performed"
+      }
+    },
+    {
+      "id": "card-conflict",
+      "name": "卡牌对抗",
+      "family": "游戏叙事",
+      "route": "character-animation",
+      "status": "prototype",
+      "implementation": "prototype",
+      "evidence": "offline_shared_svg_and_sampled_frames",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "card-conflict",
+      "implementedStyleId": "card-conflict",
+      "verificationPath": "examples/card-conflict/verification.json",
+      "verification": {
+        "nativeRemotion": "not_performed",
+        "fullMotionPlayback": "not_performed",
+        "audioReview": "not_performed",
+        "finalFilmQC": "not_performed"
+      }
+    },
+    {
+      "id": "transit-story",
+      "name": "线路叙事",
+      "family": "图形叙事",
+      "route": "diagram-explainer",
+      "status": "prototype",
+      "implementation": "prototype",
+      "evidence": "offline_shared_svg_and_sampled_frames",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "transit-story",
+      "implementedStyleId": "transit-story",
+      "verificationPath": "examples/transit-story/verification.json",
+      "verification": {
+        "nativeRemotion": "not_performed",
+        "fullMotionPlayback": "not_performed",
+        "audioReview": "not_performed",
+        "finalFilmQC": "not_performed"
+      }
+    },
+    {
+      "id": "cobalt-reveal",
+      "name": "青花显影",
+      "family": "绘画显影",
+      "route": "painted-animation",
+      "status": "prototype",
+      "implementation": "prototype",
+      "evidence": "offline_shared_svg_and_sampled_frames",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "cobalt-reveal",
+      "implementedStyleId": "porcelain-reveal",
+      "verificationPath": "examples/porcelain-reveal/verification.json",
+      "verification": {
+        "nativeRemotion": "blocked",
+        "fullMotionPlayback": "not_performed",
+        "audioReview": "not_performed",
+        "finalFilmQC": "not_performed"
+      }
+    },
+    {
+      "id": "paper-lightbox",
+      "name": "纸雕灯影",
+      "family": "纸艺空间",
+      "route": "spatial-longtake",
+      "status": "candidate",
+      "implementation": "not_implemented",
+      "evidence": "source_document_read",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "paper-lightbox"
+    },
+    {
+      "id": "printed-longtake",
+      "name": "版画长镜",
+      "family": "印刷空间",
+      "route": "spatial-longtake",
+      "status": "candidate",
+      "implementation": "not_implemented",
+      "evidence": "source_document_read",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "printed-longtake"
+    },
+    {
+      "id": "measured-pointcloud",
+      "name": "点云测绘",
+      "family": "实证数据",
+      "route": "mechanism-breakdown",
+      "status": "candidate",
+      "implementation": "not_implemented",
+      "evidence": "source_document_read",
+      "guide": "reference/workflows/treatments.md",
+      "anchor": "measured-pointcloud"
+    }
+  ]
+}

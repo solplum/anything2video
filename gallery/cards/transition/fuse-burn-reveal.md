@@ -15,7 +15,7 @@ name: fuse-burn-reveal
 
 ## 动效核心
 - 引信路径：折线或贝塞尔横贯 0.6–0.8 屏宽（可绕过画面主体元素走位）
-- 烧点：亮点 + 火花（3–6 颗 ktHash 撒点、半衰期 ~10f）；烧速**恒定**跨全段
+- 烧点：亮点 + 火花（3–6 颗 ktHash 撒点、半衰期 ~10f）；路径距离由时间函数决定；可恒速，也可按词/事件到达点变速，不把恒速当源实现事实
 - 炭化：烧过段颜色降为炭色（主色 ×0.25 亮度）并轻微抖动（line-boil 同族，
   低幅）；每 ~0.3s 从烧点后方脱落 1–2 个碎屑粒子下坠消散
 - 揭示：新内容在烧点后方 0.2s 内逐段淡入（跟烧走，不整块出现）
@@ -25,7 +25,7 @@ name: fuse-burn-reveal
 ## 参数表
 | 参数 | 典型值 | 调节手感 |
 |------|--------|----------|
-| 烧速 | 恒定，全程 2–4s | 变速烧=播放器拖动进度条（命门，禁） |
+| 烧速 | 弧长随时间单调前进，全程可先试 2–4s | 有词/事件锚点时按到达时间变速；无锚点时恒速是可选适配 |
 | 火花数 | 3–6 颗持续撒点 | >10 颗读作仙女棒，撒点节奏随烧速 |
 | 碎屑 | ≤20 个总量，0.3s 1–2 个 | 碎屑云=廉价粒子判例（aesthetic-rules 同族） |
 | 揭示延迟 | 烧点后 0.2s | 新内容先于烧点出现=时间观崩坏 |
@@ -33,7 +33,7 @@ name: fuse-burn-reveal
 | 末段增强 | 8f 火花↑+shake 8–12px | 无终点增强，"炸"的预期不兑现 |
 
 ## 声音
-持续 burning crackle（音量随烧速恒定）；终点帧重击 + 火花爆点；碎屑脱落
+持续 burning crackle（按本片动作与混音设计控制音量，不要求随烧速恒定）；终点帧重击 + 火花爆点；碎屑脱落
 不配音（枪灰感判例）。
 
 ## 已知坑
@@ -45,6 +45,27 @@ name: fuse-burn-reveal
   前段炭线是"已发生"的视觉账本，擦掉=白烧
 
 ## 参考实现
-mexicat/pdoom-video `app/src/scenes/fuse.ts`（"we lit the fuse"——烧点过后
-歌词 chars to ash，火花粒子随行）（MIT，外部仓）；本卡为参数化重写，
-本仓无 demo，按参数表实现。
+mexicat/pdoom-video `app/src/scenes/fuse.ts`，固定修订 `fa164b74fd0b26a99375715b619c55b4a0fb3d05`。上游 `burnKnots` 让烧点在声乐到词时间抵达对应位置，并在延长词上逐字燃烧，属于事件锚定的非匀速运动。恒速只是一种本地艺术适配。MIT 代码许可不包含歌曲/歌词；下例使用独立虚构时间点，不复制原曲数据。
+
+## 时间算例（未接入渲染）
+
+`distance` 是路径弧长比例，不是贝塞尔参数。折线例的段间速度可以不同；需要平滑时使用不越过事件锚点的单调插值，再核验到达帧。
+
+<!-- audit-example:fuse -->
+```js
+const exampleBurnKnots = [{time: 0, distance: 0}, {time: 0.8, distance: 0.2}, {time: 2.2, distance: 0.7}, {time: 3, distance: 1}];
+const burnDistanceAt = (time, knots) => {
+  if (!Number.isFinite(time) || !Array.isArray(knots) || knots.length < 2) throw new RangeError("invalid burn timeline");
+  knots.forEach((k, i) => {
+    if (!Number.isFinite(k.time) || !Number.isFinite(k.distance) || k.distance < 0 || k.distance > 1 || (i > 0 && (k.time <= knots[i - 1].time || k.distance < knots[i - 1].distance))) throw new RangeError("invalid burn knot");
+  });
+  if (time <= knots[0].time) return knots[0].distance;
+  for (let i = 1; i < knots.length; i++) {
+    const a = knots[i - 1], b = knots[i];
+    if (time <= b.time) return a.distance + (b.distance - a.distance) * (time - a.time) / (b.time - a.time);
+  }
+  return knots.at(-1).distance;
+};
+```
+
+本仓仍无引信渲染 demo；此算例只验证单调时间映射、边界与事件到达，不证明火花、炭化、音画同步或动态观感。

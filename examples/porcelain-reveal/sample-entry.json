@@ -1,0 +1,18 @@
+{
+  "path": "porcelain-reveal-sample.mp4",
+  "sha256": "ed9913f5f0ea2d523fd6e6bae2b81f583885d623ac052588b3102164ea34e964",
+  "inputSha256": "9f6ca8aa4de11ec2fa1be85788a5cc9e6f874123a8ed9c755c44fc4f55075821",
+  "origin": "examples/porcelain-reveal; original independent cobalt-on-porcelain reveal",
+  "mode": "code",
+  "disclosure": "Original 14-second silent SVG-core prototype, rendered through system librsvg/cairo + ffmpeg. React/Remotion adapter and prepared-project TypeScript passed. Standard Remotion CLI attempted but blocked during Chromium launch. Continuous playback, actual browser control QA and final audiovisual QC not performed. No reference assets or source code copied. Early-bloom filter clipping corrected; 17 focused tests and 840-frame normalized-markup regression passed.",
+  "audio": "none",
+  "width": 1280,
+  "height": 720,
+  "fps": "30/1",
+  "frames": 420,
+  "durationSeconds": 14,
+  "poolType": "explainer",
+  "styleId": "porcelain-reveal",
+  "familyId": "porcelain-reveal",
+  "runtimeSkin": false
+}

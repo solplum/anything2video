@@ -1,10 +1,9 @@
 ---
 name: anything2video
-description: Create original teaching videos, explainers, promotional films and brand films from a topic, article or product. Produce researched narration with a two-stage user-approved script gate, shot plans, deterministic Remotion animation, licensed or disclosed generated assets, audio, rendered video and measured quality evidence. Works across all modern agent harnesses (Antigravity, Codex, Claude Code, Cursor, WorkBuddy, etc.).
-version: "5.0.0"
-author: "solplum"
+description: Create original teaching, explainer, promotional and brand videos from topics, articles or products using researched narration, two-stage user-approved scripts, shot plans, deterministic Remotion animation, licensed or disclosed generated assets, audio, renders and measured quality evidence. Works across modern agent harnesses.
 metadata:
   version: "5.0.0"
+  author: "solplum"
   category: video-generation
   descriptions:
     zh-Hans: "在任意 Agent 环境中从主题、文章或产品制作原创教学、科普、宣传与品牌视频：调研、文案确认门（方向候选→全文定稿过用户）、分镜、代码动画、配音音乐、三轮验收加 jury 评分与交付终检。"
@@ -16,13 +15,14 @@ metadata:
 
 # anything2video
 
-把主题、文章或产品做成可复现、可验收的原创视频：教学、科普、宣传、品牌与档案纪录片。以代码动画/合成为主，可加入可追溯、经审核的素材；不主攻复制影片、实拍采访或真人口播剪辑，不承诺模型等价或一次成精品。
+制作可复现、可验收的原创教学、科普、宣传、品牌与档案视频。代码动画/合成为主，可用可追溯、经审核的素材；不主攻复制影片、实拍采访或口播剪辑，不承诺模型等价或一次成精品。
 
 ## 入口与权威
 
 1. 制作/续作先完整读 [统一生产契约](reference/production-contract.md) 与 [生产流程](reference/production-workflow.md)。**共享授权、工程与验收只由契约定义**；入口负责路由、流程安排顺序。既有明确授权按契约记录，不重复等待。
 2. 按套餐读一个配方：[宣传](recipes/promo.md)、[讲解](recipes/explainer.md)、[史诗](recipes/epic.md)、[纪录片](recipes/documentary.md)；自由组合读 [custom](recipes/custom.md)。完整风格库与旧 ID 保留。core 可能只有静态 poster；运动比较按 [资源配置](docs/package-profiles.md#optional-sample-videos) 取样片，不能把看图称为播放。
-3. 分镜前读 [导演手册](reference/directing-playbook.md)；其余按需加载，不默认全读历史/上游。
+3. 按 [制作路线](reference/workflows/README.md) 选读；路线独立于画风、运行时配方和剪辑模式。旧工程免迁移，无新增审批。
+4. 分镜前读 [导演手册](reference/directing-playbook.md)；其余按需加载，不默认全读历史/上游。
 
 ## 不可略过的提醒
 

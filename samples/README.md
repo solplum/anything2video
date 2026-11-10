@@ -1,6 +1,6 @@
 # 视觉样片库
 
-当前选型以 [catalog](../styles/catalog.json) 为准：63 个兼容 ID、59 个家族/单卡入口、12 个实际 `config.style` 皮肤。62 个 ID 登记样片路径；`isometric-anatomy` 暂无预览，页面明确展示缺口。只有登记为 runtimeSkin 的 ID 能直接给模板 palette/chrome 换皮，其余需要手动接入图元。
+当前选型以 [catalog](../styles/catalog.json) 为准：68 个兼容 ID、64 个家族/单卡入口、12 个实际 `config.style` 皮肤。67 个 ID 登记样片路径；`isometric-anatomy` 暂无预览，页面明确展示缺口。只有登记为 runtimeSkin 的 ID 能直接给模板 palette/chrome 换皮，其余需要手动接入图元。
 
 其中 61 段是 2026-10-06/07/08 的历史旁白套餐样片：11 段 v3.4.0 + 8 段 v3.5.0 + 4 段 v3.8.0 + 38 段 v4.0.0，来源与音频情况逐项保留在下表。这些片通常为 12–20 秒、30fps、H.264；花字原生竖屏，其余以横屏为主。各片是否含 TTS、SFX 和 BGM 以 manifest 与表内披露为准，不把新的雕刻无声研究说成有完整音频。
 
@@ -8,7 +8,7 @@
 
 另保留 3 段历史配方样片（`recipe-*.mp4`，6 秒无音轨），不计入风格 ID。
 
-full 包打开 [index.html](index.html) 可离线播放；core 包保留全部 poster、筛选和来源目录，并明确标注可选视频未安装（[获取完整样片](../docs/package-profiles.md#optional-sample-videos)），先选家族再切换变体，支持类型 × 气质双筛选；[all.html](all.html) 可查看全部 ID。manifest.json 登记媒体 SHA-256、原输入指纹、来源工程、素材模式、音频披露和实测规格；生成器只同步选型元数据，不代替媒体探测。
+full 包打开 [index.html](index.html) 可离线播放；core 包保留全部 poster、筛选和来源目录，并明确标注可选视频未安装（[获取完整样片](../docs/package-profiles.md#optional-sample-videos)），先按 8 个视觉分类浏览，再选家族和变体，支持分类 × 用途 × 气质 × 关键词组合筛选；新显示名称与原称、ID 均可搜索，分类和原 ID 都有固定链接；[all.html](all.html) 可查看全部 ID。manifest.json 登记媒体 SHA-256、原输入指纹、来源工程、素材模式、音频披露和实测规格；生成器只同步选型元数据，不代替媒体探测。
 
 历史样片的 posters 在 2026-10-13 统一从正片 35%/55%/75% 时长处选择信息量较高的实测帧。新雕刻 poster 已从同版本实际渲染中提取；缩略图不使用上游素材，也不替代视频。
 
@@ -119,3 +119,27 @@ BGM 全部为 mgaudio 程序编曲；技法领地自 lanshu-create-ai-presenter-
 - 新样片音频：BGM 与音效来自 Mixkit Free License（逐曲目号见 manifest 与各工程 research/）；TTS 为现役云端合成通道。样片内合成配音/音频许可不因预览副本扩展到成片——成片按当次制作另行核对。
 - 历史配方样片：epic 原工程已逐张登记模型、提示词与生成来源，样片继承该披露；不是史实照片。旧沙画样片的图标署名（Material Design Icons、MingCute、Game-icons peace-dove CC BY 3.0，作者 Lorc）随原工程档案保留；现役 sand 样片为纯代码沙画图元，未使用这些图标。
 - 字体许可另随 styles/template 内文件分发（PressStart2P 为 OFL）。参考片抽帧、完整参考视频、音乐母带、私人日志及 API 密钥不进入本库。
+
+
+## 档案灯台试验（2026-11-03）
+
+`lighttable-sample.mp4` 是 12 秒、1280×720、30 fps 的无声视觉试验。另有原生 720×1280 [竖屏](../examples/lighttable/portrait.mp4)。纸张、叶片与编号均为原创示意，不是历史档案。使用同一 SVG 核心经 Inkscape 与 ffmpeg 实渲染；Remotion 接线已提供但未在本环境验证，不代表当前宿主整片认证。参考方法、复现方式与具体边界见 [案例](../examples/lighttable/README.md) 和 [风格规范](../styles/lighttable/SPEC.md)。
+
+## 选项冒险原型（2026-11-03）
+
+`choice-quest-sample.mp4` 是 18 秒、1280×720、30 fps 的原创无声游戏叙事原型：选择消耗最后一枚电芯、接通断桥并抵达驿站；另有等待与延迟选择分支。共享 SVG 核心经系统 librsvg/cairo 与 ffmpeg 实渲染，提供 Remotion 接线但尚未执行原生渲染；抽帧检查与完整解码不等于连续播放验收。源码、分支、媒体指纹和验证边界见 [案例](../examples/choice-quest/README.md) 与 [渲染证据](../examples/choice-quest/render-evidence.json)。
+
+
+## 线路叙事原型（2026-11-03）
+
+`transit-story-sample.mp4` 是18秒、1280×720、30fps的原创无声图解原型：两条并行线路到站时间不同，换乘条件齐备才放行。另有竖屏、延迟、阻塞与隐藏字幕对照。五版来自同一SVG核心，经librsvg/cairo与ffmpeg实渲；不是标准Remotion CLI或成片验收。参见[案例](../examples/transit-story/README.md)与[证据](../examples/transit-story/render-evidence.json)。
+
+
+## 青花显影原型（2026-11-03）
+
+`porcelain-reveal-sample.mp4` 是 14 秒、1280×720、30 fps 的原创无声瓷面显影原型：多点钴蓝渗开、湿边积色、收尾定色；另有独立竖屏构图。两版均由共享 SVG 核心经 librsvg/cairo 与 ffmpeg 实渲，不是参考作品的蓝色滤镜，也不等于写实瓷器或真实流体仿真。准备工程 TypeScript 通过，标准 Remotion CLI 启动受阻。参见[案例](../examples/porcelain-reveal/README.md)、[原始渲染证据](../examples/porcelain-reveal/render-evidence.json)及[整合补充验证](../docs/style-browsing.md)。
+
+
+## 卡牌对抗原型（2026-11-03）
+
+`card-conflict-sample.mp4` 为 16 秒、1280×720、30 fps 的原创无声规则叙事：选择加固并支付补给，风暴接触后由同一规则计算结果，灯塔保持点亮；另有赶航反事实、种子守夜和去文字审查片。样片由共享 SVG 经 librsvg/cairo 与 ffmpeg 渲染，不是产品卡入场或单纯数值面板。规则数值均属虚构，不是实测。仅支持 16:9，详见[案例](../examples/card-conflict/README.md)、[渲染证据](../examples/card-conflict/render-evidence.json)与[补充验证](../docs/style-browsing.md)。

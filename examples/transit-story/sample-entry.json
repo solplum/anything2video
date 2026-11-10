@@ -1,0 +1,18 @@
+{
+  "path": "transit-story-sample.mp4",
+  "sha256": "b0ef04cbbbf91c4b6774fd4b6f6ce21b92831306eebff40064dbcbb27b9eac72",
+  "inputSha256": "390a262c40beaece83b9f0e4003ac71c8bc1851de04ea23ad3e2fdb32accb4ef",
+  "origin": "examples/transit-story; original independent event-gated transit narrative",
+  "mode": "code",
+  "disclosure": "Original SVG rendering-stage record: Original 18-second silent shared-SVG-core prototype, rendered through system librsvg/cairo and ffmpeg. React/Remotion adapter included but native Remotion, actual browser operation, continuous playback and final QC not performed. No upstream code, artwork, media, fonts or audio copied.",
+  "audio": "none",
+  "width": 1280,
+  "height": 720,
+  "fps": "30/1",
+  "frames": 540,
+  "durationSeconds": 18,
+  "poolType": "explainer",
+  "styleId": "transit-story",
+  "familyId": "transit-story",
+  "runtimeSkin": false
+}

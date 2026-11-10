@@ -32,6 +32,8 @@
 
 > 请用 anything2video，把“自来水怎样到我家”做成一条约一分钟的中文科普视频，给小学生看。想要黏土小镇的感觉，横屏。先和我确认文案，再给我看几个关键片段，最后交付视频、字幕和封面。
 
+想先按制作方式找入口？看 [八条制作路线](reference/workflows/README.md)：图解讲解、产品演示、原理拆解、档案叙事、绘画动画、角色动画、空间长镜与节奏短片。每条都有自己的准备、打样与检查；[此前参考与候选增量](reference/workflows/sources.md) 也单独保留。
+
 下面的样片可以帮你判断画风。选中某个风格后，内容、构图和节奏会围绕你的主题重新设计。
 
 **画风和剪辑方式可以分开选。** 例如“纸艺画风＋匹配剪辑与节拍接力”：保留你选的画风，用有含义的形状或动作串联镜头，先做低成本节拍预演，再细化画面。这是[可选剪辑模式](reference/match-cut-beat-relay.md)，不是新增风格或所有视频的默认模板；已有流程不变。
@@ -39,11 +41,11 @@
 <!-- style-catalog:start -->
 ## 全部风格
 
-**63 种风格全部列在下面，其中 62 种有实际视频预览。** 点击图片或播放链接看动态效果；GitHub 未内嵌播放时，可以下载查看。同一家族的变体并排展示，你可以直接用中文名告诉助手想选哪一种。
+**68 种风格全部列在下面，其中 67 种有实际视频预览。** 点击图片或播放链接看动态效果；GitHub 未内嵌播放时，可以下载查看。同一家族的变体并排展示，你可以直接用中文名告诉助手想选哪一种；原称与 ID 保留，旧链接仍有效。
 
 [图文讲解](#图文讲解) · [夜色与未来](#夜色与未来) · [纸艺与手绘](#纸艺与手绘) · [立体与微缩](#立体与微缩) · [古典与东方](#古典与东方) · [光影与绘画](#光影与绘画) · [图形与幻想](#图形与幻想) · [印刷与装饰](#印刷与装饰)
 
-缩略图均来自随仓库分发的真实样片，没有自动播放。多数是短片段，完整音频与来源见 [样片说明](samples/README.md)；铜版雕刻是 12 秒无声材质研究，等距剖解暂缺样片并明确标出。
+缩略图均来自随仓库分发的真实样片，没有自动播放。多数是短片段，完整音频与来源见 [样片说明](samples/README.md)；铜版雕刻是 12 秒无声材质研究，档案灯台是 12 秒无声试验，选项冒险与线路叙事是 18 秒无声原型（标准 Remotion CLI 待验证），青花显影是 14 秒无声原型（标准 CLI 启动受阻），卡牌对抗是 16 秒无声原型（标准 CLI 待验证）；机械剖解暂缺样片并明确标出。
 
 ### 图文讲解
 
@@ -51,11 +53,12 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/swiss-print-sample.jpg" width="320" alt="版式风格实际样片预览">](samples/swiss-print-sample.mp4)<br>**版式**<br>黑白红大字配整齐留白，像会动的海报<br>[播放版式样片](samples/swiss-print-sample.mp4) | [<img src="samples/posters/chalk-sample.jpg" width="320" alt="黑板风格实际样片预览">](samples/chalk-sample.mp4)<br>**黑板**<br>深绿黑板配粉笔字，擦写之间带出课堂感<br>[播放黑板样片](samples/chalk-sample.mp4) |
-| [<img src="samples/posters/blueprint-sample.jpg" width="320" alt="蓝图风格实际样片预览">](samples/blueprint-sample.mp4)<br>**蓝图**<br>深蓝底上铺开白色线稿，像在读工程图纸<br>[播放蓝图样片](samples/blueprint-sample.mp4) | [<img src="samples/posters/paperclip-sticker-sample.jpg" width="320" alt="贴纸人风格实际样片预览">](samples/paperclip-sticker-sample.mp4)<br>**贴纸人**<br>白边贴纸串起信息，跟着镜头边走边看<br>[播放贴纸人样片](samples/paperclip-sticker-sample.mp4) |
-| [<img src="samples/posters/hanazi-916-sample.jpg" width="101" alt="花字风格实际样片预览">](samples/hanazi-916-sample.mp4)<br>**花字**<br>彩色大字蹦进竖屏，带着综艺式热闹节奏<br>[播放花字样片](samples/hanazi-916-sample.mp4) | [<img src="samples/posters/line-art-sample.jpg" width="320" alt="线条风格实际样片预览">](samples/line-art-sample.mp4)<br>**线条**<br>细线一笔笔画出轮廓，黑金配色干净舒展<br>[播放线条样片](samples/line-art-sample.mp4) |
-| [<img src="samples/posters/grain-flat-sample.jpg" width="320" alt="颗粒扁平风格实际样片预览">](samples/grain-flat-sample.mp4)<br>**颗粒扁平**<br>平涂色块配细碎颗粒，人物动作富有弹性<br>[播放颗粒扁平样片](samples/grain-flat-sample.mp4) | [<img src="samples/posters/whiteboard-sample.jpg" width="320" alt="白板风格实际样片预览">](samples/whiteboard-sample.mp4)<br>**白板**<br>彩色笔尖边讲边画，像面对面在白板说明<br>[播放白板样片](samples/whiteboard-sample.mp4) |
-| [<img src="samples/posters/kinetic-type-sample.jpg" width="320" alt="字动风格实际样片预览">](samples/kinetic-type-sample.mp4)<br>**字动**<br>重点词跟着节奏跳出来，让文字成为主角<br>[播放字动样片](samples/kinetic-type-sample.mp4) | [<img src="samples/posters/math-lab-sample.jpg" width="320" alt="数学屋风格实际样片预览">](samples/math-lab-sample.mp4)<br>**数学屋**<br>让几何图形动起来，把抽象规律画给你看<br>[播放数学屋样片](samples/math-lab-sample.mp4) |
+| [<img src="samples/posters/swiss-print-sample.jpg" width="320" alt="瑞士版式风格实际样片预览">](samples/swiss-print-sample.mp4)<br>**瑞士版式**<br><sub>原称：版式</sub><br>黑白红大字配整齐留白，像会动的海报<br>[播放瑞士版式样片](samples/swiss-print-sample.mp4) | [<img src="samples/posters/chalk-sample.jpg" width="320" alt="粉笔黑板风格实际样片预览">](samples/chalk-sample.mp4)<br>**粉笔黑板**<br><sub>原称：黑板</sub><br>深绿黑板配粉笔字，擦写之间带出课堂感<br>[播放粉笔黑板样片](samples/chalk-sample.mp4) |
+| [<img src="samples/posters/blueprint-sample.jpg" width="320" alt="工程蓝图风格实际样片预览">](samples/blueprint-sample.mp4)<br>**工程蓝图**<br><sub>原称：蓝图</sub><br>深蓝底上铺开白色线稿，像在读工程图纸<br>[播放工程蓝图样片](samples/blueprint-sample.mp4) | [<img src="samples/posters/paperclip-sticker-sample.jpg" width="320" alt="贴纸小人风格实际样片预览">](samples/paperclip-sticker-sample.mp4)<br>**贴纸小人**<br><sub>原称：贴纸人</sub><br>白边贴纸串起信息，跟着镜头边走边看<br>[播放贴纸小人样片](samples/paperclip-sticker-sample.mp4) |
+| [<img src="samples/posters/hanazi-916-sample.jpg" width="101" alt="综艺花字风格实际样片预览">](samples/hanazi-916-sample.mp4)<br>**综艺花字**<br><sub>原称：花字</sub><br>彩色大字蹦进竖屏，带着综艺式热闹节奏<br>[播放综艺花字样片](samples/hanazi-916-sample.mp4) | [<img src="samples/posters/line-art-sample.jpg" width="320" alt="一笔线绘风格实际样片预览">](samples/line-art-sample.mp4)<br>**一笔线绘**<br><sub>原称：线条</sub><br>细线一笔笔画出轮廓，黑金配色干净舒展<br>[播放一笔线绘样片](samples/line-art-sample.mp4) |
+| [<img src="samples/posters/grain-flat-sample.jpg" width="320" alt="颗粒插画风格实际样片预览">](samples/grain-flat-sample.mp4)<br>**颗粒插画**<br><sub>原称：颗粒扁平</sub><br>平涂色块配细碎颗粒，人物动作富有弹性<br>[播放颗粒插画样片](samples/grain-flat-sample.mp4) | [<img src="samples/posters/whiteboard-sample.jpg" width="320" alt="彩笔白板风格实际样片预览">](samples/whiteboard-sample.mp4)<br>**彩笔白板**<br><sub>原称：白板</sub><br>彩色笔尖边讲边画，像面对面在白板说明<br>[播放彩笔白板样片](samples/whiteboard-sample.mp4) |
+| [<img src="samples/posters/kinetic-type-sample.jpg" width="320" alt="节奏大字风格实际样片预览">](samples/kinetic-type-sample.mp4)<br>**节奏大字**<br><sub>原称：字动</sub><br>重点词跟着节奏跳出来，让文字成为主角<br>[播放节奏大字样片](samples/kinetic-type-sample.mp4) | [<img src="samples/posters/math-lab-sample.jpg" width="320" alt="几何实验室风格实际样片预览">](samples/math-lab-sample.mp4)<br>**几何实验室**<br><sub>原称：数学屋</sub><br>让几何图形动起来，把抽象规律画给你看<br>[播放几何实验室样片](samples/math-lab-sample.mp4) |
+| [<img src="samples/posters/lighttable-sample.jpg" width="320" alt="档案灯台风格实际样片预览">](samples/lighttable-sample.mp4)<br>**档案灯台**<br>冷光灯台上对照纸质档案，放大镜查细节、红笔圈差异<br>[播放档案灯台样片](samples/lighttable-sample.mp4) | [<img src="samples/posters/transit-story-sample.jpg" width="320" alt="线路叙事风格实际样片预览">](samples/transit-story-sample.mp4)<br>**线路叙事**<br>一条线先到站，另一条仍在路上；等到会合，道岔才打开<br>[播放线路叙事样片](samples/transit-story-sample.mp4) |
 
 ### 夜色与未来
 
@@ -63,10 +66,10 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/deep-space-sample.jpg" width="320" alt="深空风格实际样片预览">](samples/deep-space-sample.mp4)<br>**深空**<br><sub>暗色信息设计家族</sub><br>深黑底配冷青亮色，让产品画面更醒目<br>[播放深空样片](samples/deep-space-sample.mp4) | [<img src="samples/posters/mg-purple-sample.jpg" width="320" alt="夜航风格实际样片预览">](samples/mg-purple-sample.mp4)<br>**夜航**<br><sub>暗色信息设计家族</sub><br>黑底紫色章节卡，沿着清晰步骤展开讲解<br>[播放夜航样片](samples/mg-purple-sample.mp4) |
-| [<img src="samples/posters/neon-sample.jpg" width="320" alt="霓虹风格实际样片预览">](samples/neon-sample.mp4)<br>**霓虹**<br>霓虹亮边映着雨夜反光，像走进发光街景<br>[播放霓虹样片](samples/neon-sample.mp4) | [<img src="samples/posters/crt-terminal-sample.jpg" width="320" alt="终端风格实际样片预览">](samples/crt-terminal-sample.mp4)<br>**终端**<br>黑底绿字逐字敲出，重现老式电脑屏幕<br>[播放终端样片](samples/crt-terminal-sample.mp4) |
-| [<img src="samples/posters/pixel-arcade-sample.jpg" width="320" alt="街机风格实际样片预览">](samples/pixel-arcade-sample.mp4)<br>**街机**<br>彩色方块拼出画面，找回老街机的趣味<br>[播放街机样片](samples/pixel-arcade-sample.mp4) | [<img src="samples/posters/aurora-glass-sample.jpg" width="320" alt="玻璃风格实际样片预览">](samples/aurora-glass-sample.mp4)<br>**玻璃**<br>柔光在暗处慢慢漂移，磨砂玻璃卡片透亮<br>[播放玻璃样片](samples/aurora-glass-sample.mp4) |
-| [<img src="samples/posters/vhs-outrun-sample.jpg" width="320" alt="公路夜风格实际样片预览">](samples/vhs-outrun-sample.mp4)<br>**公路夜**<br>网格公路通向落日，带着旧录像带的色差<br>[播放公路夜样片](samples/vhs-outrun-sample.mp4) | [<img src="samples/posters/target-lock-sample.jpg" width="320" alt="锁定风格实际样片预览">](samples/target-lock-sample.mp4)<br>**锁定**<br>雷达圆环扫描锁定，像电影中的未来仪表<br>[播放锁定样片](samples/target-lock-sample.mp4) |
+| [<img src="samples/posters/deep-space-sample.jpg" width="320" alt="深空青光风格实际样片预览">](samples/deep-space-sample.mp4)<br>**深空青光**<br><sub>原称：深空</sub><br><sub>暗色信息设计家族</sub><br>深黑底配冷青亮色，让产品画面更醒目<br>[播放深空青光样片](samples/deep-space-sample.mp4) | [<img src="samples/posters/mg-purple-sample.jpg" width="320" alt="紫夜讲堂风格实际样片预览">](samples/mg-purple-sample.mp4)<br>**紫夜讲堂**<br><sub>原称：夜航</sub><br><sub>暗色信息设计家族</sub><br>黑底紫色章节卡，沿着清晰步骤展开讲解<br>[播放紫夜讲堂样片](samples/mg-purple-sample.mp4) |
+| [<img src="samples/posters/neon-sample.jpg" width="320" alt="雨夜霓虹风格实际样片预览">](samples/neon-sample.mp4)<br>**雨夜霓虹**<br><sub>原称：霓虹</sub><br>霓虹亮边映着雨夜反光，像走进发光街景<br>[播放雨夜霓虹样片](samples/neon-sample.mp4) | [<img src="samples/posters/crt-terminal-sample.jpg" width="320" alt="复古终端风格实际样片预览">](samples/crt-terminal-sample.mp4)<br>**复古终端**<br><sub>原称：终端</sub><br>黑底绿字逐字敲出，重现老式电脑屏幕<br>[播放复古终端样片](samples/crt-terminal-sample.mp4) |
+| [<img src="samples/posters/pixel-arcade-sample.jpg" width="320" alt="像素街机风格实际样片预览">](samples/pixel-arcade-sample.mp4)<br>**像素街机**<br><sub>原称：街机</sub><br>彩色方块拼出画面，找回老街机的趣味<br>[播放像素街机样片](samples/pixel-arcade-sample.mp4) | [<img src="samples/posters/aurora-glass-sample.jpg" width="320" alt="极光磨砂风格实际样片预览">](samples/aurora-glass-sample.mp4)<br>**极光磨砂**<br><sub>原称：玻璃</sub><br>柔光在暗处慢慢漂移，磨砂玻璃卡片透亮<br>[播放极光磨砂样片](samples/aurora-glass-sample.mp4) |
+| [<img src="samples/posters/vhs-outrun-sample.jpg" width="320" alt="霓虹公路风格实际样片预览">](samples/vhs-outrun-sample.mp4)<br>**霓虹公路**<br><sub>原称：公路夜</sub><br>网格公路通向落日，带着旧录像带的色差<br>[播放霓虹公路样片](samples/vhs-outrun-sample.mp4) | [<img src="samples/posters/target-lock-sample.jpg" width="320" alt="未来仪表风格实际样片预览">](samples/target-lock-sample.mp4)<br>**未来仪表**<br><sub>原称：锁定</sub><br>雷达圆环扫描锁定，像电影中的未来仪表<br>[播放未来仪表样片](samples/target-lock-sample.mp4) |
 
 ### 纸艺与手绘
 
@@ -74,9 +77,9 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/paper-collage-sample.jpg" width="320" alt="拼贴风格实际样片预览">](samples/paper-collage-sample.mp4)<br>**拼贴**<br>撕纸边、胶带和叠放纸片，拼出手作感<br>[播放拼贴样片](samples/paper-collage-sample.mp4) | [<img src="samples/posters/pop-comic-sample.jpg" width="320" alt="波普风格实际样片预览">](samples/pop-comic-sample.mp4)<br>**波普**<br>粗黑线配鲜艳网点，爆炸框带出漫画冲劲<br>[播放波普样片](samples/pop-comic-sample.mp4) |
-| [<img src="samples/posters/popup-book-sample.jpg" width="320" alt="立体书风格实际样片预览">](samples/popup-book-sample.mp4)<br>**立体书**<br>牛皮纸场景随书页翻起，像打开立体绘本<br>[播放立体书样片](samples/popup-book-sample.mp4) | [<img src="samples/posters/ink-boil-sample.jpg" width="320" alt="线沸风格实际样片预览">](samples/ink-boil-sample.mp4)<br>**线沸**<br>线条轻轻抖动、色块略微错位，像手绘草稿<br>[播放线沸样片](samples/ink-boil-sample.mp4) |
-| [<img src="samples/posters/dance-line-sample.jpg" width="320" alt="舞线风格实际样片预览">](samples/dance-line-sample.mp4)<br>**舞线**<br>涂鸦小人跟着节拍蹦跳，画面充满活力<br>[播放舞线样片](samples/dance-line-sample.mp4) | [<img src="samples/posters/rubberhose-sample.jpg" width="320" alt="橡皮管风格实际样片预览">](samples/rubberhose-sample.mp4)<br>**橡皮管**<br>软软的手脚摇摆伸展，像早期卡通动画<br>[播放橡皮管样片](samples/rubberhose-sample.mp4) |
+| [<img src="samples/posters/paper-collage-sample.jpg" width="320" alt="手作拼贴风格实际样片预览">](samples/paper-collage-sample.mp4)<br>**手作拼贴**<br><sub>原称：拼贴</sub><br>撕纸边、胶带和叠放纸片，拼出手作感<br>[播放手作拼贴样片](samples/paper-collage-sample.mp4) | [<img src="samples/posters/pop-comic-sample.jpg" width="320" alt="波普漫画风格实际样片预览">](samples/pop-comic-sample.mp4)<br>**波普漫画**<br><sub>原称：波普</sub><br>粗黑线配鲜艳网点，爆炸框带出漫画冲劲<br>[播放波普漫画样片](samples/pop-comic-sample.mp4) |
+| [<img src="samples/posters/popup-book-sample.jpg" width="320" alt="纸艺立体书风格实际样片预览">](samples/popup-book-sample.mp4)<br>**纸艺立体书**<br><sub>原称：立体书</sub><br>牛皮纸场景随书页翻起，像打开立体绘本<br>[播放纸艺立体书样片](samples/popup-book-sample.mp4) | [<img src="samples/posters/ink-boil-sample.jpg" width="320" alt="手绘颤线风格实际样片预览">](samples/ink-boil-sample.mp4)<br>**手绘颤线**<br><sub>原称：线沸</sub><br>线条轻轻抖动、色块略微错位，像手绘草稿<br>[播放手绘颤线样片](samples/ink-boil-sample.mp4) |
+| [<img src="samples/posters/dance-line-sample.jpg" width="320" alt="律动涂鸦风格实际样片预览">](samples/dance-line-sample.mp4)<br>**律动涂鸦**<br><sub>原称：舞线</sub><br>涂鸦小人跟着节拍蹦跳，画面充满活力<br>[播放律动涂鸦样片](samples/dance-line-sample.mp4) | [<img src="samples/posters/rubberhose-sample.jpg" width="320" alt="橡皮管动画风格实际样片预览">](samples/rubberhose-sample.mp4)<br>**橡皮管动画**<br><sub>原称：橡皮管</sub><br>软软的手脚摇摆伸展，像早期卡通动画<br>[播放橡皮管动画样片](samples/rubberhose-sample.mp4) |
 
 ### 立体与微缩
 
@@ -84,9 +87,9 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/clay-town-sample.jpg" width="320" alt="黏土风格实际样片预览">](samples/clay-town-sample.mp4)<br>**黏土**<br><sub>微缩等距场景家族</sub><br>像手捏出来的黏土小镇，柔软圆润又亲切<br>[播放黏土样片](samples/clay-town-sample.mp4) | [<img src="samples/posters/isometric-city-sample.jpg" width="320" alt="等轴风格实际样片预览">](samples/isometric-city-sample.mp4)<br>**等轴**<br><sub>微缩等距场景家族</sub><br>斜看微缩城市，楼房一座座长出并移过<br>[播放等轴样片](samples/isometric-city-sample.mp4) |
-| [<img src="samples/posters/studio-oneshot-sample.jpg" width="320" alt="一镜风格实际样片预览">](samples/studio-oneshot-sample.mp4)<br>**一镜**<br>镜头穿行暗色影棚，瓷质物件泛起双色光<br>[播放一镜样片](samples/studio-oneshot-sample.mp4) | [<img src="samples/posters/soft-jelly-sample.jpg" width="320" alt="软糖风格实际样片预览">](samples/soft-jelly-sample.mp4)<br>**软糖**<br>软糖般的立体物件，成排起伏像柔软波浪<br>[播放软糖样片](samples/soft-jelly-sample.mp4) |
-| [<img src="samples/posters/chrome-ball-sample.jpg" width="320" alt="铬球风格实际样片预览">](samples/chrome-ball-sample.mp4)<br>**铬球**<br>金属球映着棋盘房间，像早期电脑动画<br>[播放铬球样片](samples/chrome-ball-sample.mp4) | **等距剖解**<br>**预览待补**<br>机器分层拆解的实验素材，暂无随包预览<br>[查看现有素材说明](styles/isometric-anatomy/SPEC.md) |
+| [<img src="samples/posters/clay-town-sample.jpg" width="320" alt="黏土小镇风格实际样片预览">](samples/clay-town-sample.mp4)<br>**黏土小镇**<br><sub>原称：黏土</sub><br><sub>微缩等距场景家族</sub><br>像手捏出来的黏土小镇，柔软圆润又亲切<br>[播放黏土小镇样片](samples/clay-town-sample.mp4) | [<img src="samples/posters/isometric-city-sample.jpg" width="320" alt="等轴小城风格实际样片预览">](samples/isometric-city-sample.mp4)<br>**等轴小城**<br><sub>原称：等轴</sub><br><sub>微缩等距场景家族</sub><br>斜看微缩城市，楼房一座座长出并移过<br>[播放等轴小城样片](samples/isometric-city-sample.mp4) |
+| [<img src="samples/posters/studio-oneshot-sample.jpg" width="320" alt="影棚一镜风格实际样片预览">](samples/studio-oneshot-sample.mp4)<br>**影棚一镜**<br><sub>原称：一镜</sub><br>镜头穿行暗色影棚，瓷质物件泛起双色光<br>[播放影棚一镜样片](samples/studio-oneshot-sample.mp4) | [<img src="samples/posters/soft-jelly-sample.jpg" width="320" alt="软糖立体风格实际样片预览">](samples/soft-jelly-sample.mp4)<br>**软糖立体**<br><sub>原称：软糖</sub><br>软糖般的立体物件，成排起伏像柔软波浪<br>[播放软糖立体样片](samples/soft-jelly-sample.mp4) |
+| [<img src="samples/posters/chrome-ball-sample.jpg" width="320" alt="镜面铬球风格实际样片预览">](samples/chrome-ball-sample.mp4)<br>**镜面铬球**<br><sub>原称：铬球</sub><br>金属球映着棋盘房间，像早期电脑动画<br>[播放镜面铬球样片](samples/chrome-ball-sample.mp4) | **机械剖解**<br><sub>原称：等距剖解</sub><br>**预览待补**<br>机器分层拆解的实验素材，暂无随包预览<br>[查看现有素材说明](styles/isometric-anatomy/SPEC.md) |
 
 ### 古典与东方
 
@@ -94,11 +97,12 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/epic-paper-sample.jpg" width="320" alt="神话风格实际样片预览">](samples/epic-paper-sample.mp4)<br>**神话**<br>暖纸、朱红印章与金线，铺开古风叙事<br>[播放神话样片](samples/epic-paper-sample.mp4) | [<img src="samples/posters/sand-sample.jpg" width="320" alt="沙画风格实际样片预览">](samples/sand-sample.mp4)<br>**沙画**<br>手影铺开细沙，擦出海上晨光与窗边光影<br>[播放沙画样片](samples/sand-sample.mp4) |
-| [<img src="samples/posters/guofeng-scroll-sample.jpg" width="320" alt="月窗风格实际样片预览">](samples/guofeng-scroll-sample.mp4)<br>**月窗**<br>金线月窗配竖排题字，像缓缓展开的长卷<br>[播放月窗样片](samples/guofeng-scroll-sample.mp4) | [<img src="samples/posters/cave-wall-sample.jpg" width="320" alt="岩壁风格实际样片预览">](samples/cave-wall-sample.mp4)<br>**岩壁**<br>赭红手印落在粗粝岩壁，火光摇出远古感<br>[播放岩壁样片](samples/cave-wall-sample.mp4) |
-| [<img src="samples/posters/tomb-wall-sample.jpg" width="320" alt="墓室风格实际样片预览">](samples/tomb-wall-sample.mp4)<br>**墓室**<br>古埃及人物与象形符号，沿着壁画讲故事<br>[播放墓室样片](samples/tomb-wall-sample.mp4) | [<img src="samples/posters/amphora-sample.jpg" width="320" alt="陶瓶风格实际样片预览">](samples/amphora-sample.mp4)<br>**陶瓶**<br>黑色剪影衬橙红陶底，故事环绕古希腊陶瓶<br>[播放陶瓶样片](samples/amphora-sample.mp4) |
-| [<img src="samples/posters/mosaic-sample.jpg" width="320" alt="马赛克风格实际样片预览">](samples/mosaic-sample.mp4)<br>**马赛克**<br>细小石块拼出图案，带着古老镶嵌画质感<br>[播放马赛克样片](samples/mosaic-sample.mp4) | [<img src="samples/posters/gold-leaf-sample.jpg" width="320" alt="金箔风格实际样片预览">](samples/gold-leaf-sample.mp4)<br>**金箔**<br>金箔纹样与华丽字母，映着抄写员的夜灯<br>[播放金箔样片](samples/gold-leaf-sample.mp4) |
-| [<img src="samples/posters/shadow-play-sample.jpg" width="320" alt="皮影风格实际样片预览">](samples/shadow-play-sample.mp4)<br>**皮影**<br>镂空人物在灯前活动，白布上映出皮影戏<br>[播放皮影样片](samples/shadow-play-sample.mp4) | [<img src="samples/posters/ink-tea-sample.jpg" width="320" alt="水墨风格实际样片预览">](samples/ink-tea-sample.mp4)<br>**水墨**<br>淡墨在纸上缓缓洇开，浓淡与留白相映<br>[播放水墨样片](samples/ink-tea-sample.mp4) |
+| [<img src="samples/posters/epic-paper-sample.jpg" width="320" alt="朱印古卷风格实际样片预览">](samples/epic-paper-sample.mp4)<br>**朱印古卷**<br><sub>原称：神话</sub><br>暖纸、朱红印章与金线，铺开古风叙事<br>[播放朱印古卷样片](samples/epic-paper-sample.mp4) | [<img src="samples/posters/sand-sample.jpg" width="320" alt="指尖沙画风格实际样片预览">](samples/sand-sample.mp4)<br>**指尖沙画**<br><sub>原称：沙画</sub><br>手影铺开细沙，擦出海上晨光与窗边光影<br>[播放指尖沙画样片](samples/sand-sample.mp4) |
+| [<img src="samples/posters/guofeng-scroll-sample.jpg" width="320" alt="敦煌月窗风格实际样片预览">](samples/guofeng-scroll-sample.mp4)<br>**敦煌月窗**<br><sub>原称：月窗</sub><br>金线月窗配竖排题字，像缓缓展开的长卷<br>[播放敦煌月窗样片](samples/guofeng-scroll-sample.mp4) | [<img src="samples/posters/cave-wall-sample.jpg" width="320" alt="远古岩画风格实际样片预览">](samples/cave-wall-sample.mp4)<br>**远古岩画**<br><sub>原称：岩壁</sub><br>赭红手印落在粗粝岩壁，火光摇出远古感<br>[播放远古岩画样片](samples/cave-wall-sample.mp4) |
+| [<img src="samples/posters/tomb-wall-sample.jpg" width="320" alt="埃及壁画风格实际样片预览">](samples/tomb-wall-sample.mp4)<br>**埃及壁画**<br><sub>原称：墓室</sub><br>古埃及人物与象形符号，沿着壁画讲故事<br>[播放埃及壁画样片](samples/tomb-wall-sample.mp4) | [<img src="samples/posters/amphora-sample.jpg" width="320" alt="黑绘陶瓶风格实际样片预览">](samples/amphora-sample.mp4)<br>**黑绘陶瓶**<br><sub>原称：陶瓶</sub><br>黑色剪影衬橙红陶底，故事环绕古希腊陶瓶<br>[播放黑绘陶瓶样片](samples/amphora-sample.mp4) |
+| [<img src="samples/posters/mosaic-sample.jpg" width="320" alt="石片镶嵌风格实际样片预览">](samples/mosaic-sample.mp4)<br>**石片镶嵌**<br><sub>原称：马赛克</sub><br>细小石块拼出图案，带着古老镶嵌画质感<br>[播放石片镶嵌样片](samples/mosaic-sample.mp4) | [<img src="samples/posters/gold-leaf-sample.jpg" width="320" alt="泥金手稿风格实际样片预览">](samples/gold-leaf-sample.mp4)<br>**泥金手稿**<br><sub>原称：金箔</sub><br>金箔纹样与华丽字母，映着抄写员的夜灯<br>[播放泥金手稿样片](samples/gold-leaf-sample.mp4) |
+| [<img src="samples/posters/shadow-play-sample.jpg" width="320" alt="灯下皮影风格实际样片预览">](samples/shadow-play-sample.mp4)<br>**灯下皮影**<br><sub>原称：皮影</sub><br>镂空人物在灯前活动，白布上映出皮影戏<br>[播放灯下皮影样片](samples/shadow-play-sample.mp4) | [<img src="samples/posters/ink-tea-sample.jpg" width="320" alt="宣纸水墨风格实际样片预览">](samples/ink-tea-sample.mp4)<br>**宣纸水墨**<br><sub>原称：水墨</sub><br>淡墨在纸上缓缓洇开，浓淡与留白相映<br>[播放宣纸水墨样片](samples/ink-tea-sample.mp4) |
+| [<img src="samples/posters/porcelain-reveal-sample.jpg" width="320" alt="青花显影风格实际样片预览">](samples/porcelain-reveal-sample.mp4)<br>**青花显影**<br>钴蓝从瓷面局部渗开，莲塘双鱼逐渐显现，湿边退去后定色<br>[播放青花显影样片](samples/porcelain-reveal-sample.mp4) |  |
 
 ### 光影与绘画
 
@@ -106,11 +110,11 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/light-dabs-sample.jpg" width="320" alt="光斑风格实际样片预览">](samples/light-dabs-sample.mp4)<br>**光斑**<br><sub>印象派光色家族</sub><br>碎短笔触汇成光斑，色彩缓缓变换<br>[播放光斑样片](samples/light-dabs-sample.mp4) | [<img src="samples/posters/lily-pond-sample.jpg" width="320" alt="睡莲风格实际样片预览">](samples/lily-pond-sample.mp4)<br>**睡莲**<br><sub>印象派光色家族</sub><br>莲叶漂在粼粼水面，柳影与光色轻轻摇晃<br>[播放睡莲样片](samples/lily-pond-sample.mp4) |
-| [<img src="samples/posters/swirl-oil-sample.jpg" width="320" alt="星涡风格实际样片预览">](samples/swirl-oil-sample.mp4)<br>**星涡**<br>长笔触卷成星空漩涡，浓烈色彩随之流动<br>[播放星涡样片](samples/swirl-oil-sample.mp4) | [<img src="samples/posters/hard-light-sample.jpg" width="320" alt="硬光风格实际样片预览">](samples/hard-light-sample.mp4)<br>**硬光**<br>斜光切入安静房间，长长阴影带出孤独感<br>[播放硬光样片](samples/hard-light-sample.mp4) |
-| [<img src="samples/posters/sfumato-sample.jpg" width="320" alt="晕涂风格实际样片预览">](samples/sfumato-sample.mp4)<br>**晕涂**<br>轮廓融入柔和光雾，颜色层层晕开<br>[播放晕涂样片](samples/sfumato-sample.mp4) | [<img src="samples/posters/watercolor-cel-sample.jpg" width="320" alt="水彩赛璐璐风格实际样片预览">](samples/watercolor-cel-sample.mp4)<br>**水彩赛璐璐**<br>水彩背景衬着动画人物，风吹出层层动感<br>[播放水彩赛璐璐样片](samples/watercolor-cel-sample.mp4) |
-| [<img src="samples/posters/optical-dots-sample.jpg" width="320" alt="点彩风格实际样片预览">](samples/optical-dots-sample.mp4)<br>**点彩**<br>细小彩点并排铺开，远看汇成柔和色彩<br>[播放点彩样片](samples/optical-dots-sample.mp4) | [<img src="samples/posters/candle-light-sample.jpg" width="320" alt="烛光风格实际样片预览">](samples/candle-light-sample.mp4)<br>**烛光**<br>一束烛光照亮暗处，让明暗成为画面主角<br>[播放烛光样片](samples/candle-light-sample.mp4) |
-| [<img src="samples/posters/cumulus-light-sample.jpg" width="320" alt="积雨云风格实际样片预览">](samples/cumulus-light-sample.mp4)<br>**积雨云**<br>高耸云团间透出光柱，天空色彩明亮浓郁<br>[播放积雨云样片](samples/cumulus-light-sample.mp4) | [<img src="samples/posters/blue-period-sample.jpg" width="320" alt="蓝时期风格实际样片预览">](samples/blue-period-sample.mp4)<br>**蓝时期**<br>蓝色铺满画面，缓慢节奏带出低沉情绪<br>[播放蓝时期样片](samples/blue-period-sample.mp4) |
+| [<img src="samples/posters/light-dabs-sample.jpg" width="320" alt="碎笔光斑风格实际样片预览">](samples/light-dabs-sample.mp4)<br>**碎笔光斑**<br><sub>原称：光斑</sub><br><sub>印象派光色家族</sub><br>碎短笔触汇成光斑，色彩缓缓变换<br>[播放碎笔光斑样片](samples/light-dabs-sample.mp4) | [<img src="samples/posters/lily-pond-sample.jpg" width="320" alt="水光睡莲风格实际样片预览">](samples/lily-pond-sample.mp4)<br>**水光睡莲**<br><sub>原称：睡莲</sub><br><sub>印象派光色家族</sub><br>莲叶漂在粼粼水面，柳影与光色轻轻摇晃<br>[播放水光睡莲样片](samples/lily-pond-sample.mp4) |
+| [<img src="samples/posters/swirl-oil-sample.jpg" width="320" alt="旋涡油彩风格实际样片预览">](samples/swirl-oil-sample.mp4)<br>**旋涡油彩**<br><sub>原称：星涡</sub><br>长笔触卷成星空漩涡，浓烈色彩随之流动<br>[播放旋涡油彩样片](samples/swirl-oil-sample.mp4) | [<img src="samples/posters/hard-light-sample.jpg" width="320" alt="长影斜光风格实际样片预览">](samples/hard-light-sample.mp4)<br>**长影斜光**<br><sub>原称：硬光</sub><br>斜光切入安静房间，长长阴影带出孤独感<br>[播放长影斜光样片](samples/hard-light-sample.mp4) |
+| [<img src="samples/posters/sfumato-sample.jpg" width="320" alt="柔雾晕染风格实际样片预览">](samples/sfumato-sample.mp4)<br>**柔雾晕染**<br><sub>原称：晕涂</sub><br>轮廓融入柔和光雾，颜色层层晕开<br>[播放柔雾晕染样片](samples/sfumato-sample.mp4) | [<img src="samples/posters/watercolor-cel-sample.jpg" width="320" alt="水彩动画风格实际样片预览">](samples/watercolor-cel-sample.mp4)<br>**水彩动画**<br><sub>原称：水彩赛璐璐</sub><br>水彩背景衬着动画人物，风吹出层层动感<br>[播放水彩动画样片](samples/watercolor-cel-sample.mp4) |
+| [<img src="samples/posters/optical-dots-sample.jpg" width="320" alt="细点光色风格实际样片预览">](samples/optical-dots-sample.mp4)<br>**细点光色**<br><sub>原称：点彩</sub><br>细小彩点并排铺开，远看汇成柔和色彩<br>[播放细点光色样片](samples/optical-dots-sample.mp4) | [<img src="samples/posters/candle-light-sample.jpg" width="320" alt="暗室烛光风格实际样片预览">](samples/candle-light-sample.mp4)<br>**暗室烛光**<br><sub>原称：烛光</sub><br>一束烛光照亮暗处，让明暗成为画面主角<br>[播放暗室烛光样片](samples/candle-light-sample.mp4) |
+| [<img src="samples/posters/cumulus-light-sample.jpg" width="320" alt="云隙天光风格实际样片预览">](samples/cumulus-light-sample.mp4)<br>**云隙天光**<br><sub>原称：积雨云</sub><br>高耸云团间透出光柱，天空色彩明亮浓郁<br>[播放云隙天光样片](samples/cumulus-light-sample.mp4) | [<img src="samples/posters/blue-period-sample.jpg" width="320" alt="蓝调叙事风格实际样片预览">](samples/blue-period-sample.mp4)<br>**蓝调叙事**<br><sub>原称：蓝时期</sub><br>蓝色铺满画面，缓慢节奏带出低沉情绪<br>[播放蓝调叙事样片](samples/blue-period-sample.mp4) |
 
 ### 图形与幻想
 
@@ -118,10 +122,11 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/liquid-flow-sample.jpg" width="320" alt="液态风格实际样片预览">](samples/liquid-flow-sample.mp4)<br>**液态**<br>圆润液滴相融又拉开，像流动的彩色软胶<br>[播放液态样片](samples/liquid-flow-sample.mp4) | [<img src="samples/posters/morph-sample.jpg" width="320" alt="形变风格实际样片预览">](samples/morph-sample.mp4)<br>**形变**<br>图形不断伸缩变身，一个形状接着另一个<br>[播放形变样片](samples/morph-sample.mp4) |
-| [<img src="samples/posters/pop-dot-sample.jpg" width="320" alt="弹点风格实际样片预览">](samples/pop-dot-sample.mp4)<br>**弹点**<br>明快色块弹跳入场，轻轻挤压后再回弹<br>[播放弹点样片](samples/pop-dot-sample.mp4) | [<img src="samples/posters/dot-infinity-sample.jpg" width="320" alt="波点风格实际样片预览">](samples/dot-infinity-sample.mp4)<br>**波点**<br>波点铺满南瓜与画面，点阵一呼一吸<br>[播放波点样片](samples/dot-infinity-sample.mp4) |
-| [<img src="samples/posters/facets-sample.jpg" width="320" alt="切面风格实际样片预览">](samples/facets-sample.mp4)<br>**切面**<br>物体拆成几何切面，不同角度同时展开<br>[播放切面样片](samples/facets-sample.mp4) | [<img src="samples/posters/scream-warp-sample.jpg" width="320" alt="呐喊风格实际样片预览">](samples/scream-warp-sample.mp4)<br>**呐喊**<br>血红天空扭曲翻涌，桥上身影透出不安<br>[播放呐喊样片](samples/scream-warp-sample.mp4) |
-| [<img src="samples/posters/soft-clock-sample.jpg" width="320" alt="软钟风格实际样片预览">](samples/soft-clock-sample.mp4)<br>**软钟**<br>柔软时钟垂挂在荒漠，长影拉出梦境感<br>[播放软钟样片](samples/soft-clock-sample.mp4) | [<img src="samples/posters/hypnotic-sample.jpg" width="320" alt="催眠风格实际样片预览">](samples/hypnotic-sample.mp4)<br>**催眠**<br>同心圆卷成旋转漩涡，循环节奏带来迷幻感<br>[播放催眠样片](samples/hypnotic-sample.mp4) |
+| [<img src="samples/posters/liquid-flow-sample.jpg" width="320" alt="流动软胶风格实际样片预览">](samples/liquid-flow-sample.mp4)<br>**流动软胶**<br><sub>原称：液态</sub><br>圆润液滴相融又拉开，像流动的彩色软胶<br>[播放流动软胶样片](samples/liquid-flow-sample.mp4) | [<img src="samples/posters/morph-sample.jpg" width="320" alt="几何变形风格实际样片预览">](samples/morph-sample.mp4)<br>**几何变形**<br><sub>原称：形变</sub><br>图形不断伸缩变身，一个形状接着另一个<br>[播放几何变形样片](samples/morph-sample.mp4) |
+| [<img src="samples/posters/pop-dot-sample.jpg" width="320" alt="弹跳色块风格实际样片预览">](samples/pop-dot-sample.mp4)<br>**弹跳色块**<br><sub>原称：弹点</sub><br>明快色块弹跳入场，轻轻挤压后再回弹<br>[播放弹跳色块样片](samples/pop-dot-sample.mp4) | [<img src="samples/posters/dot-infinity-sample.jpg" width="320" alt="无限波点风格实际样片预览">](samples/dot-infinity-sample.mp4)<br>**无限波点**<br><sub>原称：波点</sub><br>波点铺满南瓜与画面，点阵一呼一吸<br>[播放无限波点样片](samples/dot-infinity-sample.mp4) |
+| [<img src="samples/posters/facets-sample.jpg" width="320" alt="几何切面风格实际样片预览">](samples/facets-sample.mp4)<br>**几何切面**<br><sub>原称：切面</sub><br>物体拆成几何切面，不同角度同时展开<br>[播放几何切面样片](samples/facets-sample.mp4) | [<img src="samples/posters/scream-warp-sample.jpg" width="320" alt="扭曲呐喊风格实际样片预览">](samples/scream-warp-sample.mp4)<br>**扭曲呐喊**<br><sub>原称：呐喊</sub><br>血红天空扭曲翻涌，桥上身影透出不安<br>[播放扭曲呐喊样片](samples/scream-warp-sample.mp4) |
+| [<img src="samples/posters/soft-clock-sample.jpg" width="320" alt="荒漠软钟风格实际样片预览">](samples/soft-clock-sample.mp4)<br>**荒漠软钟**<br><sub>原称：软钟</sub><br>柔软时钟垂挂在荒漠，长影拉出梦境感<br>[播放荒漠软钟样片](samples/soft-clock-sample.mp4) | [<img src="samples/posters/hypnotic-sample.jpg" width="320" alt="迷幻旋涡风格实际样片预览">](samples/hypnotic-sample.mp4)<br>**迷幻旋涡**<br><sub>原称：催眠</sub><br>同心圆卷成旋转漩涡，循环节奏带来迷幻感<br>[播放迷幻旋涡样片](samples/hypnotic-sample.mp4) |
+| [<img src="samples/posters/choice-quest-sample.jpg" width="320" alt="选项冒险风格实际样片预览">](samples/choice-quest-sample.mp4)<br>**选项冒险**<br>选择消耗最后一枚电芯，亲手接通断桥，再抵达驿站<br>[播放选项冒险样片](samples/choice-quest-sample.mp4) | [<img src="samples/posters/card-conflict-sample.jpg" width="320" alt="卡牌对抗风格实际样片预览">](samples/card-conflict-sample.mp4)<br>**卡牌对抗**<br>出牌付出资源，风暴碰上防护，灯塔因此守住或失守<br>[播放卡牌对抗样片](samples/card-conflict-sample.mp4) |
 
 ### 印刷与装饰
 
@@ -129,11 +134,11 @@
 
 | 风格预览 | 风格预览 |
 |:---:|:---:|
-| [<img src="samples/posters/ink-plate-sample.jpg" width="320" alt="墨版风格实际样片预览">](samples/ink-plate-sample.mp4)<br>**墨版**<br><sub>套色印刷家族</sub><br>几何色块交错移动，像纸上错位叠印的油墨<br>[播放墨版样片](samples/ink-plate-sample.mp4) | [<img src="samples/posters/riso-print-sample.jpg" width="320" alt="孔版风格实际样片预览">](samples/riso-print-sample.mp4)<br>**孔版**<br><sub>套色印刷家族</sub><br>双色油墨错位叠在一起，留下细密印刷网点<br>[播放孔版样片](samples/riso-print-sample.mp4) |
-| [<img src="samples/posters/whiplash-line-sample.jpg" width="320" alt="鞭线风格实际样片预览">](samples/whiplash-line-sample.mp4)<br>**鞭线**<br>藤蔓般的弧线伸展，围成优雅海报花框<br>[播放鞭线样片](samples/whiplash-line-sample.mp4) | [<img src="samples/posters/gold-robe-sample.jpg" width="320" alt="金袍风格实际样片预览">](samples/gold-robe-sample.mp4)<br>**金袍**<br>金色纹样裹住人物，脸孔与华丽图案相映<br>[播放金袍样片](samples/gold-robe-sample.mp4) |
+| [<img src="samples/posters/ink-plate-sample.jpg" width="320" alt="几何叠印风格实际样片预览">](samples/ink-plate-sample.mp4)<br>**几何叠印**<br><sub>原称：墨版</sub><br><sub>套色印刷家族</sub><br>几何色块交错移动，像纸上错位叠印的油墨<br>[播放几何叠印样片](samples/ink-plate-sample.mp4) | [<img src="samples/posters/riso-print-sample.jpg" width="320" alt="双色孔版风格实际样片预览">](samples/riso-print-sample.mp4)<br>**双色孔版**<br><sub>原称：孔版</sub><br><sub>套色印刷家族</sub><br>双色油墨错位叠在一起，留下细密印刷网点<br>[播放双色孔版样片](samples/riso-print-sample.mp4) |
+| [<img src="samples/posters/whiplash-line-sample.jpg" width="320" alt="藤蔓花框风格实际样片预览">](samples/whiplash-line-sample.mp4)<br>**藤蔓花框**<br><sub>原称：鞭线</sub><br>藤蔓般的弧线伸展，围成优雅海报花框<br>[播放藤蔓花框样片](samples/whiplash-line-sample.mp4) | [<img src="samples/posters/gold-robe-sample.jpg" width="320" alt="金饰肖像风格实际样片预览">](samples/gold-robe-sample.mp4)<br>**金饰肖像**<br><sub>原称：金袍</sub><br>金色纹样裹住人物，脸孔与华丽图案相映<br>[播放金饰肖像样片](samples/gold-robe-sample.mp4) |
 | [<img src="samples/posters/engraving-sample.jpg" width="320" alt="铜版雕刻风格实际样片预览">](samples/engraving-sample.mp4)<br>**铜版雕刻**<br>细密刻线描出梨形，十二秒无声材质研究<br>[播放铜版雕刻样片](samples/engraving-sample.mp4) · [竖屏](examples/engraving/portrait.mp4) |  |
 
-想按名称、类型或气质筛选？下载完整项目后，用本地浏览器打开 [风格选择页](samples/index.html)，或看 [全部变体页](samples/all.html)。GitHub 中的 HTML 链接显示源码，需要在本地打开。
+想按视觉分类、名称、用途或气质筛选？下载完整项目后，用本地浏览器打开 [风格选择页](samples/index.html)，或看 [全部变体页](samples/all.html)。GitHub 中的 HTML 链接显示源码，需要在本地打开。
 
 <sub>本展示由 [风格目录](styles/catalog.json) 自动生成。风格选项是制作方向；其中 12 个支持模板的配色/覆盖层切换，其余按对应图元接入，主体镜头都需要围绕内容制作。[开发接入说明](styles/README.md)</sub>
 <!-- style-catalog:end -->

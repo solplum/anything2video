@@ -2,9 +2,9 @@
 
 风格目录按实际能力提供图元库、`SPEC.md` 风格约定、静态回归样张和适用资产；`shared/` 只存公共依赖，不是风格卡。`isometric-anatomy` 尚无渲染预览，不能假定每个目录都带 `sample.jpg`。目标是复用已有笔触、材质和组件，同时为本片重新解决内容、画幅、动作与声音。样张存在和风格组件可用，不等于新视频已通过完整验证。
 
-> **当前口径**：63 个兼容 ID、59 个选择入口、12 个实际 `config.style` 皮肤。
+> **当前口径**：68 个兼容 ID、64 个选择入口、12 个实际 `config.style` 皮肤。
 >
-> **选型入口**：先看 [catalog.json](catalog.json) 与 [离线家族选择页](../samples/index.html)。相似外观作为家族变体展示，旧 ID、导入路径、种子、recipe 关联全部保留。catalog 的 runtimeSkin=true 才能用于 config.style；其余是手动接入的 kit。分类不替成员选择 renderer。四组理由与兼容验证见 [本轮记录](../docs/style-system-round1.md)。
+> **选型入口**：先看 [catalog.json](catalog.json) 与 [离线家族选择页](../samples/index.html)。先从 8 个视觉分类浏览，相似外观再作为家族变体展示。显示名称补全画面特征，原称可搜索，旧 ID、导入路径、种子、recipe 关联全部保留。分类、命名与兼容约定见 [浏览说明](../docs/style-browsing.md)。catalog 的 runtimeSkin=true 才能用于 config.style；其余是手动接入的 kit。分类不替成员选择 renderer。四组理由与兼容验证见 [本轮记录](../docs/style-system-round1.md)。
 
 ## 图元与历史资料索引
 
@@ -67,6 +67,11 @@
 | `kinetic-type/` | 信息排版动态字体 | 科普视频/samples-v4/kinetic-type（借鉴 prompt-motion＋mg15） | 无（纯代码） |
 | `riso-print/` | Risograph 孔版印刷 | 科普视频/samples-v4/riso-print（借鉴 prompt-motion＋mg15） | 无（纯代码） |
 | `math-lab/` | 数学实验室 | 科普视频/samples-v4/math-lab（借鉴 prompt-motion＋huashu） | 无（纯代码） |
+| `card-conflict/` | 卡牌对抗：付出资源、建立效果、对手接触与物件后果 | examples/card-conflict，16 秒无声横屏原型；共享 SVG 实渲，标准 CLI 待验证 | 原创 SVG，系统字体，不新增分发 |
+| `porcelain-reveal/` | 青花显影：多点渗化、湿边积色、釉下定色 | examples/porcelain-reveal，横竖屏 14 秒无声原型；共享 SVG 实渲，标准 CLI 启动受阻 | 原创 SVG，系统字体，不新增分发 |
+| `transit-story/` | 线路叙事：并行抵达、条件换乘、延迟与阻塞 | examples/transit-story，横竖屏 18 秒无声原型；共享 SVG 实渲，标准 CLI 待验证 | 原创 SVG，系统字体，不新增分发 |
+| `choice-quest/` | 选项冒险：规则、选择、道具与可见后果 | examples/choice-quest，18 秒无声原型；共享 SVG 实渲染，Remotion 待验证 | 原创 SVG；系统字体，不新增分发 |
+| `lighttable/` | 档案灯台：冷光台面、原件放大、红笔证据标注 | examples/lighttable，横竖屏 12 秒无声试验；SVG 实渲染，Remotion 待验证 | 原创 SVG，系统 Noto CJK 字体（不随此项新增分发） |
 | `engraving/` | 铜版雕刻：随形排线、交叉加深、透明设色 | examples/engraving，原创梨形，横竖屏 12 秒无声研究 | 随包 Noto Serif SC / Fraunces（OFL） |
 | `hypnotic/` | 迷幻催眠视幻觉 | 科普视频/samples-v4/hypnotic（借鉴 prompt-motion） | 无（纯代码） |
 | `isometric-anatomy/` | 仪器解剖/物理机械 | 科普视频/samples-v4/isometric-anatomy（借鉴 Anatomy，MIT，wheresryan22） | 无（纯代码解析几何 SVG，四色调着色） |
@@ -88,7 +93,7 @@
 4. 先渲两张签名帧与sample并排检查色板、笔触和构图，再渲开场、复杂中段、结尾的实际运动片段。静态回归只证明已比对的静态项；连续动作、字幕和声音另外审查。
 5. 组任务书写所选图元API、需要保持的风格参数和允许变化。风格有意使用阶梯、扫描线或静止时，记录范围并选择适合的探针；豁免不自动等于通过。
 
-可在源码仓库运行 `node --test tests/style-system.test.mjs tests/engraving.test.mjs` 和 `node scripts/style-catalog.mjs --check` 检查兼容契约及选型一致性。历史 `node template/scripts/styles_check.mjs` 只覆盖 8 个旧 SKU 的资产存在性和 icons 正本关系，正本不可访问会 SKIP；它不是 63-ID 全库验证。这些检查均不能独自证明字形许可、栅格像素、连续动画、教学可读或整片好看。
+可在源码仓库运行 `node --test tests/style-system.test.mjs tests/engraving.test.mjs` 和 `node scripts/style-catalog.mjs --check` 检查兼容契约及选型一致性。历史 `node template/scripts/styles_check.mjs` 只覆盖 8 个旧 SKU 的资产存在性和 icons 正本关系，正本不可访问会 SKIP；它不是 68-ID 全库验证。这些检查均不能独自证明字形许可、栅格像素、连续动画、教学可读或整片好看。
 
 ## 新风格入库
 

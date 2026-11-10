@@ -5,7 +5,7 @@ name: pull-lands-event
 时长: 回拉 54f（@30fps，约 1.8s）；事件窗 39f 起至 54f+3f
 能量: 低中
 标签: camera
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

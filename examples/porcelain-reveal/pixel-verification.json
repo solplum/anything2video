@@ -1,0 +1,32 @@
+{
+  "sourceSha256": "9f6ca8aa4de11ec2fa1be85788a5cc9e6f874123a8ed9c755c44fc4f55075821",
+  "landscapeFinalVsFullCoveragePixelDifferenceBoundingBox": null,
+  "portraitFinalVsFullCoveragePixelDifferenceBoundingBox": null,
+  "basis": "Both corrected final-frame PNGs are byte-identical to prior outputs already compared to fully open artwork masks.",
+  "cobaltPixelCounts": [
+    {
+      "frame": 0,
+      "cobaltPixels": 0
+    },
+    {
+      "frame": 45,
+      "cobaltPixels": 14007
+    },
+    {
+      "frame": 90,
+      "cobaltPixels": 42733
+    },
+    {
+      "frame": 150,
+      "cobaltPixels": 99211
+    },
+    {
+      "frame": 240,
+      "cobaltPixels": 109144
+    },
+    {
+      "frame": 419,
+      "cobaltPixels": 132212
+    }
+  ]
+}

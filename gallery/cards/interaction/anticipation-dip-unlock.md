@@ -5,7 +5,7 @@ name: anticipation-dip-unlock
 时长: 蓄 7f + 潜 6f + 爆 6f（重复版 4f）（@30fps，全程约 0.6–0.7s）
 能量: 高（payoff 级，全片 ≤2 次）
 标签: interaction
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

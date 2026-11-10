@@ -1,0 +1,83 @@
+{
+  "story": {
+    "schemaVersion": 1,
+    "kind": "fiction",
+    "characters": [
+      {
+        "id": "courier",
+        "identity": "Tan peaked hat, red scarf, sage jacket, tan mail satchel, dark trousers; consistent across both branches."
+      }
+    ],
+    "props": [
+      {
+        "id": "cell",
+        "identity": "Single golden battery with pale center and small lightning mark."
+      },
+      {
+        "id": "bridge",
+        "identity": "Retractable ochre bridge spanning the only gap between river banks."
+      },
+      {
+        "id": "terminal",
+        "identity": "Sage socket box at the left bridge head; red/teal indicator."
+      },
+      {
+        "id": "beacon",
+        "identity": "Mountain post station with a gold signal window."
+      }
+    ]
+  },
+  "shots": [
+    {
+      "id": "choice-quest",
+      "from": 1,
+      "to": 540,
+      "group": "choice-quest",
+      "component": "styles/choice-quest/kit.tsx",
+      "purpose": "Original synthetic fixture for resource tradeoff, visible character action and causal world-state change; not an approved user film.",
+      "action": "Courier approaches a dead bridge, chooses to spend the last cell, inserts it, watches the bridge extend, crosses, and reaches a newly lit station.",
+      "story": {
+        "actor": "courier",
+        "goal": "Deliver the mail to the station across the river.",
+        "obstacle": "The bridge is unpowered and the courier has only one cell.",
+        "attempt": "Choose to power the bridge and insert the cell into the terminal.",
+        "outcome": "The cell remains in the terminal, the bridge extends, the courier crosses, and the station beacon lights.",
+        "before": "One cell held by courier; bridge retracted; courier on left bank; beacon dark.",
+        "after": "No carried cell; cell in terminal; complete bridge; courier on right bank; beacon lit.",
+        "actions": [
+          {
+            "id": "insert-cell",
+            "actor": "courier",
+            "prop": "cell",
+            "ownerBefore": "courier",
+            "ownerAfter": "world",
+            "phases": {
+              "anticipation": [
+                235,
+                270
+              ],
+              "contact": [
+                271,
+                275
+              ],
+              "support": [
+                276,
+                281
+              ],
+              "release": [
+                282,
+                291
+              ],
+              "settle": [
+                292,
+                318
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "claims": [],
+  "assets": []
+}

@@ -5,7 +5,7 @@ name: result-first-rewind
 时长: 成品 hold 20f + 倒带 18–24f（@30fps，开场动作约 1.3–1.5s）+ 正放接续
 能量: 高
 标签: opening
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

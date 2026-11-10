@@ -3,7 +3,7 @@
 > **出处**：[video-shotcraft](https://github.com/Vincentwei1021/video-shotcraft)（Apache-2.0），
 > 2026-10-06 全量移植（commit 快照见 `cards/ATTRIBUTION.md`）。许可证副本：
 > `LICENSE-THIRDPARTY/APACHE-2.0-video-shotcraft.txt`。卡内容逐字保留（含其内部判例引用），
-> 后续本 skill 自己的新卡直接追加，不改写原卡。
+> 后续本 skill 自己的新卡直接追加；本地适配错误的更正须保留出处并记录修改，不能冒称上游原文。
 >
 > **v4.4.0 增补（8 张，方法论吸收 mexicat/pdoom-video，MIT，
 > `LICENSE-THIRDPARTY/MIT-pdoom-video.txt`）**：`rhythm/` escalating-hook-slam、
@@ -14,7 +14,7 @@
 
 ## 这是什么
 
-180 张**镜头配方卡**：每张卡 = 一个经过实战返工打磨的动效镜头的完整知识——
+180 张**镜头配方卡**：包含有参考实现的镜头和仍待实现/验证的草稿。尤其 cinetic 的 15 张卡均为草稿，pdoom 的 8 张卡指向外部实现，不等于本仓新增 23 个可运行组件。每张卡整理——
 意图、动效核心、**参数表（典型值 / 调节手感 / 带日期的判例）**、声音钉点、已知坑、
 参考实现源码指针。分镜时抽卡，实现时照卡的参数和判例做，不要从零猜动效。
 
@@ -30,7 +30,7 @@
 | `cards/opening/` `outro/` | 12+7 | 开场悬念、结尾定版 | 全类型通用 |
 | `cards/camera/` | 14 | 运镜、推拉、环绕 | 空间交代、材质特写 |
 | `cards/effects/` `interaction/` | 19+16 | 材质特效、交互隐喻 | 风格化叙事、custom 配方 |
-| `demos-ref/` | 248 文件 | 每张卡的参考实现源码（原仓 `demos/`） | 实现前读对应源码 |
+| `demos-ref/` | 248 文件 | 已移植参考实现源码（原仓 `demos/`；并非每张卡都有本地实现） | 实现前读对应源码 |
 | `lib-ref/` | — | 原仓 `assets/lib/` 全量（含未编入 kit 的 three.js 组件） | 参考 |
 | `promo-energy-arc.md` | — | 宣传片能量曲线编排法 | promo/epic 配方分镜 |
 
@@ -42,8 +42,8 @@
 
 1. **分镜阶段**（流程 §3）：按镜头 purpose/action 到对应类别抽 2-3 张候选卡，
    在 `storyboard.json` 每个镜头的 `component`/`action` 里记卡名（如 `deck-deal-flyin`）。
-2. **实现阶段**（流程 §5）：完整读卡——参数表是硬数据（bezier 值、帧数、缓动），
-   「调节手感」列和「已知坑」是判例，**优先级高于自己的直觉**；再读 `demos-ref/`
+2. **实现阶段**（流程 §5）：完整读卡——先核实实现状态、来源版本、fps 和本片用途，不能把草稿典型值当作已验证定律；
+   参数和判例要经本片验证，事实正确性优先；有本地实现时再读 `demos-ref/`
    里对应源码，按本片画幅/时长重排后实现。
 3. **组件**：`template/src/common/kit/`（PageCam 2.5D 运镜、DigitRoll 数字滚、
    FlashCut 闪切、VerticalTicker 滚动墙、lagged/dampedSettle 跟随回弹、mulberry32

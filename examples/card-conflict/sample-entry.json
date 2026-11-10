@@ -1,0 +1,18 @@
+{
+  "path": "card-conflict-sample.mp4",
+  "sha256": "85d5d873acc2cd8bc60ab64fee2223b9c1473d1dfbc1becd293abe0721955f55",
+  "inputSha256": "8e74f5df182f455f1171abb00749241b8f7eab1dabab85232970fc16d12d6d4c",
+  "origin": "examples/card-conflict; independent original card rule narrative",
+  "mode": "code",
+  "disclosure": "Original 16-second silent shared-SVG-core prototype rendered via librsvg/cairo and ffmpeg. inputSha256 preserves actual rendered source 8e74f5. Delivered source 36afaf has one surplus-guard edge fix; all 3840 built-in frames are byte-identical, verified by tests/card-conflict-equivalence.test.mjs and examples/card-conflict/builtin-equivalence.json. Actual browser and Remotion web-render evidence is tracked separately; native CLI was not run. No copied upstream artwork, footage or audio.",
+  "audio": "none",
+  "width": 1280,
+  "height": 720,
+  "fps": "30/1",
+  "frames": 480,
+  "durationSeconds": 16,
+  "poolType": "explainer",
+  "styleId": "card-conflict",
+  "familyId": "card-conflict",
+  "runtimeSkin": false
+}

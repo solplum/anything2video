@@ -5,7 +5,7 @@ name: line-rebreak-glide
 时长: 每词 15–24f（按位移 0.15×行程折算），词间 stagger 1f（@30fps，全程约 0.8–1.2s）
 能量: 低中
 标签: typography
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

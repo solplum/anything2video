@@ -3,11 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import vm from 'node:vm';
+import {catalogUi} from './helpers/catalog-ui.mjs';
 import {fileURLToPath} from 'node:url';
-import {catalog, selectionGroups, generate, generatedFiles} from '../scripts/style-catalog.mjs';
+import {catalog, selectionGroups, generate, generatedFiles, styleName} from '../scripts/style-catalog.mjs';
 import {tsLoader} from './helpers/load-ts.mjs';
-import {presentOptionalSamples} from '../scripts/package-profile.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const legacy = JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/style-compat.json'),'utf8'));
 const load = tsLoader();
@@ -15,8 +14,8 @@ const hash = x => crypto.createHash('sha256').update(x).digest('hex');
 
 test('every legacy ID remains distinct and the four family pairs retain recipe associations', () => {
   assert.equal(new Set(catalog.styles.map(s=>s.id)).size,catalog.styles.length);
-  assert.deepEqual(catalog.styles.filter(s=>s.id!=='engraving').map(s=>({id:s.id,recipe:s.recipe,source:s.source})),legacy.styles);
-  assert.equal(selectionGroups().length,59);
+  assert.deepEqual(catalog.styles.filter(s=>!['engraving','lighttable','choice-quest','transit-story','porcelain-reveal','card-conflict'].includes(s.id)).map(s=>({id:s.id,recipe:s.recipe,source:s.source})),legacy.styles);
+  assert.equal(selectionGroups().length,64);
   assert.deepEqual(catalog.families.map(f=>f.members), [['deep-space','mg-purple'],['isometric-city','clay-town'],['light-dabs','lily-pond'],['ink-plate','riso-print']]);
   for (const f of catalog.families) for (const id of f.members) assert.equal(catalog.styles.find(s=>s.id===id).family,f.id);
   const dirs = fs.readdirSync(path.join(root,'styles'),{withFileTypes:true}).filter(d=>d.isDirectory()&&d.name!=='shared').map(d=>d.name);
@@ -84,48 +83,13 @@ test('four legacy stroke imports preserve every export and seeded canvas command
   }
 });
 
-// Run the generated inline script, with only its required DOM surface stubbed.
-// This regression suite stays dependency-free; actual Chromium layout/playback
-// checks are separate from these deterministic interaction tests.
-function catalogUi({flat=false,hash='',profile='full'}={}) {
-  const filename=flat?'samples/all.html':'samples/index.html';
-  const html=presentOptionalSamples(filename,generatedFiles().get(filename),profile);
-  const decode=s=>s.replace(/&(amp|lt|gt|quot|#39);/g,(_,entity)=>({amp:'&',lt:'<',gt:'>',quot:'"','#39':"'"}[entity]));
-  const variants=[...html.matchAll(/<div class="variant" id="([^"]+)" data-type="([^"]+)" data-vibe="([^"]*)" data-search="([^"]*)">/g)].map(([,id,type,vibe,search])=>({
-    id,dataset:{type,vibe,search:decode(search)},hidden:false,scrolled:0,
-    video:profile==='full'&&catalog.styles.find(s=>s.id===id).preview.status==='available'?{pauses:0,pause(){this.pauses++}}:null,
-    classList:{contains:name=>name==='variant'},
-    querySelector(selector){assert.equal(selector,'video');return this.video},
-    closest(selector){assert.equal(selector,'.family');return families.find(f=>f.variants.includes(this))},
-    scrollIntoView(){this.scrolled++},
-  }));
-  const families=flat?[]:selectionGroups().map(g=>({
-    id:g.id,dataset:{},hidden:false,variants:variants.filter(v=>g.members.some(s=>s.id===v.id)),buttons:[],
-    querySelectorAll(selector){if(selector==='.variant')return this.variants;if(selector==='[data-member]')return this.buttons;if(selector==='video')return this.variants.map(v=>v.video).filter(Boolean);throw new Error(selector)},
-  }));
-  const buttons=families.flatMap(f=>f.buttons=f.variants.length>1?f.variants.map(v=>({dataset:{member:v.id},disabled:false,attrs:{},setAttribute(k,value){this.attrs[k]=value},closest:()=>f})):[]);
-  const controls={type:{value:'all'},vibe:{value:'all'},search:{value:''},status:{textContent:''},empty:{hidden:true}};
-  const events={},location={hash},pushes=[];
-  const document={
-    querySelector:selector=>controls[selector.slice(1)],
-    querySelectorAll(selector){if(selector==='.family')return families;if(selector==='#grid>.variant')return variants;if(selector==='[data-member]')return buttons;if(selector==='select')return [controls.type,controls.vibe];throw new Error(selector)},
-    getElementById:id=>variants.find(v=>v.id===id)??(controls[id]?{classList:{contains:()=>false}}:null),
-  };
-  vm.runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],{document,location,history:{pushState(_state,_unused,url){pushes.push(url);location.hash=url}},addEventListener:(name,fn)=>events[name]=fn});
-  return {html,variants,families,buttons,controls,location,pushes,
-    filter(key,value){controls[key].value=value;(key==='search'?controls[key].oninput:controls[key].onchange)()},
-    navigate(hash,event='hashchange'){location.hash=hash;events[event]()},
-    click(id){const b=buttons.find(b=>b.dataset.member===id);assert.ok(b&&!b.disabled);b.onclick()},
-  };
-}
-
 test('generated catalog preserves every ID, four variant selectors, and honest missing preview',()=>{
   for(const flat of [false,true]){
     const ui=catalogUi({flat});
     assert.equal(ui.variants.length,catalog.styles.length);
-    assert.equal(ui.families.length,flat?0:59);
+    assert.equal(ui.families.length,flat?0:64);
     assert.equal(ui.buttons.length,flat?0:8);
-    assert.equal(ui.controls.status.textContent,`当前显示 ${flat?63:59} 个${flat?'变体':'选择入口'}`);
+    assert.equal(ui.controls.status.textContent,`当前显示 ${flat?68:64} 个${flat?'变体':'选择入口'}`);
     for(const id of legacy.styles.map(s=>s.id))assert.ok(ui.variants.some(v=>v.id===id),id);
     const anatomy=ui.html.match(/<div class="variant" id="isometric-anatomy"[\s\S]*?<\/div><div class="meta">/)[0];
     assert.match(anatomy,/暂无渲染样片/);assert.doesNotMatch(anatomy,/<video|<img|src=/);
@@ -159,7 +123,7 @@ test('family search, combined filters, tab state, and empty recovery run against
   assert.equal(ui.controls.status.textContent,'当前显示 0 个选择入口');
   assert.equal(ui.controls.empty.hidden,false);
   ui.filter('search','');ui.filter('type','all');ui.filter('vibe','all');
-  assert.equal(ui.controls.status.textContent,'当前显示 59 个选择入口');
+  assert.equal(ui.controls.status.textContent,'当前显示 64 个选择入口');
   assert.equal(ui.controls.empty.hidden,true);
 });
 
@@ -189,7 +153,7 @@ test('all-variants filtering pauses hidden previews and retains anatomy as a sea
   assert.equal(ui.controls.status.textContent,'当前显示 1 个变体');
   ui.filter('type','promo');assert.equal(ui.controls.empty.hidden,false);
   ui.filter('search','');ui.filter('type','all');
-  assert.equal(ui.controls.status.textContent,'当前显示 63 个变体');
+  assert.equal(ui.controls.status.textContent,'当前显示 68 个变体');
 });
 
 test('public README shows every style, genuine preview and family variant inline', () => {
@@ -204,12 +168,12 @@ test('public README shows every style, genuine preview and family variant inline
   for (const s of catalog.styles) {
     assert.ok(sections.has(s.showcase.section), s.id);
     assert.ok(s.showcase.summary.trim(), s.id);
-    assert.equal(block.split(`**${s.name}**`).length - 1, 1, `${s.id} must appear exactly once`);
+    assert.equal(block.split(`**${styleName(s)}**`).length - 1, 1, `${s.id} must appear exactly once`);
     if (s.preview.status === 'available') {
-      assert.ok(block.includes(`[播放${s.name}样片](samples/${s.preview.path})`), s.id);
+      assert.ok(block.includes(`[播放${styleName(s)}样片](samples/${s.preview.path})`), s.id);
     } else {
-      const row = block.split('\n').find(line => line.includes(`**${s.name}**`));
-      const cell = row.split(' | ').find(part => part.includes(`**${s.name}**`));
+      const row = block.split('\n').find(line => line.includes(`**${styleName(s)}**`));
+      const cell = row.split(' | ').find(part => part.includes(`**${styleName(s)}**`));
       assert.match(cell, /预览待补/);
       assert.doesNotMatch(cell, /<img|\.mp4/);
     }
@@ -221,8 +185,8 @@ test('public README shows every style, genuine preview and family variant inline
   for (const family of catalog.families) {
     const members = family.members.map(id => catalog.styles.find(s => s.id === id));
     assert.equal(new Set(members.map(s => s.showcase.section)).size, 1, family.id);
-    const row = block.split('\n').find(line => line.includes(`**${members[0].name}**`));
-    for (const member of members) assert.ok(row.includes(`**${member.name}**`), family.id);
+    const row = block.split('\n').find(line => line.includes(`**${styleName(members[0])}**`));
+    for (const member of members) assert.ok(row.includes(`**${styleName(member)}**`), family.id);
   }
   assert.match(block, /hanazi-916-sample\.jpg" width="101"/);
   generate({check: true});
@@ -232,10 +196,10 @@ test('public README shows every style, genuine preview and family variant inline
 test('core gallery keeps every style, search, family tabs and deep links without missing video players', () => {
   for (const flat of [false, true]) {
     const ui = catalogUi({flat, profile: 'core', hash: '#lily-pond'});
-    assert.equal(ui.variants.length, 63);
+    assert.equal(ui.variants.length, 68);
     assert.ok(ui.variants.every(variant => variant.video === null));
     assert.doesNotMatch(ui.html, /<video|(?:src|href)="[^"\n]+\.mp4"/);
-    assert.equal([...ui.html.matchAll(/class="optional-preview"/g)].length, flat ? 65 : 62);
+    assert.equal([...ui.html.matchAll(/class="optional-preview"/g)].length, catalog.styles.filter(s => s.preview.status === 'available').length + (flat ? 3 : 0));
     assert.match(ui.html, /可选视频未安装/);
     assert.match(ui.html, /暂无渲染样片/);
     assert.equal(ui.variants.find(variant => variant.id === 'lily-pond').hidden, false);
@@ -247,7 +211,7 @@ test('core gallery keeps every style, search, family tabs and deep links without
     ui.filter('search', 'isometric-anatomy');
     assert.equal(ui.controls.status.textContent, `当前显示 1 个${flat ? '变体' : '选择入口'}`);
     ui.filter('search', '');
-    assert.equal(ui.controls.status.textContent, `当前显示 ${flat ? 63 : 59} 个${flat ? '变体' : '选择入口'}`);
+    assert.equal(ui.controls.status.textContent, `当前显示 ${flat ? 68 : 64} 个${flat ? '变体' : '选择入口'}`);
     if (!flat) {
       ui.click('mg-purple'); ui.click('deep-space');
       assert.equal(ui.families.find(family => family.id === 'dark-editorial').dataset.selected, 'deep-space');

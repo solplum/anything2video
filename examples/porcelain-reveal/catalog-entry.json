@@ -1,0 +1,15 @@
+{
+  "id": "porcelain-reveal",
+  "name": "青花显影",
+  "displayName": "青花显影",
+  "aliases": [],
+  "description": "温白瓷面上的钴蓝多点渗化、湿边积色与釉下定色；原创莲塘双鱼画心。",
+  "notes": "14 秒无声独立原型；共享 SVG 核心实渲，标准 Remotion CLI 启动受阻；手动接入 kit，不是 config.style 皮肤。",
+  "recipe": "explainer",
+  "vibes": ["warm"],
+  "runtimeSkin": false,
+  "family": "porcelain-reveal",
+  "source": "styles/porcelain-reveal",
+  "preview": {"status": "available", "path": "porcelain-reveal-sample.mp4", "poster": "posters/porcelain-reveal-sample.jpg"},
+  "showcase": {"section": "heritage-and-ink", "summary": "钴蓝从瓷面局部渗开，莲塘双鱼逐渐显现，湿边退去后定色"}
+}

@@ -1,0 +1,23 @@
+{
+  "id": "choice-quest",
+  "name": "选项冒险",
+  "description": "原创游戏叙事：角色遇阻、选项取舍、道具消耗和可见后果；含等待分支。",
+  "notes": "18秒无声原型；共享SVG核心实渲，标准Remotion CLI未执行；手动接入kit，不是config.style皮肤。",
+  "recipe": "explainer",
+  "vibes": [
+    "retro",
+    "warm"
+  ],
+  "runtimeSkin": false,
+  "family": "choice-quest",
+  "source": "styles/choice-quest",
+  "preview": {
+    "status": "available",
+    "path": "choice-quest-sample.mp4",
+    "poster": "posters/choice-quest-sample.jpg"
+  },
+  "showcase": {
+    "section": "shapes-and-dreams",
+    "summary": "选择消耗最后一枚电芯，亲手接通断桥，再抵达驿站"
+  }
+}

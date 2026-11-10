@@ -1,7 +1,7 @@
 # 镜头卡来源与授权说明（2026-08 新增 48 张）
 
 本批 48 张镜头卡的动效手法研究自公开发布的产品宣传片与开源项目主页。
-**所有实现均为从零重写**（re-implemented from scratch）：仓库不包含任何
+**本节已有实现按独立重写记录**（re-implemented from scratch）；后附 cinetic 批次是草稿配方，不属于已实现数量：仓库不包含任何
 原片片段、截图、美术资产或品牌元素；实现中的文案、配色、UI 内容均为
 中性占位模板。原作者未参与本项目，卡片标注来源仅为致敬与研究溯源
 （"仅参考、重新实现"）。
@@ -68,10 +68,12 @@
 
 | 研究批次 | 来源 | 类型 | 状态 |
 |---|---|---|---|
-| cinetic（v4.0.0 战役） | https://github.com/Leonxlnx/cinetic （MIT，作者 Leonxlnx/@LexnLin；许可全文见 `LICENSE-THIRDPARTY/MIT-cinetic.txt`） | 开源项目（MIT 代码许可） | 手法参考，重写实现；各卡头部标注"手法研究自 cinetic (MIT, Leonxlnx), 实现重写" |
+| cinetic（v4.0.0 战役） | https://github.com/Leonxlnx/cinetic （MIT，作者 Leonxlnx/@LexnLin；许可全文见 `LICENSE-THIRDPARTY/MIT-cinetic.txt`） | 开源项目（MIT 代码许可） | 15 张手法研究草稿；配方说明独立整理，全部尚无本仓实现/演示，不能按已实现组件计数 |
 
 逐卡来源映射（草稿卡原位于 `科普视频/samples-v4/cinetic-cards/`，文件名 `类目-手法名.md`，收编时去类目前缀按 `标签` 归档；无重名，未启用 -v2 后缀）：
 
 | 来源 | 卡片 |
 |---|---|
 | cinetic | `detail-first-pullback`、`exploded-layer-stack`、`fit-bounds-follow`、`pull-lands-event`（camera）；`area-ratio-compare`、`delta-chip-compare`、`unit-grid-tally`（data）；`accent-on-newest`（effects）；`anticipation-dip-unlock`（interaction）；`result-first-rewind`（opening）；`anchor-overlay-cut`、`scale-through-cut`（transition）；`line-rebreak-glide`、`reading-order-exit`（typography）；`clutter-pileup-strip`（ui-entrance） |
+
+2026-11-04 复核：15 张卡均保留“暂无（草稿卡）”。此前头部“实现重写”和本表“重写实现”措辞过度，现更正为配方说明的状态；不否认本仓另有不同来源的爆炸视图等相近能力。上游版本 `ecfa6605de1adb9345ce937724810dc32267d068`；复核范围是 skill、相关配方、camera 源码和 MIT 许可，未做上游影片播放或本仓动态验收。详见 [来源更正记录](../../reference/reference-corrections-2026-11-04.md)。

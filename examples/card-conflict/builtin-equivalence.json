@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "comparedFrames": 3840,
+  "oldSourceHash": "8e74f5df182f455f1171abb00749241b8f7eab1dabab85232970fc16d12d6d4c",
+  "newSourceHash": "36afaf0774e1b71685f399dfdd948226062d25e6c258c6de48c4e76a216bb203",
+  "change": "retain visible shield for custom guard > threat; all built-in frames byte-identical",
+  "variants": [
+    {
+      "scenario": "lighthouse",
+      "choice": "brace",
+      "showCaptions": true,
+      "frames": 480,
+      "oldFrameSequenceHash": "9f795d70c39029963a597b8c182d00219dcc49cbe7bfd6cec1d71fbf83fc783b",
+      "newFrameSequenceHash": "9f795d70c39029963a597b8c182d00219dcc49cbe7bfd6cec1d71fbf83fc783b"
+    },
+    {
+      "scenario": "lighthouse",
+      "choice": "brace",
+      "showCaptions": false,
+      "frames": 480,
+      "oldFrameSequenceHash": "277aaf64c21c70f82bd7cfb40839444ca546e8fddb6aed69f0dfad076d6ddd82",
+      "newFrameSequenceHash": "277aaf64c21c70f82bd7cfb40839444ca546e8fddb6aed69f0dfad076d6ddd82"
+    },
+    {
+      "scenario": "lighthouse",
+      "choice": "rush",
+      "showCaptions": true,
+      "frames": 480,
+      "oldFrameSequenceHash": "2f75e2ea7fe377a20dbcdf5060e5f9ecb0537bb4d2d60a75b483b4b1d3941462",
+      "newFrameSequenceHash": "2f75e2ea7fe377a20dbcdf5060e5f9ecb0537bb4d2d60a75b483b4b1d3941462"
+    },
+    {
+      "scenario": "lighthouse",
+      "choice": "rush",
+      "showCaptions": false,
+      "frames": 480,
+      "oldFrameSequenceHash": "60dc5e421514b2695453d15db6af8e975e0729ab116450d3d4320b817cf14704",
+      "newFrameSequenceHash": "60dc5e421514b2695453d15db6af8e975e0729ab116450d3d4320b817cf14704"
+    },
+    {
+      "scenario": "greenhouse",
+      "choice": "warm",
+      "showCaptions": true,
+      "frames": 480,
+      "oldFrameSequenceHash": "ff2d9af3e8bce8eeb3df3fc538b44104e30243d6c025d5a9da6daa95197c0e83",
+      "newFrameSequenceHash": "ff2d9af3e8bce8eeb3df3fc538b44104e30243d6c025d5a9da6daa95197c0e83"
+    },
+    {
+      "scenario": "greenhouse",
+      "choice": "warm",
+      "showCaptions": false,
+      "frames": 480,
+      "oldFrameSequenceHash": "2e6f998af53da78f48be2cdef2f6538daac4df28b2c58bb3ac69bbbc90f95f89",
+      "newFrameSequenceHash": "2e6f998af53da78f48be2cdef2f6538daac4df28b2c58bb3ac69bbbc90f95f89"
+    },
+    {
+      "scenario": "greenhouse",
+      "choice": "harvest",
+      "showCaptions": true,
+      "frames": 480,
+      "oldFrameSequenceHash": "d4b5d75922d83cf772680712c724c36b74b09978b43917f367209421f7da3c7d",
+      "newFrameSequenceHash": "d4b5d75922d83cf772680712c724c36b74b09978b43917f367209421f7da3c7d"
+    },
+    {
+      "scenario": "greenhouse",
+      "choice": "harvest",
+      "showCaptions": false,
+      "frames": 480,
+      "oldFrameSequenceHash": "48279b4ba9f173b8a8b5ef5c5ca8e839e2b5d83d541f4f53177d3d9143ab6da5",
+      "newFrameSequenceHash": "48279b4ba9f173b8a8b5ef5c5ca8e839e2b5d83d541f4f53177d3d9143ab6da5"
+    }
+  ],
+  "customCase": {
+    "guard": 4,
+    "threat": 3,
+    "remaining": 1,
+    "shieldPresentAtFrame479": true
+  }
+}

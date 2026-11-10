@@ -5,7 +5,7 @@ name: fit-bounds-follow
 时长: 随节点数 3–6s（节点间隔 10–20f）；收尾可接 24–30f 推近或定格
 能量: 低中（稳态跟随，靠尺度感撑场）
 标签: camera
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图
@@ -21,8 +21,8 @@ name: fit-bounds-follow
   不许缩字号
 - 单调约束：ln k 只取历史最小值——框只会变大，zoom 永不往回抽
   （防止"撑开→回缩→再撑开"的泵感）
-- 平滑：中心与 ln k 各走一阶低通（系数 ~0.13/帧 @30fps，时间常数
-  6–8f），单帧步长夹幅 zoom ≤2.4%/f、中心 ≤24px/f（超了说明该
+- 平滑：中心与 ln k 各走一阶低通（系数 0.1351/帧 @30fps，对应 0.07/帧 @60fps，时间常数
+  6–8f），单帧步长夹幅 zoom 约 2.4%/f、中心 ≤24px/f（超了说明该
   放慢节点节奏，不是该快镜头）
 - 头部提前量：移动头（绘制线头/进度点）的运动方向侧外扩画框 18%，
   让"即将去的地方"先入画
@@ -34,9 +34,9 @@ name: fit-bounds-follow
 ## 参数表
 | 参数 | 典型值 | 调节手感 |
 |------|--------|----------|
-| 跟随系数 | 0.13/帧（6–8f 时间常数） | 大了镜头发飘追不上；小了每加一个节点抖一下 |
+| 跟随系数 | 0.1351/帧（约 6.89f 时间常数） | 大了跟随更快、平滑更少；小了更平滑但滞后更多 |
 | 画框边距 | 外接框 +12% | <8% 节点贴边发闷；>20% 浪费画幅 |
-| zoom 单帧上限 | 2.4%/f | 超限读作抽搐；先查节点间隔是否太密 |
+| zoom 单帧上限 | 约 2.4%/f @30fps，仅为近似起点 | 实现时按同一秒制对数速度限幅换算，再查节点间隔与跳变 |
 | 中心单帧上限 | 24px/f | 配合运动模糊裕量；快门采样跟不上就放慢 |
 | 节点间隔 | 10–20f | 等间隔出稳态扩展；忽快忽慢镜头跟着抽 |
 | 标签字号下限 | 24px | 顶住下限就分层出图（切章节），别硬缩 |
@@ -49,7 +49,22 @@ name: fit-bounds-follow
   框随内容自适应（空间维）；历史叙事用那卡，结构生长用本卡
 - 与 integration-hub-map 分工：那卡是静态 hub-spoke 版式入场，本卡
   是相机行为；hub 图逐节点搭建时可叠本卡取景
-- 参数为 cinetic 出厂推荐值（60fps 折算 30fps），首次实战须回验
+- 数值为草稿起点，首次实战须回验；低通系数、每帧比例速度和持续帧数须分别换算，不能只减半时长
+
+## 低通算例（未接入渲染）
+
+对 `c += (target - c) * alpha`，固定目标下剩余误差每帧乘 `1 - alpha`。跨 fps 保持同一秒数的衰减时，使用下式；若目标本身在移动，还须在新时间轴采样并复验跟随误差。
+
+<!-- audit-example:follow -->
+```js
+const followAlpha = (alpha, sourceFps, targetFps) => {
+  if (!Number.isFinite(alpha) || alpha < 0 || alpha > 1 || !Number.isFinite(sourceFps) || sourceFps <= 0 || !Number.isFinite(targetFps) || targetFps <= 0) throw new RangeError("invalid follow");
+  return 1 - (1 - alpha) ** (sourceFps / targetFps);
+};
+const followStep = (current, target, alpha) => current + (target - current) * alpha;
+```
+
+时间常数为 `-1 / ln(1 - alpha)` 帧（0 < alpha < 1）；alpha=0.1351 时约 6.89f。alpha=1 立即到目标，alpha=0 不跟随。
 
 ## 参考实现
 暂无（草稿卡）｜源手法：cinetic assets/library/techniques.json `cam-fit-bounds-follow`

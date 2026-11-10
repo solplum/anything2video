@@ -1,0 +1,91 @@
+{
+  "title": "开门之前，还缺一条线。",
+  "subtitle": "一场虚构放映会 / 两条准备线，缺一不可",
+  "nodes": [
+    {
+      "id": "invite",
+      "label": "发出邀请",
+      "startAt": 0.8,
+      "line": "people"
+    },
+    {
+      "id": "guests",
+      "label": "观众到齐",
+      "dwell": 0.4,
+      "line": "people"
+    },
+    {
+      "id": "venue",
+      "label": "场地确认",
+      "startAt": 1.3,
+      "line": "venue"
+    },
+    {
+      "id": "sound",
+      "label": "声音就位",
+      "dwell": 0.4,
+      "line": "venue"
+    },
+    {
+      "id": "lights",
+      "label": "放映就绪",
+      "dwell": 0.4,
+      "line": "venue"
+    },
+    {
+      "id": "join",
+      "label": "双线会合",
+      "dwell": 1.1,
+      "line": "joined"
+    },
+    {
+      "id": "open",
+      "label": "开场",
+      "line": "joined"
+    }
+  ],
+  "edges": [
+    {
+      "id": "invite-guests",
+      "from": "invite",
+      "to": "guests",
+      "duration": 2.2,
+      "line": "people"
+    },
+    {
+      "id": "guests-join",
+      "from": "guests",
+      "to": "join",
+      "duration": 2.3,
+      "line": "people"
+    },
+    {
+      "id": "venue-sound",
+      "from": "venue",
+      "to": "sound",
+      "duration": 2.4,
+      "line": "venue"
+    },
+    {
+      "id": "sound-lights",
+      "from": "sound",
+      "to": "lights",
+      "duration": 2.3,
+      "line": "venue"
+    },
+    {
+      "id": "lights-join",
+      "from": "lights",
+      "to": "join",
+      "duration": 2.4,
+      "line": "venue"
+    },
+    {
+      "id": "join-open",
+      "from": "join",
+      "to": "open",
+      "duration": 2,
+      "line": "joined"
+    }
+  ]
+}

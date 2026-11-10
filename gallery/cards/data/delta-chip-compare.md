@@ -5,7 +5,7 @@ name: delta-chip-compare
 时长: 旧值退 6f + before 升 15f + 新值计数 18f + 芯片落定 1f/回沉 10f（@30fps，全程约 1.6s）
 能量: 中（落锤在芯片弹出帧）
 标签: data
-来源: 手法研究自 cinetic (MIT, Leonxlnx), 实现重写
+来源: 手法研究自 cinetic (MIT, Leonxlnx)；配方说明独立整理，尚无本仓实现/演示
 ---
 
 ## 意图

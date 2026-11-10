@@ -169,3 +169,26 @@
 | 2026-10-02 | anything2video 自宣传 | promo（暗色编辑风皮肤） | 灰卡阵洗牌→衬线主标淡入+字距展开 | 硬切为主+章 3 SceneWipe bar 一处 | 深炭暖黑+星雾+ShaderPost 胶片颗粒 | 暖白/炭/陶土金三色，证明拍金亮唯一大暖点 | Classical Vibes 2（Mixkit 684）+云端 TTS +25；beat_grid reliable=false 不卡拍 |
 | 2026-10-06 | s34-* 11 卡套餐样片（v3.4.0 重制，用户逐卡验收通过替换 samples/） | 全部 11 卡=类型骨架×风格（工程 科普视频/samples-v34/） | 逐卡签名开场（红圆落格/CRT 开机/铺沙尘瀑/线框生长…） | 硬切为主+风格签名转场（板擦/抹沙/电流跳接） | 逐卡风格底 | 逐卡调色纪律（四色/单色系/磷光绿+唯一 amber…） | TTS+Mixkit SFX+BGM（逐卡曲目见 samples/manifest.json；黑板/版式/终端无 BGM 系风格纪律） |
 | 2026-10-09 | 《命》命字三千年思想史（正片首部，工程 科普视频/ming/） | 月窗 guofeng-scroll（epic）· **竖屏 1080×1920 重排版**（MOON 540,660 r330 恒定/题跋 x920/字幕带 y1430-1570/进度点 y1660） | 月窗描金自画（第 1 帧即作画动作，0.5s 钩子判据） | 硬切为主+章转场（力命对峙/长卷自窗下展开） | 暖黑底 #0a0806 大面积负空间（卡签名） | 暖黑+描金+米白平涂，虹彩五色全片只给「我命在我」人形（单一连续轮廓+流光相位） | 云扬 TTS（5.39 字/s）+用户指定外部曲循环铺床（抖音 MondayofAX 视频内 BGM，版权未核实已登记） |
+
+
+## 2026-11-03 · 档案灯台 lighttable（试验）
+
+新增独立手动 kit，不合并现有拼贴或蓝图，不改变 12 个 runtime skins。固定俯视冷光台面、纸质原件、同一 SVG 原件克隆放大、红笔差异标注构成视觉语法；不是换色版。12 秒横竖屏无声 SVG 核心实渲染。Remotion/typecheck、完整运动审片与音频审片未通过本次验证，不计为制作成片认证。具体结果以 [verification.json](../examples/lighttable/verification.json) 为准。
+
+## 2026-11-03 · 选项冒险 choice-quest（原型）
+
+新增原创游戏叙事手动 kit：通过选择消耗道具、完成接触动作并改变世界状态；含等待、延迟选择与隐藏字幕对照。18 秒无声共享 SVG 核心经 librsvg/cairo 与 ffmpeg 实渲染，不改已有像素风或 runtime skins。原生 Remotion、TypeScript、连续播放与整片 QC 未完成，详细证据与来源见 [案例](../examples/choice-quest/README.md) 及 [verification.json](../examples/choice-quest/verification.json)。
+
+## 2026-11-03 · 线路叙事 transit-story（原型）
+
+原创事件驱动的平面线路图：先到等待、所有前提齐备才换乘，含延迟、阻塞、隐藏字幕和独立竖屏布局。18秒无声共享SVG实渲与抽帧证据，不是Lemo的纸面透视/纸纤维处理，也不增加runtime skin或第九条制作路线。详见[案例](../examples/transit-story/README.md)与[历史验证](../examples/transit-story/verification.json)。
+
+
+## 2026-11-03 · 青花显影 porcelain-reveal（原型）
+
+原创莲塘双鱼瓷面画心，以固定种子多点渗化、湿边积色与釉下定色逐渐出现。14 秒横竖屏无声共享 SVG 实渲，竖版独立构图；不是换色水墨、3D 花瓶或真实流体仿真。沿用 cobalt-reveal 子路线，归入绘画动画，不新增 runtime skin。原始[验证](../examples/porcelain-reveal/verification.json)与后续[整合补充](../docs/style-browsing.md)分开记录，标准 CLI 启动受阻，最终连续主观审片及成片 QC 未完成。
+
+
+## 2026-11-03 · 卡牌对抗 card-conflict（原型）
+
+以原创灯塔和种子场景演示选牌、付出代价、防护与对手接触，结算改变物件而非只改数字；含反事实与去文字审查。16 秒横屏无声共享 SVG 实渲，规则为虚构游戏机制，不是实测。保持独立手动 kit，沿用角色动画下的 card-conflict 子路线，不增加 runtime skin。详见[案例](../examples/card-conflict/README.md)、[初始验证](../examples/card-conflict/verification.json)与[整合补充](../docs/style-browsing.md)；标准 CLI、连续主观审片和最终成片 QC 未完成。
