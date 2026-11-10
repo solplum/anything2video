@@ -16,7 +16,7 @@
 | [mexicat/pdoom-video](https://github.com/mexicat/pdoom-video) | 8 张方法卡，引用外部场景，本仓没有对应 demo | 节奏短片 | 完整结构、论据与阅读时间；概率示意与事件引信已更正，不把原曲当作获授权素材 |
 | [cinetic](https://github.com/Leonxlnx/cinetic) | [15 张草稿配方](../../gallery/cards/ATTRIBUTION.md)，均未提供本仓实现/演示 | 产品演示、原理拆解、节奏短片 | MIT；先实现与动态回验，不能把配方数量当组件数量；错峰/低通/缩放 fps 换算见更正记录 |
 | [xilo-opus-video](https://github.com/Kianzzz/xilo-opus-video) | [导演手册](../directing-playbook.md) 已明确借鉴：差异化方向小样、确认 brief、逐镜检查与选择性重做 | 各路线的准备与审片 | 历史方法借鉴，不只是发现索引；MIT 代码文档不替代本片素材权利与实渲验收 |
-| [video-talkcraft](https://github.com/Vincentwei1021/video-talkcraft) | [DotFieldBg](../../template/src/common/DotFieldBg.tsx) 头注明确点阵幕底移植 | 产品演示的现有幕底；不是完整口播管线 | 当前 PolyForm Noncommercial 1.0.0；不是 shotcraft 的 Apache-2.0。未查到覆盖本地该移植的进一步特别许可，发布/商用前须确认适用历史版本与授权范围 |
+| [video-talkcraft](https://github.com/Vincentwei1021/video-talkcraft) | [DotFieldBg](../../template/src/common/DotFieldBg.tsx) 的历史版本为点阵幕底移植；本次用余弦斜向扫光 + SVG 重做亮度与渲染，保留接口/QC 网格 | 仅重做幕底及共享 grain；不是完整口播管线，也不保证旧观感逐像素一致 | 上游当前 PolyForm Noncommercial 1.0.0；不是 shotcraft 的 Apache-2.0。未查到覆盖本地该移植的进一步特别许可；历史版本与素材仍须核实授权。本次工程重写不是法律清权证明 |
 
 详细许可继续保留在 [第三方许可](../../LICENSE-THIRDPARTY)、[kit 出处](../../template/src/common/kit/ATTRIBUTION.md)、[风格说明](../../styles/README.md) 和各卡中，不用本索引替代。
 
@@ -63,3 +63,10 @@
 - `lighttable`、`choice-quest`、`transit-story`、`porcelain-reveal` 与 `card-conflict` 已在本整合版注册为手动试验图元；各自初始验证记录保留。后四者分别通过 `choice-adventure`、`transit-story`、`cobalt-reveal` 与 `card-conflict` 子路线发现。补充 TypeScript、真实浏览器和 web-renderer 证据见[浏览说明](../../docs/style-browsing.md)，不据此宣称标准 CLI 或整片验收通过。
 
 这些材料决定“可借什么”，本片的真实渲染、播放、听取和最终 QC 决定“完成了什么”。
+
+### 点阵与共享纹理重写（2026-11-10）
+
+- 基线为 main `36ff2ecd278d8be403a2abcf3a25fdbe28b56a52`。检查本仓旧组件是为确认接口、共享依赖与测试契约；未以另取上游源文件或逐像素复制为重写目标。这不是隔离式 clean-room 法律声明。
+- `DotFieldModel.ts` 的余弦行进波窄带与线性边缘衰减，替代旧的绝对距离、三角窗平方和径向边缘算法；保留斜向扫光和默认约 9.3s 周期的功能观感；`DotFieldBg.tsx` 使用声明式 SVG，不再使用旧 Canvas 绘制流程。保留的 960×540 网格、步距/起点及 speed 默认值属于既有调用与 QC 兼容约束。
+- `Grain.ts` 以固定整数哈希生成中性灰像素并编码 PNG；DotFieldBg、FrameGrade 和 aurora-glass NoiseField 共用它。移除这条共享链中的旧 SVG turbulence 数据串；其他风格各自的滤镜与 GlassLens 折射滤镜不在本次范围。
+- 历史来源、现有许可证和特别许可边界不删除、不扩大。仓库历史提交、已有样片/海报及其他继承代码未因此重新生成或自动改变许可；商业发布仍需按实际分发内容审查。

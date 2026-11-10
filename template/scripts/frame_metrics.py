@@ -62,13 +62,15 @@ def cfg_bg():
         return 'stars'
 BG = cfg_bg() if a.bg == 'auto' else a.bg
 
-def dot_mask(W=1280, H=720, r=5):
+def dot_mask(W=1280, H=720, r=None):
     """点阵波幕底的屏幕坐标掩膜（与 src/common/DotFieldBg.tsx 同一组常量：设计坐标 960×540、步距 36、起点 (24,18)、等比放大）。
-    点半径实际 2–2.7px，JPEG 再糊 1px，掩 5px 足够；点距 48px，掩掉的面积 <4%，对真实主体的统计影响可忽略。"""
+    新亮度场最大设计半径 1.8px；按输出比例放大后加 1.5px 抗锯齿/JPEG 余量。
+    默认 720p 掩 4px；显式 r 仍可覆盖默认值。仅排除背景点，不能据此豁免主体缺失。"""
     m = np.zeros((H, W), bool)
     if BG != 'dots':
         return m
     sc = max(W / 960, H / 540); ox = (W - 960 * sc) / 2; oy = (H - 540 * sc) / 2
+    if r is None: r = int(np.ceil(1.8 * sc + 1.5))
     yy, xx = np.ogrid[-r:r + 1, -r:r + 1]; disc = (xx * xx + yy * yy) <= r * r
     for y in range(18, 540, 36):
         for x in range(24, 960, 36):
@@ -78,7 +80,7 @@ def dot_mask(W=1280, H=720, r=5):
             m[y0:y1, x0:x1] |= disc[(y0 - cy + r):(y1 - cy + r), (x0 - cx + r):(x1 - cx + r)]
     return m
 DOT_MASK = dot_mask()
-# 点阵底色 #0b0c11 本身带一点蓝（sat≈.35、lum≈12），会整屏落进「柔光」判据（sat>.25 且 10<lum<110）→ 空场检测被屏蔽、主角区柔光虚高；
+# 点阵底色 #0a0c10 本身带一点蓝（sat≈.38、lum≈12），会整屏落进「柔光」判据（sat>.25 且 10<lum<110）→ 空场检测被屏蔽、主角区柔光虚高；
 # dots 模式把柔光亮度下限抬到 22（实测底色+噪点 ≤18；紫柔光在内容区的亮度多在 25–110，基本不受影响）。
 SOFT_LO = 22 if BG == 'dots' else 10
 

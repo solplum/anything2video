@@ -1,5 +1,5 @@
 import React from 'react';
-import {GRAIN_URL} from './DotFieldBg';
+import {GRAIN_SIZE, GRAIN_URL} from './Grain';
 
 export type VignetteMode = 'paper' | 'cinematic' | 'deep' | 'none';
 
@@ -9,7 +9,7 @@ export type VignetteMode = 'paper' | 'cinematic' | 'deep' | 'none';
  *   paper 档（亮纸/宣纸/书法）：极柔和暖红棕外缘微压（rgba(94,27,20,0.08)），保护宣纸通透度；
  *   cinematic 档（默认）：经典电影暗角（rgba(0,0,0,0.52)）；
  *   deep 档（黑场/深海/深邃宇宙）：聚光灯级强压边（rgba(0,0,0,0.88)）。
- * - 胶片/纸质微粒：复用 GRAIN_URL（feTurbulence overlay），静态微粒赋予无机底图手工质感。
+ * - 胶片/纸质微粒：复用 GRAIN_URL（确定性像素 PNG overlay），静态微粒赋予无机底图手工质感。
  */
 export const FrameGrade: React.FC<{
   vignette?: boolean;
@@ -43,7 +43,7 @@ export const FrameGrade: React.FC<{
           position: 'absolute',
           inset: 0,
           backgroundImage: GRAIN_URL,
-          backgroundSize: '160px 160px',
+          backgroundSize: `${GRAIN_SIZE}px ${GRAIN_SIZE}px`,
           opacity: 0.045,
           mixBlendMode: 'overlay',
           pointerEvents: 'none'

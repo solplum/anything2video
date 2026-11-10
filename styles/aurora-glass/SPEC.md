@@ -8,7 +8,7 @@
 - **色 token**（`AG`）：bg `#05041a`｜bgLift `#0a0824`｜violet `#7050FF`｜indigo `#4A3AE8`｜blue `#2F46F2`｜periwinkle `#8C8CFF`｜cyan `#34CFF0`｜ink `#EAF0FF`｜inkDim `rgba(234,240,255,0.60)`｜glassFill `rgba(255,255,255,0.08)`｜glassStroke `rgba(255,255,255,0.30)`。**全部光斑色限定紫蓝青邻近族（可整体换成橙粉红族），禁补色/撞色对；暗底亮斑。**
 - **aurora 床**（`AuroraBackdrop`）：3-5 颗纯色大圆（无渐变、靠 blur 出柔边），`filter: blur(90-130px)` + `mix-blend-mode: screen` + 底上 `radial-gradient` 暗底；各沿 `loopBezier`（Catmull-Rom→Bezier 闭环）**22-36s 周期**漂移（片内必须呈现 ≥1/3 循环），各自叠 ±3.5% scale 呼吸（8-12s）与 ±6% 亮度呼吸；全片挂在壳层连续漂移、不随镜头重启；首颗光斑亮起 ramp 即钩子（0.5s 内可辨）。
 - **玻璃卡**（`GlassCard`）：`backdrop-filter: blur(20-40px)` + 白 **5-10%** 填充 + **1px 白 30% 内描边**（inset boxShadow）+ **28-32px 大圆角** + 卡顶 5% 高光渐变 + 深色投影（浮起感）；卡面呼吸微浮 ±3px sine（用绝对帧算相位，跨镜头连续）。
-- **噪点**（`NoiseField`）：feTurbulence 静态确定性纹理，**3-5%**（现值 4.5%）+ overlay 混合，全局顶层，防 banding。
+- **噪点**（`NoiseField`）：共享 Grain 模块的整数哈希像素 PNG 静态确定性纹理，**3-5%**（现值 4.5%）+ overlay 混合，全局顶层，防 banding。
 - **缓动**：只允许 sine 呼吸曲线与 linear（kit 只导出 `eSine`/`seg`/`inv`）；**文字入场只用 opacity + 8px 位移**；一切皆慢——无弹性、无甩入、无快动作；快动作=风格违规。
 - **文字**：Noto Sans SC 细字重（300）+ 大 letterSpacing（3-10）；小字标签用 Orbitron（数字/英文小 caps）。
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {GRAIN_URL} from '../common/DotFieldBg';
+import {GRAIN_SIZE, GRAIN_URL} from '../common/Grain';
 import {mulberry32} from '../common/kit/rand';
 
 /**
@@ -11,7 +11,7 @@ import {mulberry32} from '../common/kit/rand';
  *    （431f 样片内呈现 ≥40% ≥ 1/3 循环），彼此 screen 混合出 mesh gradient 感
  * 2. 玻璃卡片配方：backdrop-filter blur(24px) + 白 8% 填充 + 1px 白 30% 内描边 + 28-32px 大圆角
  * 3. 配色邻近色紫蓝青（violet/indigo/blue/periwinkle/cyan），禁撞色；暗底 #05041a 亮斑
- * 4. 全局叠 4.5% 噪点防 banding（feTurbulence overlay）
+ * 4. 全局叠 4.5% 噪点防 banding（确定性像素 PNG overlay）
  * 5. 缓动只有 sine/linear 呼吸曲线；文字入场只用 opacity+8px 位移；一切皆慢
  */
 
@@ -141,14 +141,14 @@ export const AuroraBackdrop: React.FC = () => {
   );
 };
 
-/** 全局噪点层：feTurbulence overlay 4.5%（签名特征4，防 banding），静态确定性纹理。 */
+/** 全局噪点层：确定性像素 PNG overlay 4.5%（签名特征4，防 banding），静态确定性纹理。 */
 export const NoiseField: React.FC = () => (
   <div
     style={{
       position: 'absolute',
       inset: 0,
       backgroundImage: GRAIN_URL,
-      backgroundSize: '160px 160px',
+      backgroundSize: `${GRAIN_SIZE}px ${GRAIN_SIZE}px`,
       opacity: 0.045,
       mixBlendMode: 'overlay',
       pointerEvents: 'none',

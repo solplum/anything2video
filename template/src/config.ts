@@ -36,7 +36,7 @@ export const VIDEO = {
    */
   subs: undefined as 'cn' | 'bilingual' | 'none' | undefined,
   /**
-   * 幕底：'stars' 星点 + 雾底渐变（默认，样片风格）｜'dots' 点阵波（video-talkcraft dot-field-wave 移植，`common/DotFieldBg.tsx`）。
+   * 幕底：'stars' 星点 + 雾底渐变（默认，样片风格）｜'dots' 点阵扫光（独立设计的亮度场，`common/DotFieldBg.tsx`）。
    * 两者互斥；镜头里的 BG_Gn 覆写（`stars:'none'` 关幕底）对两种方案都生效。frame_metrics.py 会按这里的值抠掉幕底再统计。
    */
   bg: 'stars' as 'stars' | 'dots',
