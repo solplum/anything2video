@@ -8,6 +8,7 @@
 | `monotone.ts` | 单调三次样条：数据单调则曲线单调不过冲，差分变号点切线归零（cue 标点休止）——时间重参数化/禁过冲电平轨 | `demos/02-line-art/film.js:37-51` (MIT, Vincentwei1021), TS 重写 |
 | `quantize.ts` | 帧中心量化闸门 `qT` + 12/6fps 步进时基（`K/Q12/Q6/ks`）+ hash 手摆抖动 `jit`——定格抽帧观感 / mb 子样本不跨硬切 | `demos/08-morph/index.html:31`、`demos/09-bauhaus/film.js:23`、`demos/06-collage/index.html:45-53` (MIT, Vincentwei1021), TS 重写 |
 | `smear.ts` | 解析 smear 胶囊几何：shutter 两端采样 + 平台 alpha + 四停渐变参数——快动作解析运动模糊，不靠渲染器累积 | `demos/08-morph/index.html:604-611` (MIT, Vincentwei1021), TS 重写 |
+| `kinematics.ts` | 解析双骨 IK `solveTwoBoneIK`（锁死肢段长）+ 步态骨盆起伏 `walkPelvisState` + 纯函数有界历史弹簧 `followSpring` + 弧线 `arcPoint` | 本仓自研（MIT），消费端 `src/shots/character-action/Demo.tsx` |
 
 ## 新卡引用方式
 
@@ -16,6 +17,7 @@ import {hermite, hermite1} from '../common/motion/hermite';   // 相机/光强�
 import {monotone} from '../common/motion/monotone';           // 节奏重映射、禁过冲
 import {qT, K, Q12, Q6, ks, jit} from '../common/motion/quantize'; // 定格抽帧 + 手摆
 import {smearCap, smearStops} from '../common/motion/smear';  // 快段解析模糊
+import {solveTwoBoneIK, walkPelvisState, followSpring, arcPoint} from '../common/motion/kinematics'; // 双骨 IK + 弹簧滞后跟随
 ```
 
 - **相机/多通道编排**：`hermite([{t, v, e?} | {t, v, m}])` → `f(t): number[]`；标量简写 `hermite1([[t, v], [t, v, 'e']])`。
@@ -32,6 +34,8 @@ import {smearCap, smearStops} from '../common/motion/smear';  // 快段解析模
 npx esbuild src/common/motion/motion.test.ts --bundle --format=cjs --outfile=.motion-test.cjs
 node -e "require('./.motion-test.cjs').runAllMotionTests().forEach(l => console.log(l))"
 ```
+
+仓库根 `node --test tests/kinematics.test.mjs` 覆盖双骨恒长、不可达钳制、任意帧随机 Seek 确定性与阻尼收敛。
 
 ## 命名事件编排
 

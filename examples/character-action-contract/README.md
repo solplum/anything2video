@@ -10,7 +10,7 @@ Contact palm `(potX-70,450)` equals the prop edge throughout push/support. The p
 
 ## Reproduce
 
-Use official Remotion 4.0.507 dependencies in an **external** workspace, Node, system Chromium, ffmpeg, and system librsvg/cairo. The renderer script copies the exact owned scene plus existing `common/riso` into the external workspace; it does not change shared Root/config.
+Use official Remotion 4.0.507 dependencies in an **external** workspace, Node, system Chromium, ffmpeg, and system librsvg/cairo. The renderer script copies the exact owned scene plus existing `common/riso` and `common/motion` into the external workspace; it does not change shared Root/config.
 
 ```sh
 examples/character-action-contract/render.sh /absolute/external/workspace

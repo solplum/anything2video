@@ -22,8 +22,8 @@ TTS 引擎（`TTS_ENGINE`，默认 `auto` = 按解说词语言选；**跑之前�
            auto 会自动降级到 edge 英文，无需手动处理。
            KOKORO_VOICE=am_liam（Liam，男声，与中文云详同定位）KOKORO_LANG=a KOKORO_SPEED=1.0
   kokoro 没有词边界 → 改为「逐字幕块分别合成再拼接」，块起始帧因此也是精确的（CHUNK_PAD 调块间静音）。
-  用户有别的 TTS 偏好时不走本脚本：让他给成品配音 wav，按逐句/逐块时间轴手填 timeline.ts 与 subs.ts。
-其它环境变量：GAP/CHAPTER_GAP/LEAD/TAIL（帧）。
+  用户自带成品配音 wav 时走 scripts/align_narration.py 自动能量停顿对齐，免手填 timeline.ts 与 subs.ts。
+其它参数与环境变量：PROSODY_MODE（natural|fixed）、GAP/CHAPTER_GAP/LEAD/TAIL（帧）、--beat-grid / --no-beat-align。
 已有旁白正本必须 --force 才能重生成。缺 project.json 时仅 --legacy-config --fps 允许显式迁移。
 """
 import argparse, asyncio, hashlib, json, os, re, subprocess, sys
