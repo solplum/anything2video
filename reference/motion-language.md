@@ -92,3 +92,12 @@ uv run python scripts/beat_grid.py public/assets/<slug>/bgm.wav --out script/bea
 ## 8. 事件锚点与局部修改
 
 需要将到达/揭示对准旁白或已验证拍点，或修改一次停留并顺延后续动作时，见 [cue-choreography.md](cue-choreography.md)。模板 `common/motion/cues.ts` 提供具名依赖、到达点对齐和纯时间进度；Studio 的 CueDemo 是可运行例子。保留实录音乐，不以程序配乐替代。
+
+## 9. 解析骨骼与无状态弹簧重叠（common/motion/kinematics.ts）
+
+手写人物或关节路径禁止用中点折线估算膝/肘坐标（会导致肢体每帧拉伸变形）。[kinematics.ts](../template/src/common/motion/kinematics.ts) 提供帧纯函数原语：
+
+- `solveTwoBoneIK(root, target, L1, L2, bendDir)`：余弦定理解析双骨逆运动学，严格保持 `L1/L2` 刚体定长并平滑钳制超距伸展；
+- `walkPelvisState(leftSwing01, rightSwing01, moving, effort01)`：随步态交替产生重心下沉吸能与中段抬升、骨盆微倾与前倾；
+- `followSpring(driverAt, frame, opts)`：基于有限回看窗口 `[frame - historyFrames .. frame]` 的无状态二阶阻尼弹簧，零可变模块状态，兼容 Remotion 并发乱序抽帧，用于头部、帽檐、尾随手臂、飘带与图形次级滞后收尾；
+- `arcPoint(from, to, t01, liftPx)`：抛物线弧线插值。

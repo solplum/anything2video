@@ -8,6 +8,7 @@ case "$ROOT/" in "$WORK/"*) echo 'Refusing repository ancestor as workspace' >&2
 mkdir -p "$WORK/template/src/shots" "$WORK/template/src/common" "$WORK/examples/character-action-contract" "$WORK/out"
 cp -R "$ROOT/template/src/shots/character-action" "$WORK/template/src/shots/"
 cp -R "$ROOT/template/src/common/riso" "$WORK/template/src/common/"
+cp -R "$ROOT/template/src/common/motion" "$WORK/template/src/common/"
 cp "$ROOT/examples/character-action-contract/"*.json "$WORK/examples/character-action-contract/"
 cp "$ROOT/examples/character-action-contract/render-entry.tsx" "$WORK/examples/character-action-contract/"
 cd "$WORK"

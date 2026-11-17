@@ -229,5 +229,80 @@ class AudioPipelineTests(unittest.TestCase):
                 self.assertIn('music_plan', result.stderr, name)
 
 
+class ProsodyAndDuckingTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(SCRIPTS))
+        try:
+            spec_tts = importlib.util.spec_from_file_location('tts_mod', SCRIPTS / 'tts_build.py')
+            cls.tts = importlib.util.module_from_spec(spec_tts)
+            spec_tts.loader.exec_module(cls.tts)
+            spec_mix = importlib.util.spec_from_file_location('mix_mod', SCRIPTS / 'mix_audio.py')
+            cls.mix = importlib.util.module_from_spec(spec_mix)
+            spec_mix.loader.exec_module(cls.mix)
+        finally:
+            sys.path.pop(0)
+
+    def test_semantic_gap_frames_scales_by_punctuation_and_respects_zero_or_fixed(self):
+        cont = self.tts.semantic_gap_frames('如果只靠代码画人，', '动作就会发僵。', 10, 'natural')
+        period = self.tts.semantic_gap_frames('如果只靠代码画人。', '动作就会发僵。', 10, 'natural')
+        turn = self.tts.semantic_gap_frames('旧版看起来还行。', '但是声音很割裂。', 10, 'natural')
+        question = self.tts.semantic_gap_frames('为什么会不流畅？', '因为关节没锁定。', 10, 'natural')
+        climax = self.tts.semantic_gap_frames('一次彻底重写！', '下面看效果。', 10, 'natural')
+        self.assertLess(cont, period)
+        self.assertGreater(turn, period)
+        self.assertEqual(question, turn)
+        self.assertGreater(climax, question)
+        self.assertEqual(self.tts.semantic_gap_frames('为什么？', '因为这样。', 10, 'fixed'), 10)
+        self.assertEqual(self.tts.semantic_gap_frames('为什么？', '因为这样。', 0, 'natural'), 0)
+
+    def test_quantize_sentence_start_aligns_to_downbeat_and_beat(self):
+        beats = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+        downbeats = [1.0, 3.0]
+        self.assertAlmostEqual(self.tts.quantize_sentence_start(0.7, 'chapter_open', beats, downbeats), 1.0, places=5)
+        self.assertAlmostEqual(self.tts.quantize_sentence_start(1.3, 'accent', beats, downbeats), 1.5, places=5)
+        # Far outside lookahead window stays untouched
+        self.assertAlmostEqual(self.tts.quantize_sentence_start(10.0, 'chapter_open', beats, downbeats), 10.0, places=5)
+
+    def test_asymmetric_duck_envelope_holds_short_pauses_and_releases_slowly(self):
+        # 5 seconds mono narration: speech [0.5..1.5s], 0.25s short pause [1.5..1.75s],
+        # speech [1.75..2.5s], then 2.5s silence [2.5..5.0s].
+        t = np.arange(5 * SR) / SR
+        narr = np.zeros_like(t)
+        speech_mask = ((t >= 0.5) & (t < 1.5)) | ((t >= 1.75) & (t < 2.5))
+        narr[speech_mask] = 0.25 * np.sin(2 * np.pi * 440 * t[speech_mask])
+        env = self.mix.compute_speech_duck_envelope(narr, SR)
+        self.assertEqual(len(env), len(narr))
+        self.assertLess(float(env[int(0.2 * SR)]), 0.05)
+        self.assertGreater(float(env[int(1.62 * SR)]), 0.65, 'must hold through 0.25s pause without pumping')
+        self.assertLess(float(env[int(4.8 * SR)]), 0.25, 'must recover smoothly over long silence')
+
+    def test_spectral_ducking_attenuates_vocal_band_more_than_sub_bass(self):
+        t = np.arange(2 * SR) / SR
+        bass = 0.4 * np.sin(2 * np.pi * 100 * t)
+        mid = 0.4 * np.sin(2 * np.pi * 1800 * t)
+        bgm = np.column_stack([bass + mid, bass + mid])
+        steady_tail = slice(int(0.5 * SR), int(1.9 * SR))
+
+        no_duck = self.mix.apply_spectral_ducking(bgm, np.zeros(len(t)), SR)
+        self.assertTrue(np.allclose(no_duck, bgm))
+
+        full_duck = self.mix.apply_spectral_ducking(bgm, np.ones(len(t)), SR)
+        bass_ducked = self.mix.apply_spectral_ducking(np.column_stack([bass, bass]), np.ones(len(t)), SR)
+        mid_ducked = self.mix.apply_spectral_ducking(np.column_stack([mid, mid]), np.ones(len(t)), SR)
+        bass_gain = float(np.sqrt(np.mean(bass_ducked[steady_tail] ** 2)) / np.sqrt(np.mean(bass[steady_tail] ** 2)))
+        mid_gain = float(np.sqrt(np.mean(mid_ducked[steady_tail] ** 2)) / np.sqrt(np.mean(mid[steady_tail] ** 2)))
+        self.assertGreater(bass_gain, mid_gain * 1.5, 'vocal mid-band must duck deeper than bass groove')
+        self.assertLess(float(np.sqrt(np.mean(full_duck[steady_tail] ** 2))), float(np.sqrt(np.mean(bgm[steady_tail] ** 2))))
+
+    def test_loop_with_crossfade_avoids_splice_dropouts(self):
+        t = np.arange(2 * SR) / SR
+        # Smooth continuous 440Hz tone of 2.0s looped to 5.0s
+        src = np.column_stack([0.3 * np.sin(2 * np.pi * 440 * t), 0.3 * np.sin(2 * np.pi * 440 * t)])
+        looped = self.mix.loop_with_crossfade(src, 5 * SR, SR, xfade_s=0.5)
+        self.assertEqual(looped.shape, (5 * SR, 2))
+        self.assertLessEqual(float(np.max(np.abs(looped))), 0.45)
+
+
 if __name__ == '__main__':
     unittest.main()

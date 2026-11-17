@@ -51,7 +51,7 @@
 | 图生视频停顿分段 | [plan_segments.py](../scripts/plan_segments.py)：真实停顿切分，整数秒只取停顿内，计费秒数/接缝遮罩；见 AI SOP 路线 C |
 | 运动连续性 / 字幕带 | [probe_motion_quality.py](../scripts/probe_motion_quality.py)、[probe_subtitle_band.py](../scripts/probe_subtitle_band.py)；合法静止按分镜/beat sheet，命中看实际帧定性 |
 | 批量预览 / 动作关键窗 | [review-pack.mjs](../scripts/review-pack.mjs)、[批量审片包](action-review.md#batch-review)：可选单请求开中末/切点＋明确动作/cue，一次 bundle，默认只待审；已有媒体单独复核仍用 [action_review.py](../scripts/action_review.py)，真实 PTS/ROI/哈希，仍 needs_review |
-| 小屏 / 线头闭合 | [probe_readability.mjs](../scripts/probe_readability.mjs)、[readability.md](readability.md)；[probe_line_ends.mjs](../scripts/probe_line_ends.mjs) 只读静态字面量 M/L/Z 路径起止点；非完整 SVG/TSX 几何检查，适用范围与缺口见契约 |
+| 小屏 / 线头闭合 / 构图对比 | [probe_readability.mjs](../scripts/probe_readability.mjs)、[readability.md](readability.md)；[probe_line_ends.mjs](../scripts/probe_line_ends.mjs) 只读静态字面量 M/L/Z 路径起止点；[probe_aesthetics.py](../scripts/probe_aesthetics.py) 检底带对比度、视觉重心死区与穿带线条（不替代人眼审片） |
 | 音画 / 媒体 | [probe_av_sync.mjs](../template/scripts/probe_av_sync.mjs)、[probe_delivery.py](../template/scripts/probe_delivery.py)；首句探针不证明全片对位或听感 |
 | 其他工程探针 | [template/scripts](../template/scripts)：blank/liveness/subject/time/frame_cost/material_substance；先声明 ROI/背景/合法静止，不能无条件外推 |
 | 审美与量尺 | [directing-playbook.md](directing-playbook.md)（含逐镜静态审计）、[aesthetic-rules.md](aesthetic-rules.md)、[jury-review.md](jury-review.md)；机器测试不代替实际审查 |
@@ -65,7 +65,8 @@
 | 动效配方卡、参数与参考源码 | [gallery/README.md](../gallery/README.md)、[cards](../gallery/cards)、[demos-ref](../gallery/demos-ref)、[lib-ref](../gallery/lib-ref)；卡数量以目录/索引为准。pdoom 方法论卡没有本仓 demo 时按卡参数实现，来源在卡尾 |
 | 基础 2.5D/数字/闪切/滚动 | [common/kit](../template/src/common/kit)：PageCam、DigitRoll、FlashCut、VerticalTicker，lagged/dampedSettle/mulberry32 |
 | 演绎结构四件套 | WordLitCaption、ChapterBadge、GoldenQuote、RecapFrame；底料 `SubEntry.chars`，接线见 [explainer](../recipes/explainer.md)，三铁律见导演手册 |
-| 共享运动数学、底图语法 | [common/motion](../template/src/common/motion)：hermite/monotone/quantize/smear；[PhotoStage](../template/src/common/kit/PhotoStage.tsx)：Ken Burns 钳制、snap push、freeze-to-card |
+| 共享运动数学、底图语法 | [common/motion](../template/src/common/motion)：hermite/monotone/quantize/smear/kinematics（`solveTwoBoneIK`、`walkPelvisState`、`followSpring`）；[PhotoStage](../template/src/common/kit/PhotoStage.tsx)：Ken Burns 钳制、snap push、freeze-to-card |
+| 瑞士网格排版与锚点标注 | [common/layout](../template/src/common/layout/SwissStage.tsx)：`EditorialCanvas`、`HeroMetricStage`、`EditorialSplitStage`、`ProcessFlowStage`、`ComparisonSplitStage`、`AnchoredCallout`、`ScrimSubtitle`（内置安全区扣除与高对比护栏） |
 | 可变字体、单笔画字体 | [VarText](../template/src/common/kit/VarText.tsx)：varSettings/breatheWght；[StrokeText](../template/src/common/kit/StrokeText.tsx)：光学 kern、writtenLength、笔头坐标，仅拉丁。中文手写按 gallery 的 draw-svg-trace；字体许可分别登记 |
 | 精密机械解剖 | [kit/iso](../template/src/common/kit/iso)：math/primitives/lathe/tube/sorter/IsoMachine；`isometric-anatomy` 仍为无随包预览的实验入口 |
 | 真实档案与翻拍微距 | [documentary](../recipes/documentary.md)、[RostrumStage](../template/src/common/kit/RostrumStage.tsx)：古籍/图纸/照片舞台、Ken Burns、印鉴/纸纹；真实档案权属台账见契约 |

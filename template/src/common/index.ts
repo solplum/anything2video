@@ -25,3 +25,5 @@ export {SealStamp} from './SealStamp';
 export * from './music';
 
 export * from './motion/cues';
+export * from './motion/kinematics';
+export * from './layout';

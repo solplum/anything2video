@@ -7,80 +7,112 @@
   --adopt-legacy 显式迁移旧工程 audio.wav；已有 mix.json 时正本缺失必须重跑 TTS。
 - BGM 二模式：①音乐编排表 audio/music_plan.json（v4.2.0，多段接力：逐段[曲/曲内进出点/视频落位/
   crossfade]，schema 与纪律见 reference/music-plan.md，主题反查提名用 scripts/bgm_query.py）——
-  逐段解码→**段级 RMS 归一到响度床**→段内淡入淡出→重叠区等功率 crossfade（crossfade 必须覆盖
-  重叠区，硬校验 fail fast）；②单曲 bgm.wav（向后兼容，原行为一字不动）：解码 → 裁/循环到片长 →
-  **RMS 归一到目标响度床**（固定小增益会"混了但听不见"，教训见 lessons）→ 2s 淡入 4s 淡出。
-  编排表存在时优先生效、忽略 bgm.wav 并提示。
-- 音效：默认关闭；--sfx sand 显式启用章节铺沙/扫掠。旁白期间音乐平滑降低 7dB。
-- 依赖：numpy scipy（低通/带通滤波）；ffmpeg 解码音频
+  逐段解码→段级 RMS 归一到响度床→段内淡入淡出→重叠区等功率 crossfade；
+  ②单曲 bgm.wav：解码 → 等功率交叉淡化循环到片长 → RMS 归一到目标响度床 → 1.5s/3.5s 余弦淡入淡出。
+- 旁白让位：非对称侧链包络（40ms 快攻 / 350ms 保持 / 900ms 慢释防句间抽吸）+ 850–3600Hz 动态人声挖槽（-8.5dB 中频 / -3.0dB 其余频段）。
+- 音效：默认关闭；--sfx sand 显式启用章节铺沙/扫掠。
+- 依赖：numpy scipy；ffmpeg 解码音频
 """
-import argparse, hashlib, json, os, pathlib, subprocess, sys
+import argparse, hashlib, json, math, os, pathlib, subprocess, sys
 import numpy as np
+from scipy.io import wavfile
+from scipy.ndimage import maximum_filter1d, uniform_filter1d
+from scipy.signal import butter, lfilter, sosfilt
 from audio_project import AudioProject
+
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8')
-from scipy.io import wavfile
-from scipy.ndimage import uniform_filter1d
-from scipy.signal import butter, lfilter
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--epic', action='store_true')
-parser.add_argument('--bed', type=float)
-parser.add_argument('--sfx', choices=('none', 'sand'), default='none')
-parser.add_argument('--adopt-legacy', action='store_true')
-parser.add_argument('--legacy-config', action='store_true')
-parser.add_argument('--fps', type=int)
-options = parser.parse_args()
-try:
-    PROJECT = AudioProject(ROOT, options.legacy_config, options.fps)
-    SLUG = PROJECT.slug
-    A_DIR = PROJECT.path(PROJECT.assets)
-    PROJECT.preflight_audio(A_DIR)
-    _tl = PROJECT.timeline()
-except (ValueError, OSError) as error:
-    raise SystemExit(f'[mix_audio] {error}') from None
-RAW = f'{A_DIR}/audio_narration.wav'   # 与 SKILL.md / promo.md / orchestration §6 统一口径（旧名 narration_raw.wav 已废）
-MIX = f'{A_DIR}/audio.wav'
 SR = 48000
-# 响度床双档（按片况选）：0.08 标准=音乐可闻不压旁白；0.055 保守=旁白密集/信息优先；0.12 epic=无旁白压制。用法：--bed 0.055
-EPIC = options.epic
-BED = options.bed if options.bed is not None else (0.12 if EPIC else 0.08)
-TARGET_BGM_RMS = BED
-if not np.isfinite(BED) or not 0 <= BED <= 0.5:
-    raise SystemExit('--bed must be a finite number in 0..0.5')
 BGM_SCALE_CAP = 8.0
 SFX_GAIN = {'pour': 0.15, 'wipe': 0.10}
 
-if EPIC:
-    # epic 无旁白（recipes/epic.md §6）：旁白轨为零，片长锚 timeline.json（chapter_timeline.py 产出）
-    total = int(round(_tl['total_frames'] / PROJECT.fps * SR))
-    narr = np.zeros((total, 2))
-else:
-    _audio = pathlib.Path(A_DIR) / 'audio.wav'
-    if not os.path.exists(RAW):
-        if not options.adopt_legacy:
-            raise SystemExit('缺 audio_narration.wav：请重跑 TTS；确认 audio.wav 是纯旁白时才用 --adopt-legacy。')
-        if pathlib.Path(MIX).with_suffix('.mix.json').exists():
-            raise SystemExit('旁白正本缺失，禁止把已有混音当正本：请重跑 TTS。')
-        source = str(PROJECT.path(_audio))
+
+def compute_speech_duck_envelope(narr_mono, sr=SR, hold_s=0.35, attack_s=0.04, release_s=0.90):
+    """非对称侧链包络：短停顿由 hold 稳住不抽吸，长留白（>1s）按 900ms 优雅回升。"""
+    x = np.asarray(narr_mono, dtype=np.float64)
+    n = len(x)
+    if n == 0:
+        return np.zeros(0, dtype=np.float64)
+    rms_win = max(1, int(round(sr * 0.02)))
+    rms = np.sqrt(np.maximum(0.0, uniform_filter1d(x * x, size=rms_win, mode='nearest')))
+    gate = np.clip((rms - 0.005) / 0.030, 0.0, 1.0)
+    look_n = max(1, int(round(sr * 0.03))) | 1
+    gate_pre = maximum_filter1d(gate, size=look_n, mode='constant', cval=0.0, origin=-(look_n // 2))
+    hold_n = max(1, int(round(sr * hold_s))) | 1
+    held = maximum_filter1d(gate_pre, size=hold_n, mode='constant', cval=0.0, origin=hold_n // 2)
+    step = max(1, sr // 1000)
+    ctrl_sr = sr / step
+    held_ds = held[::step]
+    att_a = 1.0 - math.exp(-1.0 / max(1e-6, attack_s * ctrl_sr))
+    rel_a = 1.0 - math.exp(-1.0 / max(1e-6, release_s * ctrl_sr))
+    sm = np.empty_like(held_ds)
+    val = float(held_ds[0])
+    for k in range(len(held_ds)):
+        target = float(held_ds[k])
+        val += (att_a if target > val else rel_a) * (target - val)
+        sm[k] = val
+    if step == 1 and len(sm) == n:
+        return sm
+    return np.interp(np.arange(n, dtype=np.float64), np.arange(len(sm), dtype=np.float64) * step, sm)
+
+
+def apply_spectral_ducking(bgm, duck_env, sr=SR, mid_db=-8.5, body_db=-3.0):
+    """动态人声让位：人声清晰度核心区（850–3600Hz）深压 -8.5dB，底鼓/低音（body）轻压 -3.0dB 托底。"""
+    b = np.asarray(bgm, dtype=np.float64)
+    env = np.asarray(duck_env, dtype=np.float64)
+    if len(b) == 0:
+        return b.copy()
+    hi = min(3600.0, 0.45 * sr)
+    lo = min(850.0, 0.5 * hi)
+    if lo <= 20.0 or hi <= lo + 10.0:
+        gain = 1.0 - (env[:, None] if b.ndim == 2 else env) * (1.0 - 10.0 ** (body_db / 20.0))
+        return b * gain
+    sos = butter(2, [lo, hi], btype='bandpass', fs=sr, output='sos')
+    bgm_mid = sosfilt(sos, b, axis=0)
+    bgm_body = b - bgm_mid
+    e = env[:, None] if b.ndim == 2 else env
+    gain_mid = 1.0 - e * (1.0 - 10.0 ** (mid_db / 20.0))
+    gain_body = 1.0 - e * (1.0 - 10.0 ** (body_db / 20.0))
+    return bgm_body * gain_body + bgm_mid * gain_mid
+
+
+def loop_with_crossfade(bgm, total_samples, sr=SR, xfade_s=1.5):
+    """单曲长于片长直接裁切；短于片长则用等功率交叉淡化无缝循环，消除接缝爆音。"""
+    src = np.asarray(bgm, dtype=np.float64)
+    if len(src) >= total_samples:
+        return src[:total_samples].copy()
+    if len(src) == 0:
+        shape = (total_samples, src.shape[1]) if src.ndim == 2 else (total_samples,)
+        return np.zeros(shape, dtype=np.float64)
+    xf = min(int(round(xfade_s * sr)), len(src) // 3)
+    if xf < 16:
+        out = np.tile(src, ((total_samples + len(src) - 1) // len(src), 1) if src.ndim == 2 else (total_samples + len(src) - 1) // len(src))
+        return out[:total_samples]
+    theta = np.linspace(0.0, math.pi * 0.5, xf, dtype=np.float64)
+    if src.ndim == 2:
+        fade_out = np.cos(theta)[:, None]
+        fade_in = np.sin(theta)[:, None]
     else:
-        source = str(PROJECT.path(RAW))
+        fade_out = np.cos(theta)
+        fade_in = np.sin(theta)
+    chunks = [src[:-xf]]
+    tail = src[-xf:] * fade_out
+    produced = len(src) - xf
+    while produced < total_samples:
+        head = src[:xf] * fade_in
+        chunks.append(tail + head)
+        produced += xf
+        if produced >= total_samples:
+            break
+        mid = src[xf:-xf]
+        chunks.append(mid)
+        produced += len(mid)
+        tail = src[-xf:] * fade_out
+    return np.concatenate(chunks, axis=0)[:total_samples]
 
-    decoded = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(PROJECT.path(source)), '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'],
-                             capture_output=True, check=True).stdout
-    narr = np.frombuffer(decoded, dtype='<f4').reshape(-1, 2).astype(np.float64)
-    if len(narr) == 0 or not np.all(np.isfinite(narr)):
-        raise SystemExit('Narration is empty or contains invalid samples')
-    total = len(narr)
-    PROJECT.validate_audio(narr, SR, _tl)
-
-# BGM：音乐编排表（多段接力）优先，回退单曲
-MUSIC_PLAN = pathlib.Path(A_DIR) / 'music_plan.json'
-_bgm = next((f'{A_DIR}/{_n}' for _n in ('bgm.wav', 'bgm.mp3') if os.path.exists(f'{A_DIR}/{_n}')), None)
-music_tracks_log = []
 
 def _decode_stereo(path):
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(path), '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'],
@@ -90,25 +122,17 @@ def _decode_stereo(path):
         raise SystemExit(f'音轨为空或含非法采样：{path}')
     return data
 
-def _track_duration(path):
-    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration',
-                          '-of', 'default=noprint_wrappers=1:nokey=1', str(path)],
-                         capture_output=True, text=True, check=True).stdout.strip()
-    try:
-        return float(out)
-    except ValueError:
-        raise SystemExit(f'ffprobe 无法读取时长：{path}') from None
 
-def _resolve_track(name):
-    for candidate in (pathlib.Path(A_DIR) / name, pathlib.Path(ROOT) / 'assets' / 'audio' / 'bgm' / name,
+def _resolve_track(name, a_dir, root):
+    for candidate in (pathlib.Path(a_dir) / name, pathlib.Path(root) / 'assets' / 'audio' / 'bgm' / name,
                       pathlib.Path(name)):
         if candidate.exists():
             return candidate
-    raise SystemExit(f'music_plan: 找不到音轨 {name}（查工程 {A_DIR} 与 skill 曲库 assets/audio/bgm）')
+    raise SystemExit(f'music_plan: 找不到音轨 {name}（查工程 {a_dir} 与 skill 曲库 assets/audio/bgm）')
 
-def _render_music_plan(plan, total):
-    """逐 cue 渲染：解码→曲内裁切→段级 RMS 归一→段内淡入淡出→重叠区等功率 crossfade。
-    校验 fail fast：字段完整/曲内范围合法/落位不越片长/时长一致/排序/交叉淡化覆盖重叠区。"""
+
+def _render_music_plan(plan, total, target_bgm_rms, a_dir, root, music_tracks_log):
+    """逐 cue 渲染：解码→曲内裁切→段级 RMS 归一→段内淡入淡出→重叠区等功率 crossfade。"""
     cues = plan.get('cues')
     if not isinstance(cues, list) or not cues:
         raise SystemExit('music_plan.cues 必须为非空数组')
@@ -132,7 +156,7 @@ def _render_music_plan(plan, total):
             raise SystemExit(f'music_plan.cues[{i}]: 落位 [{t0:.2f},{t1:.2f}]s 超出片长 {total / SR:.2f}s')
         if prev_start is not None and t0 < prev_start - 1e-6:
             raise SystemExit(f'music_plan.cues[{i}]: timeline_start 乱序（{t0:.2f} < 前段 {prev_start:.2f}）')
-        path = _resolve_track(str(cue['track']))
+        path = _resolve_track(str(cue['track']), a_dir, root)
         key = str(path)
         if key not in decoded:
             decoded[key] = _decode_stereo(path)
@@ -154,7 +178,7 @@ def _render_music_plan(plan, total):
             raise SystemExit(f'music_plan.cues[{i}]: 落位完全在片长之外')
         seg_rms = float(np.sqrt(np.mean(seg ** 2)))
         if seg_rms > 1e-6:
-            seg *= min(BGM_SCALE_CAP, TARGET_BGM_RMS / seg_rms)
+            seg *= min(BGM_SCALE_CAP, target_bgm_rms / seg_rms)
         fade_in, fade_out = float(cue.get('fade_in') or 0), float(cue.get('fade_out') or 0)
         if fade_in > 0:
             k = min(len(seg), int(fade_in * SR))
@@ -179,97 +203,156 @@ def _render_music_plan(plan, total):
                                  'section': cue.get('section'), 'rationale': cue.get('rationale')})
     return bgm
 
-if MUSIC_PLAN.exists():
-    if _bgm:
-        print(f'提示：music_plan.json 存在，单曲 {_bgm} 忽略（编排表优先）')
-    plan = json.loads(MUSIC_PLAN.read_text(encoding='utf-8'))
-    bgm = _render_music_plan(plan, total)
-elif _bgm:
-    bgm = _decode_stereo(PROJECT.path(_bgm))
-    while len(bgm) < total:
-        bgm = np.concatenate([bgm, bgm])
-    bgm = bgm[:total]
-    rms = float(np.sqrt(np.mean(bgm ** 2)))
-    if rms > 1e-6:
-        bgm *= min(BGM_SCALE_CAP, TARGET_BGM_RMS / rms)
-    _positions = np.arange(total)
-    _fade = np.minimum(1, _positions / (2 * SR)) * np.minimum(1, (total - 1 - _positions) / (4 * SR))
-    bgm *= _fade[:, None]
-    music_tracks_log.append({'track': str(_bgm), 'mode': 'single'})
-else:
-    bgm = np.zeros((total, 2), dtype=np.float64)
 
-# 旁白能量驱动平滑压低音乐；无旁白的 epic 保持音乐床。
-if not EPIC:
-    envelope = np.sqrt(np.maximum(0, uniform_filter1d(np.mean(narr ** 2, axis=1), int(SR * 0.05))))
-    activity = uniform_filter1d(np.clip((envelope - 0.006) / 0.035, 0, 1), int(SR * 0.15))
-    bgm *= (1 - activity * (1 - 10 ** (-7 / 20)))[:, None]
-
-# 音效（numpy 程序合成）
-def lowpass(x, cutoff, order=4):
+def _lowpass(x, cutoff, order=4):
     b, a = butter(order, cutoff / (SR / 2), btype='low')
     return lfilter(b, a, x)
 
-def pour(dur_s=1.1):
+
+def _pour(dur_s=1.1):
     """铺沙：双重低通噪声 + 缓起缓落（沙瀑感，去静电）"""
     n = int(dur_s * SR)
     x = np.random.default_rng(7).standard_normal(n)
-    x = lowpass(lowpass(x, 650), 650)
+    x = _lowpass(_lowpass(x, 650), 650)
     env = np.minimum(np.arange(n) / (0.35 * SR), 1.0) * np.exp(-np.linspace(0, 3.6, n))
     return (x * env)[:, None] * SFX_GAIN['pour']
 
-def wipe(dur_s=0.55):
+
+def _wipe(dur_s=0.55):
     """扫掠：700–3200Hz 带通气流（抹沙/转场）"""
     n = int(dur_s * SR)
     x = np.random.default_rng(11).standard_normal(n)
-    x = lowpass(x, 3200)
+    x = _lowpass(x, 3200)
     b, a = butter(4, 700 / (SR / 2), btype='high')
     x = lfilter(b, a, x)
     return (x * np.sin(np.linspace(0, np.pi, n)) ** 2.0)[:, None] * SFX_GAIN['wipe']
 
-tl = _tl
-FPS = PROJECT.fps
-_chs = tl.get('chapters') or []
-starts = [c['from'] for c in _chs] or [1]
-ends = [c['from'] - 14 for c in _chs[1:]] + [tl['total_frames'] - 14]
-sfx = np.zeros_like(narr)
-def put(cue_f, buf):
-    i0 = max(0, int(round((cue_f - 1) / FPS * SR)))
-    i1 = min(i0 + len(buf), total)
-    if i0 < total:
-        sfx[i0:i1] += buf[:i1 - i0]
-pour_buf, wipe_buf = pour(), wipe()
-# 沙音只由显式 preset 启用，其他视觉语言不自动注入。
-if options.sfx == 'sand':
-    for f in starts:
-        put(f, pour_buf)
-    for f in ends:
-        put(f, wipe_buf)
 
-mix = narr + bgm + sfx
-peak = float(np.max(np.abs(mix)))
-if peak > 0.95:
-    mix *= 0.95 / peak
-PROJECT.preflight_audio(RAW, MIX, pathlib.Path(MIX).with_suffix('.mix.json'))
-PROJECT.mkdir(A_DIR)
-if not EPIC and not PROJECT.path(RAW).exists():
-    PROJECT.copy(source, RAW)
-wavfile.write(str(PROJECT.path(MIX)), SR, (mix * 32767).astype(np.int16))
-def digest(file):
-    h = hashlib.sha256()
-    with open(PROJECT.path(file), 'rb') as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b''):
-            h.update(block)
-    return h.hexdigest()
-manifest = {'schema_version': 1, 'epic': EPIC, 'narration_sha256': None if EPIC else digest(RAW),
-            'music_sha256': digest(_bgm) if (_bgm and not MUSIC_PLAN.exists()) else None,
-            'music_plan_sha256': digest(MUSIC_PLAN) if MUSIC_PLAN.exists() else None,
-            'music': ('music_plan' if MUSIC_PLAN.exists() else ('single' if _bgm else 'none')),
-            'music_tracks': music_tracks_log,
-            'output_sha256': digest(MIX), 'sample_rate': SR,
-            'channels': 2, 'duration_seconds': total / SR, 'bed': BED,
-            'sfx': options.sfx, 'peak': float(np.max(np.abs(mix)))}
-PROJECT.write_text(pathlib.Path(MIX).with_suffix('.mix.json'), json.dumps(manifest, indent=2) + '\n')
-if PROJECT.legacy:
-    PROJECT.save_total(tl['total_frames'])
-print(f'mix ok: {total / SR:.1f}s, peak {peak:.2f} → {MIX}')
+def main(argv=None):
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--epic', action='store_true')
+    parser.add_argument('--bed', type=float)
+    parser.add_argument('--sfx', choices=('none', 'sand'), default='none')
+    parser.add_argument('--adopt-legacy', action='store_true')
+    parser.add_argument('--legacy-config', action='store_true')
+    parser.add_argument('--fps', type=int)
+    options = parser.parse_args(argv)
+    try:
+        project = AudioProject(root, options.legacy_config, options.fps)
+        a_dir = project.path(project.assets)
+        project.preflight_audio(a_dir)
+        tl = project.timeline()
+    except (ValueError, OSError) as error:
+        raise SystemExit(f'[mix_audio] {error}') from None
+
+    raw_path = f'{a_dir}/audio_narration.wav'
+    mix_path = f'{a_dir}/audio.wav'
+    epic = options.epic
+    bed = options.bed if options.bed is not None else (0.12 if epic else 0.08)
+    if not np.isfinite(bed) or not 0 <= bed <= 0.5:
+        raise SystemExit('--bed must be a finite number in 0..0.5')
+
+    if epic:
+        total = int(round(tl['total_frames'] / project.fps * SR))
+        narr = np.zeros((total, 2))
+        source = None
+    else:
+        audio_file = pathlib.Path(a_dir) / 'audio.wav'
+        if not os.path.exists(raw_path):
+            if not options.adopt_legacy:
+                raise SystemExit('缺 audio_narration.wav：请重跑 TTS；确认 audio.wav 是纯旁白时才用 --adopt-legacy。')
+            if pathlib.Path(mix_path).with_suffix('.mix.json').exists():
+                raise SystemExit('旁白正本缺失，禁止把已有混音当正本：请重跑 TTS。')
+            source = str(project.path(audio_file))
+        else:
+            source = str(project.path(raw_path))
+
+        decoded = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(project.path(source)), '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'],
+                                 capture_output=True, check=True).stdout
+        narr = np.frombuffer(decoded, dtype='<f4').reshape(-1, 2).astype(np.float64)
+        if len(narr) == 0 or not np.all(np.isfinite(narr)):
+            raise SystemExit('Narration is empty or contains invalid samples')
+        total = len(narr)
+        project.validate_audio(narr, SR, tl)
+
+    music_plan = pathlib.Path(a_dir) / 'music_plan.json'
+    bgm_single = next((f'{a_dir}/{name}' for name in ('bgm.wav', 'bgm.mp3') if os.path.exists(f'{a_dir}/{name}')), None)
+    music_tracks_log = []
+
+    if music_plan.exists():
+        if bgm_single:
+            print(f'提示：music_plan.json 存在，单曲 {bgm_single} 忽略（编排表优先）')
+        plan = json.loads(music_plan.read_text(encoding='utf-8'))
+        bgm = _render_music_plan(plan, total, bed, a_dir, root, music_tracks_log)
+    elif bgm_single:
+        bgm = loop_with_crossfade(_decode_stereo(project.path(bgm_single)), total, SR, xfade_s=1.5)
+        rms = float(np.sqrt(np.mean(bgm ** 2)))
+        if rms > 1e-6:
+            bgm *= min(BGM_SCALE_CAP, bed / rms)
+        positions = np.arange(total, dtype=np.float64)
+        fade_in_n = max(1, min(int(round(1.5 * SR)), total // 4))
+        fade_out_n = max(1, min(int(round(3.5 * SR)), total // 3))
+        fin = 0.5 - 0.5 * np.cos(math.pi * np.clip(positions / fade_in_n, 0.0, 1.0))
+        fout = 0.5 - 0.5 * np.cos(math.pi * np.clip((total - 1 - positions) / fade_out_n, 0.0, 1.0))
+        bgm *= (fin * fout)[:, None]
+        music_tracks_log.append({'track': str(bgm_single), 'mode': 'single'})
+    else:
+        bgm = np.zeros((total, 2), dtype=np.float64)
+
+    if not epic:
+        duck_env = compute_speech_duck_envelope(np.mean(narr, axis=1), SR)
+        bgm = apply_spectral_ducking(bgm, duck_env, SR)
+
+    fps = project.fps
+    chs = tl.get('chapters') or []
+    starts = [c['from'] for c in chs] or [1]
+    ends = [c['from'] - 14 for c in chs[1:]] + [tl['total_frames'] - 14]
+    sfx = np.zeros_like(narr)
+
+    def put(cue_f, buf):
+        i0 = max(0, int(round((cue_f - 1) / fps * SR)))
+        i1 = min(i0 + len(buf), total)
+        if i0 < total:
+            sfx[i0:i1] += buf[:i1 - i0]
+
+    pour_buf, wipe_buf = _pour(), _wipe()
+    if options.sfx == 'sand':
+        for f in starts:
+            put(f, pour_buf)
+        for f in ends:
+            put(f, wipe_buf)
+
+    mix = narr + bgm + sfx
+    peak = float(np.max(np.abs(mix)))
+    if peak > 0.95:
+        mix *= 0.95 / peak
+    project.preflight_audio(raw_path, mix_path, pathlib.Path(mix_path).with_suffix('.mix.json'))
+    project.mkdir(a_dir)
+    if not epic and not project.path(raw_path).exists():
+        project.copy(source, raw_path)
+    wavfile.write(str(project.path(mix_path)), SR, (mix * 32767).astype(np.int16))
+
+    def digest(file):
+        h = hashlib.sha256()
+        with open(project.path(file), 'rb') as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b''):
+                h.update(block)
+        return h.hexdigest()
+
+    manifest = {'schema_version': 1, 'epic': epic, 'narration_sha256': None if epic else digest(raw_path),
+                'music_sha256': digest(bgm_single) if (bgm_single and not music_plan.exists()) else None,
+                'music_plan_sha256': digest(music_plan) if music_plan.exists() else None,
+                'music': ('music_plan' if music_plan.exists() else ('single' if bgm_single else 'none')),
+                'music_tracks': music_tracks_log,
+                'output_sha256': digest(mix_path), 'sample_rate': SR,
+                'channels': 2, 'duration_seconds': total / SR, 'bed': bed,
+                'sfx': options.sfx, 'ducking': 'spectral_850_3600_asymmetric', 'peak': float(np.max(np.abs(mix)))}
+    project.write_text(pathlib.Path(mix_path).with_suffix('.mix.json'), json.dumps(manifest, indent=2) + '\n')
+    if project.legacy:
+        project.save_total(tl['total_frames'])
+    print(f'mix ok: {total / SR:.1f}s, peak {peak:.2f} → {mix_path}')
+
+
+if __name__ == '__main__':
+    main()

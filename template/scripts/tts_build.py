@@ -3,6 +3,7 @@
 输入 narration.txt：
   # CHAPTER <n> <标题>      章节标记（章节前自动加 chapter_gap 帧空白）
   ## gap <帧数>             在下一句前额外插入空白帧
+  ## swell                  音乐呼吸停顿标记（等价 ## gap 42）
   一句话|按竖线分成字幕短句            → 竖线只切字幕，不影响朗读
                                        每块预算：中文 ≤16 字 / 英文 ≤48 字符（超了会打 ⚠ 并自动缩字号）
                                        块首尾空格会去掉；英文片把块用空格拼回整句给 TTS（"a|b" 与 "a | b" 等价），中文直接拼接
@@ -14,7 +15,7 @@
 逐句（或逐字幕块）缓存于 audio/cache/，改一句只重合成一句。
 
 TTS 引擎（`TTS_ENGINE`，默认 `auto` = 按解说词语言选；**跑之前先问用户有没有偏好的 TTS**——按 SKILL.md 基准确认点 3 叠加所选配方 §确认点差异执行，如 promo 已删除独立确认点、并入确认点 ① 一句话带过，用户在 ① 给过偏好就照办）：
-  edge     中文默认。edge-tts 云端合成，有词级边界 → 字幕节拍最准。VOICE=zh-CN-YunyangNeural RATE=+8%
+  edge     中文默认。edge-tts 云端合成，有词级边界 → 字幕节拍最准。VOICE=zh-CN-YunyangNeural RATE=+2%
            英文降级路径：kokoro 不可用时 auto 自动切到 edge + en-US-ChristopherNeural（EDGE_EN_VOICE 可换音色）
   kokoro   英文默认（本地推理，`uv add kokoro soundfile` + espeak-ng）。**注意：2026-09 起 PyPI 的
            kokoro 0.7.16 钉死 numpy==1.26.4（py3.12+ 无 wheel）且要求不存在的 misaki>=0.7.16，装不上是常态**；
@@ -42,7 +43,10 @@ CFG_LANG = 'zh'
 SR = 48000
 ENGINE = os.environ.get('TTS_ENGINE', 'auto')
 VOICE = os.environ.get('VOICE', 'zh-CN-YunyangNeural')
-RATE = os.environ.get('RATE', '+8%')
+RATE = os.environ.get('RATE', '+2%')
+PROSODY_MODE = os.environ.get('PROSODY_MODE', 'natural')
+if PROSODY_MODE not in ('natural', 'fixed'):
+    raise SystemExit(f'未知 PROSODY_MODE={PROSODY_MODE}（可选 natural / fixed）')
 # edge-tts 云端限流（连续请求会被拒、返回空音频）：重试次数 / 退避基数秒 / 句间隔秒
 EDGE_RETRIES = int(os.environ.get('EDGE_RETRIES', 4))
 EDGE_RETRY_DELAY = float(os.environ.get('EDGE_RETRY_DELAY', 1.5))
@@ -78,6 +82,8 @@ def parse(path):
         m = re.match(r'^##\s*gap\s+(\d+)', line)
         if m:
             pending_gap += int(m.group(1)); continue
+        if re.match(r'^##\s*swell\b', line):
+            pending_gap += 42; continue
         m = re.match(r'^@(EN|CN):\s*(.+)$', line)
         if m:
             # 双语字幕：对照语言行挂到上一句（无上一句则忽略），随 subs.ts 输出对应字段
@@ -233,7 +239,73 @@ def trim_edges(x, thr=0.004):
     if len(idx) == 0:
         return x, 0.0
     a = max(0, idx[0] - int(0.03 * SR)); b = min(len(x), idx[-1] + int(0.12 * SR))
-    return x[a:b], a / SR
+    seg = np.array(x[a:b], dtype=np.float32, copy=True)
+    fi = min(int(0.015 * SR), len(seg) // 4)
+    fo = min(int(0.035 * SR), len(seg) // 4)
+    if fi > 1:
+        seg[:fi] *= (0.5 - 0.5 * np.cos(np.pi * np.arange(fi, dtype=np.float32) / fi))
+    if fo > 1:
+        seg[-fo:] *= (0.5 + 0.5 * np.cos(np.pi * np.arange(fo, dtype=np.float32) / fo))
+    return seg, a / SR
+
+
+_CONTRAST_MARKERS = ('但是', '然而', '其实', '关键', '为什么', '那么', '不过', '相反', 'But ', 'However', 'Why ', 'Yet ')
+_TRAILING_CLOSERS = '”"\'’）)]」』】'
+_LEADING_OPENERS = '“"\'‘（([「『【'
+
+
+def _discourse_role(prev_text, next_text=None):
+    tail = (prev_text or '').strip().rstrip(_TRAILING_CLOSERS)
+    head = (next_text or '').strip().lstrip(_LEADING_OPENERS)
+    if tail.endswith(('！', '!')):
+        return 'climax'
+    if tail.endswith(('？', '?', '…', '...')) or head.startswith(_CONTRAST_MARKERS):
+        return 'accent'
+    if tail.endswith(('，', ',', '：', ':', '；', ';', '—')):
+        return 'continue'
+    return 'period'
+
+
+def semantic_gap_frames(prev_text, next_text, base_gap, mode='natural'):
+    """Semantic pause sizing between adjacent sentences; preserves base_gap==0 or fixed mode."""
+    base = max(0, int(base_gap))
+    if mode == 'fixed' or base == 0 or not prev_text or not next_text:
+        return base
+    role = _discourse_role(prev_text, next_text)
+    if role == 'climax':
+        return round(base * 2.6)
+    if role == 'accent':
+        return round(base * 1.8)
+    if role == 'continue':
+        return max(4, round(base * 0.6))
+    return round(base * 1.0)
+
+
+def quantize_sentence_start(t_sec, role, beats_s, downbeats_s, pocket_s=0.0):
+    """Nudge sentence onset forward to align cleanly with musical downbeats or beats."""
+    if not beats_s and not downbeats_s:
+        return float(t_sec)
+    t_sec = float(t_sec)
+    beat_interval = float(np.median(np.diff(beats_s))) if len(beats_s) >= 2 else 0.5
+    if role == 'chapter_open':
+        pool = downbeats_s if downbeats_s else beats_s
+        max_nudge = min(0.85, max(0.25, beat_interval * 2.0))
+    elif role == 'accent':
+        pool = beats_s if beats_s else downbeats_s
+        max_nudge = 0.36
+    else:
+        return t_sec
+    for b in pool:
+        b = float(b)
+        if b < t_sec - 1e-6:
+            continue
+        candidate = b + float(pocket_s)
+        if candidate < t_sec:
+            candidate = b
+        if candidate - t_sec <= max_nudge + 1e-6:
+            return candidate
+        break
+    return t_sec
 
 
 def chunk_starts(tts_text, chunks, words, lead_cut, dur, sep=''):
@@ -317,7 +389,7 @@ async def synth_sentence(chunks, sep=''):
     return x, starts, char_secs, dur
 
 
-async def main(narr=None, *, force=False, legacy_config=False, fps=None):
+async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_grid=None, no_beat_align=False):
     global ENGINE, VOICE, RATE, PROJECT, SLUG, FPS, CFG_LANG, CACHE
     PROJECT = AudioProject(ROOT, legacy_config, fps)
     SLUG, FPS = PROJECT.slug, PROJECT.fps
@@ -328,7 +400,15 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None):
     outputs = [PROJECT.assets / name for name in ('audio.wav', 'audio_narration.wav', 'audio.mix.json')]
     destinations = [*outputs, 'script/timeline.json', 'script/timeline.md',
                     'src/common/subs.ts', 'src/common/timeline.ts', 'project.json']
-    PROJECT.preflight_audio(narr, CACHE, *destinations)
+    grid_candidate = None
+    if not no_beat_align:
+        if beat_grid is not None:
+            grid_candidate = PROJECT.path(beat_grid)
+        else:
+            default_grid = PROJECT.path('script/beat_grid.json')
+            if default_grid.exists():
+                grid_candidate = default_grid
+    PROJECT.preflight_audio(narr, CACHE, *destinations, *([grid_candidate] if grid_candidate is not None else []))
     if PROJECT.path(outputs[1]).exists() and not force:
         raise ValueError('Existing audio_narration.wav is protected; use --force to regenerate narration')
     items = parse(narr)
@@ -364,15 +444,26 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None):
                 for extension in (('.mp3', '.json') if ENGINE == 'edge' else ('.wav',)):
                     cache_path(text, extension)
     PROJECT.mkdir(CACHE)
+    beats_s = []
+    downbeats_s = []
+    beat_aligned = False
+    if grid_candidate is not None and grid_candidate.exists():
+        grid_data = json.loads(grid_candidate.read_text(encoding='utf-8'))
+        if grid_data.get('reliable') or beat_grid is not None:
+            beats_s = [float(v) for v in (grid_data.get('beats_s') or [])]
+            downbeats_s = [float(v) for v in (grid_data.get('downbeats_s') or [])]
+            beat_aligned = bool(beats_s or downbeats_s)
     t = LEAD / FPS
     audio_parts = []  # (start_sec, np.array)
     sentences = []; chapters = []
     sid = 0
     total_chars = 0; total_words = 0; speech_sec = 0.0
-    for it in items:
+    chapter_open_pending = False
+    for idx_item, it in enumerate(items):
         if it['type'] == 'chapter':
             t += CHAPTER_GAP / FPS
             chapters.append({'n': it['chapter'], 'title': it['title'], 'from': int(round(t * FPS)) + 1})
+            chapter_open_pending = True
             continue
         t += it['gap_before'] / FPS
         raw = it['raw']
@@ -380,6 +471,13 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None):
         if not chunks:
             continue
         tts_text = sep.join(chunks)
+        prev_sent = sentences[-1]['text'] if sentences else None
+        if beat_aligned:
+            if chapter_open_pending:
+                t = quantize_sentence_start(t, 'chapter_open', beats_s, downbeats_s, pocket_s=0.05)
+            elif prev_sent and _discourse_role(prev_sent, tts_text) in ('accent', 'climax'):
+                t = quantize_sentence_start(t, 'accent', beats_s, downbeats_s, pocket_s=0.0)
+        chapter_open_pending = False
         x, starts, char_secs, dur = await synth_sentence(chunks, sep)
         if (x.ndim != 1 or len(x) == 0 or not np.all(np.isfinite(x))
                 or not np.isfinite(dur) or abs(dur - len(x) / SR) > 1 / SR
@@ -407,7 +505,12 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None):
         audio_parts.append((t, x))
         total_chars += len(re.sub(r'[，。、！？：；“”（）,.!?:;()\-—…\s]', '', tts_text))
         total_words += len(tts_text.split()); speech_sec += dur
-        t += dur + GAP / FPS
+        next_item = items[idx_item + 1] if idx_item + 1 < len(items) else None
+        next_sent_text = None
+        if next_item and next_item['type'] == 'sent':
+            next_sent_text = sep.join(c.strip() for c in next_item['raw'].split('|') if c.strip())
+        gap_frames = semantic_gap_frames(tts_text, next_sent_text, GAP, PROSODY_MODE)
+        t += dur + gap_frames / FPS
     t += TAIL / FPS
     total = int(np.ceil(t * FPS))
     # 合成音轨
@@ -449,6 +552,7 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None):
     tl = {'fps': FPS, 'total_frames': total, 'engine': ENGINE,
           'voice': VOICE if ENGINE == 'edge' else KOKORO_VOICE,
           'rate': RATE if ENGINE == 'edge' else KOKORO_SPEED,
+          'prosody_mode': PROSODY_MODE, 'beat_aligned': beat_aligned,
           'gap': GAP, 'chapter_gap': CHAPTER_GAP, 'lead': LEAD, 'tail': TAIL,
           'lang': lang, 'chapters': chapters, 'sentences': sentences, 'chars': total_chars, 'words': total_words,
           'speech_sec': round(speech_sec, 2)}
@@ -502,9 +606,12 @@ if __name__ == '__main__':
     parser.add_argument('--force', action='store_true')
     parser.add_argument('--legacy-config', action='store_true')
     parser.add_argument('--fps', type=int)
+    parser.add_argument('--beat-grid')
+    parser.add_argument('--no-beat-align', action='store_true')
     options = parser.parse_args()
     try:
         asyncio.run(main(options.narration, force=options.force,
-                         legacy_config=options.legacy_config, fps=options.fps))
+                         legacy_config=options.legacy_config, fps=options.fps,
+                         beat_grid=options.beat_grid, no_beat_align=options.no_beat_align))
     except (ValueError, OSError, subprocess.CalledProcessError) as error:
         raise SystemExit(f'[tts_build] {error}') from None

@@ -10,7 +10,7 @@ if(work===root||work.startsWith(root+path.sep)||root.startsWith(work+path.sep))t
 const require=createRequire(path.join(work,'package.json'));
 const ts=require('typescript'),React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
 const build=path.join(work,'component-build');
-for(const dir of ['template/src/shots/character-action','template/src/common/riso']){
+for(const dir of ['template/src/shots/character-action','template/src/common/riso','template/src/common/motion']){
  for(const f of fs.readdirSync(path.join(root,dir))){if(!/\.tsx?$/.test(f))continue;
   const target=path.join(build,dir,f.replace(/\.tsx?$/,'.js'));
   fs.mkdirSync(path.dirname(target),{recursive:true});

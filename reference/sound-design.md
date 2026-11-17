@@ -381,3 +381,9 @@ BGM 侧同理但记账位置不同：源音乐网格常量 `SOURCE_BEAT0` 保持
 - 工具防双混：台账 output_sha256 与当前 audio.wav 一致即拒绝重跑（重跑 mix_audio 后 audio.wav 变化，正常重跑本步即可；确要同输入重叠才 `--force`）。
 - 音效文件从 skill `assets/audio/sfx/` 拷入工程 `audio/sfx/`；风格绑定拟音（印章/粉笔/贴纸等）走 `audio-engine/mgaudio` 生成后同表钉帧（samples-d8 朱印判例）。
 - §4.6 的两项偏移是**画面内 `<Audio>` 渲染输出侧**问题；两段式的音效在最终混音文件上叠加、随成片封装一次，无 priming 双重补偿问题，但 cue 帧号仍按 §4.5 与 beat sheet 校准。
+
+### 4.8 自然气口、词曲对齐与人声让位混音
+
+- **自然气口（`tts_build.py`）**：中文默认语速 `RATE=+2%`，并按标点与语篇转折自动调节句间呼吸帧数（`PROSODY_MODE=natural`，可选 `fixed` 还原等距停顿；支持脚本内写 `## swell` 插入 42 帧音乐呼吸窗）；裁剪边缘附加 15ms/35ms 余弦微淡入淡出防截断爆音。
+- **乐句正拍对齐**：存在可信 `script/beat_grid.json`（或显式传 `--beat-grid`；传 `--no-beat-align` 关闭）时，章节首句自动向后微推以对准最近小节重拍（downbeat），设问/转折/高潮句对准最近拍点，使开口顺承音乐节拍。
+- **非对称侧链 + 频段挖槽（`mix_audio.py`）**：`compute_speech_duck_envelope` 采用 40ms 快攻、350ms 因果保持（消除 0.3s 句间短停顿造成的音乐抽吸感）与 900ms 慢释；`apply_spectral_ducking` 在人声清晰度核心频段（850–3600Hz）深压 `-8.5dB`、其余低频与氛围频段仅压 `-3.0dB` 保住底鼓律动，单曲循环使用 `1.5s` 等功率交叉淡化。
