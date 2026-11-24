@@ -34,5 +34,5 @@ if (!/slug:\s*'demo'/.test(original)) throw new Error('Template slug contract ch
 const updated = original.replace(/slug:\s*'demo'/, `slug: '${slug}'`);
 fs.writeFileSync(cfg, updated);
 for (const folder of ['script', 'research', 'qc', 'renders', `public/assets/${slug}`]) fs.mkdirSync(path.join(dest, folder), {recursive: true});
-fs.writeFileSync(path.join(dest, 'project.json'), JSON.stringify({schemaVersion: 1, status: 'draft', slug, width: 1280, height: 720, fps: 30, recipe: 'explainer', composition: 'Video', totalFrames: null}, null, 2));
+fs.writeFileSync(path.join(dest, 'project.json'), JSON.stringify({schemaVersion: 1, status: 'draft', slug, width: 1280, height: 720, renderScale: 1.5, fps: 30, recipe: 'explainer', composition: 'Video', totalFrames: null}, null, 2));
 console.log(`Created ${dest}. Next: npm install, uv sync, then build a real storyboard and shots. No git commands were run.`);

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {validatePlan, checkPlan} from '../scripts/check-plan.mjs';
 import {computeState, syncState, stateChecks, STATES} from '../scripts/check_state.mjs';
 import {parseLoudnormReport, loudnessPassed, countEvents} from '../scripts/finalize_delivery.mjs';
-import {renderOptions, assertOutput, renderProject} from '../scripts/render.mjs';
+import {renderOptions, assertOutput, renderProject, parseScale, sessionOptions} from '../scripts/render.mjs';
 import {sha256File, snapshotSources} from '../scripts/runtime-lib.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -284,6 +284,7 @@ test('initializer accepts demo, preserves nonempty targets and rejects overlap/u
   execFileSync(process.execPath, [path.join(root, 'scripts/init.mjs'), target, 'demo']);
   assert.ok(fs.readFileSync(path.join(target, 'src/config.ts'), 'utf8').includes("slug: 'demo'"));
   assert.equal(JSON.parse(fs.readFileSync(path.join(target, 'project.json'), 'utf8')).composition, 'Video');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(target, 'project.json'), 'utf8')).renderScale, 1.5);
   assert.ok(!fs.existsSync(path.join(target, 'node_modules')));
   assert.ok(!fs.existsSync(path.join(target, '.git')));
   for (const [dest, slug] of [[target, 'demo'], [root, 'film'], [path.dirname(root), 'film'], [path.join(root, 'unsafe-project'), 'film'], [path.join(tmp, 'unsafe'), '../escape']]) {
@@ -379,4 +380,25 @@ test('concurrent renders cannot claim the same output', async () => {
   const results = await Promise.allSettled([renderProject(base, ['stills', '1'], {}), renderProject(base, ['stills', '1'], {})]);
   assert.equal(results.filter(result => result.status === 'fulfilled').length, 1);
   assert.match(results.find(result => result.status === 'rejected').reason.message, /Render lock exists|Render already owns/);
+});
+
+test('render scale, default concurrency, and sessionOptions validate cleanly', () => {
+  const scaled = {...project, renderScale: 1.5};
+  const expectedConc = Math.max(1, Math.min(6, Math.floor(os.cpus().length / 2)));
+  assert.equal(renderOptions(scaled, ['video'], {}).scale, 1.5);
+  assert.equal(renderOptions(scaled, ['video'], {}).concurrency, expectedConc);
+  assert.equal(renderOptions(scaled, ['preview', '2', '1'], {}).scale, 1);
+  assert.equal(renderOptions(scaled, ['stills', '1'], {}).scale, 1);
+  assert.equal(renderOptions(scaled, ['preview', '2', '1'], {A2V_SCALE: '2'}).scale, 2);
+  assert.equal(renderOptions(scaled, ['video'], {A2V_SCALE: '1'}).scale, 1);
+
+  for (const badScale of ['0', '5', 'abc', '']) {
+    assert.throws(() => renderOptions(scaled, ['video'], {A2V_SCALE: badScale}), /Invalid render scale/);
+  }
+  assert.throws(() => parseScale(1.5, {...project, width: 101}), /Invalid render scale/);
+
+  assert.deepEqual(sessionOptions({}), {gl: undefined, bundleCache: false});
+  assert.deepEqual(sessionOptions({A2V_GL: 'angle', A2V_BUNDLE_CACHE: '1'}), {gl: 'angle', bundleCache: true});
+  assert.throws(() => sessionOptions({A2V_GL: 'invalid-gl'}), /Invalid A2V_GL/);
+  assert.throws(() => sessionOptions({A2V_BUNDLE_CACHE: 'true'}), /Invalid A2V_BUNDLE_CACHE/);
 });

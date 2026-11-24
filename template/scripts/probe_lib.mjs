@@ -188,12 +188,13 @@ export function listShots() {
 // ---------------- 渲染器（单进程复用） ----------------
 function freshBundle(bundleDir = BUNDLE_DIR) {
   const {bundle} = require(path.join(TEMPLATE_ROOT, 'node_modules', '@remotion', 'bundler'));
+  const bundleCache = process.env.A2V_BUNDLE_CACHE === '1';
   fs.rmSync(bundleDir, {recursive: true, force: true});
-  console.error(`[probe_lib] 开始打包（enableCaching=false，产物写 ${bundleDir}）…`);
+  console.error(`[probe_lib] 开始打包（enableCaching=${bundleCache}，产物写 ${bundleDir}）…`);
   return bundle({
     entryPoint: path.join(TEMPLATE_ROOT, 'src', 'index.ts'),
     outDir: bundleDir,
-    enableCaching: false,
+    enableCaching: bundleCache,
     webpackOverride: (c) => c,
     onProgress: () => {},
   }).then((r) => {
@@ -242,7 +243,11 @@ export async function withRenderer({compId = 'PromoDemo', warmup = true, bundleD
   const {selectComposition, openBrowser, renderStill} =
     require(path.join(TEMPLATE_ROOT, 'node_modules', '@remotion', 'renderer'));
   // BROWSER_EXECUTABLE 可指向本机已装 Chrome，跳过 remotion 的 chrome-headless-shell 下载（新项目首次下载 ~270MB，国内网络易永久停滞）；不设该 env 行为不变。
-  const browser = await openBrowser('chrome', {browserExecutable: process.env.BROWSER_EXECUTABLE || null});
+  const gl = process.env.A2V_GL?.trim() || undefined;
+  const browser = await openBrowser('chrome', {
+    browserExecutable: process.env.BROWSER_EXECUTABLE || null,
+    ...(gl ? {chromiumOptions: {gl}} : {}),
+  });
   try {
     const composition = await selectComposition({
       serveUrl: bundleDir, id: compId, puppeteerInstance: browser, logLevel: 'error',

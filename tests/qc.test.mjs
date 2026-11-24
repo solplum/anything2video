@@ -171,3 +171,18 @@ test('files changing during independent media checks invalidate the result', asy
   assert.ok(result.errors.some(error => /File changed during final QC/.test(error)));
   assert.ok(result.errors.some(error => /Sources changed during final QC/.test(error)));
 });
+
+test('QC accepts renderScale matching actual media and rejects mismatched sidecar scale', async () => {
+  const scaledBase = fixture();
+  edit(scaledBase, 'project.json', value => {value.width = 32; value.height = 48; value.renderScale = 2;});
+  edit(scaledBase, 'renders/film.mp4.delivery.json', value => {value.scale = 2;});
+  rebind(scaledBase);
+  const passRes = await checkQc(scaledBase);
+  assert.equal(passRes.pass, true, JSON.stringify(passRes.errors));
+
+  await rejects(base => {
+    edit(base, 'project.json', value => {value.width = 32; value.height = 48; value.renderScale = 2;});
+    edit(base, 'renders/film.mp4.delivery.json', value => {value.scale = 3;});
+    rebind(base);
+  }, /dimensions differ from project/);
+});

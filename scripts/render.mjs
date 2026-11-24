@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createRequire} from 'node:module';
@@ -9,8 +10,39 @@ import {performance} from 'node:perf_hooks';
 import {checkPlan} from './check-plan.mjs';
 import {isRecord, isWithin, projectFile, resolvedPath, sha256File, snapshotSources} from './runtime-lib.mjs';
 
+const VALID_GL_RENDERERS = new Set(['angle', 'egl', 'swiftshader', 'swangle', 'vulkan', 'angle-egl']);
+
+export function parseScale(value, cfg) {
+  if (value === null || typeof value === 'boolean' || typeof value === 'string' && value.trim() === '') {
+    throw new Error('Invalid render scale');
+  }
+  const s = Number(value);
+  if (!Number.isFinite(s) || s <= 0 || s > 4) throw new Error('Invalid render scale');
+  const scaledW = Math.round(cfg.width * s * 1e9) / 1e9;
+  const scaledH = Math.round(cfg.height * s * 1e9) / 1e9;
+  if (!Number.isInteger(scaledW) || !Number.isInteger(scaledH) || scaledW % 2 !== 0 || scaledH % 2 !== 0) {
+    throw new Error('Invalid render scale');
+  }
+  return s;
+}
+
+export function sessionOptions(env = process.env) {
+  let gl;
+  if (env.A2V_GL !== undefined && env.A2V_GL !== '') {
+    if (!VALID_GL_RENDERERS.has(env.A2V_GL)) throw new Error(`Invalid A2V_GL renderer: ${env.A2V_GL}`);
+    gl = env.A2V_GL;
+  }
+  const rawCache = env.A2V_BUNDLE_CACHE;
+  let bundleCache = false;
+  if (rawCache === undefined || rawCache === '0') bundleCache = false;
+  else if (rawCache === '1') bundleCache = true;
+  else throw new Error(`Invalid A2V_BUNDLE_CACHE: ${rawCache}`);
+  return {gl, bundleCache};
+}
+
 export function renderOptions(cfg, args = [], env = process.env) {
   if (!isRecord(cfg) || ![cfg.width, cfg.height, cfg.fps, cfg.totalFrames].every(n => Number.isInteger(n) && n > 0)) throw new Error('Invalid project dimensions / timing');
+  if (cfg.renderScale !== undefined) parseScale(cfg.renderScale, cfg);
   if (!/^[A-Za-z0-9_-]+$/.test(cfg.slug ?? '')) throw new Error('Invalid slug');
   const overwrite = args.includes('--overwrite');
   const positionals = args.filter(arg => arg !== '--overwrite');
@@ -21,8 +53,10 @@ export function renderOptions(cfg, args = [], env = process.env) {
   if (positionals.length > limit) throw new Error('Too many render arguments');
   const version = env.VER || 'v1';
   if (!/^[A-Za-z0-9_-]+$/.test(version)) throw new Error('Invalid version');
-  const concurrency = Number(env.A2V_CONCURRENCY ?? 3);
+  const defaultConcurrency = Math.max(1, Math.min(6, Math.floor((os.cpus()?.length || 2) / 2)));
+  const concurrency = Number(env.A2V_CONCURRENCY ?? defaultConcurrency);
   if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 32) throw new Error('Concurrency must be 1..32');
+  const scale = parseScale(env.A2V_SCALE ?? (mode === 'video' ? (cfg.renderScale ?? 1) : 1), cfg);
   let frames = {from: 1, to: cfg.totalFrames};
   let stills = [];
   if (mode === 'preview') {
@@ -37,7 +71,7 @@ export function renderOptions(cfg, args = [], env = process.env) {
     if (new Set(stills).size !== stills.length) throw new Error('Duplicate still frames');
     frames = {from: Math.min(...stills), to: Math.max(...stills)};
   }
-  return {mode, overwrite, version, concurrency, frames, stills};
+  return {mode, overwrite, version, concurrency, scale, frames, stills};
 }
 
 export function assertOutput(root, file, overwrite) {
@@ -142,18 +176,19 @@ async function withRenderSession(root, cfg, cfgHash, env, produce) {
   metrics.typechecks++;
   if (types.status !== 0) throw new Error(`TypeScript gate failed:\n${types.stdout || types.stderr || types.error?.message || 'unknown error'}`);
   assertSources(root, sourceHashes);
+  const {gl, bundleCache} = sessionOptions(env);
   const {bundle} = req('@remotion/bundler');
   const {openBrowser, selectComposition, renderMedia, renderStill} = req('@remotion/renderer');
   let bundleDir, browser;
   try {
     bundleDir = fs.mkdtempSync(path.join(root, '.render-bundle-'));
     const bundleStart = performance.now();
-    const serveUrl = await bundle({entryPoint: projectFile(root, 'src/index.ts'), rootDir: root, outDir: bundleDir, enableCaching: false});
+    const serveUrl = await bundle({entryPoint: projectFile(root, 'src/index.ts'), rootDir: root, outDir: bundleDir, enableCaching: bundleCache});
     metrics.bundleMs = performance.now() - bundleStart;
     metrics.bundles++;
     assertSources(root, sourceHashes);
     const browserExecutable = env.BROWSER_EXECUTABLE || undefined;
-    browser = await openBrowser('chrome', {browserExecutable});
+    browser = await openBrowser('chrome', {browserExecutable, ...(gl ? {chromiumOptions: {gl}} : {})});
     metrics.browserOpens++;
     const shared = {serveUrl, browserExecutable, puppeteerInstance: browser};
     const composition = await selectComposition({...shared, id: cfg.composition ?? 'Video'});
@@ -179,14 +214,16 @@ async function withRenderSession(root, cfg, cfgHash, env, produce) {
 async function renderItem(root, cfg, job, output, options, session) {
   const {shared, composition, renderMedia, renderStill, sourceHashes} = session;
   assertSources(root, sourceHashes);
+  const scale = options.scale ?? 1;
+  const outputDimensions = {width: Math.round(cfg.width * scale), height: Math.round(cfg.height * scale)};
   let ffprobe = null;
   if (job.mode === 'stills') {
     // The only one-based -> zero-based conversion for a selected still.
-    await renderStill({...shared, composition, output, frame: job.frames.from - 1});
+    await renderStill({...shared, composition, output, frame: job.frames.from - 1, scale});
   } else {
     let lastPct = -1;
     // The only one-based -> zero-based conversion for a selected video window.
-    await renderMedia({...shared, composition, codec: 'h264', crf: 18, pixelFormat: 'yuv420p', outputLocation: output, concurrency: options.concurrency,
+    await renderMedia({...shared, composition, codec: 'h264', crf: 18, pixelFormat: 'yuv420p', outputLocation: output, concurrency: options.concurrency, scale,
       frameRange: [job.frames.from - 1, job.frames.to - 1], onProgress: ({progress}) => {
         const pct = Math.floor(progress * 100);
         if (pct % 10 === 0 && pct !== lastPct) {console.log(`Render ${pct}%`); lastPct = pct;}
@@ -196,13 +233,14 @@ async function renderItem(root, cfg, job, output, options, session) {
     ffprobe = JSON.parse(probe.stdout);
     const video = ffprobe.streams?.filter(stream => stream.codec_type === 'video');
     const rate = value => {const [num, den = '1'] = String(value).split('/').map(Number); return num / den;};
-    if (options.verifyOutput && (video?.length !== 1 || video[0].width !== cfg.width || video[0].height !== cfg.height ||
+    if (options.verifyOutput && (video?.length !== 1 || video[0].width !== outputDimensions.width || video[0].height !== outputDimensions.height ||
         rate(video[0].avg_frame_rate) !== cfg.fps || Number(video[0].nb_read_frames) !== job.frames.to - job.frames.from + 1)) {
       throw new Error('Rendered video does not match requested dimensions, fps or frame count');
     }
   }
   assertSources(root, sourceHashes);
   return {schemaVersion: 1, mediaSha256: sha256File(output), sourceHashes, mode: job.mode, frames: job.frames,
+    scale, outputDimensions,
     renderedAt: new Date().toISOString(), ffprobe, visualReview: 'not_performed', audioReview: 'not_performed',
     ...(job.mode !== 'video' ? {status: 'needs_review', draft: true} : {})};
 }
@@ -228,7 +266,7 @@ export async function renderBatch(root, request, env = process.env, hooks = {}) 
   root = fs.realpathSync(root);
   const {cfg, cfgHash} = readConfig(root);
   const normalized = validateBatchRequest(cfg, request);
-  const options = {...renderOptions(cfg, [], env), verifyOutput: true};
+  const options = {...renderOptions(cfg, [], env), scale: parseScale(env.A2V_SCALE ?? 1, cfg), verifyOutput: true};
   let inputRequest;
   if (hooks.requestFile !== undefined) {
     const file = projectFile(root, hooks.requestFile);

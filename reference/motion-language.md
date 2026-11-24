@@ -101,3 +101,7 @@ uv run python scripts/beat_grid.py public/assets/<slug>/bgm.wav --out script/bea
 - `walkPelvisState(leftSwing01, rightSwing01, moving, effort01)`：随步态交替产生重心下沉吸能与中段抬升、骨盆微倾与前倾；
 - `followSpring(driverAt, frame, opts)`：基于有限回看窗口 `[frame - historyFrames .. frame]` 的无状态二阶阻尼弹簧，零可变模块状态，兼容 Remotion 并发乱序抽帧，用于头部、帽檐、尾随手臂、飘带与图形次级滞后收尾；
 - `arcPoint(from, to, t01, liftPx)`：抛物线弧线插值。
+
+## 10. 高速层动态模糊（common/kit/FastMoveBlur.tsx）
+
+`FastMoveBlur`（封装 `@remotion/motion-blur` 的 `CameraMotionBlur`，默认 `samples=6` / `shutterAngle=180`）仅用于包裹高速推拉镜头、飞掠粒子、急速平移卡片或短时冲击窗，渲染成本约按 `samples` 倍增加，**严禁包在字幕或需保持清晰可读的文字层外**。

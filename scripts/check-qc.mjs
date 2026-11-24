@@ -33,7 +33,7 @@ function run(command, args) {
   });
 }
 
-function inspectProbe(probe, project, label, errors, requireCount = false) {
+function inspectProbe(probe, expected, label, errors, requireCount = false) {
   if (!isRecord(probe) || !Array.isArray(probe.streams) || !isRecord(probe.format)) {
     errors.push(`${label}: invalid ffprobe data`);
     return;
@@ -42,16 +42,16 @@ function inspectProbe(probe, project, label, errors, requireCount = false) {
   const videos = streams.filter(stream => stream.codec_type === 'video');
   if (videos.length !== 1) {errors.push(`${label}: expected exactly one video stream`); return;}
   const video = videos[0];
-  if (video.width !== project.width || video.height !== project.height) errors.push(`${label}: dimensions differ from project`);
+  if (video.width !== expected.width || video.height !== expected.height) errors.push(`${label}: dimensions differ from project`);
   for (const key of ['r_frame_rate', 'avg_frame_rate']) {
-    if (!Number.isFinite(rate(video[key])) || Math.abs(rate(video[key]) - project.fps) > 0.001) errors.push(`${label}: ${key} differs from project fps`);
+    if (!Number.isFinite(rate(video[key])) || Math.abs(rate(video[key]) - expected.fps) > 0.001) errors.push(`${label}: ${key} differs from project fps`);
   }
   const frames = count(video.nb_read_frames ?? video.nb_frames);
-  if (Number.isFinite(frames) ? frames !== project.totalFrames : requireCount) errors.push(`${label}: frame count differs or is unavailable`);
+  if (Number.isFinite(frames) ? frames !== expected.totalFrames : requireCount) errors.push(`${label}: frame count differs or is unavailable`);
   const seconds = duration(video.duration ?? probe.format.duration);
-  if (!Number.isFinite(seconds) || Math.abs(seconds - project.totalFrames / project.fps) > 1 / project.fps + 0.02) errors.push(`${label}: duration differs from project`);
+  if (!Number.isFinite(seconds) || Math.abs(seconds - expected.totalFrames / expected.fps) > 1 / expected.fps + 0.02) errors.push(`${label}: duration differs from project`);
   const audio = streams.filter(stream => stream.codec_type === 'audio');
-  if (project.audio?.mode !== 'silent' && audio.length === 0) errors.push(`${label}: audio stream missing; declare project.audio.mode='silent' only for an intentionally silent film`);
+  if (expected.audio?.mode !== 'silent' && audio.length === 0) errors.push(`${label}: audio stream missing; declare project.audio.mode='silent' only for an intentionally silent film`);
 }
 
 /** Validate declared review shape/results only; does not inspect media or evidence files. */
@@ -116,6 +116,15 @@ export async function checkQc(root, qcPath = 'qc/final.json') {
     if (!nonempty(qc.mediaSha256) || sha256File(media) !== qc.mediaSha256.toLowerCase()) errors.push('Stale QC media hash');
   } catch (error) {errors.push(`Missing/outside media: ${error.message}`);}
   const sidecar = nonempty(qc.media) ? read(`${qc.media}.delivery.json`) : null;
+  let expectedMedia = isRecord(project) ? project : null;
+  if (isRecord(project)) {
+    const rawScale = (isRecord(sidecar) && sidecar.scale !== undefined) ? sidecar.scale : (project.renderScale ?? 1);
+    const validScale = typeof rawScale === 'number' && Number.isFinite(rawScale) && rawScale > 0 && rawScale <= 4
+      && Number.isInteger(Math.round(project.width * rawScale * 1e9) / 1e9)
+      && Number.isInteger(Math.round(project.height * rawScale * 1e9) / 1e9);
+    if (!validScale) errors.push('invalid render scale');
+    else expectedMedia = {...project, width: Math.round(project.width * rawScale), height: Math.round(project.height * rawScale)};
+  }
   if (!isRecord(sidecar)) errors.push('Media delivery sidecar must be an object');
   else {
     if (sidecar.schemaVersion !== 1 || sidecar.mode !== 'video') errors.push('Final delivery requires a schemaVersion=1 video sidecar');
@@ -127,7 +136,7 @@ export async function checkQc(root, qcPath = 'qc/final.json') {
       const supplied = isRecord(sidecar.sourceHashes) ? Object.fromEntries(Object.entries(sidecar.sourceHashes).sort(([a], [b]) => a.localeCompare(b))) : null;
       if (JSON.stringify(current) !== JSON.stringify(supplied)) errors.push('Stale or incomplete delivery source hashes');
     } catch (error) {errors.push(`Cannot verify delivery sources: ${error.message}`);}
-    if (isRecord(project)) inspectProbe(sidecar.ffprobe, project, 'Sidecar', errors);
+    if (expectedMedia) inspectProbe(sidecar.ffprobe, expectedMedia, 'Sidecar', errors);
   }
   for (const check of Array.isArray(qc.checks) ? qc.checks : []) {
     if (!isRecord(check)) continue;
@@ -151,7 +160,7 @@ export async function checkQc(root, qcPath = 'qc/final.json') {
   else {
     try {
       technical.media = JSON.parse(probe.stdout);
-      inspectProbe(technical.media, project, 'Actual media', errors, true);
+      inspectProbe(technical.media, expectedMedia ?? project, 'Actual media', errors, true);
       if (errors.length) technical.ffprobe = 'failed';
     } catch (error) {technical.ffprobe = 'failed'; errors.push(`Invalid actual ffprobe output: ${error.message}`);}
   }
