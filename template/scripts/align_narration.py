@@ -68,6 +68,9 @@ GAP = int(os.environ.get('GAP', 10))          # 句间空白帧
 CHAPTER_GAP = int(os.environ.get('CHAPTER_GAP', 45))  # 章节前空白帧
 LEAD = int(os.environ.get('LEAD', 40))        # 片头静音帧
 TAIL = int(os.environ.get('TAIL', 90))        # 片尾静音帧
+VOICE_FX = os.environ.get('VOICE_FX', 'off').strip().lower()
+if VOICE_FX not in ('on', 'off'):
+    raise SystemExit(f'未知 VOICE_FX={VOICE_FX}（可选 on / off）')
 # 供线性铺开时"继承前字符"的字符类（标点/空白不消耗时间轴；与 tts_build 词匹配剥离表同源再补全角书名号）
 INHERIT_RE = re.compile(r'[\s，。、！？：；“”‘’（）《》〈〉「」『』,.!?:;()\-—…·]')
 
@@ -200,15 +203,24 @@ def main(dub, *, force=False):
     for st, piece in audio_parts:
         a = int(st * SR); y[a:a + len(piece)] += piece
     y = y[: int(total / FPS * SR)]
-    peak = float(np.max(np.abs(y))) or 1.0
-    y = y / peak * 0.89
-    PROJECT.validate_audio(y, SR, {'total_frames': total})
+    y_st = np.stack([y, y], 1)
+    fx_report = None
+    if VOICE_FX == 'on':
+        try:
+            import voice_fx
+            y_st, fx_report = voice_fx.process(y_st, SR)
+        except ImportError:
+            print('⚠ 缺少 pyloudnorm，跳过 voice_fx，降级峰值 0.89 归一')
+    if fx_report is None:
+        peak = float(np.max(np.abs(y_st))) or 1.0
+        y_st = y_st / peak * 0.89
+    PROJECT.validate_audio(y_st, SR, {'total_frames': total})
     PROJECT.preflight_audio(*destinations)
     if PROJECT.path(outputs[1]).exists() and not force:
         raise ValueError('Narration master appeared during alignment; rerun with --force if intended')
     PROJECT.mkdir(PROJECT.assets)
     wav = str(PROJECT.path(outputs[0]))
-    write_wav(wav, np.stack([y, y], 1), SR, project=PROJECT)
+    write_wav(wav, y_st, SR, project=PROJECT)
     PROJECT.copy(wav, outputs[1])
     PROJECT.unlink(outputs[2])
     all_subs = fix_subtitles(sentences, clamp_chars=True)
@@ -220,6 +232,8 @@ def main(dub, *, force=False):
           'gap': GAP, 'chapter_gap': CHAPTER_GAP, 'lead': LEAD, 'tail': TAIL,
           'lang': lang, 'chapters': chapters, 'sentences': sentences, 'chars': total_chars,
           'words': total_words, 'speech_sec': round(sum(pb - pa for pa, pb in spans), 2)}
+    if fx_report is not None:
+        tl['voice_fx'] = fx_report
     unit_cnt = ('字', total_chars) if lang == 'zh' else ('词', total_words)
     md_title = (
         f"# 时间轴（external · 用户成品配音，共 {total} 帧 = {total/FPS:.1f}s，{unit_cnt[1]} {unit_cnt[0]}，"

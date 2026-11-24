@@ -15,6 +15,48 @@ tts_build 此前默认曾为云扬 +8%（现默认已收缓至 +2% 并加标点�
 **展示选项的同一轮在浏览器打开试听页**。台词选 3 句代表性样本：①转述/引文句（测转述感）
 ②情绪最重句（测沉稳度）③收口句（测余味）。
 
+## MiniMax 音色（设为默认引擎 `TTS_ENGINE=minimax`，当 `MINIMAX_API_KEY` 已设置时自动启用）
+
+> 模型默认 `speech-2.6-hd`（44.1kHz FLAC + 词级 `subtitle_file`）；按字符计费。
+> **计费与隐私提示**：使用 `TTS_ENGINE=minimax` 时，旁白文本会发送至 MiniMax 云端端点（`MINIMAX_API_HOST`，默认 `https://api.minimaxi.com`）按字符计费合成；若内容涉密或离线制作，请改用用户自带配音 + `align_narration.py` 或本地引擎。
+
+| 语言 | voice_id | 中文名 | 腔调特点 | 适用场景 |
+|---|---|---|---|---|
+| 中文 | `Chinese (Mandarin)_Reliable_Executive` | 沉稳高管 | 沉稳可靠中年男声，普通话 | **中文默认**：技术讲解、科普、方法论、叙事 |
+| 中文 | `Chinese (Mandarin)_Gentleman` | 温润男声 | 温润磁性青年男声，普通话 | 产品故事、温和娓娓道来 |
+| 中文 | `Chinese (Mandarin)_Male_Announcer` | 播报男声 | 富有磁性中年播报员，清晰权威 | 硬核宣传、发布会、权威解读 |
+| 中文 | `Chinese (Mandarin)_Radio_Host` | 电台男主播 | 富有诗意青年电台腔，流畅 | 历史/人文/品牌氛围叙事 |
+| 中文 | `Chinese (Mandarin)_News_Anchor` | 新闻女声 | 专业播音腔中年女主播 | 资讯播报、客观陈述 |
+| 中文 | `Chinese (Mandarin)_Wise_Women` | 阅历姐姐 | 富有阅历、声音抒情 | 深度长文、人物/传记、温情剖析 |
+| 英文 | `English_Trustworthy_Man` | Trustworthy Man | 值得信赖磁性美式青年男声 | **英文默认**：tech explainer / promo |
+| 英文 | `English_Gentle-voiced_man` | Gentle-voiced man | 温柔磁性美式男声 | 轻松科普、storytelling |
+| 英文 | `English_Graceful_Lady` | Graceful Lady | 优雅成熟英式女声 | 品牌片、文化/设计专题 |
+
+### MiniMax inline 试听命令（从工程根运行）
+
+与 edge 相同采用 `python -c` 字面量落盘（绕开动态路径写入扫描）：
+
+```bash
+mkdir -p tts_ab && uv run python -c "
+import json, os, urllib.request
+KEY = os.environ['MINIMAX_API_KEY']
+HOST = os.environ.get('MINIMAX_API_HOST', 'https://api.minimaxi.com').rstrip('/')
+LINE = '样本台词放这里，用于对比不同 MiniMax 音色的质感与断句。'
+def go(vid, out):
+    req = urllib.request.Request(f'{HOST}/v1/t2a_v2',
+        data=json.dumps({'model': 'speech-2.6-hd', 'text': LINE, 'stream': False,
+            'voice_setting': {'voice_id': vid, 'speed': 1.0, 'vol': 1.0, 'pitch': 0},
+            'audio_setting': {'sample_rate': 44100, 'format': 'flac', 'channel': 1}}).encode(),
+        headers={'Authorization': f'Bearer {KEY}', 'Content-Type': 'application/json'})
+    body = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    open(out, 'wb').write(bytes.fromhex(body['data']['audio']))
+    print(out, os.path.getsize(out), 'bytes')
+go('Chinese (Mandarin)_Reliable_Executive', 'tts_ab/exec.flac')
+go('Chinese (Mandarin)_Gentleman', 'tts_ab/gentleman.flac')
+go('Chinese (Mandarin)_Radio_Host', 'tts_ab/radio.flac')
+go('Chinese (Mandarin)_Wise_Women', 'tts_ab/wise.flac')"
+```
+
 ## 音色映射表（edge 端点，2026-10-11 实测）
 
 | shortname | 全名 | 腔调 | 适用 | 状态 |
