@@ -33,9 +33,7 @@ node <skill>/scripts/init.mjs <工程绝对路径> <slug>
 
 ## 3. 结构化分镜
 
-按契约 [工程合同](production-contract.md#project-contract) 写 `project.json`、`script/storyboard.json` 与 `research/beat-sheet.json`，先核实生成通道再排 AI 依赖镜头。按镜头到 [gallery](../gallery/README.md) 选卡，记录卡名；分镜定“用什么、何时、讲什么”，实现时读卡参数。
-
-依据导演手册记录动作语法、观众所得、焦点、词/拍锚点、停留/切换理由；事实镜头按配方绑定 claims，完整帧窗须核对真实 Sequence。选了[匹配剪辑模式](match-cut-beat-relay.md)时，先定意义与音乐网格，写接力合同；先用便宜 animatic 审动作/切点，再投入生成视频。
+按契约 [工程合同](production-contract.md#project-contract) 写 `project.json`、`script/storyboard.json` 与 `research/beat-sheet.json`（先核实生成通道再排 AI 镜头）。按镜头到 [gallery](../gallery/README.md) 选卡并读参数。依据导演手册记录动作语法、焦点、词/拍锚点（用 `narration.txt` 的 `{#id}` 接 `at()`/`local()`，禁从 `timeline.md` 抄数字）与停留/切换理由；事实镜头绑定 claims。选了[匹配剪辑模式](match-cut-beat-relay.md)时，先定意义与音乐网格再写接力合同。
 
 <a id="proofing"></a>
 ## 4. 图纸与多点打样
@@ -46,7 +44,7 @@ node <skill>/scripts/init.mjs <工程绝对路径> <slug>
 
 ## 5. 建镜头与集成
 
-先固定共享图元/API，再按 [workflow-orchestration.md](workflow-orchestration.md) 分配独立文件；无子代理就同合同顺序做。主控检查镜头注册、共享状态、字幕/音轨、组界和覆盖层。占位/null 通过类型检查不等于显示或解释成立。
+先固定共享图元/API，再按 [workflow-orchestration.md](workflow-orchestration.md) 分配独立文件；无子代理就同合同顺序做。镜头区段与内部动作统一用 `span()`/`at()`/`local()` 引用 `anchors.ts`，禁手抄帧号。主控检查注册、字幕/音轨、组界和覆盖层。占位通过类型检查不等于成立。
 
 ## 6. 渲染
 

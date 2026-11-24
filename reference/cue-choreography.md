@@ -6,13 +6,13 @@
 
 ## 1. 一处改时间，下游跟随
 
-工程模板提供 `common/motion/cues.ts`，也从 `common` 导出。根时间来自**实际旁白/录音或已确认的操作时刻**，不是凭空推算音乐。项目内部统一用秒保存依赖，最后一次量化到 0 起帧；相同事件共用同一个 cue。
+工程模板提供 `common/motion/cues.ts` 与 `common/anchor.ts`，均从 `common` 导出。根时间来自**实际旁白/录音或已确认的操作时刻**，不是凭空推算音乐。旁白锚点用 `at('hit')` / `local('hit', F0)` / `secOf('hit', fps)` 取生成的 `anchors.ts`，禁止从 `timeline.md` 手抄数字帧号。项目内部统一用秒保存依赖，最后一次量化到 0 起帧；相同事件共用同一个 cue。
 
 ```ts
-import {createCueSheet, alignMotion, motionProgress, toStoryboardFrame} from '../../common';
+import {createCueSheet, alignMotion, motionProgress, toStoryboardFrame, secOf} from '../../common';
 
 const cues = createCueSheet(fps, [
-  {id: 'request.arrive', atSec: 1.4},
+  {id: 'request.arrive', atSec: secOf('hit', fps) - secOf('S03', fps)},
   {id: 'request.confirm', after: 'request.arrive', offsetSec: 0.25},
   {id: 'request.depart', after: 'request.confirm', offsetSec: 1.2},
 ]);

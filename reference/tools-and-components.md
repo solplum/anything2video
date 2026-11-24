@@ -31,8 +31,8 @@
 | 任务 | 实现 / 详细说明 |
 |---|---|
 | 音色 A/B | [voice_bakeoff.py](../scripts/voice_bakeoff.py)、[voice-bakeoff.md](voice-bakeoff.md)：同三句代表台词，实际可用端点与试听决定 |
-| TTS 与逐字符字幕 | [tts_build.py](../template/scripts/tts_build.py)：产正本、timeline、subs 与 `SubEntry.chars`；edge 实测词边界，估计时间戳须如实标注 |
-| 用户自带配音 | [align_narration.py](../template/scripts/align_narration.py)：能量停顿 DP 对齐到句、块内线性铺开，约 ±0.15s 是估计，不手填假精度 |
+| TTS 与逐字符字幕 | [tts_build.py](../template/scripts/tts_build.py)、[narration_lib.py](../template/scripts/narration_lib.py)：产正本、timeline、subs、`SubEntry.chars` 与 `anchors.ts`（`{#id}` 锚点）；edge/minimax 实测词边界，估计时间戳须如实标注 |
+| 用户自带配音 | [align_narration.py](../template/scripts/align_narration.py)：能量停顿 DP 对齐到句、块内线性铺开并输出 `anchors.ts`，约 ±0.15s 是估计，不手填假精度 |
 | 无旁白章表 | [chapter_timeline.py](../template/scripts/chapter_timeline.py)：读 project fps、保留章元数据；声音/无声声明仍走契约 |
 | 旁白＋BGM、钉帧 SFX | [mix_audio.py](../template/scripts/mix_audio.py)（如 `--bed 0.055`；沙音显式 `--sfx sand`）、[mix_sfx.py](../template/scripts/mix_sfx.py) 第三步与防双混台账；[声音设计](sound-design.md) |
 | 录音曲试听与查询 | [bgm-bakeoff.md](bgm-bakeoff.md)、[bgm-library.md](bgm-library.md)、[bgm_query.py](../scripts/bgm_query.py)：题材×落位功能读逐段档案；可用且许可登记的用户曲优先，缺音源/未确权曲仅作参考 |
@@ -65,6 +65,7 @@
 | 动效配方卡、参数与参考源码 | [gallery/README.md](../gallery/README.md)、[cards](../gallery/cards)、[demos-ref](../gallery/demos-ref)、[lib-ref](../gallery/lib-ref)；卡数量以目录/索引为准。pdoom 方法论卡没有本仓 demo 时按卡参数实现，来源在卡尾 |
 | 基础 2.5D/数字/闪切/滚动 | [common/kit](../template/src/common/kit)：PageCam、DigitRoll、FlashCut、VerticalTicker，lagged/dampedSettle/mulberry32 |
 | 演绎结构四件套 | WordLitCaption、ChapterBadge、GoldenQuote、RecapFrame；底料 `SubEntry.chars`，接线见 [explainer](../recipes/explainer.md)，三铁律见导演手册 |
+| 命名事件、锚点与时间对齐 | [common/anchor.ts](../template/src/common/anchor.ts)、[common/anchors.ts](../template/src/common/anchors.ts)、[common/motion](../template/src/common/motion)：`at()`/`span()`/`local()`/`secOf()` 与 `createCueSheet`，绑定旁白 `{#id}` 与句界，不从 timeline.md 抄数字帧号 |
 | 共享运动数学、底图语法 | [common/motion](../template/src/common/motion)：hermite/monotone/quantize/smear/kinematics（`solveTwoBoneIK`、`walkPelvisState`、`followSpring`）；[PhotoStage](../template/src/common/kit/PhotoStage.tsx)：Ken Burns 钳制、snap push、freeze-to-card |
 | 瑞士网格排版与锚点标注 | [common/layout](../template/src/common/layout/SwissStage.tsx)：`EditorialCanvas`、`HeroMetricStage`、`EditorialSplitStage`、`ProcessFlowStage`、`ComparisonSplitStage`、`AnchoredCallout`、`ScrimSubtitle`（内置安全区扣除与高对比护栏） |
 | 可变字体、单笔画字体 | [VarText](../template/src/common/kit/VarText.tsx)：varSettings/breatheWght；[StrokeText](../template/src/common/kit/StrokeText.tsx)：光学 kern、writtenLength、笔头坐标，仅拉丁。中文手写按 gallery 的 draw-svg-trace；字体许可分别登记 |

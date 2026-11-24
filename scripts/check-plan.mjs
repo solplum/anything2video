@@ -61,6 +61,30 @@ export function validatePlan(project, plan) {
   return errors;
 }
 
+export function checkLiteralShotFrames(root) {
+  const warnings = [];
+  const shotsDir = path.join(root, 'src', 'shots');
+  if (!fs.existsSync(shotsDir)) return warnings;
+  const walk = dir => {
+    for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (entry.name === 'index.ts') {
+        const rel = path.relative(root, full).split(path.sep).join('/');
+        const lines = fs.readFileSync(full, 'utf8').split(/\r?\n/);
+        lines.forEach((line, idx) => {
+          if (/^\s*(?:\/\/|\/\*|\*)/.test(line)) return;
+          if (/\b(?:from|to)\s*:\s*\d+\b/.test(line)) {
+            warnings.push(`${rel}:${idx + 1}: 检测到数字字面量帧号，建议改用 at()/span()（从 src/common 导出）`);
+          }
+        });
+      }
+    }
+  };
+  walk(shotsDir);
+  return warnings;
+}
+
 export function checkPlan(root) {
   const errors = [];
   let project, plan;
@@ -88,7 +112,8 @@ export function checkPlan(root) {
   errors.push(...visualDirection.errors);
   const editingMode = checkEditingMode(root, project, plan);
   errors.push(...editingMode.errors.filter(error => !errors.includes(error)));
-  return {pass: errors.length === 0, errors, visualDirection, editingMode, note: 'Coverage and declared match-cut geometry/timing checks are not visual acceptance. Review moving sequences and final media separately.'};
+  const warnings = checkLiteralShotFrames(root);
+  return {pass: errors.length === 0, errors, warnings, visualDirection, editingMode, note: 'Coverage and declared match-cut geometry/timing checks are not visual acceptance. Review moving sequences and final media separately.'};
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

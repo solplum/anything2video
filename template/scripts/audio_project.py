@@ -53,7 +53,7 @@ class AudioProject:
     def preflight_audio(self, *values):
         self.preflight('project.json', 'src/config.ts', 'audio/cache',
                        'script/timeline.json', 'script/timeline.md',
-                       'src/common/subs.ts', 'src/common/timeline.ts',
+                       'src/common/subs.ts', 'src/common/timeline.ts', 'src/common/anchors.ts',
                        *(self.assets / name for name in ('audio.wav', 'audio_narration.wav',
                                                         'audio.mix.json', 'bgm.wav', 'bgm.mp3')), *values)
         cache = self.path('audio/cache')

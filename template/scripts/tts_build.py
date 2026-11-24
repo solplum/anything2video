@@ -8,10 +8,11 @@
                                        每块预算：中文 ≤16 字 / 英文 ≤48 字符（超了会打 ⚠ 并自动缩字号）
                                        块首尾空格会去掉；英文片把块用空格拼回整句给 TTS（"a|b" 与 "a | b" 等价），中文直接拼接
   @EN: English line                  → 双语字幕：对照语言挂上一句（@EN/@CN 均可，谁不是旁白语言谁当对照），subs.ts 输出对应字段；config.subs='bilingual' 时渲染两行
+  句中写 {#id}                       → 语义锚点（id 匹配 ^[a-z][a-z0-9_-]{0,39}$），放在被锚定字之前；生成 src/common/anchors.ts 供 at()/span()/local() 定位
 输出：
   public/assets/<slug>/audio.wav（48k 立体声 16bit；slug/fps 读 project.json）
   script/timeline.json / timeline.md
-  src/common/subs.ts（字幕表）、src/common/timeline.ts（TOTAL_FRAMES / CHAPTER_STARTS / SENTENCES）
+  src/common/subs.ts（字幕表）、src/common/timeline.ts（TOTAL_FRAMES / CHAPTER_STARTS / SENTENCES）、src/common/anchors.ts（ANCHOR_FRAMES）
 逐句（或逐字幕块）缓存于 audio/cache/，改一句只重合成一句。
 
 TTS 引擎（`TTS_ENGINE`，默认 `auto` = 按解说词语言选；**跑之前先问用户有没有偏好的 TTS**——按 SKILL.md 基准确认点 3 叠加所选配方 §确认点差异执行，如 promo 已删除独立确认点、并入确认点 ① 一句话带过，用户在 ① 给过偏好就照办）：
@@ -30,6 +31,14 @@ import argparse, asyncio, hashlib, json, os, re, subprocess, sys
 import numpy as np
 from pathlib import Path
 from audio_project import AudioProject
+from narration_lib import (
+    SR,
+    detect_lang,
+    fix_subtitles,
+    parse,
+    write_artifacts,
+    write_wav,
+)
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -40,7 +49,6 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT = None
 SLUG = FPS = None
 CFG_LANG = 'zh'
-SR = 48000
 ENGINE = os.environ.get('TTS_ENGINE', 'auto')
 VOICE = os.environ.get('VOICE', 'zh-CN-YunyangNeural')
 RATE = os.environ.get('RATE', '+2%')
@@ -65,93 +73,10 @@ if ENGINE not in ('auto', 'edge', 'kokoro'):
     raise SystemExit(f'未知 TTS_ENGINE={ENGINE}（可选 auto / edge / kokoro）')
 
 
-def parse(path):
-    items = []
-    chap = 0
-    chap_title = ''
-    pending_gap = 0
-    for raw in PROJECT.path(path).read_text(encoding='utf-8').splitlines():
-        line = raw.strip()
-        if not line:
-            continue
-        m = re.match(r'^#\s*CHAPTER\s+(\d+)\s+(.*)$', line)
-        if m:
-            chap = int(m.group(1)); chap_title = m.group(2).strip()
-            items.append({'type': 'chapter', 'chapter': chap, 'title': chap_title})
-            continue
-        m = re.match(r'^##\s*gap\s+(\d+)', line)
-        if m:
-            pending_gap += int(m.group(1)); continue
-        if re.match(r'^##\s*swell\b', line):
-            pending_gap += 42; continue
-        m = re.match(r'^@(EN|CN):\s*(.+)$', line)
-        if m:
-            # 双语字幕：对照语言行挂到上一句（无上一句则忽略），随 subs.ts 输出对应字段
-            tag = m.group(1).lower()
-            for it in reversed(items):
-                if it['type'] == 'sent':
-                    it[tag] = m.group(2).strip()
-                    break
-            continue
-        if line.startswith('#'):
-            continue
-        items.append({'type': 'sent', 'chapter': chap, 'raw': line, 'gap_before': pending_gap})
-        pending_gap = 0
-    return items
-
-
 def cache_path(text, ext):
     sig = f'{ENGINE}|{VOICE}|{RATE}|{KOKORO_VOICE}|{KOKORO_LANG}|{KOKORO_SPEED}|{text}'
     p = os.path.join(CACHE, hashlib.sha1(sig.encode()).hexdigest()[:16] + ext)
     return str(PROJECT.path(p))
-
-
-def detect_lang(items):
-    """解说词里 CJK 占比 ≥20% → 'zh'，否则 'en'。"""
-    txt = ''.join(it['raw'] for it in items if it['type'] == 'sent')
-    cjk = sum(1 for c in txt if '一' <= c <= '鿿')
-    return 'zh' if cjk >= 0.2 * max(1, len(txt)) else 'en'
-
-
-# 字幕块宽度预判：与 src/common/textfit.ts 用同一张 em 宽表（字体 fontTools 实测），
-# 直接算「44px 下会不会超过安全区 1160px」——比按字数判准，中英混排（如「几百个 token 一块」）不会误报。
-# 授稿建议仍是每块中文 ≤16 字 / 英文 ≤48 字符（见 narration-storyboard.md）。
-SUB_MAX_W = 1160
-SUB_SIZE = 44
-SUB_BUDGET = {'zh': '16 字', 'en': '48 字符'}
-
-
-def text_em(s):
-    """与 src/common/textfit.ts 的 textEm() 同一张表（改一处要同步另一处）。"""
-    t = 0.0
-    for ch in s:
-        c = ord(ch)
-        if c >= 0x2000:
-            t += 1.0                     # CJK / 全角，以及 U+2000 起的标点 / 箭头 / 数学符号（— … “ ” → ∑ 在 Noto 里都是 1em）
-        elif ch == ' ':
-            t += 0.227
-        elif 'A' <= ch <= 'Z':
-            t += 0.668
-        elif '0' <= ch <= '9':
-            t += 0.59
-        elif 'a' <= ch <= 'z':
-            t += 0.566
-        elif 0xc0 <= c < 0x250:
-            t += 0.58                    # 带重音的拉丁字母
-        else:
-            t += 0.325                   # 半角标点
-    return t
-
-
-def write_wav(path, x, sr):
-    """x：float32 单声道 (n,) 或立体声 (n,2) → 16bit PCM wav。"""
-    import wave
-    a = np.asarray(x, dtype=np.float32)
-    pcm = (np.clip(a, -1.0, 1.0) * 32767).astype(np.int16)
-    PROJECT.mkdir(PROJECT.path(path).parent)
-    with wave.open(str(PROJECT.path(path)), 'wb') as w:
-        w.setnchannels(1 if a.ndim == 1 else a.shape[1]); w.setsampwidth(2); w.setframerate(sr)
-        w.writeframes(pcm.tobytes())
 
 
 async def synth_edge(text, retries=None, base_delay=None):
@@ -361,7 +286,7 @@ def chunk_starts(tts_text, chunks, words, lead_cut, dur, sep=''):
 
 
 async def synth_sentence(chunks, sep=''):
-    """一句 → (音频 float32 单声道, 每块起始秒, 每块逐字符起始秒, 句长秒)。sep 是块之间的连接符（英文 ' '，中文 ''）。
+    """一句 → (音频 float32 单声道, 每块起始秒, 每块逐字符起始秒, 句长秒, 是否实测词边界)。sep 是块之间的连接符（英文 ' '，中文 ''）。
     edge：整句合成一次，块起点与逐字符时间都按词边界对齐（最准）。
     kokoro：无词边界 → 逐字幕块分别合成再拼接，块起点因此是精确的（块内字符按位置线性铺开=估计计时），代价是块界断句略生硬。"""
     text = sep.join(chunks)
@@ -370,7 +295,7 @@ async def synth_sentence(chunks, sep=''):
         x, lead_cut = trim_edges(decode(au))
         dur = len(x) / SR
         starts, char_secs = chunk_starts(text, chunks, words, lead_cut, dur, sep)
-        return x, starts, char_secs, dur
+        return x, starts, char_secs, dur, bool(words)
     pad = np.zeros(int(CHUNK_PAD * SR), dtype=np.float32)
     parts = []; starts = []; pos = 0.0
     for i, c in enumerate(chunks):
@@ -386,7 +311,7 @@ async def synth_sentence(chunks, sep=''):
         a = starts[i]; b = starts[i + 1] if i + 1 < len(starts) else dur
         n = max(1, len(c))
         char_secs.append([a + (b - a) * j / n for j in range(len(c))])
-    return x, starts, char_secs, dur
+    return x, starts, char_secs, dur, False
 
 
 async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_grid=None, no_beat_align=False):
@@ -399,7 +324,7 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
     narr = narr or Path(ROOT) / 'script' / 'narration.txt'
     outputs = [PROJECT.assets / name for name in ('audio.wav', 'audio_narration.wav', 'audio.mix.json')]
     destinations = [*outputs, 'script/timeline.json', 'script/timeline.md',
-                    'src/common/subs.ts', 'src/common/timeline.ts', 'project.json']
+                    'src/common/subs.ts', 'src/common/timeline.ts', 'src/common/anchors.ts', 'project.json']
     grid_candidate = None
     if not no_beat_align:
         if beat_grid is not None:
@@ -411,7 +336,7 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
     PROJECT.preflight_audio(narr, CACHE, *destinations, *([grid_candidate] if grid_candidate is not None else []))
     if PROJECT.path(outputs[1]).exists() and not force:
         raise ValueError('Existing audio_narration.wav is protected; use --force to regenerate narration')
-    items = parse(narr)
+    items = parse(PROJECT.path(narr))
     if not any(item['type'] == 'sent' and item['raw'].replace('|', '').strip() for item in items):
         raise SystemExit('narration.txt 没有可朗读句子，拒绝生成静音交付。')
     lang = detect_lang(items)
@@ -456,6 +381,8 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
     t = LEAD / FPS
     audio_parts = []  # (start_sec, np.array)
     sentences = []; chapters = []
+    anchor_refs = []
+    all_measured = True
     sid = 0
     total_chars = 0; total_words = 0; speech_sec = 0.0
     chapter_open_pending = False
@@ -478,7 +405,8 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
             elif prev_sent and _discourse_role(prev_sent, tts_text) in ('accent', 'climax'):
                 t = quantize_sentence_start(t, 'accent', beats_s, downbeats_s, pocket_s=0.0)
         chapter_open_pending = False
-        x, starts, char_secs, dur = await synth_sentence(chunks, sep)
+        x, starts, char_secs, dur, measured = await synth_sentence(chunks, sep)
+        all_measured = all_measured and measured
         if (x.ndim != 1 or len(x) == 0 or not np.all(np.isfinite(x))
                 or not np.isfinite(dur) or abs(dur - len(x) / SR) > 1 / SR
                 or len(starts) != len(chunks) or starts != sorted(starts)
@@ -489,6 +417,7 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
         # edge-tts 云端限流：句间留间隔（缓存命中的句子在上面已提前返回）
         if ENGINE == 'edge' and EDGE_DELAY > 0:
             await asyncio.sleep(EDGE_DELAY)
+        sent_idx = len(sentences)
         sid += 1
         subs = [(t + starts[i], t + (starts[i + 1] if i + 1 < len(starts) else dur)) for i in range(len(chunks))]
         f0 = int(round(t * FPS)) + 1; f1 = int(round((t + dur) * FPS))
@@ -502,6 +431,8 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
                 rec['subs'][0][k] = it[k]  # 对照行挂句首块（逐块对照需在 | 切块时自行对齐）
                 break
         sentences.append(rec)
+        for aid, ci, off in it.get('anchors', []):
+            anchor_refs.append((aid, sent_idx, ci, off))
         audio_parts.append((t, x))
         total_chars += len(re.sub(r'[，。、！？：；“”（）,.!?:;()\-—…\s]', '', tts_text))
         total_words += len(tts_text.split()); speech_sec += dur
@@ -526,77 +457,41 @@ async def main(narr=None, *, force=False, legacy_config=False, fps=None, beat_gr
         raise ValueError('Narration master appeared during synthesis; rerun with --force if intended')
     PROJECT.mkdir(PROJECT.assets)
     wav = str(PROJECT.path(outputs[0]))
-    write_wav(wav, np.stack([y, y], 1), SR)
+    write_wav(wav, np.stack([y, y], 1), SR, project=PROJECT)
     # 混音只读此正本；不再通过 audio.wav 的修改时间猜测来源。
     PROJECT.copy(wav, outputs[1])
     PROJECT.unlink(outputs[2])
-    # 修正字幕：相邻句字幕不重叠；同句块间连续
-    all_subs = []
-    for s in sentences:
-        for k, sb in enumerate(s['subs']):
-            if sb['to'] < sb['from']:
-                sb['to'] = sb['from']
-            all_subs.append(dict(sb))
-    for i in range(len(all_subs) - 1):
-        if all_subs[i]['to'] >= all_subs[i + 1]['from']:
-            all_subs[i]['to'] = all_subs[i + 1]['from'] - 1
-    # 字幕块宽度体检：超安全区的块会被 Subtitle.tsx 缩字号（>1.3 倍还会折两行压进内容区），正确做法是回去切文案
-    over = [(sb, text_em(sb['text']) * SUB_SIZE) for sb in all_subs]
-    over = [(sb, w) for sb, w in over if w > SUB_MAX_W]
-    if over:
-        print(f'⚠ {len(over)}/{len(all_subs)} 块字幕在 {SUB_SIZE}px 下超过安全区 {SUB_MAX_W}px'
-              f'（会自动缩字号；建议每块 {SUB_BUDGET[lang]}，用 | 再切一刀）：')
-        for sb, w in over[:5]:
-            print(f"    f{sb['from']} (≈{w:.0f}px{'，会折两行' if w > SUB_MAX_W * 1.3 else ''}) {sb['text']}")
-    # 输出
+    all_subs = fix_subtitles(sentences, clamp_chars=False)
+    anchor_source = 'measured' if (ENGINE in ('edge', 'minimax') and all_measured) else 'estimated'
+    voice_name = VOICE if ENGINE == 'edge' else KOKORO_VOICE
+    rate_val = RATE if ENGINE == 'edge' else KOKORO_SPEED
     tl = {'fps': FPS, 'total_frames': total, 'engine': ENGINE,
-          'voice': VOICE if ENGINE == 'edge' else KOKORO_VOICE,
-          'rate': RATE if ENGINE == 'edge' else KOKORO_SPEED,
+          'voice': voice_name,
+          'rate': rate_val,
           'prosody_mode': PROSODY_MODE, 'beat_aligned': beat_aligned,
+          'anchor_source': anchor_source,
           'gap': GAP, 'chapter_gap': CHAPTER_GAP, 'lead': LEAD, 'tail': TAIL,
           'lang': lang, 'chapters': chapters, 'sentences': sentences, 'chars': total_chars, 'words': total_words,
           'speech_sec': round(speech_sec, 2)}
-    unit, cnt = ('字', total_chars) if lang == 'zh' else ('词', total_words)
-    PROJECT.mkdir('script')
-    PROJECT.mkdir('src/common')
-    PROJECT.write_text('script/timeline.json', json.dumps(tl, ensure_ascii=False, indent=1))
-    md = [f"# 时间轴（{ENGINE} · {tl['voice']} {tl['rate']}，共 {total} 帧 = {total/FPS:.1f}s，{cnt} {unit}，语速 {cnt/max(1e-6,speech_sec):.2f} {unit}/s）\n\n",
-          '| 句 | 章 | 帧 from–to | 时长 | 文本（| 为字幕切分） |\n|---|---|---|---|---|\n']
-    for s in sentences:
-        md.append(f"| {s['id']} | {s['chapter']} | {s['from']}–{s['to']} | {(s['to']-s['from']+1)/FPS:.1f}s | {'｜'.join(sb['text'] for sb in s['subs'])} |\n")
-    md.append('\n## 章节起始帧\n')
-    for c in chapters:
-        md.append(f"- 第{c['n']}章 {c['title']}：f{c['from']}\n")
-    Path(PROJECT.path('script/timeline.md')).write_text(''.join(md), encoding='utf-8')
-    # 文本一律走 json.dumps：JSON 字符串就是合法的 TS 字面量，且会转义 " \ 与控制字符
-    # （手工拼引号会被解说词里的 \ ' ` ${} 破坏语法，甚至把文本写成代码）
-    def lit(s):
-        return json.dumps(s, ensure_ascii=False)
-    ts = ['// 自动生成：scripts/tts_build.py（词边界 / 逐块合成 → 字幕块）。手改请改 script/narration.txt 后重跑。\n',
-          "export type SubEntry = {from: number; to: number; text: string; en?: string; cn?: string; emphasis?: boolean;\n"
-          "  /** 逐字符起始帧（词级点亮字幕 WordLitCaption 的底料，1 起含端点，长度==text 字符数；无词边界字符继承前字符）。\n"
-          "   *  edge 引擎为实测词边界；kokoro 为块内线性估计。缺省（旧数据）时 WordLitCaption 退化为整块淡入，与旧渲染逐值等价。 */\n"
-          "  chars?: number[]};\nexport const SUBS: SubEntry[] = [\n"]
-    for sb in all_subs:
-        alt = ''.join(f", {k}: {lit(sb[k])}" for k in ('en', 'cn') if sb.get(k))
-        ch = f", chars: [{','.join(str(x) for x in sb['chars'])}]" if sb.get('chars') else ''
-        ts.append(f"  {{from: {sb['from']}, to: {sb['to']}, text: {lit(sb['text'])}{alt}{ch}}},\n")
-    ts.append('];\n')
-    Path(PROJECT.path('src/common/subs.ts')).write_text(''.join(ts), encoding='utf-8')
-    tl_ts = ['// 自动生成：scripts/tts_build.py。帧号 1 起含端点。\n',
-             f'export const TOTAL_FRAMES = {total};\n',
-             'export const CHAPTER_STARTS: Array<{n: number; title: string; from: number}> = [\n']
-    for c in chapters:
-        tl_ts.append(f"  {{n: {c['n']}, title: {lit(c['title'])}, from: {c['from']}}},\n")
-    tl_ts.append('];\nexport type Sentence = {id: string; chapter: number; from: number; to: number; text: string};\nexport const SENTENCES: Sentence[] = [\n')
-    for s in sentences:
-        tl_ts.append(f"  {{id: {lit(s['id'])}, chapter: {s['chapter']}, from: {s['from']}, to: {s['to']}, text: {lit(s['text'])}}},\n")
-    tl_ts.append('];\n')
-    Path(PROJECT.path('src/common/timeline.ts')).write_text(''.join(tl_ts), encoding='utf-8')
+    unit_cnt = ('字', total_chars) if lang == 'zh' else ('词', total_words)
+    md_title = (
+        f"# 时间轴（{ENGINE} · {voice_name} {rate_val}，共 {total} 帧 = {total/FPS:.1f}s，"
+        f"{unit_cnt[1]} {unit_cnt[0]}，语速 {unit_cnt[1]/max(1e-6,speech_sec):.2f} {unit_cnt[0]}/s）\n\n"
+    )
+    unit, cnt, _ = write_artifacts(
+        PROJECT, tl, chapters, sentences, all_subs, anchor_refs, anchor_source,
+        md_title=md_title,
+        subs_header='// 自动生成：scripts/tts_build.py（词边界 / 逐块合成 → 字幕块）。手改请改 script/narration.txt 后重跑。\n',
+        subs_chars_doc=(
+            "  /** 逐字符起始帧（词级点亮字幕 WordLitCaption 的底料，1 起含端点，长度==text 字符数；无词边界字符继承前字符）。\n"
+            "   *  edge 引擎为实测词边界；kokoro 为块内线性估计。缺省（旧数据）时 WordLitCaption 退化为整块淡入，与旧渲染逐值等价。 */\n"
+        ),
+        timeline_header='// 自动生成：scripts/tts_build.py。帧号 1 起含端点。\n',
+        warn_wide=True,
+    )
     print(f'lang={lang} engine={ENGINE} voice={tl["voice"]} total_frames={total} ({total/FPS:.1f}s) '
           f'sentences={len(sentences)} {"chars" if lang == "zh" else "words"}={cnt} speech={speech_sec:.1f}s '
           f'rate={cnt/max(1e-6,speech_sec):.2f} {unit}/s')
-    PROJECT.save_total(total)
     for c in chapters:
         print(f"  chapter {c['n']} {c['title']} from f{c['from']}")
 

@@ -13,6 +13,8 @@ export * from './SceneWipe';
 export * from './Throughline';
 export * from './FrameGrade';
 export * from './timeline';
+export * from './anchors';
+export * from './anchor';
 export * from './Footage';
 export {PoemSubtitleLine, POEM_STYLE} from './PoemSubtitle';
 export {TempGrade} from './TempGrade';
