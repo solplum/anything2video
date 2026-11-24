@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """三层混音：旁白正本 audio_narration.wav + 可选 BGM/音效 → 派生 audio.wav。
-用法：uv run python scripts/mix_audio.py [--epic] [--bed 0.055] [--sfx none|sand]
+用法：uv run python scripts/mix_audio.py [--epic] [--bed-lu -1.5 | --bed 0.055] [--music-fit auto|legacy] [--sfx none|sand]
 - --epic（epic 无旁白口径，recipes/epic.md §6）：旁白轨为零、片长从 script/timeline.json 读（chapter_timeline.py 产出）、
   响度床缺省 0.12（无旁白压制，音乐可给更大空间）；其余流程同标准模式
+- --bed-lu（非 epic 且未传 --bed 时的默认相对响度床）：基于 pyloudnorm 按 narration_lufs + bed_lu 计算目标 BGM 响度
+  （标准默认 -1.5 LU，保守档 -5.0 LU），再叠非对称侧链与频谱挖槽；显式传 --bed 则走旧绝对 RMS 口径。
+- --music-fit（单曲 BGM 默认 auto）：调用 music_fit 按 4/4 重拍拼头尾/整小节循环（可靠且 >=8 重拍时仅做 1.5s 淡入，不做 3.5s 淡出；
+  不可靠或 --music-fit legacy 回退 1.5s 交叉淡化循环 + 1.5s/3.5s 淡入淡出）。
 - 旁白正本：TTS 同时写 audio_narration.wav；混音只读正本，禁止按 mtime 回拷混音。
   --adopt-legacy 显式迁移旧工程 audio.wav；已有 mix.json 时正本缺失必须重跑 TTS。
 - BGM 二模式：①音乐编排表 audio/music_plan.json（v4.2.0，多段接力：逐段[曲/曲内进出点/视频落位/
@@ -27,7 +31,37 @@ if hasattr(sys.stderr, 'reconfigure'):
 
 SR = 48000
 BGM_SCALE_CAP = 8.0
+DEFAULT_BED_LU = -1.5
 SFX_GAIN = {'pour': 0.15, 'wipe': 0.10}
+
+
+def _measure_lufs(audio, sr=SR):
+    """Measure integrated LUFS with pyloudnorm, returning None if unavailable or silent."""
+    x = np.asarray(audio, dtype=np.float64)
+    if len(x) < 16 or float(np.max(np.abs(x))) < 1e-8:
+        return None
+    try:
+        import pyloudnorm as pyln
+    except ImportError:
+        return None
+    dur = len(x) / max(1, sr)
+    block = 0.400 if dur >= 0.45 else max(0.05, dur * 0.8)
+    val = float(pyln.Meter(sr, block_size=block).integrated_loudness(x))
+    return val if math.isfinite(val) and val > -70.0 else None
+
+
+def _scale_to_bed(seg, target_rms, target_lufs, sr=SR):
+    """Scale BGM segment by LUFS (when target_lufs set) or legacy RMS, capped by BGM_SCALE_CAP."""
+    if target_lufs is not None:
+        seg_lufs = _measure_lufs(seg, sr)
+        if seg_lufs is None:
+            return seg
+        gain = min(BGM_SCALE_CAP, 10.0 ** ((target_lufs - seg_lufs) / 20.0))
+        return seg * gain
+    rms = float(np.sqrt(np.mean(seg ** 2)))
+    if rms > 1e-6:
+        return seg * min(BGM_SCALE_CAP, target_rms / rms)
+    return seg
 
 
 def compute_speech_duck_envelope(narr_mono, sr=SR, hold_s=0.35, attack_s=0.04, release_s=0.90):
@@ -131,8 +165,8 @@ def _resolve_track(name, a_dir, root):
     raise SystemExit(f'music_plan: 找不到音轨 {name}（查工程 {a_dir} 与 skill 曲库 assets/audio/bgm）')
 
 
-def _render_music_plan(plan, total, target_bgm_rms, a_dir, root, music_tracks_log):
-    """逐 cue 渲染：解码→曲内裁切→段级 RMS 归一→段内淡入淡出→重叠区等功率 crossfade。"""
+def _render_music_plan(plan, total, target_bgm_rms, a_dir, root, music_tracks_log, target_bgm_lufs=None):
+    """逐 cue 渲染：解码→曲内裁切→段级响度归一→段内淡入淡出→重叠区等功率 crossfade。"""
     cues = plan.get('cues')
     if not isinstance(cues, list) or not cues:
         raise SystemExit('music_plan.cues 必须为非空数组')
@@ -176,9 +210,7 @@ def _render_music_plan(plan, total, target_bgm_rms, a_dir, root, music_tracks_lo
         seg = seg[:max(0, min(n, total - i0))]
         if len(seg) == 0:
             raise SystemExit(f'music_plan.cues[{i}]: 落位完全在片长之外')
-        seg_rms = float(np.sqrt(np.mean(seg ** 2)))
-        if seg_rms > 1e-6:
-            seg *= min(BGM_SCALE_CAP, target_bgm_rms / seg_rms)
+        seg = _scale_to_bed(seg, target_bgm_rms, target_bgm_lufs, SR)
         fade_in, fade_out = float(cue.get('fade_in') or 0), float(cue.get('fade_out') or 0)
         if fade_in > 0:
             k = min(len(seg), int(fade_in * SR))
@@ -233,6 +265,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--epic', action='store_true')
     parser.add_argument('--bed', type=float)
+    parser.add_argument('--bed-lu', type=float)
+    parser.add_argument('--music-fit', choices=('auto', 'legacy'), default='auto')
     parser.add_argument('--sfx', choices=('none', 'sand'), default='none')
     parser.add_argument('--adopt-legacy', action='store_true')
     parser.add_argument('--legacy-config', action='store_true')
@@ -249,9 +283,15 @@ def main(argv=None):
     raw_path = f'{a_dir}/audio_narration.wav'
     mix_path = f'{a_dir}/audio.wav'
     epic = options.epic
+    if options.bed is not None and options.bed_lu is not None:
+        raise SystemExit('--bed and --bed-lu cannot be used together')
+    if epic and options.bed_lu is not None:
+        raise SystemExit('--bed-lu requires narration reference; use --bed with --epic')
     bed = options.bed if options.bed is not None else (0.12 if epic else 0.08)
     if not np.isfinite(bed) or not 0 <= bed <= 0.5:
         raise SystemExit('--bed must be a finite number in 0..0.5')
+    if options.bed_lu is not None and (not np.isfinite(options.bed_lu) or not -30.0 <= options.bed_lu <= 0.0):
+        raise SystemExit('--bed-lu must be a finite number in -30..0')
 
     if epic:
         total = int(round(tl['total_frames'] / project.fps * SR))
@@ -276,30 +316,63 @@ def main(argv=None):
         total = len(narr)
         project.validate_audio(narr, SR, tl)
 
+    narration_lufs = None if epic else _measure_lufs(narr, SR)
+    bed_lu = None
+    target_bgm_lufs = None
+    if epic:
+        bed_mode = 'epic_rms'
+    elif options.bed is not None:
+        bed_mode = 'absolute_rms'
+    else:
+        req_lu = options.bed_lu if options.bed_lu is not None else DEFAULT_BED_LU
+        if narration_lufs is None:
+            print('⚠ 缺少 pyloudnorm 或旁白响度无效，--bed-lu 降级绝对 RMS 0.08')
+            bed_mode = 'absolute_rms'
+        else:
+            bed_mode = 'relative'
+            bed_lu = float(req_lu)
+            target_bgm_lufs = narration_lufs + bed_lu
+
     music_plan = pathlib.Path(a_dir) / 'music_plan.json'
     bgm_single = next((f'{a_dir}/{name}' for name in ('bgm.wav', 'bgm.mp3') if os.path.exists(f'{a_dir}/{name}')), None)
     music_tracks_log = []
+    fit_report = None
 
     if music_plan.exists():
         if bgm_single:
             print(f'提示：music_plan.json 存在，单曲 {bgm_single} 忽略（编排表优先）')
         plan = json.loads(music_plan.read_text(encoding='utf-8'))
-        bgm = _render_music_plan(plan, total, bed, a_dir, root, music_tracks_log)
+        bgm = _render_music_plan(plan, total, bed, a_dir, root, music_tracks_log, target_bgm_lufs=target_bgm_lufs)
     elif bgm_single:
-        bgm = loop_with_crossfade(_decode_stereo(project.path(bgm_single)), total, SR, xfade_s=1.5)
-        rms = float(np.sqrt(np.mean(bgm ** 2)))
-        if rms > 1e-6:
-            bgm *= min(BGM_SCALE_CAP, bed / rms)
+        raw_bgm = _decode_stereo(project.path(bgm_single))
+        bgm = None
+        if options.music_fit == 'auto':
+            import music_fit
+            fitted = music_fit.fit_single_track(raw_bgm, SR, total, fps=project.fps)
+            if fitted is not None:
+                bgm, fit_report = fitted
+            else:
+                fit_report = {'used': False, 'reason': 'unreliable_or_short'}
+        else:
+            fit_report = {'used': False, 'mode': 'legacy'}
+
+        if bgm is None:
+            bgm = loop_with_crossfade(raw_bgm, total, SR, xfade_s=1.5)
+        bgm = _scale_to_bed(bgm, bed, target_bgm_lufs, SR)
         positions = np.arange(total, dtype=np.float64)
         fade_in_n = max(1, min(int(round(1.5 * SR)), total // 4))
-        fade_out_n = max(1, min(int(round(3.5 * SR)), total // 3))
         fin = 0.5 - 0.5 * np.cos(math.pi * np.clip(positions / fade_in_n, 0.0, 1.0))
-        fout = 0.5 - 0.5 * np.cos(math.pi * np.clip((total - 1 - positions) / fade_out_n, 0.0, 1.0))
-        bgm *= (fin * fout)[:, None]
+        if fit_report and fit_report.get('used'):
+            bgm *= fin[:, None]
+        else:
+            fade_out_n = max(1, min(int(round(3.5 * SR)), total // 3))
+            fout = 0.5 - 0.5 * np.cos(math.pi * np.clip((total - 1 - positions) / fade_out_n, 0.0, 1.0))
+            bgm *= (fin * fout)[:, None]
         music_tracks_log.append({'track': str(bgm_single), 'mode': 'single'})
     else:
         bgm = np.zeros((total, 2), dtype=np.float64)
 
+    music_lufs = _measure_lufs(bgm, SR) if (bgm_single or music_plan.exists()) else None
     if not epic:
         duck_env = compute_speech_duck_envelope(np.mean(narr, axis=1), SR)
         bgm = apply_spectral_ducking(bgm, duck_env, SR)
@@ -345,8 +418,14 @@ def main(argv=None):
                 'music_plan_sha256': digest(music_plan) if music_plan.exists() else None,
                 'music': ('music_plan' if music_plan.exists() else ('single' if bgm_single else 'none')),
                 'music_tracks': music_tracks_log,
+                'music_fit': fit_report,
                 'output_sha256': digest(mix_path), 'sample_rate': SR,
-                'channels': 2, 'duration_seconds': total / SR, 'bed': bed,
+                'channels': 2, 'duration_seconds': total / SR,
+                'bed_mode': bed_mode,
+                'bed_lu': round(bed_lu, 2) if bed_lu is not None else None,
+                'narration_lufs': round(narration_lufs, 2) if narration_lufs is not None else None,
+                'music_lufs': round(music_lufs, 2) if music_lufs is not None else None,
+                'bed': None if bed_mode == 'relative' else bed,
                 'sfx': options.sfx, 'ducking': 'spectral_850_3600_asymmetric', 'peak': float(np.max(np.abs(mix)))}
     project.write_text(pathlib.Path(mix_path).with_suffix('.mix.json'), json.dumps(manifest, indent=2) + '\n')
     if project.legacy:
