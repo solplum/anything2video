@@ -21,14 +21,54 @@
 | singal（用户自加曲） | — | 0:30 | 暗、稳、全程高能（30s 短打） | **国风古典·史诗宏大**（用户选定 2026-10-11） | 高能短打：钩子/hero 段、接力尾段；尾部无自然衰减需淡出 |
 | wx-hotel-night（用户自加曲） | — | 0:30 | 全程 L5 高能铺满，29.5s 淡出收尾（已切末尾 click；画面：loft 酒店夜景） | 情感抒情（用户选定 2026-10-12） | 30s 短打：情绪段/收尾段候选 |
 | wx-night-drive（用户自加曲） | — | 0:30 | 全程 L5 一段到底，无段落起伏（画面：蓝调时刻行车窗外城市） | **情感抒情·黑色生命力**（用户选定 2026-10-12；气质原话：励志、自强） | 30s 短打：励志/情绪向 hero、钩子 |
-| wx-cos-walk（用户自加曲） | — | 0:30 | 15.9s 处 L3→L5 跳变，后半高能（画面：建筑前人物展示） | **都市高级感**（用户选定 2026-10-12；气质原话：高贵场景、外滩纸醉金迷、城市内透的高级） | 30s 短打：都市/奢华质感 hero；前半 L3 可当垫底进 |
+| wx-cos-walk（用户自加曲） | — | 0:30 | 全程按 15.9s L3→L5 跳变，后半高能（画面：建筑前人物展示） | **都市高级感**（用户选定 2026-10-12；气质原话：高贵场景、外滩纸醉金迷、城市内透的高级） | 30s 短打：都市/奢华质感 hero；前半 L3 可当垫底进 |
 | wx-meme-clip（用户自加曲） | — | 0:07 | L5 一段到底约 7.4s，**已切 8.05s 起的抖音片尾音效**（画面：梗图文字视频） | **黑色生命力**（用户选定 2026-10-12；气质原话：咬牙向上） | 仅 7s 只够钩子位 |
+| Sonor 03 | 561 | 4:59 | Electronic，节拍弱（未试听预标） | 科技未来·商业品牌 | 本地按需下载；垫底/hero/收尾 |
+| Focus on Yourself | 568 | 4:46 | Electronica，节拍弱（未试听预标） | 科技未来·商业品牌 | 本地按需下载；钩子/垫底/hero/收尾 |
+| Your Breath | 634 | 3:56 | Corporate Music，节拍弱（未试听预标） | 科技未来·商业品牌 | 本地按需下载；钩子/垫底/hero/收尾 |
+| Atoms in Peace | 107 | 3:47 | Electronica，节拍弱（未试听预标） | 科技未来·商业品牌 | 本地按需下载；垫底/hero/收尾 |
+| Night Sky Hip Hop | 970 | 4:17 | Pop，节拍弱（未试听预标） | 欢快活力·商业品牌 | 本地按需下载；垫底/hero/收尾 |
+| I Believe in Us | 1030 | 2:48 | Pop，节拍弱（未试听预标） | 欢快活力·商业品牌 | 本地按需下载；垫底/hero/收尾 |
+| Old Letter | 854 | 2:45 | Pop，节拍弱（未试听预标） | 欢快活力·商业品牌 | 本地按需下载；垫底/hero/收尾 |
+| Me and You | 851 | 2:38 | Rock，节拍弱（未试听预标） | 欢快活力·商业品牌 | 本地按需下载；垫底/hero/收尾 |
+| River Flow | 594 | 4:30 | Electronica，节拍弱（未试听预标） | 知识科普·人文叙事 | 本地按需下载；钩子/垫底/hero/收尾 |
+| Nield Grohm Hanging 1 | 538 | 3:42 | World Fusion，节拍弱（未试听预标） | 知识科普·人文叙事 | 本地按需下载；垫底/hero/收尾 |
+| Masking the Masters | 552 | 3:40 | Orchestral Hybrid，节拍弱（未试听预标） | 知识科普·人文叙事 | 本地按需下载；钩子/垫底/hero/收尾 |
+| Skyline | 601 | 3:26 | Classical，节拍弱（未试听预标） | 知识科普·人文叙事 | 本地按需下载；垫底/hero/收尾 |
+| We Will Get It | 598 | 4:29 | Film Score，节拍弱（未试听预标） | 史诗宏大·情感抒情 | 本地按需下载；钩子/垫底/hero/收尾 |
+| Classical 10 | 717 | 3:32 | Film Score，节拍弱（未试听预标） | 史诗宏大·情感抒情 | 本地按需下载；垫底/收尾 |
+| Drawing the Sky | 606 | 3:27 | Orchestral Pop，节拍弱（未试听预标） | 史诗宏大·情感抒情 | 本地按需下载；垫底/hero/收尾 |
+| Classical 4 | 711 | 3:09 | Film Score，节拍弱（未试听预标） | 史诗宏大·情感抒情 | 本地按需下载；全段平缓可用作收尾 |
 
 > 微信提取批（2026-10-12 入库，同日题材标注完成）：以上 4 首 `wx-*` 为用户经微信传输的抖音视频内背景音乐提取轨，题材由用户**对话内亲选**（新扩词表见约定 4），`human_reviewed=true` 已入反查池；功能轴为程序预建议未逐条确认（翻案随时可改），曲名仍为按画面临时命名可改；许可状态与源视频反查信息见 `assets/audio/ATTRIBUTION.md` 外部曲表。**尾部处理（10-12）**：meme-clip 切除 8.05–8.45s 孤立抖音片尾音效（止于 7.5s）；hotel-night 切除末尾 0.2s click（止于 29.9s，带 0.4s 淡出）；night-drive/cos-walk 频谱核验音乐铺满全片、无可分离抖音音，未切——若试听仍闻抖音音报秒数再切。
 
 题材标签为逐段标注的整曲摘要，逐段明细（同曲不同段可挂不同主题）与功能轴（钩子/垫底/hero/收尾）、入出点候选见 `assets/audio/bgm/profiles/*.json`。
 
 来源：`https://assets.mixkit.co/music/<ID>/<ID>.mp3`（ID 见上表）。曲池扩展：`mixkit.co/free-stock-music/tag/{minimal,piano,documentary,ambient}/`（页面 JSON-LD 含 name/genre/duration 可脚本解析）。
+
+## 本地音源获取（第二批按需拉取，防独立音频再分发）
+
+Mixkit 免费许可仅覆盖合成配入视频等同步使用，禁止将原始音频文件单独打包分发。因此第二批 16 首只将 `assets/audio/bgm/profiles/*.json`（含 `source_url` 与 `sha256`）纳入 Git，`.mp3` 本身不入仓（`.git/info/exclude` 忽略）；**新克隆仓库在未下载本地音源前，`bgm_query.py --use release` 会跳过本地缺失音频的条目**。需要拉齐本地音源时，在仓库根执行：
+
+```bash
+uv run --project template python -c "
+import hashlib, json, pathlib, urllib.request
+for p in sorted(pathlib.Path('assets/audio/bgm/profiles').glob('*.json')):
+    prof = json.loads(p.read_text(encoding='utf-8'))
+    url = prof.get('source_url') or prof.get('url')
+    rel = prof.get('file')
+    if not url or not rel:
+        continue
+    dst = pathlib.Path(rel)
+    if not dst.exists():
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        print('Fetching', rel, '<-', url)
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        dst.write_bytes(urllib.request.urlopen(req, timeout=30).read())
+    got = hashlib.sha256(dst.read_bytes()).hexdigest()
+    assert got == prof['sha256'], f'SHA256 mismatch for {rel}: {got} != {prof[\"sha256\"]}'
+print('OK: all external BGM tracks verified')"
+```
 
 ## 🔥 热点配乐参考（市面爆款风向）
 

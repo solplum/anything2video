@@ -86,3 +86,11 @@ python scripts/bgm_query.py --use reference --reference wx-night-drive
 ## AI 生成配乐（未接入）
 
 2026-11 实测 MiniMax 音乐接口 `POST /v1/music_generation`（`music-2.0` 与 `music-1.5`）均返回 HTTP 410 `status_code=2153`（官方策略自 2026-08-20 起不对新接入用户开放），因此 Skill **未接入 AI 音乐生成通道**。无合适实录曲时，请从 Mixkit/用户自带曲库挑选或显式选用 `bgm_generate.py` 程序编曲备选。
+
+## 平台配乐位（发布时在抖音/B站加热门曲）
+
+从抖音/B站视频下载抽取音频嵌入成片并不能获得音乐版权许可，发布后仍有静音、限流或侵权风险；正确做法是在抖音或 B 站发布流里从**平台官方自带曲库**直接加热门歌（注意授权仅限该平台内使用，不覆盖跨平台复用）。若需另出一版无背景音乐成片（仅保留视频画面与 `audio_narration.wav` 人声，不含 `mix_sfx.py` 另叠音效），执行：
+
+```sh
+ffmpeg -i renders/<slug>_v1.mp4 -i public/assets/<slug>/audio_narration.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 256k -shortest renders/<slug>_v1_nobgm.mp4
+```

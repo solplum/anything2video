@@ -2,7 +2,7 @@
 
 规矩：**下载音频素材时当场记录曲名/URL**，事后无法反查。
 
-目录结构：`bgm/` 11 首曲库音频（6 首 Mixkit + 用户自加 singal + 4 首微信提取 wx-*）+ `bgm/profiles/` 逐曲分析档案；`sfx/<类别>/` 149 个音效分 16 类（transition impact riser camera ui text paper film light data scifi mech glass fluid crowd counter）。类别含义与找音路径见 `references/sound-design.md` 3.0。
+目录结构：`bgm/` 共 27 首曲库（6 首已入仓 Mixkit + 16 首第二批按需下载 Mixkit + 用户自加 singal + 4 首微信提取 wx-*）与 `bgm/profiles/` 逐曲分析档案；`sfx/<类别>/` 149 个音效分 16 类（transition impact riser camera ui text paper film light data scifi mech glass fluid crowd counter）。类别含义与找音路径见 `references/sound-design.md` 3.0。
 
 ## BGM 曲库（2026-10-11 实体化入库）
 
@@ -21,6 +21,29 @@
 | `bgm/wx-night-drive.wav` | wx-night-drive（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
 | `bgm/wx-cos-walk.wav` | wx-cos-walk（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
 | `bgm/wx-meme-clip.wav` | wx-meme-clip（用户自加曲，微信提取批 2026-10-12） | — | 微信视频提取，无外部 URL，见下方外部曲表 |
+
+## BGM 扩充第二批（2026-11-24，本地按需下载，不入 git）
+
+全部适用 **Mixkit Stock Music Free License**（https://mixkit.co/license/#musicFree ，仅限合成配入视频等同步使用，**禁止单独分发或再传播原音频文件**）；因此仅在仓内登记本表与 `bgm/profiles/*.json`，`.mp3` 文件仅存本机（`.git/info/exclude` 忽略），新克隆仓须按 `reference/bgm-library.md`「本地音源获取」命令拉取并校验 sha256。下载与 HTTP 200 核验日期：2026-11-24。
+
+| 文件 | 原名 | Mixkit ID | URL | 情绪方向 |
+|---|---|---|---|---|
+| `bgm/sonor-03-561.mp3` | Sonor 03 | 561 | https://assets.mixkit.co/music/561/561.mp3 | 科技未来/商业品牌 |
+| `bgm/focus-on-yourself-568.mp3` | Focus on Yourself | 568 | https://assets.mixkit.co/music/568/568.mp3 | 科技未来/商业品牌 |
+| `bgm/your-breath-634.mp3` | Your Breath | 634 | https://assets.mixkit.co/music/634/634.mp3 | 科技未来/商业品牌 |
+| `bgm/atoms-in-peace-107.mp3` | Atoms in Peace | 107 | https://assets.mixkit.co/music/107/107.mp3 | 科技未来/商业品牌 |
+| `bgm/night-sky-hip-hop-970.mp3` | Night Sky Hip Hop | 970 | https://assets.mixkit.co/music/970/970.mp3 | 欢快活力 |
+| `bgm/i-believe-in-us-1030.mp3` | I Believe in Us | 1030 | https://assets.mixkit.co/music/1030/1030.mp3 | 欢快活力 |
+| `bgm/old-letter-854.mp3` | Old Letter | 854 | https://assets.mixkit.co/music/854/854.mp3 | 欢快活力 |
+| `bgm/me-and-you-851.mp3` | Me and You | 851 | https://assets.mixkit.co/music/851/851.mp3 | 欢快活力 |
+| `bgm/river-flow-594.mp3` | River Flow | 594 | https://assets.mixkit.co/music/594/594.mp3 | 知识科普/人文叙事 |
+| `bgm/nield-grohm-hanging-1-538.mp3` | Nield Grohm Hanging 1 | 538 | https://assets.mixkit.co/music/538/538.mp3 | 知识科普/人文叙事 |
+| `bgm/masking-the-masters-552.mp3` | Masking the Masters | 552 | https://assets.mixkit.co/music/552/552.mp3 | 知识科普/人文叙事 |
+| `bgm/skyline-601.mp3` | Skyline | 601 | https://assets.mixkit.co/music/601/601.mp3 | 知识科普/人文叙事 |
+| `bgm/we-will-get-it-598.mp3` | We Will Get It | 598 | https://assets.mixkit.co/music/598/598.mp3 | 史诗宏大/情感抒情 |
+| `bgm/classical-10-717.mp3` | Classical 10 | 717 | https://assets.mixkit.co/music/717/717.mp3 | 史诗宏大/情感抒情 |
+| `bgm/drawing-the-sky-606.mp3` | Drawing the Sky | 606 | https://assets.mixkit.co/music/606/606.mp3 | 史诗宏大/情感抒情 |
+| `bgm/classical-4-711.mp3` | Classical 4 | 711 | https://assets.mixkit.co/music/711/711.mp3 | 史诗宏大/情感抒情 |
 
 参考轨 `OPUS品牌片-音频提取.mp3`（OPUS 品牌片原声，**仅本机参考、不随包分发**，发布版权需自行确权）留在 `科普视频/yunkai-promo/research/`，其分析档案 `bgm/profiles/OPUS品牌片-音频提取.json` 仅作提名气质锚，不入发布池。
 
