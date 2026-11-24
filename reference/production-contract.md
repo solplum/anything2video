@@ -25,7 +25,7 @@ core 若未安装可选视频，选择页的 poster 只是静态参考，不写�
 <a id="project-contract"></a>
 ## 工程合同
 
-工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、fps、totalFrames、composition（默认 Video）、recipe（模板运行时枚举为 promo / explainer / epic；documentary 是制作路线，不是自动注册的皮肤/覆盖层开关，按其文档实现镜头）。默认横屏 1280×720；原生竖屏 1080×1920。故意无声时额外声明 `audio: {mode: "silent"}`，有旁白作品不能用此字段掩盖丢失音轨。
+工程位于 skill 外。初始化器拒绝非空目标，不执行 git add 或 commit。`project.json` 字段：schemaVersion、status（draft/production）、slug、width、height、renderScale（默认 1.5；含固定像素 2D canvas 风格保持 1）、fps、totalFrames、composition（默认 Video）、recipe（promo / explainer / epic；documentary 按对应文档实现）。默认横屏 1280×720（1.5× 终渲 1920×1080）；原生竖屏 1080×1920；[节奏与画质档](speed-and-quality.md#pace)分 fast/quality。故意无声声明 `audio: {mode: "silent"}`。
 
 初始化支持 `<slug>` 单参：数据根优先 `A2V_DATA_ROOT`，再读持久化文件；未知或相对根直接拒绝，不退回当前目录。也支持 `<工程绝对路径> <slug>`。工程顶层 renders/stills/fin_frames/qc/delivery/versions 与依赖、音频缓存为保留产物位置（delivery/ 为 finalize_delivery 终检发布产物、versions/ 为 jury 修复轮版本留存，两者均在源快照排除清单内），不放导入源码；源码与素材应放入被记录的项目位置。`src/build`、自定义 components 及普通 build/out/dist 目录仍是输入。
 
@@ -103,10 +103,10 @@ TTS/mix 从 project.json 读取 slug/fps；config slug 不一致须迁移后重�
 
 1. 工程轮：类型检查、全镜头覆盖、素材存在、音画、输出规格、解码错误。空组与空句不能假通过。运动连续性用 `scripts/probe_motion_quality.py` 采样成片（运动面积/静止帧对/孤立跳变/最长静止，附跳变证据拼图）——首尾差不能替代连续运动检查；数字是线索，定性按 directing-playbook「运动量按配方语义读」执行，合法静止以分镜与 beat sheet 豁免登记为准。**矢量/精密工程类风格门禁（v4.2.0）**：`isometric-anatomy`、`blueprint`、`line-art` 等图纸/机械类风格加跑线头闭合度探针 `node <skill>/scripts/probe_line_ends.mjs <静态SVG或HTML> --tolerance 2.0`。当前工具只读字面量 `<path d="…">` 的 M/L/Z 起止点近邻，不解析 TSX 动态路径、曲线/H/V/弧线、变换或其他 SVG 图元，也不证明端点落在轮廓中段。只对支持且确实检查到的路径判读浮空线；零计数不能证明未支持图元通过，须另外实查并记录覆盖缺口。艺术手绘风格（水墨/水彩/粉笔）不套用精密机械的闭合要求。
 
-2. 导演轮：开场、中段复杂演示、结尾真实运动片段；字幕遮挡、文字清晰、画面是否承载解释、转场是否符合已选语法与语义、素材伪影、声音自然度。
-3. 反向轮：先挑最弱镜头，检查数字/出处/承诺/发布标签；复验修复过的场景，防止修一处坏另一处。
+2. 导演轮：开场、中段复杂演示、结尾真实运动片段；运行 `semantic-sync-pack.mjs` 生成 `qc/semantic-sync/index.md` 辅助核查句中点/`{#id}` 声画对位，再查字幕遮挡、清晰度、因果演绎、转场、素材与听感。
+3. 反向轮：先挑最弱镜头核对数字/出处/承诺；复验修复场景，防修一处坏另一处。
 
-每轮记录具体缺陷与真实重渲结果。probe阈值只适用于已声明 ROI/风格背景；性能用同机热渲比较，允许有记录的审美静止。不能默默跳过失败探针，也不能把“无能力检查”算通过。
+每轮记缺陷与重渲结果。probe 阈值限于已声明 ROI/风格背景；性能同机热渲比较，允许审美静止；不把“无能力检查”当通过。
 
 三轮通过后进入 D 轮独立评分评审（审美攀登，2026-10-06 轴 A，机制与提示词见 `reference/jury-review.md`）：独立会话评委按 7 维锚点评分并给按影响力排序的修复清单，产出 `qc/jury.json` 进交付证据链。任一维度 <7 为阻塞，修复后复审该维度；≥8 不设硬门，修复轮上限 3 轮。交付说明必须附 jury 评分与 gate 状态；媒体或源码变化后旧 jury 证据作废。
 

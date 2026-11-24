@@ -2,7 +2,7 @@
 name: anything2video
 description: Create original teaching, explainer, promotional and brand videos from topics, articles or products using researched narration, two-stage user-approved scripts, shot plans, deterministic Remotion animation, licensed or disclosed generated assets, audio, renders and measured quality evidence. Works across modern agent harnesses.
 metadata:
-  version: "5.0.0"
+  version: "5.1.0"
   author: "solplum"
   category: video-generation
   descriptions:
@@ -45,8 +45,8 @@ metadata:
 | 动作、词/拍落点、停留或切换 | [运动语言](reference/motion-language.md)、[事件编排](reference/cue-choreography.md)、[gallery](gallery/README.md)；选卡后读参数/判例 |
 | 可选匹配剪辑＋节拍接力 | [剪辑模式](reference/match-cut-beat-relay.md)；独立于画风/配方，仅作用于声明的接力切点 |
 | 音色、选曲、声音制作 | [音色试听](reference/voice-bakeoff.md)、[选曲试听](reference/bgm-bakeoff.md)、[音乐编排](reference/music-plan.md)、[音乐卡点](reference/music-beat-sync.md)、[声音设计](reference/sound-design.md)；只读当前通道 |
-| 打样、派单、专项验收 | [视觉方向](reference/visual-direction.md)、[派单协议](reference/workflow-orchestration.md)、[动作复核](reference/action-review.md)、[小屏可读性](reference/readability.md)、[独立评分](reference/jury-review.md) |
-| 找命令、组件、兼容接口或导出路线 | [工具与组件索引](reference/tools-and-components.md)；不需要时不读 |
+| 打样、派单、速度与验收 | [视觉方向](reference/visual-direction.md)、[画质与速度](reference/speed-and-quality.md)、[派单协议](reference/workflow-orchestration.md)、[动作复核](reference/action-review.md)、[小屏可读性](reference/readability.md)、[独立评分](reference/jury-review.md) |
+| 速查清单与命令索引 | [速查清单](reference/quick-checklist.md)、[工具与组件索引](reference/tools-and-components.md)（按需读） |
 | 查历史返工、上游实现或回写经验 | [上下文资料索引](reference/context-index.md)；历史是解释与复验线索，不是第二套生产规则 |
 
 ## 从这里继续

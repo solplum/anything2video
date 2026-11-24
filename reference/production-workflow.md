@@ -58,11 +58,11 @@ node <skill>/scripts/render.mjs <工程> preview 12
 node <skill>/scripts/render.mjs <工程> video
 ```
 
-所有模式检查完整计划；同输出互斥，显式 `--overwrite` 才覆盖。bundle 用独立目录、关闭共享 webpack 缓存，性能同机实测。生产只用 `init.mjs` / `render.mjs`；旧 shell helper 含路径/30fps 假设、无统一证据，见[工具索引](tools-and-components.md)。`bloom_grade.py` 像素处理须在审片前定稿。
+所有模式检完整计划；同输出互斥，`--overwrite` 才覆盖。fast 迭代可用 `A2V_SCALE=1 A2V_BUNDLE_CACHE=1`，**正式/QC 前须关 `A2V_BUNDLE_CACHE` 保干净重建**（[画质与速度](speed-and-quality.md#pace)）。生产仅用 `init.mjs` / `render.mjs`；`bloom_grade.py` 须在审片前定稿。
 
 ## 7. 审核与修复
 
-按契约 [三轮证据](production-contract.md#review) 做 A 工程、B 导演、C 反向审查，再按 [jury-review.md](jury-review.md) 做 D 独立评分。`qc/round-N.md` 逐项记现象、原因、改动、重渲哈希、检查范围与保留项，修复后回归受影响镜头和边界。
+按契约 [三轮证据](production-contract.md#review) 做 A/B/C 审查（含 `semantic-sync-pack.mjs` 抽帧对位）与 [jury-review.md](jury-review.md) D 评分。`qc/round-N.md` 记现象、原因、改动、重渲哈希、范围与保留项，修后回归边界。
 
 需要时读取 [可读性](readability.md)、[动作复核](action-review.md)、运动/线头等探针说明；工具产物不取代看片和试听。无播放/听取能力时保留 `not_performed`，可交待审稿与工程，不标最终通过。
 

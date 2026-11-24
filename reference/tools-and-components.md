@@ -15,9 +15,9 @@
 
 | 任务 | 入口与边界 |
 |---|---|
-| 初始化、诊断 | [init.mjs](../scripts/init.mjs)、[doctor.mjs](../scripts/doctor.mjs)；包外空目录、能力探测见契约 |
+| 初始化、诊断 | [init.mjs](../scripts/init.mjs)、[doctor.mjs](../scripts/doctor.mjs)；包外空目录、默认 `renderScale: 1.5`、能力探测见契约 |
 | 续作进度 | [check_state.mjs](../scripts/check_state.mjs)：intake → scripted → voiced → planned → rendered → reviewed → delivered；七态以旁白工程为主，稿件授权由主控另核 `approval.json`，没有自动 approved 门。overclaim 退出 1；`--write` 只在渲染前同步，渲染后用只读报告避免使源码哈希失效；reviewed 只核声明结构，完整验收仍跑 check-qc |
-| 计划、静帧、片段、全片 | [check-plan.mjs](../scripts/check-plan.mjs)、[render.mjs](../scripts/render.mjs)；所有模式检查完整计划/素材/类型，Composition 与声明一致 |
+| 计划、静帧、片段、全片 | [check-plan.mjs](../scripts/check-plan.mjs)、[render.mjs](../scripts/render.mjs)；[画质与速度](speed-and-quality.md)（`A2V_PACE`、`renderScale`、并发、`A2V_GL`、`A2V_BUNDLE_CACHE`）与 [速查清单](quick-checklist.md) |
 | 可选匹配剪辑计划 | [match-cut-plan.mjs](../scripts/match-cut-plan.mjs)、[模式合同](match-cut-beat-relay.md)：原生 fps/实测或显式编写网格，核对相邻切点；`--review-request` 输出既有 review-pack 请求，不自动渲染/审片 |
 | 最终 QC、交付终检 | [check-qc.mjs](../scripts/check-qc.mjs)、[finalize_delivery.mjs](../scripts/finalize_delivery.mjs)；媒体/源码/范围/审核证据绑定；终检逐文件发布、报告最后，无多文件事务/并发锁，且需可测非静音音轨；不代替实际看听 |
 | 可编辑工程 | [export_jianying.py](../scripts/export_jianying.py)：实验性剪映/CapCut 草稿数据；全片显式 `--video` 或唯一 sidecar 候选，原始音轨静音、文本轨 opt-in，不重建完整混音/干净画面。选择与边界见 [导出说明](../recipes/documentary.md#editor-draft)，桌面导入另验 |
@@ -31,10 +31,10 @@
 | 任务 | 实现 / 详细说明 |
 |---|---|
 | 音色 A/B | [voice_bakeoff.py](../scripts/voice_bakeoff.py)、[voice-bakeoff.md](voice-bakeoff.md)：同三句代表台词，实际可用端点与试听决定 |
-| TTS 与逐字符字幕 | [tts_build.py](../template/scripts/tts_build.py)、[narration_lib.py](../template/scripts/narration_lib.py)：产正本、timeline、subs、`SubEntry.chars` 与 `anchors.ts`（`{#id}` 锚点）；edge/minimax 实测词边界，估计时间戳须如实标注 |
+| TTS 与逐字符字幕 | [tts_build.py](../template/scripts/tts_build.py)、[voice_fx.py](../template/scripts/voice_fx.py)、[narration_lib.py](../template/scripts/narration_lib.py)：支持 MiniMax（整块合成+词级切句）/ edge、`-18 LUFS` 语音链与 `anchors.ts`（`{#id}` 锚点）；估计时间戳须如实标注 |
 | 用户自带配音 | [align_narration.py](../template/scripts/align_narration.py)：能量停顿 DP 对齐到句、块内线性铺开并输出 `anchors.ts`，约 ±0.15s 是估计，不手填假精度 |
 | 无旁白章表 | [chapter_timeline.py](../template/scripts/chapter_timeline.py)：读 project fps、保留章元数据；声音/无声声明仍走契约 |
-| 旁白＋BGM、钉帧 SFX | [mix_audio.py](../template/scripts/mix_audio.py)（如 `--bed 0.055`；沙音显式 `--sfx sand`）、[mix_sfx.py](../template/scripts/mix_sfx.py) 第三步与防双混台账；[声音设计](sound-design.md) |
+| 旁白＋BGM、钉帧 SFX | [mix_audio.py](../template/scripts/mix_audio.py)（默认 `--bed-lu -1.5` 相对响度＋[music_fit.py](../template/scripts/music_fit.py) 重拍拼剪，也可 `--bed 0.055`；沙音显式 `--sfx sand`）、[mix_sfx.py](../template/scripts/mix_sfx.py) 第三步与防双混台账；[声音设计](sound-design.md) |
 | 录音曲试听与查询 | [bgm-bakeoff.md](bgm-bakeoff.md)、[bgm-library.md](bgm-library.md)、[bgm_query.py](../scripts/bgm_query.py)：题材×落位功能读逐段档案；可用且许可登记的用户曲优先，缺音源/未确权曲仅作参考 |
 | 曲库客观分析与对话标注 | [bgm_analyze.py](../scripts/bgm_analyze.py)、[bgm_review.py](../scripts/bgm_review.py)：能量/分段/入出点/BPM → [checkout 的曲库档案](https://github.com/solplum/anything2video/tree/5f2e5e0e7bd4b392455f9be4e4bb1c050e21c537/assets/audio/bgm/profiles)（未随发行包携带，读取前确认本地存在；入口见 [曲库指南](bgm-library.md)）；试听在页面、标注在对话，不以 HTML 表单代问，候选规范见选曲文档 |
 | 多段音乐编排 | [music-plan.md](music-plan.md)：`music_plan.json` schema、接力与许可台账 |
@@ -50,7 +50,7 @@
 | 世界底 / 一帧先行 | [gen_world_frames.py](../template/scripts/gen_world_frames.py)、[ai-frame-sop.md](ai-frame-sop.md)：四路线、首尾同帧图生视频、素材三查 |
 | 图生视频停顿分段 | [plan_segments.py](../scripts/plan_segments.py)：真实停顿切分，整数秒只取停顿内，计费秒数/接缝遮罩；见 AI SOP 路线 C |
 | 运动连续性 / 字幕带 | [probe_motion_quality.py](../scripts/probe_motion_quality.py)、[probe_subtitle_band.py](../scripts/probe_subtitle_band.py)；合法静止按分镜/beat sheet，命中看实际帧定性 |
-| 批量预览 / 动作关键窗 | [review-pack.mjs](../scripts/review-pack.mjs)、[批量审片包](action-review.md#batch-review)：可选单请求开中末/切点＋明确动作/cue，一次 bundle，默认只待审；已有媒体单独复核仍用 [action_review.py](../scripts/action_review.py)，真实 PTS/ROI/哈希，仍 needs_review |
+| 批量预览 / 音画对照 | [review-pack.mjs](../scripts/review-pack.mjs)、[semantic-sync-pack.mjs](../scripts/semantic-sync-pack.mjs)（句中点＋`{#id}` 锚点对照表 `qc/semantic-sync/index.md`）、[批量审片包](action-review.md#batch-review)；已有媒体单独复核仍用 [action_review.py](../scripts/action_review.py)，真实 PTS/ROI/哈希，仍 needs_review |
 | 小屏 / 线头闭合 / 构图对比 | [probe_readability.mjs](../scripts/probe_readability.mjs)、[readability.md](readability.md)；[probe_line_ends.mjs](../scripts/probe_line_ends.mjs) 只读静态字面量 M/L/Z 路径起止点；[probe_aesthetics.py](../scripts/probe_aesthetics.py) 检底带对比度、视觉重心死区与穿带线条（不替代人眼审片） |
 | 音画 / 媒体 | [probe_av_sync.mjs](../template/scripts/probe_av_sync.mjs)、[probe_delivery.py](../template/scripts/probe_delivery.py)；首句探针不证明全片对位或听感 |
 | 其他工程探针 | [template/scripts](../template/scripts)：blank/liveness/subject/time/frame_cost/material_substance；先声明 ROI/背景/合法静止，不能无条件外推 |
@@ -63,7 +63,7 @@
 | 能力 | 实现 / 路由 |
 |---|---|
 | 动效配方卡、参数与参考源码 | [gallery/README.md](../gallery/README.md)、[cards](../gallery/cards)、[demos-ref](../gallery/demos-ref)、[lib-ref](../gallery/lib-ref)；卡数量以目录/索引为准。pdoom 方法论卡没有本仓 demo 时按卡参数实现，来源在卡尾 |
-| 基础 2.5D/数字/闪切/滚动 | [common/kit](../template/src/common/kit)：PageCam、DigitRoll、FlashCut、VerticalTicker，lagged/dampedSettle/mulberry32 |
+| 基础 2.5D/数字/闪切/模糊 | [common/kit](../template/src/common/kit)：PageCam、DigitRoll、FlashCut、VerticalTicker、[FastMoveBlur](../template/src/common/kit/FastMoveBlur.tsx)（高速层动态模糊），lagged/dampedSettle/mulberry32 |
 | 演绎结构四件套 | WordLitCaption、ChapterBadge、GoldenQuote、RecapFrame；底料 `SubEntry.chars`，接线见 [explainer](../recipes/explainer.md)，三铁律见导演手册 |
 | 命名事件、锚点与时间对齐 | [common/anchor.ts](../template/src/common/anchor.ts)、[common/anchors.ts](../template/src/common/anchors.ts)、[common/motion](../template/src/common/motion)：`at()`/`span()`/`local()`/`secOf()` 与 `createCueSheet`，绑定旁白 `{#id}` 与句界，不从 timeline.md 抄数字帧号 |
 | 共享运动数学、底图语法 | [common/motion](../template/src/common/motion)：hermite/monotone/quantize/smear/kinematics（`solveTwoBoneIK`、`walkPelvisState`、`followSpring`）；[PhotoStage](../template/src/common/kit/PhotoStage.tsx)：Ken Burns 钳制、snap push、freeze-to-card |

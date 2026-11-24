@@ -98,7 +98,7 @@ test('canonical skill keeps host extensions under metadata and builds with neste
   const keys = [...frontmatter.matchAll(/^([A-Za-z][A-Za-z0-9_-]*):/gm)].map(match => match[1]);
   assert.ok(keys.every(key => allowed.has(key)), `Nonportable top-level keys: ${keys.filter(key => !allowed.has(key))}`);
   assert.match(frontmatter, /^  author: "solplum"$/m);
-  assert.equal(validateSkill(root).version, '5.0.0');
+  assert.equal(validateSkill(root).version, '5.1.0');
   const source = fixture(temporary(t));
   for (const profile of ['core', 'full']) {
     const target = buildPackage(path.join(path.dirname(source), profile), {source, profile});

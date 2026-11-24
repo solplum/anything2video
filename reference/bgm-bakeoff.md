@@ -82,3 +82,7 @@ python scripts/bgm_query.py --use reference --reference wx-night-drive
 - 三首外部试听建议 Miami Viceroy / Reverie / Ascension 尚未由用户选定、未入默认曲池；不得由推荐链接推断喜欢或通过 human_reviewed。
 
 验证：`python scripts/bgm_query.py --selftest`；`python -m unittest discover -s tests -p 'test_bgm_query.py'`。这些测试证明过滤/排序行为，不证明主观音质；本轮未重渲成片、未试听新曲。
+
+## AI 生成配乐（未接入）
+
+2026-11 实测 MiniMax 音乐接口 `POST /v1/music_generation`（`music-2.0` 与 `music-1.5`）均返回 HTTP 410 `status_code=2153`（官方策略自 2026-08-20 起不对新接入用户开放），因此 Skill **未接入 AI 音乐生成通道**。无合适实录曲时，请从 Mixkit/用户自带曲库挑选或显式选用 `bgm_generate.py` 程序编曲备选。
